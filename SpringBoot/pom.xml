@@ -30,10 +30,6 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-		<dependency>
-		    <groupId>com.mysql</groupId>
-		    <artifactId>mysql-connectaor-j</artifactId>
-		</dependency>
 	
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -65,10 +61,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-			<properties>
-		<java.version>17</java.version>
-	</properties>
-	<dependencies>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,7 +81,13 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		    <groupId>com.mysql</groupId>
+		    <artifactId>mysql-connectaor-j</artifactId>
+		</dependency>
+	
 	</dependencies>
+
 
 	<build>
 		<plugins>
