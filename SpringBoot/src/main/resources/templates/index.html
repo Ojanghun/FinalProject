@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>환영합니다!</h1>
+
+    <div sec:authorize="isAnonymous()">
+        <p><a th:href="@{/login}" class="btn btn-primary">로그인</a></p>
+        <p><a th:href="@{/join}" class="btn btn-success">회원가입</a></p>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <p>안녕하세요, <span sec:authentication="name">사용자</span>님!</p>
+        <p>
+            <a th:href="@{/logout}" class="btn btn-danger">로그아웃</a>
+        </p>
+        </div>
+</div>
+</body>
+</html>

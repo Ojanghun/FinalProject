@@ -1,104 +1,80 @@
-package com.smhrd.controller;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+package com.smhrd.controller; // 실제 패키지 경로로 수정
 
 import com.smhrd.entity.Member;
 import com.smhrd.service.MemberService;
-
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
 public class MemberController {
 
-	@Autowired
-	private MemberService service;
+    private final MemberService memberService;
 
-	@GetMapping("/join")
-	public String join() {
-		return "join";
-	}
+    @Autowired
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
-	@PostMapping("/join")
-	public String join(Member vo) {
-		service.join(vo);
-		return "redirect:/";
-	}
+    @GetMapping("/")
+    public String home(Model model, HttpSession session) {
+        Member loggedInUser = (Member) session.getAttribute("loggedInUser"); // Spring Security 사용 시 Principal 객체 활용
+        if (loggedInUser != null) {
+            model.addAttribute("username", loggedInUser.getName());
+        }
+        return "index"; // 메인 페이지 (index.html)
+    }
 
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
+    @GetMapping("/login")
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "logout", required = false) String logout,
+                            Model model) {
+        if (error != null) {
+            model.addAttribute("loginError", "아이디 또는 비밀번호가 올바르지 않습니다.");
+        }
+        if (logout != null) {
+            model.addAttribute("logoutMessage", "성공적으로 로그아웃되었습니다.");
+        }
+        return "login"; // templates/login.html
+    }
 
-	@PostMapping("/login")
-	public String login(Member vo, HttpSession session) {
-		Member info = service.login(vo);
+    @GetMapping("/join")
+    public String joinPage(HttpSession session, Model model) {
+        String kakaoNickname = (String) session.getAttribute("kakaoNickname");
+        if (kakaoNickname != null) {
+            model.addAttribute("formNickname", kakaoNickname);
+            // 세션에서 사용 후 제거 (선택 사항, F5 연타 시 문제 방지)
+            // session.removeAttribute("kakaoNickname");
+        }
+        if (!model.containsAttribute("member")) { // RedirectAttributes로 전달된 Member가 없을 경우 새 객체 전달
+             model.addAttribute("member", new Member());
+        }
+        return "join"; // templates/join.html
+    }
 
-		if (info != null) {
-			session.setAttribute("info", info);
-		}
-
-			return "redirect:/";
-	}
-	
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
-	
-	@GetMapping("/update")
-	public String update() {
-		return "update";
-	}
-	
-	@PostMapping("/update")
-	public String update(Member vo, HttpSession session) {
-		service.update(vo);
-		vo.setPw(null);
-		session.setAttribute("info", vo);
-		
-		return "redirect:/";
-	}
-	
-	@GetMapping("/list")
-	public String list(HttpSession session) {
-		
-		Member info = (Member) session.getAttribute("info");
-		
-		if(info != null && info.getId().equals("admin")) {
-			return "list";
-		} else {
-			return "redirect:/";
-		}
-		
-	}
-	
-	@GetMapping("/promote")
-	public String promote() {
-		return "promote";
-	}
-	
-	@GetMapping("/license")
-	public String license() {
-		return "license";
-	}
-	
-	@GetMapping("/exam")
-	public String exam() {
-		return "exam";
-	}
-	
-	@GetMapping("/subject")
-	public String subject() {
-		return "subject";
-	}
-	
-	@GetMapping("/certify")
-	public String certify() {
-		return "certify";
-	}
-	
+    @PostMapping("/join")
+    public String joinProcess(Member member, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        // 여기에 추가적인 유효성 검사 (예: @Valid 어노테이션 사용)
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.member", bindingResult);
+            redirectAttributes.addFlashAttribute("member", member);
+            return "redirect:/join";
+        }
+        try {
+            memberService.join(member);
+        } catch (IllegalArgumentException e) {
+            // ID 중복 등 예외 처리
+            redirectAttributes.addFlashAttribute("joinError", e.getMessage());
+            redirectAttributes.addFlashAttribute("member", member); // 입력값 유지를 위해 다시 전달
+            return "redirect:/join";
+        }
+        return "redirect:/login?join_success=true"; // 회원가입 성공 시 로그인 페이지로
+    }
 }

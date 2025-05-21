@@ -1,64 +1,45 @@
-package com.smhrd.service;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package com.smhrd.service; // 실제 패키지 경로로 수정
 
 import com.smhrd.entity.Member;
 import com.smhrd.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class MemberService {
 
-	@Autowired
-	private MemberRepository repository;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-	public Member idCheck(String id) {
+    @Autowired
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-		Optional<Member> m = repository.findById(id);
+    @Transactional
+    public Member join(Member member) {
+        if (memberRepository.existsById(member.getId())) {
+            throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
+        }
+        // 비밀번호 암호화
+        member.setPw(passwordEncoder.encode(member.getPw()));
+        return memberRepository.save(member);
+    }
 
-		if (m.isPresent()) {
-			Member info = m.get();
-			info.setPw(null);
-			info.setAddr(null);
-			info.setPhone(null);
-			info.setNick(null);
-			return info;
-		} else {
-			return new Member();
-		}
+    // ID 중복 체크 서비스 메소드
+    public boolean isIdExists(String id) {
+        return memberRepository.existsById(id);
+    }
 
-	}
-
-	public void join(Member vo) {
-		repository.save(vo);
-	}
-
-	public Member login(Member vo) {
-		String id = vo.getId();
-		String pw = vo.getPw();
-
-		Member info = repository.findByIdAndPw(id, pw);
-
-		if (info != null) {
-			info.setPw(null);
-		} 
-
-		return info;
-	}
-
-	public void update(Member vo) {
-		repository.save(vo);
-	}
-
-	public List<Member> goList() {
-		return repository.findAll();
-	}
-
-	public void goDelete(String id) {
-		repository.deleteById(id);
-	}
-
+    // 로그인 검증은 Spring Security가 PasswordEncoder와 UserDetailsService를 통해 처리합니다.
+    // 여기에 별도의 login(Member vo) 메소드는 Spring Security 사용 시 일반적으로 필요하지 않거나,
+    // 다른 목적으로 (예: 사용자 정보 조회 후 세션에 추가 정보 저장) 사용될 수 있습니다.
+    // 아래는 예시로 남겨두지만, Spring Security 흐름에서는 직접 호출되지 않을 수 있습니다.
+    public Member findMemberById(String id) {
+        return memberRepository.findById(id).orElse(null);
+    }
 }

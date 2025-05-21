@@ -1,84 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div class="container">
-		<h2>Spring Boot RestController Member</h2>
-		<div class="panel panel-warning">
-			<div class="panel-heading">Join</div>
-			<div class="panel-body">
-				<form action="join" method="post">
-					<table class="table">
-						<tr>
-							<td>ID</td>
-							<td><input name="id" id="id" type="text" class="form-control"></td>
-							<td>
-								<button onclick="idCheck()" type="button" class="btn">중복확인</button>
-							</td>
-						</tr>
-						<tr>
-							<td>PW</td>
-							<td colspan="2"><input name="pw" type="password" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>NICK</td>
-							<td colspan="2"><input name="nick" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>PHONE</td>
-							<td colspan="2"><input name="phone" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>ADDR</td>
-							<td colspan="2"><input name="addr" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td colspan="3" align="center">
-								<button class="btn btn-danger" type="reset">취소</button>
-								<button class="btn btn-success" type="submit">회원가입</button>
-							</td>
-						</tr>
-					</table>
-				</form>
+<div class="container">
+    <h2>회원가입</h2>
+    <div class="panel panel-info"> <div class="panel-heading">Join</div>
+        <div class="panel-body">
+            <div th:if="${joinError}" class="alert alert-danger" th:text="${joinError}">
+                회원가입 중 오류 발생
+            </div>
 
-			</div>
-			<div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-		</div>
-	</div>
+            <form th:action="@{/join}" th:object="${member}" method="post">
+                <table class="table">
+                    <tr>
+                        <td>ID</td>
+                        <td><input th:field="*{id}" id="idInput" type="text" class="form-control" required></td>
+                        <td>
+                            <button onclick="idCheck()" type="button" class="btn btn-default">중복확인</button>
+                            <small id="idCheckResult" class="form-text"></small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PW</td>
+                        <td colspan="2"><input th:field="*{pw}" type="password" class="form-control" required></td>
+                    </tr>
+                    <tr>
+                        <td>이름 (닉네임)</td>
+                        <td colspan="2">
+                            <input th:field="*{name}" type="text" class="form-control"
+                                   th:value="${formNickname != null ? formNickname : (*{name} ?: '')}"
+                                   th:readonly="${formNickname != null}" required />
+                            <small th:if="${formNickname != null}" class="form-text text-muted">카카오 닉네임으로 자동 입력되었습니다 (수정 불가).</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PHONE</td>
+                        <td colspan="2"><input th:field="*{phone}" type="text" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center">
+                            <button class="btn btn-danger" type="reset">취소</button>
+                            <button class="btn btn-primary" type="submit">회원가입</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <p>또는 <a th:href="@{/login}">로그인 페이지로 돌아가기</a></p>
+        </div>
+        <div class="panel-footer">Your Project Footer</div>
+    </div>
+</div>
 
-	<script type="text/javascript">
-		function idCheck() {
-			
-			let id = $("#id").val();
-			
-			$.ajax({
-				url : "idCheck",
-				type : "get",
-				dataType : "json",
-				data : {"id" : id},
-				success : function(data) {
-					console.log(data);
-					if(data.id != null){
-						alert("해당 ID는 사용할 수 없습니다.");
-					} else {
-						alert("해당 ID는 사용 가능한 ID입니다.");
-					}
-				},
-				error : function() {
-					alert('error...')
-				}
-			});
-		}
-	</script>
+<script type="text/javascript">
+    function idCheck() {
+        let id = $("#idInput").val();
+        if (!id) {
+            $("#idCheckResult").text("ID를 입력해주세요.").css("color", "red");
+            return;
+        }
 
+        $.ajax({
+            url: "[[@{/idCheck}]]", // Thymeleaf URL 표현식 사용
+            type: "get",
+            dataType: "json",
+            data: {"id": id},
+            success: function (data) {
+                if (data.isAvailable) { // MemberRestController에서 isAvailable: true 로 반환 시
+                    $("#idCheckResult").text("사용 가능한 ID입니다.").css("color", "green");
+                } else {
+                    $("#idCheckResult").text("이미 사용 중인 ID입니다.").css("color", "red");
+                }
+            },
+            error: function () {
+                $("#idCheckResult").text("ID 중복 확인 중 오류 발생").css("color", "red");
+            }
+        });
+    }
+</script>
 </body>
 </html>
