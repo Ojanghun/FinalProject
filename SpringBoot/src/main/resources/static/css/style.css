@@ -1,0 +1,117 @@
+
+/* 기본 스타일 */
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+  background-color: #FAFAFA;
+  color: #212121;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h2 {
+  color: #1E88E5;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+h4 {
+  color: #1E88E5;
+  font-size: 18px;
+  font-weight: semi-bold;
+  margin-bottom: 15px;
+}
+
+/* 테이블 스타일 */
+.table th {
+  background-color: #FFC107;
+  color: white;
+  text-align: center;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* 문제 목록 페이지 */
+.question-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 문제 상세 페이지 */
+.question-detail {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* AI 해설 공통 */
+.ai-explanation {
+  background-color: #eef9ff;
+  border-left: 4px solid #5bc0de;
+  padding: 10px;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* 문제 블록 */
+.question-block {
+  margin-bottom: 30px;
+}
+
+/* 네비게이션 바 */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1E88E5;
+  padding: 10px 24px;
+  border-radius: 20px 20px 0 0;
+}
+
+.nav-item {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+.nav-item:hover {
+  background-color: #FFC107;
+  color: #212121;
+  border-radius: 20px 20px 0 0;
+}
+
+.nav-item.active {
+  background-color: white;
+  color: #1E88E5;
+  border-radius: 20px 20px 0 0;
+}
+
+/* 레이아웃/그리드 가이드 */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -8px;
+}
+
+.col {
+  flex: 1;
+  padding: 0 8px;
+}
+
+.card {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
