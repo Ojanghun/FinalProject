@@ -12,40 +12,37 @@
 </head>
 <body>
 	<div class="container">
-      <h2>Spring Boot RestController Member</h2>
-      <div class="panel panel-warning">
-         <div class="panel-heading">Certify
-         
-			<span style="float: right;">
-				<th:block th:if="${session.info == null}">
-         			<a href="login">로그인</a>
-         			<a href="join">회원가입</a>
-         		</th:block>
-         		
-    			<!-- 로그인 했을 때 영역 -->
-         		<th:block th:unless="${session.info == null}">
-         		
-	         		<!-- 관리자 영역 -->
-	         		<th:block th:if="${session.info.id == 'admin'}">
-		         		<a href="list">회원정보보기</a>
-	    			</th:block>
-	    			
-	        		<a href="update">회원정보수정</a>
-	        		<a href="logout">로그아웃</a>
-        		</th:block>
-         	</span>
-         		
-         
-         </div>
-         
-
-         
-         <div class="panel-body">
-            
-
-         </div>
-         <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-      </div>
-   </div>
+		<h2>Spring Boot RestController Member</h2>
+		<div class="panel panel-warning">
+			<div class="panel-heading"> Certify
+				<span style="float: right;">
+					<th:block th:if="${session.info == null}">
+						<a href="login">로그인</a>
+						<a href="join">회원가입</a>
+					</th:block>
+					
+					<!-- 로그인 했을 때 영역 -->
+					<th:block th:unless="${session.info == null}">
+					
+						<!-- 관리자 영역 -->
+						<th:block th:if="${session.info.id == 'admin'}">
+							<a href="list">회원정보보기</a>
+						</th:block>
+						<a href="update">회원정보수정</a>
+						<a href="logout">로그아웃</a>
+					</th:block>
+				</span>
+			</div>
+			
+			<div class="panel-body"></div>
+				<input type="file" id="fileInput">
+				<button id="uploadBtn">업로드</button>
+				
+			<div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="js/certify.js"></script>
+	
 </body>
 </html>
