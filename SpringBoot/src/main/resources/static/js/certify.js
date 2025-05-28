@@ -14,6 +14,8 @@ function uploadFile() {
 		success: function(data){
 			if(data=="success"){
 				alert("업로드가 완료되었습니다")
+			} else if(data=="typeMismatch"){
+				alert("동영상 파일만 업로드해주세요")
 			}
 		},
 		error: function() { alert("업로드 에러 발생") }
