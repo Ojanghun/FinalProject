@@ -15,6 +15,7 @@ import java.io.IOException;
 
 @Component
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
+	
 
     @Autowired
     private MemberRepository memberRepository;

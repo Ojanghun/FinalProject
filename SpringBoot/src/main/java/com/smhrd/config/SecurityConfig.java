@@ -22,38 +22,45 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers(
-                    new AntPathRequestMatcher("/login"),
-                    new AntPathRequestMatcher("/join"),
-                    new AntPathRequestMatcher("/idCheck"),
-                    new AntPathRequestMatcher("/oauth/kakao"),
-                    new AntPathRequestMatcher("/css/**"),
-                    new AntPathRequestMatcher("/js/**"),
-                    new AntPathRequestMatcher("/images/**"),
-                    new AntPathRequestMatcher("/webjars/**")
-                ).permitAll()
-                .anyRequest().authenticated()
+            .authorizeHttpRequests(authorizeRequests ->
+                authorizeRequests
+                    .requestMatchers(
+                        new AntPathRequestMatcher("/"),               // ✅ 메인 페이지도 인증 없이 허용
+                        new AntPathRequestMatcher("/login"),
+                        new AntPathRequestMatcher("/join"),
+                        new AntPathRequestMatcher("/idCheck"),
+                        new AntPathRequestMatcher("/oauth/kakao"),
+                        new AntPathRequestMatcher("/css/**"),
+                        new AntPathRequestMatcher("/js/**"),
+                        new AntPathRequestMatcher("/images/**"),
+                        new AntPathRequestMatcher("/webjars/**")
+                    ).permitAll()
+                    .anyRequest().authenticated()
             )
-            .formLogin(formLogin -> formLogin
+            .formLogin(formLogin ->
+            formLogin
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("id")
                 .passwordParameter("pw")
-                .successHandler(loginSuccessHandler) // ✅ 여기에 명시해야 작동합니다!
+                .successHandler(loginSuccessHandler) // ✅ 추가
                 .failureUrl("/login?error=true")
                 .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll()
+        )
+
+            .logout(logout ->
+                logout
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/main?logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll()
             );
 
         return http.build();
     }
+
+    
 
     @Bean
     public PasswordEncoder passwordEncoder() {
