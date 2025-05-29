@@ -52,7 +52,6 @@ public class MemberController {
 		
 	}
 	
-}
     @Value("${kakao.client-id}")
     private String kakaoClientId;
 
@@ -145,3 +144,4 @@ public class MemberController {
         return "redirect:/login?join_success=true"; // RedirectAttributes 사용 시 ?join_success=true 불필요할 수 있음
                                                   // FlashAttribute는 리다이렉트 후 모델에 자동 추가됨
     }
+}
