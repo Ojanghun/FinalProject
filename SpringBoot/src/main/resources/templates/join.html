@@ -10,17 +10,24 @@
 <body>
 <div class="container">
     <h2>회원가입</h2>
-    <div class="panel panel-info"> <div class="panel-heading">Join</div>
+    <div class="panel panel-info">
+        <div class="panel-heading">Join</div>
         <div class="panel-body">
-            <div th:if="${joinError}" class="alert alert-danger" th:text="${joinError}">
-                회원가입 중 오류 발생
+            <div th:if="${joinError}" class="alert alert-danger" th:text="${joinError}"></div>
+            <div th:if="${#fields.hasErrors('member.*')}" class="alert alert-danger">
+                입력값을 확인해주세요.
+                <ul>
+                    <li th:each="err : ${#fields.errors('member.*')}" th:text="${err}"></li>
+                </ul>
             </div>
 
             <form th:action="@{/join}" th:object="${member}" method="post">
                 <table class="table">
                     <tr>
                         <td>ID</td>
-                        <td><input th:field="*{id}" id="idInput" type="text" class="form-control" required></td>
+                        <td><input th:field="*{id}" id="idInput" type="text" class="form-control" required>
+                            <small th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="text-danger"></small>
+                        </td>
                         <td>
                             <button onclick="idCheck()" type="button" class="btn btn-default">중복확인</button>
                             <small id="idCheckResult" class="form-text"></small>
@@ -28,20 +35,24 @@
                     </tr>
                     <tr>
                         <td>PW</td>
-                        <td colspan="2"><input th:field="*{pw}" type="password" class="form-control" required></td>
+                        <td colspan="2"><input th:field="*{pw}" type="password" class="form-control" required>
+                             <small th:if="${#fields.hasErrors('pw')}" th:errors="*{pw}" class="text-danger"></small>
+                        </td>
                     </tr>
                     <tr>
                         <td>이름 (닉네임)</td>
                         <td colspan="2">
                             <input th:field="*{name}" type="text" class="form-control"
-                                   th:value="${formNickname != null ? formNickname : (*{name} ?: '')}"
-                                   th:readonly="${formNickname != null}" required />
-                            <small th:if="${formNickname != null}" class="form-text text-muted">카카오 닉네임으로 자동 입력되었습니다 (수정 불가).</small>
+                                   th:readonly="${isKakaoNameFixed == true}" required />
+                            <small th:if="${isKakaoNameFixed == true}" class="form-text text-muted">카카오 닉네임으로 자동 입력되었습니다 (수정 불가).</small>
+                            <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></small>
                         </td>
                     </tr>
                     <tr>
                         <td>PHONE</td>
-                        <td colspan="2"><input th:field="*{phone}" type="text" class="form-control"></td>
+                        <td colspan="2"><input th:field="*{phone}" type="text" class="form-control">
+                            <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></small>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="3" align="center">
@@ -52,7 +63,7 @@
                 </table>
             </form>
             <hr>
-            <p>또는 <a th:href="@{/login}">로그인 페이지로 돌아가기</a></p>
+            <p>이미 계정이 있으신가요? <a th:href="@{/login}">로그인 페이지로 이동</a></p>
         </div>
         <div class="panel-footer">Your Project Footer</div>
     </div>
@@ -60,19 +71,20 @@
 
 <script type="text/javascript">
     function idCheck() {
-        let id = $("#idInput").val();
+        let id = $("#idInput").val().trim();
         if (!id) {
             $("#idCheckResult").text("ID를 입력해주세요.").css("color", "red");
             return;
         }
+        $("#idCheckResult").text("확인 중...").css("color", "orange");
 
         $.ajax({
-            url: "[[@{/idCheck}]]", // Thymeleaf URL 표현식 사용
+            url: "[[@{/idCheck}]]", // Thymeleaf URL 표현식
             type: "get",
             dataType: "json",
             data: {"id": id},
             success: function (data) {
-                if (data.isAvailable) { // MemberRestController에서 isAvailable: true 로 반환 시
+                if (data.isAvailable) {
                     $("#idCheckResult").text("사용 가능한 ID입니다.").css("color", "green");
                 } else {
                     $("#idCheckResult").text("이미 사용 중인 ID입니다.").css("color", "red");

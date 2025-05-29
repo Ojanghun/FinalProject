@@ -13,17 +13,12 @@
     <div class="panel panel-warning">
         <div class="panel-heading">Login</div>
         <div class="panel-body">
-            <div th:if="${param.error}" class="alert alert-danger">
-                아이디 또는 비밀번호가 올바르지 않습니다. (또는 <span th:text="${loginError}"></span>)
-            </div>
-            <div th:if="${param.logout}" class="alert alert-success">
-                성공적으로 로그아웃되었습니다. (또는 <span th:text="${logoutMessage}"></span>)
-            </div>
-            <div th:if="${param.join_success}" class="alert alert-success">
-                회원가입이 완료되었습니다. 로그인해주세요.
-            </div>
+            <div th:if="${loginError}" class="alert alert-danger" th:text="${loginError}"></div>
+            <div th:if="${logoutMessage}" class="alert alert-success" th:text="${logoutMessage}"></div>
+            <div th:if="${joinSuccessMessage}" class="alert alert-success" th:text="${joinSuccessMessage}"></div>
 
-            <form th:action="@{/login}" method="post"> <table class="table">
+            <form th:action="@{/login}" method="post">
+                <table class="table">
                     <tr>
                         <td>ID</td>
                         <td><input name="id" id="id" type="text" class="form-control" required></td>
@@ -36,19 +31,18 @@
                         <td colspan="2" align="center">
                             <button class="btn btn-danger" type="reset">취소</button>
                             <button class="btn btn-primary" type="submit">로그인</button>
-                            <a th:href="@{/join}" class="btn btn-success" style="margin-left: 10px;">회원가입</a>
                         </td>
                     </tr>
                 </table>
             </form>
             <hr>
-            <div>
-                <p>카카오 계정으로 간편하게 시작하세요:</p>
-                <a href="https://kauth.kakao.com/oauth/authorize?client_id=3f2ff6e52da88df625da47802fdad65d&redirect_uri=http://localhost:8088/login&response_type=code" class="btn" style="background-color: #FEE500; color: #000000; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold;">
-                    <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" alt="카카오 로그인 버튼" style="width:24px; height:24px; vertical-align: middle; margin-right: 8px;">카카오 로그인/회원가입
+            <div style="text-align: center; margin-bottom: 15px;">
+                <p style="margin-bottom: 10px;">아직 회원이 아니신가요?</p>
+                <a th:href="${kakaoAuthUrlForRegister}" class="btn btn-warning btn-block"> <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" alt="카카오 아이콘" style="width:22px; vertical-align: middle; margin-right: 5px;">
+                    카카오로 간편하게 회원가입
                 </a>
-                <p class="text-muted"><small>카카오 로그인 버튼 클릭 시, 카카오 닉네임이 회원가입 이름란에 자동으로 입력됩니다.</small></p>
             </div>
+
         </div>
         <div class="panel-footer">Your Project Footer</div>
     </div>
