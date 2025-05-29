@@ -3,7 +3,7 @@ document.getElementById("uploadBtn").addEventListener("click", uploadFile);
 function uploadFile() {
 	const fileInput = document.getElementById("fileInput");
 	const formData = new FormData();
-	formData.append("file", fileInput.files[0]);
+	formData.append("file", fileInput.files[0]); // files -> 선택한 모든 파일을 나열하는 FileList 객체입니다.
 	
 	$.ajax({
 		url: "upload",
