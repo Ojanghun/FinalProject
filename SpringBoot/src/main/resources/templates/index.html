@@ -5,22 +5,87 @@
     <meta charset="UTF-8">
     <title>메인 페이지</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        .custom-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff; /* 흰색 배경 */
+            padding: 15px 30px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc; /* 아래 회색 선 */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            color: #0076e0;
+            font-weight: bold;
+        }
+
+        .logo-text em {
+            color: #222;
+            font-style: normal;
+            font-weight: normal;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-links a, .header-links form {
+            margin-left: 10px;
+        }
+
+        .header-links form {
+            display: inline;
+        }
+    </style>
 </head>
 <body>
+
 <div class="container">
+    <!-- 🔷 상단 커스텀 헤더 -->
+    <div class="custom-header">
+        <!-- 좌측 로고 -->
+        <div class="logo">
+            <img src="/images/로고.png" alt="로고">
+            <span class="logo-text"></span>
+        </div>
+
+        <!-- 우측 인증 상태별 메뉴 -->
+        <div class="header-links">
+            <!-- 로그인 상태 -->
+            <div sec:authorize="isAuthenticated()">
+                <span><strong sec:authentication="name">사용자ID</strong>님 환영합니다!</span>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-sm btn-default">로그아웃</button>
+                </form>
+            </div>
+
+            <!-- 비로그인 상태 -->
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="btn btn-sm btn-primary">로그인</a>
+                <a th:href="@{/join}" class="btn btn-sm btn-info">회원가입</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 본문 -->
     <h1>메인 페이지</h1>
-
-    <div sec:authorize="isAuthenticated()">
-        <p>환영합니다, <strong sec:authentication="name">사용자ID</strong>님!</p>
-        <form th:action="@{/logout}" method="post" style="display: inline;">
-            <button type="submit" class="btn btn-danger">로그아웃</button>
-        </form>
-    </div>
-
-    <div sec:authorize="isAnonymous()">
-        <p>서비스를 이용하려면 <a th:href="@{/login}">로그인</a>해주세요.</p>
-    </div>
-
 </div>
+
 </body>
 </html>

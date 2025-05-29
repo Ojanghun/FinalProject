@@ -1,51 +1,91 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+        .custom-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff; /* 흰색 배경 */
+            padding: 15px 30px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc; /* 아래 회색 선 */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            color: #0076e0;
+            font-weight: bold;
+        }
+
+        .logo-text em {
+            color: #222;
+            font-style: normal;
+            font-weight: normal;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-links a, .header-links form {
+            margin-left: 10px;
+        }
+
+        .header-links form {
+            display: inline;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-      <h2>Spring Boot RestController Member</h2>
-      <div class="panel panel-warning">
-         <div class="panel-heading">Main
-         
-			<span style="float: right;">
-				<th:block th:if="${session.info == null}">
-         			<a href="login">로그인</a>
-         			<a href="join">회원가입</a>
-         		</th:block>
-         		
-    			<!-- 로그인 했을 때 영역 -->
-         		<th:block th:unless="${session.info == null}">
-         		
-	         		<!-- 관리자 영역 -->
-	         		<th:block th:if="${session.info.id == 'admin'}">
-		         		<a href="list">회원정보보기</a>
-	    			</th:block>
-	    			
-	        		<a href="update">회원정보수정</a>
-	        		<a href="logout">로그아웃</a>
-        		</th:block>
-         	</span>
-         		
-         
-         </div>
-         
 
-         
-         <div class="panel-body">
-            
+<div class="container">
+    <!-- 🔷 상단 커스텀 헤더 -->
+    <div class="custom-header">
+        <!-- 좌측 로고 -->
+        <div class="logo">
+            <img src="/images/로고.png" alt="로고">
+            <span class="logo-text"></span>
+        </div>
 
-         </div>
-         <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-      </div>
-   </div>
+        <!-- 우측 인증 상태별 메뉴 -->
+        <div class="header-links">
+            <!-- 로그인 상태 -->
+            <div sec:authorize="isAuthenticated()">
+                <span><strong sec:authentication="name">사용자ID</strong>님 환영합니다!</span>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-sm btn-default">로그아웃</button>
+                </form>
+            </div>
+
+            <!-- 비로그인 상태 -->
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="btn btn-sm btn-primary">로그인</a>
+                <a th:href="@{/join}" class="btn btn-sm btn-info">회원가입</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 본문 -->
+    <h1>메인 페이지</h1>
+</div>
+
 </body>
 </html>

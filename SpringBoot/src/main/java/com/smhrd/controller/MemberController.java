@@ -45,7 +45,7 @@ public class MemberController {
         //                     + "&redirect_uri=" + kakaoRedirectUri
         //                     + "&response_type=code";
         // model.addAttribute("kakaoAuthUrl", kakaoAuthUrl);
-        return "index";
+        return "main";
     }
 
     // 첫 화면으로 사용될 로그인 페이지
