@@ -11,7 +11,7 @@ public class MainController {
 	public String main() {
 		return "main";
 	}
-
+	
 	@GetMapping("/promote")
 	public String promote() {
 		return "promote";
