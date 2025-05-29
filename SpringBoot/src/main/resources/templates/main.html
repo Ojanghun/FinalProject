@@ -13,10 +13,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #ffffff; /* 흰색 배경 */
+            background-color: #ffffff;
             padding: 15px 30px;
             margin-bottom: 20px;
-            border-bottom: 1px solid #ccc; /* 회색 경계선 */
+            border-bottom: 1px solid #ccc;
         }
 
         .logo {
@@ -25,7 +25,7 @@
         }
 
         .logo img {
-            height: 32px;
+            height: 64px;
             margin-right: 10px;
         }
 
@@ -34,8 +34,6 @@
             color: #0076e0;
             font-weight: bold;
         }
-
-
 
         .header-links {
             display: flex;
@@ -54,21 +52,19 @@
     <!-- 🔷 커스텀 헤더 -->
     <div class="custom-header">
         <div class="logo">
-            <img src="/images/로고.png" alt="로고"> <!-- 실제 경로로 교체 필요 -->
-            <span class="logo-text"></span>
+            <img src="/images/로고.png" alt="로고">
+            <span class="logo-text">Kids Café</span>
         </div>
 
         <div class="header-links">
+            <!-- ❌ 로그인하지 않은 경우 -->
             <th:block th:if="${session.info == null}">
                 <a href="login" class="btn btn-sm btn-primary">로그인</a>
-                <a href="join" class="btn btn-sm btn-info">회원가입</a>
             </th:block>
 
+            <!-- ✅ 로그인한 경우 -->
             <th:block th:unless="${session.info == null}">
-                <th:block th:if="${session.info.id == 'admin'}">
-                    <a href="list" class="btn btn-sm btn-warning">회원정보보기</a>
-                </th:block>
-                <a href="update" class="btn btn-sm btn-default">회원정보수정</a>
+                <a href="update" class="btn btn-sm btn-info">마이페이지</a>
                 <a href="logout" class="btn btn-sm btn-danger">로그아웃</a>
             </th:block>
         </div>
