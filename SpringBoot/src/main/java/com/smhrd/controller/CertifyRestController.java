@@ -3,13 +3,14 @@ package com.smhrd.controller;
 import java.io.File;
 
 import org.apache.tika.Tika;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-public class FileUploadController {
+public class CertifyRestController {
 
 	// 비동기 파일 업로드
 	// 넘어오는 데이터는 form 형식이기 때문에 vo or requestParam으로 받으면 된다.
