@@ -47,6 +47,7 @@ public class AuthController {
         }
         if (logout != null) {
             model.addAttribute("logoutMessage", "성공적으로 로그아웃되었습니다.");
+            return "main";
         }
         if (joinSuccess != null) { // MemberController의 joinProcess에서 전달한 FlashAttribute
              model.addAttribute("joinSuccessMessage", "회원가입이 완료되었습니다. 로그인해주세요.");

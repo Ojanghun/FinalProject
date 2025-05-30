@@ -1,84 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Mypage</title>
+    <style>
+        body {
+            font-family: '맑은 고딕', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            background-color: #ddd;
+            border-radius: 50%;
+        }
+
+        .info {
+            margin-top: 20px;
+        }
+
+        .info input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .products {
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background-color: #fefefe;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .product-card h4 {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .product-footer {
+            text-align: right;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .btn-edit {
+            float: right;
+        }
+
+        /* 부트스트랩 버튼 비슷하게 간단 스타일링 */
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            color: #fff;
+            text-align: center;
+            vertical-align: middle;
+            user-select: none;
+            background-color: #007bff;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-lg {
+            padding: 0.5rem 1rem;
+            font-size: 1.25rem;
+            border-radius: 0.3rem;
+        }
+
+        .btn-edit {
+            float: right;
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-		<h2>Spring Boot RestController Member</h2>
-		<div class="panel panel-warning">
-			<div class="panel-heading">Mypage</div>
-			<div class="panel-body">
-				<form action="join" method="post">
-					<table class="table">
-						<tr>
-							<td>ID</td>
-							<td><input name="id" id="id" type="text" class="form-control"></td>
-							<td>
-								<button onclick="idCheck()" type="button" class="btn">중복확인</button>
-							</td>
-						</tr>
-						<tr>
-							<td>PW</td>
-							<td colspan="2"><input name="pw" type="password" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>NICK</td>
-							<td colspan="2"><input name="nick" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>PHONE</td>
-							<td colspan="2"><input name="phone" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>ADDR</td>
-							<td colspan="2"><input name="addr" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td colspan="3" align="center">
-								<button class="btn btn-danger" type="reset">취소</button>
-								<button class="btn btn-success" type="submit">회원가입</button>
-							</td>
-						</tr>
-					</table>
-				</form>
+<div class="container">
+    <div class="profile-section">
+        <div class="profile-img"></div>
+        <div>
+            <h3 th:text="${member.name}">이름</h3>
+            <button class="btn btn-primary btn-edit">회원정보수정</button>
+        </div>
+    </div>
 
-			</div>
-			<div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-		</div>
-	</div>
+    <div class="info">
+        <label>비밀번호</label>
+        <input type="password" value="********" disabled>
 
-	<script type="text/javascript">
-		function idCheck() {
-			
-			let id = $("#id").val();
-			
-			$.ajax({
-				url : "idCheck",
-				type : "get",
-				dataType : "json",
-				data : {"id" : id},
-				success : function(data) {
-					console.log(data);
-					if(data.id != null){
-						alert("해당 ID는 사용할 수 없습니다.");
-					} else {
-						alert("해당 ID는 사용 가능한 ID입니다.");
-					}
-				},
-				error : function() {
-					alert('error...')
-				}
-			});
-		}
-	</script>
+        <label>전화번호</label>
+        <input type="text" th:value="${member.phone}" disabled>
+    </div>
 
+    <div class="products">
+        <h4>결제한 상품</h4>
+
+        <div class="product-card">
+            <h4>정보처리기사 필기</h4>
+            <button class="btn btn-primary">자격증 사이트로 이동</button>
+            <div class="product-footer">서비스 기간: 2025-05-01 ~ 2025-05-30 (3일 남음)</div>
+        </div>
+
+        <div class="product-card">
+            <h4>ADP 실기</h4>
+            <button class="btn btn-primary">자격증 사이트로 이동</button>
+            <div class="product-footer">서비스 기간: 2025-05-01 ~ 2025-07-30 (64일 남음)</div>
+        </div>
+
+        <h4>결제했던 상품</h4>
+        <div class="product-card">
+            <h4>ADP 필기</h4>
+            <button class="btn btn-primary">합격 인증 후 환급 받기</button>
+        </div>
+    </div>
+
+    <!-- 메인으로 이동 버튼 추가 -->
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="/main" class="btn btn-success btn-lg">메인으로 이동</a>
+    </div>
+</div>
 </body>
 </html>

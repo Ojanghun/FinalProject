@@ -52,8 +52,8 @@
     <!-- 🔷 커스텀 헤더 -->
     <div class="custom-header">
         <div class="logo">
-            <img src="/images/로고.png" alt="로고">
-            <span class="logo-text">Kids Café</span>
+            <img src="/images/로고1.png" alt="로고">
+            <span class="logo-text"></span>
         </div>
 
         <div class="header-links">
@@ -64,7 +64,7 @@
 
             <!-- ✅ 로그인한 경우 -->
             <th:block th:unless="${session.info == null}">
-                <a href="update" class="btn btn-sm btn-info">마이페이지</a>
+                <a href="mypage" class="btn btn-sm btn-info">마이페이지</a>
                 <a href="logout" class="btn btn-sm btn-danger">로그아웃</a>
             </th:block>
         </div>
