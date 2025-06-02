@@ -10,4 +10,10 @@ public class MainController {
 	public String main() {
 		return "main";
 	}
+	
+	@RequestMapping("/License")
+	public String License() {
+		return "License";
+	}
 }
+
