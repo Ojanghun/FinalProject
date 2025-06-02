@@ -41,11 +41,58 @@
 
          
          <div class="panel-body">
+         
+         	        <div id="selectExam1">
+	        	<h2>기출 문제</h2>
+		        <form id="examForm" method="post">
+		        	<select name="category">
+		        		<option value="" disabled selected hidden>선택하는 순간 지옥을 보는거야</option>
+		        		<option value="1">2020-06-06</option>
+		        		<option value="2">2020-08-22</option>
+		        		<option value="3">2020-09-26</option>
+		        		<option value="4">2021-03-07</option>
+		        		<option value="5">2021-05-15</option>
+		        		<option value="6">2021-08-14</option>
+		        		<option value="7">2022-03-05</option>
+		        		<option value="8">2022-04-24</option>
+		        	</select>
+		        	<button type="submit" onclick="submitForm('goExam.do')" class="btn">연습</button>
+		        	<button type="submit" onclick="submitForm('goTest.do')" class="btn">지옥</button>
+		        </form>
+	        </div>
+	        
+	        <div id="selectExam2">
+	        	<h2>유형별 문제</h2>
+		        <form action="goTypeList.do" method="post">
+		        	<select name="category">
+		        		<option value="" disabled selected hidden>선택하는 순간 지옥을 보는거야</option>
+		        		<option value="101">이</option>
+		        		<option value="102">딴</option>
+		        		<option value="103">걸</option>
+		        		<option value="104">왜</option>
+		        		<option value="105">풀</option>
+		        		<option value="106">어</option>
+		        		<option value="107">야</option>
+		        		<option value="108">되</option>
+		        		<option value="109">냐</option>
+		        		<option value="110">고</option>
+		        	</select>
+		        	<button type="submit" class="btn">진짜 지옥이야</button>
+		        </form>
+	        </div>
             
 
          </div>
          <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
       </div>
    </div>
+   
+    <script type="text/javascript">
+	   function submitForm(actionUrl) {
+	       const form = document.getElementById("examForm");
+	       form.action = actionUrl;
+	       form.submit();
+	    }
+    </script>
 </body>
 </html>
