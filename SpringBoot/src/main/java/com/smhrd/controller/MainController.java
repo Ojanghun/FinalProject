@@ -27,4 +27,6 @@ public class MainController {
         }
         return "main";  // main.html 뷰로 이동
     }
+
 }
+
