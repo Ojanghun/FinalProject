@@ -9,22 +9,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.smhrd.entity.Member;
+import com.smhrd.entity.MemberId;
+
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 public class CertifyRestController {
 
 	// 비동기 파일 업로드
 	// 넘어오는 데이터는 form 형식이기 때문에 vo or requestParam으로 받으면 된다.
 	@PostMapping("/upload")
-	public String upload(@RequestParam("file") MultipartFile file) {
+	public String upload(@RequestParam("file") MultipartFile file, HttpSession session) {
+		Member member = (Member) session.getAttribute("info");
+		MemberId memberId = new MemberId(member.getId());
+		System.out.println(member);
+		System.out.println(memberId);
 
 		try {
 			Tika tika = new Tika(); // 파일 유효성 체크하는 라이브러리
 			String contentType = tika.detect(file.getInputStream()); // MIME 타입을 확인
-			
+
 //			System.out.println(contentType);
-			
+
 			// 동영상 파일일 때만 업로드
-			if(contentType.startsWith("video/")) {
+			if (contentType.startsWith("video/")) {
 				// 저장 경로
 				String uploadDir = "C:\\Users\\smhrd3\\";
 
