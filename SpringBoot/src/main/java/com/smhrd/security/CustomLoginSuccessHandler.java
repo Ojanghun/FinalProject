@@ -2,6 +2,7 @@
 package com.smhrd.security;
 
 import com.smhrd.entity.Member;
+import com.smhrd.entity.MemberId;
 import com.smhrd.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +28,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         if (member != null) {
             HttpSession session = request.getSession();
             session.setAttribute("info", member); // ✔ 세션에 사용자 정보 저장
+            MemberId memberId = new MemberId(member.getId());
+            session.setAttribute("userId", memberId);
         }
         response.sendRedirect("/"); // 로그인 후 이동할 페이지
     }
