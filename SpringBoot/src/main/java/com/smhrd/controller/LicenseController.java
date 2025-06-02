@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LicenseController {
 	
+	@RequestMapping("/License")
+	public String License() {
+		return "License";
+	}
+	
 	@RequestMapping("/goExam.do")
 	public String goExam(@RequestParam("category") int category, Model model) {
 		model.addAttribute("category", category);
