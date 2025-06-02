@@ -1,84 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<div class="container">
-		<h2>Spring Boot RestController Member</h2>
-		<div class="panel panel-warning">
-			<div class="panel-heading">Join</div>
-			<div class="panel-body">
-				<form action="join" method="post">
-					<table class="table">
-						<tr>
-							<td>ID</td>
-							<td><input name="id" id="id" type="text" class="form-control"></td>
-							<td>
-								<button onclick="idCheck()" type="button" class="btn">중복확인</button>
-							</td>
-						</tr>
-						<tr>
-							<td>PW</td>
-							<td colspan="2"><input name="pw" type="password" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>NICK</td>
-							<td colspan="2"><input name="nick" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>PHONE</td>
-							<td colspan="2"><input name="phone" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td>ADDR</td>
-							<td colspan="2"><input name="addr" type="text" class="form-control"></td>
-						</tr>
-						<tr>
-							<td colspan="3" align="center">
-								<button class="btn btn-danger" type="reset">취소</button>
-								<button class="btn btn-success" type="submit">회원가입</button>
-							</td>
-						</tr>
-					</table>
-				</form>
+<div class="container">
+    <h2>회원가입</h2>
+    <div class="panel panel-info">
+        <div class="panel-heading">Join</div>
+        <div class="panel-body">
+            <div th:if="${joinError}" class="alert alert-danger" th:text="${joinError}"></div>
+            <div th:if="${#fields.hasErrors('member.*')}" class="alert alert-danger">
+                입력값을 확인해주세요.
+                <ul>
+                    <li th:each="err : ${#fields.errors('member.*')}" th:text="${err}"></li>
+                </ul>
+            </div>
 
-			</div>
-			<div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-		</div>
-	</div>
+            <form th:action="@{/join}" th:object="${member}" method="post">
+                <table class="table">
+                    <tr>
+                        <td>ID</td>
+                        <td><input th:field="*{id}" id="idInput" type="text" class="form-control" required>
+                            <small th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="text-danger"></small>
+                        </td>
+                        <td>
+                            <button onclick="idCheck()" type="button" class="btn btn-default">중복확인</button>
+                            <small id="idCheckResult" class="form-text"></small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PW</td>
+                        <td colspan="2"><input th:field="*{pw}" type="password" class="form-control" required>
+                             <small th:if="${#fields.hasErrors('pw')}" th:errors="*{pw}" class="text-danger"></small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>이름 (닉네임)</td>
+                        <td colspan="2">
+                            <input th:field="*{name}" type="text" class="form-control"
+                                   th:readonly="${isKakaoNameFixed == true}" required />
+                            <small th:if="${isKakaoNameFixed == true}" class="form-text text-muted">카카오 닉네임으로 자동 입력되었습니다 (수정 불가).</small>
+                            <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PHONE</td>
+                        <td colspan="2"><input th:field="*{phone}" type="text" class="form-control">
+                            <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center">
+                            <button class="btn btn-danger" type="reset">취소</button>
+                            <button class="btn btn-primary" type="submit">회원가입</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <hr>
+            <p>이미 계정이 있으신가요? <a th:href="@{/login}">로그인 페이지로 이동</a></p>
+        </div>
+        <div class="panel-footer">Your Project Footer</div>
+    </div>
+</div>
 
-	<script type="text/javascript">
-		function idCheck() {
-			
-			let id = $("#id").val();
-			
-			$.ajax({
-				url : "idCheck",
-				type : "get",
-				dataType : "json",
-				data : {"id" : id},
-				success : function(data) {
-					console.log(data);
-					if(data.id != null){
-						alert("해당 ID는 사용할 수 없습니다.");
-					} else {
-						alert("해당 ID는 사용 가능한 ID입니다.");
-					}
-				},
-				error : function() {
-					alert('error...')
-				}
-			});
-		}
-	</script>
+<script type="text/javascript">
+    function idCheck() {
+        let id = $("#idInput").val().trim();
+        if (!id) {
+            $("#idCheckResult").text("ID를 입력해주세요.").css("color", "red");
+            return;
+        }
+        $("#idCheckResult").text("확인 중...").css("color", "orange");
 
+        $.ajax({
+            url: "[[@{/idCheck}]]", // Thymeleaf URL 표현식
+            type: "get",
+            dataType: "json",
+            data: {"id": id},
+            success: function (data) {
+                if (data.isAvailable) {
+                    $("#idCheckResult").text("사용 가능한 ID입니다.").css("color", "green");
+                } else {
+                    $("#idCheckResult").text("이미 사용 중인 ID입니다.").css("color", "red");
+                }
+            },
+            error: function () {
+                $("#idCheckResult").text("ID 중복 확인 중 오류 발생").css("color", "red");
+            }
+        });
+    }
+</script>
 </body>
 </html>

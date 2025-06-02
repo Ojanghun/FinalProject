@@ -1,64 +1,34 @@
 package com.smhrd.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.smhrd.entity.Member;
 import com.smhrd.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberService {
 
-	@Autowired
-	private MemberRepository repository;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-	public Member idCheck(String id) {
+    @Autowired
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-		Optional<Member> m = repository.findById(id);
+    @Transactional
+    public Member join(Member member) {
+        if (memberRepository.existsById(member.getId())) {
+            throw new IllegalArgumentException("이미 사용 중인 아이디입니다: " + member.getId());
+        }
+        member.setPw(passwordEncoder.encode(member.getPw()));
+        return memberRepository.save(member);
+    }
 
-		if (m.isPresent()) {
-			Member info = m.get();
-			info.setPw(null);
-			info.setAddr(null);
-			info.setPhone(null);
-			info.setNick(null);
-			return info;
-		} else {
-			return new Member();
-		}
-
-	}
-
-	public void join(Member vo) {
-		repository.save(vo);
-	}
-
-	public Member login(Member vo) {
-		String id = vo.getId();
-		String pw = vo.getPw();
-
-		Member info = repository.findByIdAndPw(id, pw);
-
-		if (info != null) {
-			info.setPw(null);
-		} 
-
-		return info;
-	}
-
-	public void update(Member vo) {
-		repository.save(vo);
-	}
-
-	public List<Member> goList() {
-		return repository.findAll();
-	}
-
-	public void goDelete(String id) {
-		repository.deleteById(id);
-	}
-
+    public boolean isIdExists(String id) {
+        return memberRepository.existsById(id);
+    }
 }

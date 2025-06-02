@@ -1,51 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org/">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        .custom-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 15px 30px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 64px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            color: #0076e0;
+            font-weight: bold;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-links a {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-      <h2>Spring Boot RestController Member</h2>
-      <div class="panel panel-warning">
-         <div class="panel-heading">Main
-         
-			<span style="float: right;">
-				<th:block th:if="${session.info == null}">
-         			<a href="login">로그인</a>
-         			<a href="join">회원가입</a>
-         		</th:block>
-         		
-    			<!-- 로그인 했을 때 영역 -->
-         		<th:block th:unless="${session.info == null}">
-         		
-	         		<!-- 관리자 영역 -->
-	         		<th:block th:if="${session.info.id == 'admin'}">
-		         		<a href="list">회원정보보기</a>
-	    			</th:block>
-	    			
-	        		<a href="update">회원정보수정</a>
-	        		<a href="logout">로그아웃</a>
-        		</th:block>
-         	</span>
-         		
-         
-         </div>
-         
 
-         
-         <div class="panel-body">
-            
+<div class="container">
+    <!-- 🔷 커스텀 헤더 -->
+    <div class="custom-header">
+        <div class="logo">
+            <img src="/images/로고.png" alt="로고">
+            <span class="logo-text">Kids Café</span>
+        </div>
 
-         </div>
-         <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-      </div>
-   </div>
+        <div class="header-links">
+            <!-- ❌ 로그인하지 않은 경우 -->
+            <th:block th:if="${session.info == null}">
+                <a href="login" class="btn btn-sm btn-primary">로그인</a>
+            </th:block>
+
+            <!-- ✅ 로그인한 경우 -->
+            <th:block th:unless="${session.info == null}">
+                <a href="update" class="btn btn-sm btn-info">마이페이지</a>
+                <a href="logout" class="btn btn-sm btn-danger">로그아웃</a>
+            </th:block>
+        </div>
+    </div>
+
+    <!-- 기존 컨텐츠 -->
+    <h2>Spring Boot RestController Member</h2>
+    <div class="panel panel-warning">
+        <div class="panel-body">
+            <input id="license-search" type="text" placeholder="자격증 이름 입력">
+            <button type="submit">검색</button>
+            <div id="license-list">
+                <span><a href="license">정보처리기사</a></span>
+                <span><a href="license">정보처리산업기사</a></span>
+                <span><a href="license">빅데이터분석기사</a></span>
+            </div>
+        </div>
+        <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/main.js"></script>
+
 </body>
 </html>
