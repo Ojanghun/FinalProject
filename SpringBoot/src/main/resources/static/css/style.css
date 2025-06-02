@@ -1,4 +1,3 @@
-
 /* 기본 스타일 */
 body {
   font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
@@ -24,7 +23,7 @@ h2 {
 h4 {
   color: #1E88E5;
   font-size: 18px;
-  font-weight: semi-bold;
+  font-weight: 600;
   margin-bottom: 15px;
 }
 
@@ -95,6 +94,38 @@ h4 {
   color: #1E88E5;
   border-radius: 20px 20px 0 0;
 }
+/* 헤더 (로고 + 로그인 버튼) */
+.custom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 16px 24px;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 40px; /* 👈 작게 조절 */
+  width: auto;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1E88E5;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
 /* 레이아웃/그리드 가이드 */
 .row {
@@ -114,4 +145,89 @@ h4 {
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+}
+
+/* 🆕 메인 페이지 레이아웃 */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* 검색 + 키워드 박스 */
+.row.search-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  max-width: 800px;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+/* 검색창 */
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  background-color: #fff;
+  padding: 8px 16px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 8px;
+  width: 240px;
+  border-radius: 30px;
+}
+
+.search-box button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+/* 키워드 박스 */
+.keyword-box {
+  width: 200px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.keyword-box h4 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.keyword-box ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.keyword-box li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* 서비스 홍보 영역 */
+.promotion-section {
+  width: 100%;
+  background-color: #e0e0e0;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.promotion-section h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
 }
