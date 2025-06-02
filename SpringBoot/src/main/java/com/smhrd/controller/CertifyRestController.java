@@ -38,7 +38,7 @@ public class CertifyRestController {
 			// 동영상 파일일 때만 업로드
 			if (contentType.startsWith("video/")) {
 				// 저장 경로
-				String uploadDir = "C:\\Users\\smhrd3\\";
+				String uploadDir = "C:\\Users\\smhrd3\\" + memberId.getId() + "\\";
 
 				// 예외 방지와 안정성 확보
 				File dir = new File(uploadDir);
@@ -48,7 +48,7 @@ public class CertifyRestController {
 
 				// 파일 저장
 				// File 객체는 실제 파일이 아닌 "경로 정보"를 담은 객체
-				String filePath = uploadDir + memberId.getId() + "_" + file.getOriginalFilename();
+				String filePath = uploadDir + dateFormat.format(date) + "_" + file.getOriginalFilename();
 
 				// 업로드된 파일 데이터를 실제 디스크 상의 파일로 저장
 				file.transferTo(new File(filePath));
