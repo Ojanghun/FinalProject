@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+</head>
+<body>
+	<div class="container">
+      <h2>Spring Boot RestController Member</h2>
+      <div class="panel panel-warning">
+         <div class="panel-heading">Main
+         	<span style="float: right;">
+			</span>		
+         </div>
+         <div class="panel-body">
+            <!-- 글씨 크기, 배열 등 정렬 -->
+         	<div>
+         		<!-- 100% 150% 200% 배치 ㅡ : 한줄로 보기 ㅣ : 두줄로 보기 ㅁ : 한문제 보기 -->
+         		<button>100%</button>
+         		<button>150%</button>
+         		<button>200%</button>
+         		<button>ㅡ</button>
+         		<button>ㅣ</button>
+         		<button>ㅁ</button>
+         	</div>
+         
+ 			<!-- 문제 -->
+         	<div id="testEaxm" style="column-count: 2; column-gap: 40px;">   		
+				<div id="print">
+				  <!-- 한 문제 -->
+				  <div style="break-inside: avoid;">
+				    <!-- 출제일 -->
+				    <div id="examYear1">(출제일)</div>
+				
+				    <!-- 문제 지문 -->
+				    <div style="position: relative; width: fit-content; max-width: 100%;">
+				      <img id="check1" style="position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;" alt="">
+				      1. 문제 지문 내용입니다.
+				    </div>
+				
+				    <!-- 선지 -->
+				    <div id="choice1-1" onclick="selectChoice(1,1,'선지1')" style="display: flex;">
+				      <div id="choiceNum1-1" class="cell">① &nbsp;</div>
+				      <div id="choiceText1-1" class="cell">선지1</div>
+				    </div>
+				
+				    <div id="choice1-2" onclick="selectChoice(1,2,'선지2')" style="display: flex;">
+				      <div id="choiceNum1-2" class="cell">② &nbsp;</div>
+				      <div id="choiceText1-2" class="cell">선지2</div>
+				    </div>
+				
+				    <div id="choice1-3" onclick="selectChoice(1,3,'선지3')" style="display: flex;">
+				      <div id="choiceNum1-3" class="cell">③ &nbsp;</div>
+				      <div id="choiceText1-3" class="cell">선지3</div>
+				    </div>
+				
+				    <div id="choice1-4" onclick="selectChoice(1,4,'선지4')" style="display: flex;">
+				      <div id="choiceNum1-4" class="cell">④ &nbsp;</div>
+				      <div id="choiceText1-4" class="cell">선지4</div>
+				    </div>
+				
+				    <!-- 정답 확인 / 해설 버튼 -->
+				    <br>
+				    <button id="pbans0" onclick="correctAnswer(0)">정답 확인</button> &nbsp;
+				    <button onclick="solution(0)">해설</button>
+				    <br><br>
+				    <div id="solution0"></div>
+				  </div>	
+				  <br>
+				</div>
+         	</div>
+         	
+         </div>
+         <div class="panel-footer">빅데이터 개발자과정 - 손종희</div>
+      </div>
+   </div>
+   
+   <script type="text/javascript">
+   
+   // 문제 불러오는 함수
+   function loadExam() {
+
+	   let exData = [];
+	   let shufData = [];
+	   const category = parseInt($("#category").val(), 10);
+	   $("#selectExam2").css("display","none");	
+	   $("#selectExam1").css("display","none");
+
+	   // 문제 데이터 + 선지 랜덤 데이터 갖져오기
+	   $.when(
+	     $.ajax({ url: "/loadExam/"+category, type: "post", dataType: "json" }), // 문제 데이터
+	     $.ajax({ url: "/shuffle/"+category, type: "post", dataType: "json" }) // 선지 랜덤 데이터
+	   ).done(function(examData, shuffleData) {
+	     // examData, shuffleData는 배열 형태 ([data, status, jqXHR])
+	     // examData, shuffleData = [실제데이터, "success", jqXHR 객체]
+	     // 그래서 [0]번째 데이터 추출
+	     exData = examData[0];
+	     shufData = shuffleData[0];
+
+	     let listHtml = "";
+	     
+	     
+	     // div의 id가 print인 부분이 비어있다면 실행, 안그러면 클릭할 때마다 선지 랜덤이 실행되버림..
+	     if ($("#print").html().trim() === "") {
+	       $.each(shufData, function(index, options) {
+	    	   
+		     // 한 문제 div
+		     listHtml += "<div style='break-inside: avoid;'>" 
+		     // 문제 년도
+		     listHtml += "<div id='examYear"+(index+1)+"'>(출제일)</div>";
+
+		     // listHtml += "<div id='question" + (index + 1) + "' style='width: 100%;'>";
+		         
+		     // 문제 지문 
+		     listHtml += "<div style='position: relative; width: fit-content; max-width: 100%;'>" +"<img id='check"+(index+1)+"' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" + (index + 1) + ". " + exData[index].pbQues +"</div>";
+		     
+		     // listHtml += "</div>"; 
+		     
+	         // 선지
+	         // 1번 id=choice+i-1(문제 i번 - 선지 1번)
+	         listHtml += "<div id='choice" + (index+1) + "-1' onclick='selectChoice(" + (index+1) + ",1, \"" + options[0] + "\")' style='display: flex;' >"
+	         listHtml += "<div id='choiceNum" + (index+1) + "-1' class='cell'> ① &nbsp; </div>"
+	         listHtml += "<div id='choiceText" + (index+1) + "-1' class='cell'>"+ options[0] + "</div></div>";
+			 // 2번 id=choice+i-1(문제 i번 - 선지 2번)
+			 listHtml += "<div id='choice" + (index+1) + "-2' onclick='selectChoice(" + (index+1) + ",2, \"" + options[1] + "\")' style='display: flex;' >"
+			 listHtml += "<div id='choiceNum" + (index+1) + "-2' class='cell'> ② &nbsp; </div> "
+	         listHtml += "<div id='choiceText" + (index+1) + "-2'>"+ options[1] + "</div></div>";
+	         // 3번 id=choice+i-1(문제 i번 - 선지 3번)
+	         listHtml += "<div id='choice" + (index+1) + "-3' onclick='selectChoice(" + (index+1) + ",3, \"" + options[2] + "\")' style='display: flex;' >"
+	         listHtml += "<div id='choiceNum" + (index+1) + "-3' class='cell'>③ &nbsp; </div>"
+	         listHtml += "<div id='choiceText" + (index+1) + "-3'>"+ options[2] + "</div></div>";
+			 // 4번 id=choice+i-1(문제 i번 - 선지 4번)
+			 listHtml += "<div id='choice" + (index+1) + "-4' onclick='selectChoice(" + (index+1) + ",4, \"" + options[3] + "\")' style='display: flex;' >"
+			 listHtml += "<div id='choiceNum" + (index+1) + "-4' class='cell'>④ &nbsp; </div>"
+	         listHtml += "<div id='choiceText" + (index+1) + "-4'>"+ options[3] + "</div></div>";
+	         // 정답 확인
+	         listHtml += "<br>"
+			 listHtml += "<button id='pbans"+index+"' onclick='correctAnswer("+index+")'>정답 확인</button> &nbsp; ";
+	         // 해설
+			 listHtml += "<button onclick='solution("+index+")'>해설</button>";
+	         listHtml += "<br>"
+	         listHtml += "<br>"
+			 listHtml += "<div id='solution"+index+"'></div>";
+	         listHtml += "</div>"
+	         listHtml += "<br>"
+	         
+	       });
+	       // div의 id가 print인 부분에 listHtml 추가
+	       $("#print").html(listHtml);
+	     }
+	   }).fail(function() { // 실패시
+	     alert("Error!"); // 오류시 출력문
+	   });
+	 }
+  
+    function correctAnswer(index){
+    	
+    	$.ajax({
+    		url : "/correctAnswer/"+index,
+    		type : "put",
+    		dataType : "text",
+    		success : function(data){
+    			console.log("받은 data: ", data);
+    			 if ($("#pbans"+index).text().trim() === "정답 확인") {
+    					// 정답 텍스트와 일치하는 보기 찾아서 빨간색 적용
+    					for (let i = 1; i <= 4; i++) {
+    						let choiceText = $("#choiceText" + (index + 1) + "-" + i).text().trim();
+    						if (choiceText === data.trim()) {
+    							$("#choice" + (index + 1) + "-" + i).css("color", "red");
+    				    		$("#passRate" + (index+1)).css("display","block");
+    						}
+    					}
+    				    if(userSelections[index+1] === data){
+    				    	console.log("클릭 data: ", userSelections[index+1]);
+    				    	$("#check" + (index+1)).css("display","block");
+    				    	$("#check" + (index+1)).attr("src","/images/o.png");
+
+    				    }
+    				    else{
+    				    	console.log("클릭 data: ", userSelections);
+    				    	$("#check" + (index+1)).css("display","block");
+    				    	$("#check" + (index+1)).attr("src","/images/x.png");
+    				    }
+    				}
+/*     			 else {
+    				    $("#pbans"+index).text("정답 확인");
+    				} */
+    		},
+    		error : function(){alert("Error!");}
+    	});
+
+    }
+   
+    function solution(index){
+    	
+    	$.ajax({
+    		url : "/solution/"+index,
+    		type : "put",
+    		dataType : "text",
+    		success : function(data){
+    			console.log("받은 data: ", data);
+    			 if ($("#solution"+index).text().trim() === "") {
+    				    $("#solution"+index).text(data);
+    				} else {
+    				    $("#solution"+index).text("");
+    				}
+    		},
+    		error : function(){alert("Error!");}
+    	});
+
+    }
+   
+	// 문제 번호 : 선택 선지 텍스트
+	const userSelections = {};  // 선택한 답을 계속 저장하고, 클릭할 때마다 그 내용을 유지하면서 갱신하기 위해 밖에 선언.
+
+	// 번호 클릭시 발생하는 함수(문제번호,선지번호,선지내용)
+    function selectChoice(questionNum, choiceNum, choiceText) {
+	 
+	 // 선택한 선지내용
+     const currentSelection = userSelections[questionNum];
+     
+	 // 지금 클릭한 선지가 이미 선택된 것과 같은지 비교하기 위함.
+     if (currentSelection === choiceText) {
+        // 같은 번호 다시 클릭 → 선택 해제
+        delete userSelections[questionNum];
+
+        // 문제 번호에 해당하는 모든 선택지 이미지 원복
+        for(let i=1; i<=4; i++) {
+          //document.getElementById("choice" + questionNum + "-" + i).src = "/images/" + i + ".gif"
+          $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
+          $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
+        }
+        console.log("문제 " + questionNum + " 선택 해제", userSelections);
+
+      } else {
+        // 다른 번호 클릭 or 처음 선택 → 새로 선택 처리
+        userSelections[questionNum] = choiceText;
+
+
+        // 모든 이미지를 체크 없는 이미지로 변경 후 클릭한 이미지를 다시 체크한 이미지로 변경
+        for(let i=1; i<=4; i++) {
+          //1~4번 이미지를 체크 없는 이미지로 변경.
+          //document.getElementById("choice" + questionNum + "-" + i).src = "/images/" + i + ".gif";
+          $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
+          $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
+        }
+        // 클릭한 이미지를 체크한 이미지로 변경하기
+        //document.getElementById("choice" + questionNum + "-" + choiceNum).src = "/images/" + choiceNum + "red.gif";
+		//$("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "bold");
+		$("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
+		//$("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "bold");
+		$("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
+        // console.log("문제 " + questionNum + " 선택 변경", userSelections);
+      }
+    }
+ 
+   </script>
+   
+   
+</body>
+</html>
