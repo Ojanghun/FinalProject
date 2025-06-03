@@ -1,0 +1,107 @@
+.calendar-box {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .calendar-box h4 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+    }
+    .calendar-box table {
+      width: 100%;
+      text-align: center;
+      border-collapse: separate;
+      border-spacing: 0.5rem;
+    }
+    .calendar-box th {
+      color: #6c757d;
+    }
+    .calendar-box td {
+      position: relative;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      height: 70px;
+      vertical-align: top;
+      padding: 6px;
+      font-size: 14px;
+      color: #212529;
+    }
+    .calendar-box td .event-bar {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      right: 6px;
+      padding: 4px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: white;
+      text-align: center;
+    }
+    .today {
+      background-color: #fff3cd !important;
+      font-weight: bold;
+    }
+    .schedule-card {
+      margin-top: 10px;
+      min-height: 300px;
+      border-radius: 12px;
+    }
+    .schedule-card .card-header {
+      background-color: transparent;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .schedule-card .card-body h5 {
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 12px;
+    }
+    .schedule-card .card-body p {
+      font-size: 14px;
+      color: #555;
+    }
+    .circle-section {
+      margin-top: 40px;
+    }
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #6c757d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      color: white;
+      font-weight: bold;
+    }
+    td.sunday {
+      color: red;
+    }
+    body {
+      background-color: #f8f9fa;
+    }
+    .dashboard-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .dashboard-card h5 {
+      font-weight: bold;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .form-control::placeholder {
+      font-size: 14px;
+    }
+    .btn {
+      white-space: nowrap;
+    }
