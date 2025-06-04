@@ -1,68 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LICENSE</title>
+
+  <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" >
-  <link href="./css/license.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Main Style -->
+  <link href="/css/style.css" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start w-100">
-      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-      </a>
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-        <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-      </ul>
-      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-      </form>
-      <div class="text-end">
-        <button type="button" class="btn btn-light me-2">MYPAGE</button>
-        <button type="button" class="btn btn-warning">LOGOUT</button>
-      </div>
+<!-- Header -->
+<nav class="custom-header">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div class="logo d-flex align-items-center gap-2">
+      <img src="/images/로고.png" height="40" alt="로고">
+      <span class="logo-text"></span>
+    </div>
+    <div class="header-links d-flex gap-2">
+      <button class="btn btn-sm btn-info">MYPAGE</button>
+      <button class="btn btn-sm btn-warning">LOGOUT</button>
     </div>
   </div>
 </nav>
 
+<!-- Main -->
 <div class="container mt-5">
   <h4 class="text-center mb-5">
     오장훈님! 시험까지 <strong>00일</strong> 남았어요~
   </h4>
 
   <div class="row">
-    <!-- 왼쪽 영역 -->
+    <!-- Left Column -->
     <div class="col-md-8 d-flex flex-column gap-4">
-      
+
       <!-- 기출 풀기 -->
       <div class="dashboard-card p-4">
         <h5 class="fw-bold mb-4">기출 풀기</h5>
-        <div class="d-flex align-items-center gap-2">
-          <div class="position-relative" style="width:600px; padding-left: 100px;">
-            <!-- <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="회차 검색" style="padding-right: 40px;"> -->
-            <form id="examForm" method="post">
-	            <select class="form-control rounded-pill px-4 py-2" style="padding-right: 40px;">
-			        		<option value="" disabled selected hidden>회차 검색</option>
-			        		<option value="1">2020-06-06</option>
-			        		<option value="2">2020-08-22</option>
-			        		<option value="3">2020-09-26</option>
-			        		<option value="4">2021-03-07</option>
-			        		<option value="5">2021-05-15</option>
-			        		<option value="6">2021-08-14</option>
-			        		<option value="7">2022-03-05</option>
-			        		<option value="8">2022-04-24</option>
-	            </select>
-	          </div>
-	          <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
-	          <button class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
-	        </div>
+        <form id="examForm" method="post" class="d-flex align-items-center gap-2">
+          <div class="flex-grow-1">
+            <select class="form-control rounded-pill px-4 py-2">
+              <option value="" disabled selected hidden>회차 검색</option>
+              <option value="1">2020-06-06</option>
+              <option value="2">2020-08-22</option>
+              <option value="3">2020-09-26</option>
+              <option value="4">2021-03-07</option>
+              <option value="5">2021-05-15</option>
+              <option value="6">2021-08-14</option>
+              <option value="7">2022-03-05</option>
+              <option value="8">2022-04-24</option>
+            </select>
+          </div>
+          <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
+          <button class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
         </form>
       </div>
 
@@ -70,7 +66,7 @@
       <div class="dashboard-card p-4">
         <h5 class="fw-bold mb-4">주제별 학습하기</h5>
         <div class="d-flex align-items-center gap-2">
-          <div class="position-relative" style="width:700px; padding-left: 100px;" >
+          <div class="flex-grow-1">
             <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="주제 검색 (가장 많이 나온 순서대로 보여 주기)" style="padding-right: 40px;">
             <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent">
               <i class="bi bi-x"></i>
@@ -84,7 +80,7 @@
 
     </div>
 
-    <!-- 오른쪽 영역 -->
+    <!-- Right Column -->
     <div class="col-md-4">
       <div class="dashboard-card p-4" style="height: 350px;">
         <h5 class="fw-bold mb-3">오장훈 님의 주제별 오답 TOP 5</h5>
@@ -94,7 +90,7 @@
   </div>
 </div>
 
-
+<!-- Calendar & Schedule -->
 <div class="container mb-5">
   <div class="row">
     <div class="col-md-8 mb-4">
@@ -134,16 +130,24 @@
   </div>
 </div>
 
+<!-- Footer -->
+<div class="container">
+  <footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+    </ul>
+    <p class="text-center text-muted">© 2022 Company, Inc</p>
+  </footer>
+</div>
 
-
+<!-- Script -->
 <script>
-	// 연습&시험 선택
-	function submitForm(actionUrl) {
-	    const form = document.getElementById("examForm");
-	    form.action = actionUrl;
-	    form.submit();
-	  }
-
+  function submitForm(actionUrl) {
+    const form = document.getElementById("examForm");
+    form.action = actionUrl;
+    form.submit();
+  }
 
   const calendarBody = document.getElementById("calendar-body");
   const monthYear = document.getElementById("month-year");
@@ -162,9 +166,7 @@
       const row = document.createElement("tr");
       for (let j = 0; j < 7; j++) {
         const cell = document.createElement("td");
-        if (i === 0 && j < firstDay) {
-          cell.innerHTML = "";
-        } else if (day > lastDate) {
+        if (i === 0 && j < firstDay || day > lastDate) {
           cell.innerHTML = "";
         } else {
           const thisDate = new Date(year, month, day);
@@ -191,16 +193,6 @@
 
   renderCalendar(currentDate);
 </script>
-
-<div class="container">
-  <footer class="py-3 my-4">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-    </ul>
-    <p class="text-center text-muted">© 2022 Company, Inc</p>
-  </footer>
-</div>
 
 </body>
 </html>
