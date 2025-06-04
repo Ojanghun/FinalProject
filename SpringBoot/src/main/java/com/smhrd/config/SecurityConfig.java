@@ -1,4 +1,4 @@
-package com.smhrd.config; // 실제 패키지 경로로 수정
+package com.smhrd.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +22,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        	.csrf(csrf -> csrf
+            .csrf(csrf -> csrf
                 .ignoringRequestMatchers(
                     new AntPathRequestMatcher("/loadExam/**"),
                     new AntPathRequestMatcher("/shuffle/**"),
@@ -33,7 +33,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                     .requestMatchers(
-                        new AntPathRequestMatcher("/"),               // ✅ 메인 페이지도 인증 없이 허용
+                        new AntPathRequestMatcher("/"),
                         new AntPathRequestMatcher("/login"),
                         new AntPathRequestMatcher("/join"),
                         new AntPathRequestMatcher("/idCheck"),
@@ -41,21 +41,22 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/css/**"),
                         new AntPathRequestMatcher("/js/**"),
                         new AntPathRequestMatcher("/images/**"),
-                        new AntPathRequestMatcher("/webjars/**")
+                        new AntPathRequestMatcher("/webjars/**"),
+                        new AntPathRequestMatcher("/plan"),
+                        new AntPathRequestMatcher("/pay/**") // ✅ pay와 관련된 모든 요청 허용
                     ).permitAll()
                     .anyRequest().authenticated()
             )
             .formLogin(formLogin ->
-            formLogin
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .usernameParameter("id")
-                .passwordParameter("pw")
-                .successHandler(loginSuccessHandler) // ✅ 추가
-                .failureUrl("/login?error=true")
-                .permitAll()
-        )
-
+                formLogin
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .usernameParameter("id")
+                    .passwordParameter("pw")
+                    .successHandler(loginSuccessHandler)
+                    .failureUrl("/login?error=true")
+                    .permitAll()
+            )
             .logout(logout ->
                 logout
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -67,8 +68,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    
 
     @Bean
     public PasswordEncoder passwordEncoder() {

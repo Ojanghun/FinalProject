@@ -2,53 +2,105 @@
 <html xmlns:th="https://www.thymeleaf.org/">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Plan</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+body {
+	background-color: #e6e6e6;
+	font-family: '맑은 고딕', sans-serif;
+}
+
+.container {
+	margin-top: 30px;
+}
+
+.plan-box {
+	background: #fff;
+	padding: 30px;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.plan-price {
+	font-size: 22px;
+	font-weight: bold;
+	margin: 10px 0;
+}
+
+.highlight {
+	color: green;
+	margin-bottom: 15px;
+}
+
+.plan-desc {
+	text-align: left;
+	margin-top: 20px;
+}
+
+.plan-desc li {
+	margin-bottom: 5px;
+}
+
+.select-button {
+	margin-top: 20px;
+}
+</style>
 </head>
 <body>
 	<div class="container">
-      <h2>Spring Boot RestController Member</h2>
-      <div class="panel panel-warning">
-         <div class="panel-heading">Plan
-			<span style="float: right;">
-				<th:block th:if="${session.info == null}">
-         			<a href="login">로그인</a>
-         			<a href="join">회원가입</a>
-         		</th:block>
-         		
-    			<!-- 로그인 했을 때 영역 -->
-         		<th:block th:unless="${session.info == null}">
-         		
-	         		<!-- 관리자 영역 -->
-	         		<th:block th:if="${session.info.id == 'admin'}">
-		         		<a href="list">회원정보보기</a>
-	    			</th:block>
-	    			
-	        		<a href="update">회원정보수정</a>
-	        		<a href="logout">로그아웃</a>
-        		</th:block>
-         	</span>
-         </div>
-         
-         <div class="panel-body">
-         	<input id="license-search" type="text" placeholder="자격증 이름 입력">
-         	<button type="submit">검색</button>
-            <div id="license-list">
-            	<span><a href="license">정보처리기사</a></span>
-            	<span><a href="license">정보처리산업기사</a></span>
-            	<span><a href="license">빅데이터분석기사</a></span>
-            </div>
-         </div>
-         <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-      </div>
-   </div>
-   
-   <script type="text/javascript" src="js/main.js"></script>
-   
+		<div class="d-flex justify-content-between mb-4">
+			<a href="/" style="font-weight: bold; font-size: 20px;">문제? <span
+				style="color: blue;">issue!</span></a>
+			<div>
+				<a href="mypage" class="btn btn-default">Mypage</a> <a href="logout"
+					class="btn btn-default">Logout</a>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="plan-box">
+					<h4>정보처리기사 필기</h4>
+					<h3>자유형</h3>
+					<p class="text-muted">자유롭게 공부하고 싶으신가요?</p>
+					<div class="plan-price">9000원</div>
+					<div class="highlight">현재 00명이 이용중입니다.</div>
+					<div class="plan-desc">
+						<strong>탐색형 제공 서비스 나열 / 설명</strong>
+						<ol>
+							<li>주제별 풀이</li>
+							<li>실제 시험 환경 풀이</li>
+							<li>시험 합격시 환급</li>
+							<li>등등</li>
+						</ol>
+					</div>
+					<!-- 자유형 -->
+					<a href="/pay?plan=자유형" class="btn btn-dark select-button">☞ Select Plan</a>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="plan-box">
+					<h4>정보처리기사 필기</h4>
+					<h3>계획형</h3>
+					<p class="text-muted">혹시 혼자서 공부 안하는 스타일? 우리가 알아서 계획 짜줄게!</p>
+					<div class="plan-price">9900원</div>
+					<div class="highlight">현재 00명이 이용중입니다.</div>
+					<div class="plan-desc">
+						<strong>필수형 제공 서비스 나열 / 설명</strong>
+						<ol>
+							<li>탐색형 서비스</li>
+							<li>문자 알림 서비스</li>
+							<li>일일 할당량 제공 서비스</li>
+						</ol>
+					</div>
+					<!-- 계획형 -->
+					<a href="/pay?plan=계획형" class="btn btn-dark select-button">☞ Select Plan</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
