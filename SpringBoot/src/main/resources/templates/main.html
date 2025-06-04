@@ -1,50 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/">
+<html xmlns:th="https://www.thymeleaf.org/" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Insert title here</title>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title> </title>
+
+    <!-- CSS 링크 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- JS 링크 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-    <style>
-        .custom-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff;
-            padding: 15px 30px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            height: 64px;
-            margin-right: 10px;
-        }
-
-        .logo-text {
-            font-size: 20px;
-            color: #0076e0;
-            font-weight: bold;
-        }
-
-        .header-links {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-links a {
-            margin-left: 10px;
-        }
-    </style>
 </head>
 <body>
 
@@ -53,7 +19,7 @@
     <div class="custom-header">
         <div class="logo">
             <img src="/images/로고.png" alt="로고">
-            <span class="logo-text"></span>
+            <span class="logo-text"> </span>
         </div>
 
         <div class="header-links">
@@ -70,7 +36,6 @@
         </div>
     </div>
 
-<<<<<<< Updated upstream
     <!-- 기존 컨텐츠 -->
     <h2>Spring Boot RestController Member</h2>
     <div class="panel panel-warning">
@@ -84,7 +49,7 @@
             </div>
         </div>
         <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-=======
+
     <!-- 🔍 검색 및 키워드 추천 -->
     <div class="main-content">
         <section class="row search-section">
@@ -113,10 +78,11 @@
             <h2>서비스 소개 / 홍보</h2>
             <p>이곳에 서비스 설명이나 배너를 넣을 수 있습니다.</p>
         </section>
->>>>>>> Stashed changes
+
     </div>
 </div>
 
+<!-- 자바스크립트 -->
 <script type="text/javascript" src="js/main.js"></script>
 
 </body>
