@@ -46,14 +46,24 @@
         <h5 class="fw-bold mb-4">기출 풀기</h5>
         <div class="d-flex align-items-center gap-2">
           <div class="position-relative" style="width:600px; padding-left: 100px;">
-            <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="회차 검색" style="padding-right: 40px;">
-            <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent">
-              &times;
-            </button>
-          </div>
-          <button class="btn btn-light">시험</button>
-          <button class="btn btn-light">연습</button>
-        </div>
+            <!-- <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="회차 검색" style="padding-right: 40px;"> -->
+            <form id="examForm" method="post">
+	            <select class="form-control rounded-pill px-4 py-2" style="padding-right: 40px;">
+			        		<option value="" disabled selected hidden>회차 검색</option>
+			        		<option value="1">2020-06-06</option>
+			        		<option value="2">2020-08-22</option>
+			        		<option value="3">2020-09-26</option>
+			        		<option value="4">2021-03-07</option>
+			        		<option value="5">2021-05-15</option>
+			        		<option value="6">2021-08-14</option>
+			        		<option value="7">2022-03-05</option>
+			        		<option value="8">2022-04-24</option>
+	            </select>
+	          </div>
+	          <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
+	          <button class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
+	        </div>
+        </form>
       </div>
 
       <!-- 주제별 학습하기 -->
@@ -127,6 +137,14 @@
 
 
 <script>
+	// 연습&시험 선택
+	function submitForm(actionUrl) {
+	    const form = document.getElementById("examForm");
+	    form.action = actionUrl;
+	    form.submit();
+	  }
+
+
   const calendarBody = document.getElementById("calendar-body");
   const monthYear = document.getElementById("month-year");
   let currentDate = new Date();

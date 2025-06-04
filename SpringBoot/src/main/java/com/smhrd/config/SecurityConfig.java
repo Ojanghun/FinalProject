@@ -22,6 +22,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+        	.csrf(csrf -> csrf
+                .ignoringRequestMatchers(
+                    new AntPathRequestMatcher("/loadExam/**"),
+                    new AntPathRequestMatcher("/shuffle/**"),
+                    new AntPathRequestMatcher("/correctAnswer/**"),
+                    new AntPathRequestMatcher("/solution/**")
+                )
+            )
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                     .requestMatchers(
