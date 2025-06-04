@@ -48,7 +48,7 @@ public class Exam {
 	@Column(name = "PB_SOLU", length = 2000, nullable = false)
 	private String pbSolu; // 해설
 
-	@Column(name = "PB_CR", nullable = false)
+	@Column(name = "PB_CR", length = 255, nullable = false)
 	private String pbCr; // 문제 정답률
 
 	@Column(name = "TOPIC_IDX", nullable = false) 
