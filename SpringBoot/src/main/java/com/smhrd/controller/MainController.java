@@ -18,36 +18,33 @@ import java.util.List;
 
 @Controller
 public class MainController {
-	
-	@Autowired
-	private PayInfoRepository payInfoRepository;
 
-	@GetMapping("/redirectByLicense")
-	public String redirectByLicense(@RequestParam("liIdx") int liIdx, HttpSession session) {
-	    Member loginUser = (Member) session.getAttribute("info");
-
-	    // 로그인 X → 로그인 페이지로
-	    if (loginUser == null) {
-	        return "redirect:/login";
-	    }
-
-	    // 로그인 O → 유저+liIdx 기준 결제 내역 확인
-	    List<Pay_Info> payList = payInfoRepository.findByUserIdAndLiIdx(loginUser.getId(), liIdx);
-
-	    if (payList != null && !payList.isEmpty()) {
-	        return "redirect:/license?liIdx=" + liIdx;
-	    } else {
-	        return "redirect:/plan?liIdx=" + liIdx;
-	    }
-	}
+    @Autowired
+    private PayInfoRepository payInfoRepository;
 
     @Autowired
     private LiInfoRepository liInfoRepository;
 
-    
+    @GetMapping("/redirectByLicense")
+    public String redirectByLicense(@RequestParam("liIdx") int liIdx, HttpSession session) {
+        Member loginUser = (Member) session.getAttribute("info");
+
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+
+        List<Pay_Info> payList = payInfoRepository.findByUserIdAndLiIdx(loginUser.getId(), liIdx);
+
+        if (payList != null && !payList.isEmpty()) {
+            return "redirect:/license?liIdx=" + liIdx;
+        } else {
+            return "redirect:/plan?liIdx=" + liIdx;
+        }
+    }
+
     @RequestMapping("/")
     public String mainRedirect() {
-        return "redirect:/main"; // "/" 접근 시 /main 으로 리디렉션
+        return "redirect:/main";
     }
 
     @GetMapping("/main")
@@ -55,16 +52,20 @@ public class MainController {
                            Model model,
                            HttpSession session) {
 
-        // 로그아웃 메시지 처리
         if (logout != null) {
             model.addAttribute("logoutMessage", "성공적으로 로그아웃되었습니다.");
         }
 
-        // ✅ 자격증 전체 목록 가져와서 모델에 전달
+        // ✅ 결제 완료 메시지가 세션에 있으면 모델로 전달하고 세션에서는 삭제
+        String paymentSuccess = (String) session.getAttribute("paymentSuccess");
+        if (paymentSuccess != null) {
+            model.addAttribute("paymentSuccess", paymentSuccess);
+            session.removeAttribute("paymentSuccess");
+        }
+
         List<Li_Info> licenseList = liInfoRepository.findAll();
         model.addAttribute("licenseList", licenseList);
 
-        // ✅ 로그인 세션 정보도 모델에 전달 (login 상태 표시용)
         model.addAttribute("session", session.getAttribute("info"));
 
         return "main";

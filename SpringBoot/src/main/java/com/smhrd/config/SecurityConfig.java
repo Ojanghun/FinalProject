@@ -1,5 +1,6 @@
 package com.smhrd.config;
 
+import com.smhrd.security.CustomLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import com.smhrd.security.CustomLoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,45 +26,43 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/loadExam/**"),
                     new AntPathRequestMatcher("/shuffle/**"),
                     new AntPathRequestMatcher("/correctAnswer/**"),
-                    new AntPathRequestMatcher("/solution/**")
+                    new AntPathRequestMatcher("/solution/**"),
+                    new AntPathRequestMatcher("/pay/submit") // ✅ 결제 POST 요청 CSRF 예외 처리
                 )
             )
-            .authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests
-                    .requestMatchers(
-                        new AntPathRequestMatcher("/"),
-                        new AntPathRequestMatcher("/main"),
-                        new AntPathRequestMatcher("/login"),
-                        new AntPathRequestMatcher("/join"),
-                        new AntPathRequestMatcher("/idCheck"),
-                        new AntPathRequestMatcher("/oauth/kakao"),
-                        new AntPathRequestMatcher("/css/**"),
-                        new AntPathRequestMatcher("/js/**"),
-                        new AntPathRequestMatcher("/images/**"),
-                        new AntPathRequestMatcher("/webjars/**"),
-                        new AntPathRequestMatcher("/plan"),
-                        new AntPathRequestMatcher("/pay/**"), // ✅ pay와 관련된 모든 요청 허용
-                        new AntPathRequestMatcher("/searchLicenses")
-                    ).permitAll()
-                    .anyRequest().authenticated()
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers(
+                    new AntPathRequestMatcher("/"),
+                    new AntPathRequestMatcher("/main"),
+                    new AntPathRequestMatcher("/login"),
+                    new AntPathRequestMatcher("/join"),
+                    new AntPathRequestMatcher("/idCheck"),
+                    new AntPathRequestMatcher("/oauth/kakao"),
+                    new AntPathRequestMatcher("/css/**"),
+                    new AntPathRequestMatcher("/js/**"),
+                    new AntPathRequestMatcher("/images/**"),
+                    new AntPathRequestMatcher("/webjars/**"),
+                    new AntPathRequestMatcher("/plan"),
+                    new AntPathRequestMatcher("/pay/**"), // ✅ 결제 관련 페이지 접근 허용
+                    new AntPathRequestMatcher("/searchLicenses")
+                ).permitAll()
+                .anyRequest().authenticated()
             )
-            .formLogin(formLogin ->
-                formLogin
-                    .loginPage("/login")
-                    .loginProcessingUrl("/login")
-                    .usernameParameter("id")
-                    .passwordParameter("pw")
-                    .successHandler(loginSuccessHandler)
-                    .failureUrl("/login?error=true")
-                    .permitAll()
+            .formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .usernameParameter("id")
+                .passwordParameter("pw")
+                .successHandler(loginSuccessHandler)
+                .failureUrl("/login?error=true")
+                .permitAll()
             )
-            .logout(logout ->
-                logout
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/main?logout")
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID")
-                    .permitAll()
+            .logout(logout -> logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/main?logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
             );
 
         return http.build();
