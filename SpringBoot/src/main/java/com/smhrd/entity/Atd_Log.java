@@ -25,6 +25,6 @@ public class Atd_Log {
     private String id;
     
     @Column(name = "ATD_AT", nullable = false, insertable = false, updatable = false)
-    private LocalDateTime atdAt; // 출석 날짜 → 자동으로 날짜가 입력되어야함
+    private LocalDateTime atdAt; // 출석 날짜 → 자동으로 날짜가 입력됨
     
 }

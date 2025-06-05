@@ -51,7 +51,12 @@
 
 					<!-- 추천 버튼 -->
 					<div class="search-suggestion">
-						<a href="license" class="btn search-tag">정보처리기사</a>
+						<th:block th:if="${session.info == null}">
+							<a href="/login" class="btn btn-primary btn-lg">정보처리기사</a>
+						</th:block>
+						<th:block th:unless="${session.info == null}">
+							<a href="/plan" class="btn btn-primary btn-lg">정보처리기사</a>
+						</th:block>
 						<button class="btn search-tag">SQLD</button>
 						<button class="btn search-tag">건축제도기능사</button>
 					</div>

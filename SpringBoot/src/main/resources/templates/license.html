@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,185 +15,209 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
-<!-- Header -->
-<nav class="custom-header">
-  <div class="container d-flex justify-content-between align-items-center">
-    <div class="logo d-flex align-items-center gap-2">
-      <img src="/images/로고.png" height="40" alt="로고">
-      <span class="logo-text"></span>
-    </div>
-    <div class="header-links d-flex gap-2">
-      <button class="btn btn-sm btn-info">MYPAGE</button>
-      <button class="btn btn-sm btn-warning">LOGOUT</button>
-    </div>
-  </div>
-</nav>
-
-<!-- Main -->
-<div class="container mt-5">
-  <h4 class="text-center mb-5">
-    오장훈님! 시험까지 <strong>00일</strong> 남았어요~
-  </h4>
-
-  <div class="row">
-    <!-- Left Column -->
-    <div class="col-md-8 d-flex flex-column gap-4">
-
-      <!-- 기출 풀기 -->
-      <div class="dashboard-card p-4">
-        <h5 class="fw-bold mb-4">기출 풀기</h5>
-        <form id="examForm" method="post" class="d-flex align-items-center gap-2">
-          <div class="flex-grow-1">
-            <select class="form-control rounded-pill px-4 py-2">
-              <option value="" disabled selected hidden>회차 검색</option>
-              <option value="1">2020-06-06</option>
-              <option value="2">2020-08-22</option>
-              <option value="3">2020-09-26</option>
-              <option value="4">2021-03-07</option>
-              <option value="5">2021-05-15</option>
-              <option value="6">2021-08-14</option>
-              <option value="7">2022-03-05</option>
-              <option value="8">2022-04-24</option>
-            </select>
-          </div>
-          <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
-          <button class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
-        </form>
+  <!-- Header -->
+  <nav class="custom-header">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="logo d-flex align-items-center gap-2">
+        <img src="/images/로고.png" height="40" alt="로고">
+        <span class="logo-text"></span>
       </div>
+      <div class="header-links d-flex gap-2">
+        <button class="btn btn-sm btn-info">MYPAGE</button>
+        <button class="btn btn-sm btn-warning">LOGOUT</button>
+      </div>
+    </div>
+  </nav>
 
-      <!-- 주제별 학습하기 -->
-      <div class="dashboard-card p-4">
-        <h5 class="fw-bold mb-4">주제별 학습하기</h5>
-        <div class="d-flex align-items-center gap-2">
-          <div class="flex-grow-1">
-            <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="주제 검색 (가장 많이 나온 순서대로 보여 주기)" style="padding-right: 40px;">
+  <!-- Main -->
+  <div class="container mt-5">
+    <h4 class="text-center mb-5">
+      오장훈님! 시험까지 <strong>00일</strong> 남았어요~
+    </h4>
+
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-8 d-flex flex-column gap-4">
+
+        <!-- 기출 풀기 -->
+        <div class="dashboard-card p-4">
+          <h5 class="fw-bold mb-4">기출 풀기</h5>
+          <form id="examForm" method="post" class="d-flex align-items-center gap-2">
+            <div class="flex-grow-1">
+              <select class="form-control rounded-pill px-4 py-2">
+                <option value="" disabled selected hidden>회차 검색</option>
+                <option value="1">2020-06-06</option>
+                <option value="2">2020-08-22</option>
+                <option value="3">2020-09-26</option>
+                <option value="4">2021-03-07</option>
+                <option value="5">2021-05-15</option>
+                <option value="6">2021-08-14</option>
+                <option value="7">2022-03-05</option>
+                <option value="8">2022-04-24</option>
+              </select>
+            </div>
+            <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
+            <button class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
+          </form>
+        </div>
+
+        <!-- 주제별 학습하기 -->
+        <div class="dashboard-card p-4">
+          <h5 class="fw-bold mb-4">주제별 학습하기</h5>
+          <div class="d-flex align-items-center gap-2">
+            <div class="position-relative" style="width:700px; padding-left: 100px;">
+              <!-- <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="주제 검색 (가장 많이 나온 순서대로 보여 주기)" style="padding-right: 40px;"> -->
+              <form action="goTypeList.do" method="post">
+                <select name="category" class="form-control rounded-pill px-4 py-2">
+                  <option value="" disabled selected hidden>유형을 선택해주세요</option>
+                  <option value="101">1</option>
+                  <option value="102">2</option>
+                  <option value="103">3</option>
+                  <option value="104">4</option>
+                  <option value="105">5</option>
+                  <option value="106">6</option>
+                  <option value="107">7</option>
+                  <option value="108">8</option>
+                  <option value="109">9</option>
+                  <option value="110">10</option>
+                </select>
+            </div>
             <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent">
               <i class="bi bi-x"></i>
             </button>
+            <button class="btn btn-light">
+              <i class="bi bi-search"></i>
+            </button>
+            </form>
           </div>
-          <button class="btn btn-light">
-            <i class="bi bi-search"></i>
-          </button>
         </div>
+
       </div>
 
-    </div>
-
-    <!-- Right Column -->
-    <div class="col-md-4">
-      <div class="dashboard-card p-4" style="height: 350px;">
-        <h5 class="fw-bold mb-3">오장훈 님의 주제별 오답 TOP 5</h5>
-        <canvas id="wrongChart" height="250"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Calendar & Schedule -->
-<div class="container mb-5">
-  <div class="row">
-    <div class="col-md-8 mb-4">
-      <div class="calendar-box">
-        <h4>
-          <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeMonth(-1)">←</button>
-          <span id="month-year"></span>
-          <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeMonth(1)">→</button>
-        </h4>
-        <table>
-          <thead>
-            <tr>
-              <th style="color: red;">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
-            </tr>
-          </thead>
-          <tbody id="calendar-body"></tbody>
-        </table>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card schedule-card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <span>📌 접수</span>
-        </div>
-        <div class="card-body">
-          <h5>빅데이터분석기사</h5>
-          <p>제10회 실기 접수:<br>05.19(월)~05.23(금)</p>
-          <hr>
-          <h5>SQLD</h5>
-          <p>제57회 SQL 개발자:<br>04.28(월)~05.02(금)</p>
-          <hr>
-          <h5>생신</h5>
-          <p>오장훈 팀장님 생신<br>06.02(월)</p>
+      <!-- Right Column -->
+      <div class="col-md-4">
+        <div class="dashboard-card p-4" style="height: 350px;">
+          <h5 class="fw-bold mb-3">오장훈 님의 주제별 오답 TOP 5</h5>
+          <canvas id="wrongChart" height="250"></canvas>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Footer -->
-<div class="container">
-  <footer class="py-3 my-4">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-    </ul>
-    <p class="text-center text-muted">© 2022 Company, Inc</p>
-  </footer>
-</div>
+  <!-- Calendar & Schedule -->
+  <div class="container mb-5">
+    <div class="row">
+      <div class="col-md-8 mb-4">
+        <div class="calendar-box">
+          <h4>
+            <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeMonth(-1)">←</button>
+            <span id="month-year"></span>
+            <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeMonth(1)">→</button>
+          </h4>
+          <table>
+            <thead>
+              <tr>
+                <th style="color: red;">일</th>
+                <th>월</th>
+                <th>화</th>
+                <th>수</th>
+                <th>목</th>
+                <th>금</th>
+                <th>토</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card schedule-card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>📌 접수</span>
+          </div>
+          <div class="card-body">
+            <h5>빅데이터분석기사</h5>
+            <p>제10회 실기 접수:<br>05.19(월)~05.23(금)</p>
+            <hr>
+            <h5>SQLD</h5>
+            <p>제57회 SQL 개발자:<br>04.28(월)~05.02(금)</p>
+            <hr>
+            <h5>생신</h5>
+            <p>오장훈 팀장님 생신<br>06.02(월)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- Script -->
-<script>
-  function submitForm(actionUrl) {
-    const form = document.getElementById("examForm");
-    form.action = actionUrl;
-    form.submit();
-  }
+  <!-- Footer -->
+  <div class="container">
+    <footer class="py-3 my-4">
+      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+      </ul>
+      <p class="text-center text-muted">© 2022 Company, Inc</p>
+    </footer>
+  </div>
 
-  const calendarBody = document.getElementById("calendar-body");
-  const monthYear = document.getElementById("month-year");
-  let currentDate = new Date();
-
-  function renderCalendar(date) {
-    calendarBody.innerHTML = "";
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-    const today = new Date();
-    monthYear.textContent = `📅${year}년 ${month + 1}월`;
-    let day = 1;
-    for (let i = 0; i < 6; i++) {
-      const row = document.createElement("tr");
-      for (let j = 0; j < 7; j++) {
-        const cell = document.createElement("td");
-        if (i === 0 && j < firstDay || day > lastDate) {
-          cell.innerHTML = "";
-        } else {
-          const thisDate = new Date(year, month, day);
-          cell.innerHTML = `<div>${day}</div>`;
-          if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
-            cell.classList.add("today");
-          }
-          if (j === 0) {
-            cell.classList.add("sunday");
-          }
-          day++;
-        }
-        row.appendChild(cell);
-      }
-      calendarBody.appendChild(row);
-      if (day > lastDate) break;
+  <!-- Script -->
+  <script>
+    function submitForm(actionUrl) {
+      const form = document.getElementById("examForm");
+      form.action = actionUrl;
+      form.submit();
     }
-  }
 
-  function changeMonth(step) {
-    currentDate.setMonth(currentDate.getMonth() + step);
+
+    const calendarBody = document.getElementById("calendar-body");
+    const monthYear = document.getElementById("month-year");
+    let currentDate = new Date();
+
+    function renderCalendar(date) {
+      calendarBody.innerHTML = "";
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const firstDay = new Date(year, month, 1).getDay();
+      const lastDate = new Date(year, month + 1, 0).getDate();
+      const today = new Date();
+      monthYear.textContent = `📅${year}년 ${month + 1}월`;
+      let day = 1;
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement("td");
+          if (i === 0 && j < firstDay || day > lastDate) {
+            cell.innerHTML = "";
+          } else {
+            const thisDate = new Date(year, month, day);
+            cell.innerHTML = `<div>${day}</div>`;
+            if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
+              cell.classList.add("today");
+            }
+            if (j === 0) {
+              cell.classList.add("sunday");
+            }
+            day++;
+          }
+          row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+        if (day > lastDate) break;
+      }
+    }
+
+    function changeMonth(step) {
+      currentDate.setMonth(currentDate.getMonth() + step);
+      renderCalendar(currentDate);
+    }
+
     renderCalendar(currentDate);
-  }
-
-  renderCalendar(currentDate);
-</script>
+  </script>
 
 </body>
+
 </html>

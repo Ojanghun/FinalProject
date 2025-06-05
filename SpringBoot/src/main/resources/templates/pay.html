@@ -1,54 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>결제 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e6e6e6;
+            font-family: '맑은 고딕', sans-serif;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .payment-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .plan-info {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+        .btn-back {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-      <h2>Spring Boot RestController Member</h2>
-      <div class="panel panel-warning">
-         <div class="panel-heading">Pay
-			<span style="float: right;">
-				<th:block th:if="${session.info == null}">
-         			<a href="login">로그인</a>
-         			<a href="join">회원가입</a>
-         		</th:block>
-         		
-    			<!-- 로그인 했을 때 영역 -->
-         		<th:block th:unless="${session.info == null}">
-         		
-	         		<!-- 관리자 영역 -->
-	         		<th:block th:if="${session.info.id == 'admin'}">
-		         		<a href="list">회원정보보기</a>
-	    			</th:block>
-	    			
-	        		<a href="update">회원정보수정</a>
-	        		<a href="logout">로그아웃</a>
-        		</th:block>
-         	</span>
-         </div>
-         
-         <div class="panel-body">
-         	<input id="license-search" type="text" placeholder="자격증 이름 입력">
-         	<button type="submit">검색</button>
-            <div id="license-list">
-            	<span><a href="license">정보처리기사</a></span>
-            	<span><a href="license">정보처리산업기사</a></span>
-            	<span><a href="license">빅데이터분석기사</a></span>
+    <div class="container">
+        <div class="d-flex justify-content-between mb-4">
+            <a href="/" style="font-weight: bold; font-size: 20px;">문제? <span style="color: blue;">issue!</span></a>
+            <div>
+                <a href="/mypage" class="btn btn-default">Mypage</a>
+                <a href="/logout" class="btn btn-default">Logout</a>
             </div>
-         </div>
-         <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
-      </div>
-   </div>
-   
-   <script type="text/javascript" src="js/main.js"></script>
-   
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="payment-box">
+                    <h2>결제 페이지</h2>
+                    <div class="plan-info">
+                        선택한 플랜: <strong th:text="${plan}"></strong>
+                    </div>
+                    <p class="text-muted">결제를 진행하여 플랜을 활성화하세요.</p>
+                    <a href="/" class="btn btn-default btn-back">홈으로 돌아가기</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
