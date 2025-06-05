@@ -28,21 +28,24 @@ public class AuthController {
                             @RequestParam(value = "logout", required = false) String logout,
                             Model model) {
 
+        // 🔹 scope 추가하여 프로필 사진 강제 요청
         String kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize?client_id="
-                            + kakaoClientId
-                            + "&redirect_uri=" + kakaoRedirectUri
-                            + "&response_type=code";
+                + kakaoClientId
+                + "&redirect_uri=" + kakaoRedirectUri
+                + "&response_type=code"
+                + "&scope=profile_nickname,profile_image";
+
         model.addAttribute("kakaoAuthUrlForRegister", kakaoAuthUrl);
 
         if (error != null) {
             model.addAttribute("loginError", "아이디 또는 비밀번호가 올바르지 않습니다.");
         }
+
         if (logout != null) {
             model.addAttribute("logoutMessage", "성공적으로 로그아웃되었습니다.");
             return "main";
         }
 
-        // FlashAttribute: joinSuccessMessage는 자동 전달되므로 별도 처리 없음
         return "login";
     }
 
@@ -53,13 +56,22 @@ public class AuthController {
         }
 
         String kakaoNickname = (String) session.getAttribute("kakaoNickname");
-        if (kakaoNickname != null) {
-            Member memberFromModel = (Member) model.getAttribute("member");
-            if (memberFromModel != null) {
+        String kakaoProfileImage = (String) session.getAttribute("kakaoProfileImage");
+
+        System.out.println(">> 세션 nickname: " + kakaoNickname);
+        System.out.println(">> 세션 profileImage: " + kakaoProfileImage);
+
+        Member memberFromModel = (Member) model.getAttribute("member");
+        if (memberFromModel != null) {
+            if (kakaoNickname != null) {
                 memberFromModel.setName(kakaoNickname);
+                model.addAttribute("isKakaoNameFixed", true);
             }
-            model.addAttribute("isKakaoNameFixed", true);
+            if (kakaoProfileImage != null && !kakaoProfileImage.isBlank()) {
+                memberFromModel.setUserpro(kakaoProfileImage);
+            }
         }
+
         return "join";
     }
 
@@ -75,6 +87,12 @@ public class AuthController {
             return "redirect:/join";
         }
 
+        // 🔥 세션에서 프로필 이미지가 있다면 강제로 덮어쓰기
+        String kakaoProfileImage = (String) session.getAttribute("kakaoProfileImage");
+        if (kakaoProfileImage != null && !kakaoProfileImage.isBlank()) {
+            member.setUserpro(kakaoProfileImage);
+        }
+
         try {
             memberService.join(member);
         } catch (IllegalArgumentException e) {
@@ -84,8 +102,8 @@ public class AuthController {
         }
 
         session.removeAttribute("kakaoNickname");
+        session.removeAttribute("kakaoProfileImage");
 
-        // ✅ 회원가입 성공 메시지를 FlashAttribute로 전달
         redirectAttributes.addFlashAttribute("joinSuccessMessage", "회원가입이 성공적으로 완료되었습니다. 로그인해주세요.");
         return "redirect:/login";
     }

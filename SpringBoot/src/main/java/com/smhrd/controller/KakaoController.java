@@ -53,17 +53,21 @@ public class KakaoController {
             ResponseEntity<String> userInfoResponseEntity = restTemplate.exchange(userInfoRequestUrl, HttpMethod.POST, userInfoRequestEntity, String.class);
 
             JsonNode userInfoJson = objectMapper.readTree(userInfoResponseEntity.getBody());
+            System.out.println(">> 카카오 전체 응답 JSON: " + userInfoJson.toPrettyString());
             String nickname = userInfoJson.path("properties").path("nickname").asText();
+            String profileImage = userInfoJson.path("properties").path("profile_image").asText();
             // Long kakaoId = userInfoJson.path("id").asLong(); // 카카오 고유 ID, 필요시 사용
 
             session.setAttribute("kakaoNickname", nickname);
-            // session.setAttribute("kakaoRegistered", true); // 카카오 통해 왔음을 표시하는 플래그 (선택적)
+            // session.setAttribute("kakaoRegistered", true);
+            session.setAttribute("kakaoProfileImage", profileImage);// 카카오 통해 왔음을 표시하는 플래그 (선택적)
 
         } catch (Exception e) {
             e.printStackTrace();
             // 사용자에게 에러를 알리는 것이 좋음 (예: RedirectAttributes 사용)
             return "redirect:/login?error=kakao_link_failed";
         }
+        
         return "redirect:/join"; // 회원가입 페이지로 리다이렉트
     }
 }
