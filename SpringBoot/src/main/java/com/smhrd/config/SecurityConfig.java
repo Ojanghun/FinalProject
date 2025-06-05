@@ -27,8 +27,7 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/loadExam/**"),
                     new AntPathRequestMatcher("/shuffle/**"),
                     new AntPathRequestMatcher("/correctAnswer/**"),
-                    new AntPathRequestMatcher("/solution/**"),
-                    new AntPathRequestMatcher("/atd_check/**")
+                    new AntPathRequestMatcher("/solution/**")
                 )
             )
             .authorizeHttpRequests(authorizeRequests ->
