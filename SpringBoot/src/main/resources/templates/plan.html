@@ -24,7 +24,7 @@
         <div class="col-md-6">
             <div class="plan-box">
                 <h4 th:text="${liName}">자격증 이름</h4>
-                <h3>자유형</h3>
+                <h3>탐구형</h3>
                 <p class="text-muted">자유롭게 공부하고 싶으신가요?</p>
 
                 <div class="plan-price" th:if="${freePlan != null}" th:text="${freePlan.planPrice + '원'}">9000원</div>
@@ -48,7 +48,7 @@
         <div class="col-md-6">
             <div class="plan-box">
                 <h4 th:text="${liName}">자격증 이름</h4>
-                <h3>계획형</h3>
+                <h3>필수형</h3>
                 <p class="text-muted">혹시 혼자서 공부 안하는 스타일? 우리가 알아서 계획 짜줄게!</p>
 
                 <div class="plan-price" th:if="${strictPlan != null}" th:text="${strictPlan.planPrice + '원'}">9900원</div>
