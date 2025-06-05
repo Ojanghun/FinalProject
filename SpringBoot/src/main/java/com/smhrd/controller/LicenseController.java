@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.smhrd.service.LIcenseService;
 
@@ -36,10 +35,7 @@ public class LicenseController {
 		System.out.println("카테고리 값: "+category);
 		return "topicPage";	
 	}
-	@PostMapping("/atd_check")
-	public @ResponseBody void atd_check(@RequestParam("id") String id) {
-		service.atd_check(id);
-	}
+	
 	
 	
 }
