@@ -36,9 +36,7 @@
 
   <!-- Main -->
   <div class="container mt-5">
-    <h4 class="text-center mb-5">
-      오장훈님! 시험까지 <strong>00일</strong> 남았어요~
-    </h4>
+    <h4 class="text-center mb-5" th:text="${member.name} + '님 시험까지 ~일 남았습니다.'"></h4>
 
     <div class="row">
       <!-- Left Column -->
@@ -140,7 +138,12 @@
             <span>📌 접수</span>
           </div>
           <div class="card-body">
-          </div>
+		    <div th:each="exam : ${exams}">
+		    	<h5>정보처리기사</h5>
+			   <span th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd')}"></span>-
+			   <span th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd')}"></span>
+			</div>
+		</div>
         </div>
       </div>
     </div>

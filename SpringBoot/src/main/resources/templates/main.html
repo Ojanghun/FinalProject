@@ -1,100 +1,26 @@
-<!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/" lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>문제? Issue!</title>
-
-  <!-- CSS 링크 -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-
-  <!-- JS 링크 -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
-<body>
-
-  <div class="container">
-    
-    <!-- ✅ 결제 성공 메시지 표시 -->
-    <div th:if="${paymentSuccess}" class="alert alert-success mt-3" role="alert">
-      <span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
-    </div>
-
-    <!-- 🔷 커스텀 헤더 -->
-    <div class="custom-header">
-      <div class="logo">
-        <a href="/">
-          <img src="/images/로고.png" alt="로고">
-          <span class="logo-text"></span>
-        </a>
-      </div>
-
-      <div class="header-links">
-        <!-- ❌ 로그인하지 않은 경우 -->
-        <th:block th:if="${session.info == null}">
-          <a href="login" class="btn btn-sm btn-primary">로그인</a>
-        </th:block>
-
-        <!-- ✅ 로그인한 경우 -->
-        <th:block th:unless="${session.info == null}">
-          <a href="mypage" class="btn btn-sm btn-info">마이페이지</a>
-          <a href="logout" class="btn btn-sm btn-danger">로그아웃</a>
-        </th:block>
-      </div>
-    </div>
-
-    <!-- 🔍 검색 및 키워드 추천 -->
-    <div class="main-content">
-      <section class="row search-section">
-        <!-- 🔍 검색창 + 버튼 묶음 -->
-        <div class="search-group">
-          <div class="search-container">
-            <div class="search-box">
-              <input id="search" type="text" placeholder="자격증 검색" />
-              <button title="Clear">✕</button>
-              <button title="Search">🔍</button>
-            </div>
-            <div id="suggestions" class="autocomplete"></div>
-          </div>
-
-          <!-- 자격증 추천 버튼 영역 -->
-          <div class="search-suggestion">
-            <th:block th:each="lic : ${licenseList}">
-              <a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
-                 th:text="${lic.liName}" class="btn btn-primary btn-lg"></a>
-            </th:block>
-          </div>
-        </div>
-
-        <!-- 🔐 MyPayment -->
-        <th:block th:if="${session.info == null}">
-          <div class="card keyword-box">
-            <h4>MyPayment</h4>
-            <p>로그인을 해주세요</p>
-          </div>
-        </th:block>
-
-        <th:block th:unless="${session.info == null}">
-          <div class="card keyword-box">
-            <h4>결제한 자격증 확인</h4>
-            <ul>
-              <li><a href="license">추천 강의</a></li>
-              <li><a href="license">최근 본 문제</a></li>
-            </ul>
-          </div>
-        </th:block>
-      </section>
-
-      <!-- 📢 서비스 홍보 -->
-      <section class="promotion-section">
-        <h2>서비스 소개 / 홍보</h2>
-        <p>이곳에 서비스 설명이나 배너를 넣을 수 있습니다.</p>
-      </section>
-    </div>
-  </div>
-
-  <!-- JS -->
-  <script type="text/javascript" src="js/search.js"></script>
-</body>
-</html>
+<div class="schedule_list">
+					<div class="tab_title">
+						<div class="tab_ui" role="tablist">
+							<a id="tab_apply" title="접수 탭 펼쳐짐" href="#none" tab="apply" tabid="apply" class="tab_item seleted" role="tab">접수 <span class="blind">선택됨</span></a>
+							<div class="tab_contents scroll_y seleted selected" id="schedule_content_apply" role="tabpanel" tabid="apply">
+								<h3 class="schedule_h3 blind">접수</h3>
+								<div class="tab_content"><div class="item"><div class="title"><span>ADP</span></div><div class="sub_item"><div class="sub_title">제35회 데이터 분석 전문가(ADP)-필기</div><div class="sub_info"><div class="date">07.07(월) 10:00 ~ 07.11(금) 18:00</div><div class="btns_box"><a tabindex="0" class="btns btns_xs"><i aria-hidden="true" class="xi-document"></i> 접수</a><a tabindex="0" title="고사장 새 창 열기" class="map_pin btns btns_xs">고사장</a></div></div></div></div><div class="item"><div class="title"><span>ADsP</span></div><div class="sub_item"><div class="sub_title">제46회 데이터 분석 준전문가(ADsP)</div><div class="sub_info"><div class="date">07.07(월) 10:00 ~ 07.11(금) 18:00</div><div class="btns_box"><a tabindex="0" class="btns btns_xs"><i aria-hidden="true" class="xi-document"></i> 접수</a><a tabindex="0" title="고사장 새 창 열기" class="map_pin btns btns_xs">고사장</a></div></div></div></div></div>
+							</div>
+							<a id="tab_test" title="시험 탭 닫힘" href="#none" tab="test" tabid="apply" class="tab_item" role="tab">시험 <span class="blind"></span></a>
+							<div class="tab_contents scroll_y" id="schedule_content_test" role="tabpanel" tabid="apply">
+								<h3 class="schedule_h3 blind">시험</h3>
+								<div class="tab_content">일정이 존재하지 않습니다!</div>
+							</div>
+							<a id="tab_score" title="사전점수발표 탭 닫힘" href="#none" tab="score" tabid="apply" class="tab_item" role="tab">사전점수발표 <span class="blind"></span></a>
+							<div class="tab_contents scroll_y" id="schedule_content_score" role="tabpanel" tabid="apply">
+								<h3 class="schedule_h3 blind">사전점수발표</h3>
+								<div class="tab_content">일정이 존재하지 않습니다!</div>
+							</div>
+							<a id="tab_result" title="결과발표 탭 닫힘" href="#none" tab="result" tabid="apply" class="tab_item" role="tab">결과발표 <span class="blind"></span></a>
+							<div class="tab_contents scroll_y" id="schedule_content_result" role="tabpanel" tabid="apply">
+								<h3 class="schedule_h3 blind">결과발표</h3>
+								<div class="tab_content">일정이 존재하지 않습니다!</div>
+							</div>
+						</div>
+					</div>
+				</div>
