@@ -272,3 +272,34 @@ h4 {
 .calendar-box .sunday {
   color: red;
 }
+
+/* 출석 동그라미 */
+.day-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-weight: bold;
+}
+
+.attended {
+  background-color: #d0f0ff; /* 밝은 파란색 */
+  color: #0077aa;
+  box-shadow: 0 0 6px rgba(0, 119, 170, 0.5);
+  animation: pulse 0.4s ease;
+}
+
+/* 애니매이션 추가 */
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -48,7 +48,7 @@
         <div class="dashboard-card p-4">
           <h5 class="fw-bold mb-4">기출 풀기</h5>
           <form id="examForm" method="post" class="d-flex align-items-center gap-2">
-            <div class="flex-grow-1">
+            <div class="flex-grow-1" style="width:300px; padding-left: 100px;">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
               <select name="category" class="form-control rounded-pill px-4 py-2">
                 <option value="" disabled selected hidden>회차 검색</option>
@@ -63,7 +63,7 @@
               </select>
             </div>
             <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
-            <button class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
+            <button style="margin-right:50px;" class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
           </form>
         </div>
 
@@ -119,6 +119,9 @@
             <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeMonth(-1)">←</button>
             <span id="month-year"></span>
             <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeMonth(1)">→</button>
+            <button class="btn btn-primary rounded-pill px-3" type="button" 
+            id="check-attendance" style="margin-left: 565px">출석</button>
+            
           </h4>
           <table>
             <thead>
@@ -142,14 +145,6 @@
             <span>📌 접수</span>
           </div>
           <div class="card-body">
-            <h5>빅데이터분석기사</h5>
-            <p>제10회 실기 접수:<br>05.19(월)~05.23(금)</p>
-            <hr>
-            <h5>SQLD</h5>
-            <p>제57회 SQL 개발자:<br>04.28(월)~05.02(금)</p>
-            <hr>
-            <h5>생신</h5>
-            <p>오장훈 팀장님 생신<br>06.02(월)</p>
           </div>
         </div>
       </div>
@@ -163,63 +158,89 @@
         <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
         <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
       </ul>
-      <p class="text-center text-muted">© 2022 Company, Inc</p>
+      <p class="text-center text-muted">© 2025 문제 Issue!</p>
     </footer>
   </div>
 
   <!-- Script -->
   <script>
-    function submitForm(actionUrl) {
-      const form = document.getElementById("examForm");
-      form.action = actionUrl;
-      form.submit();
-    }
+  const calendarBody = document.getElementById("calendar-body");
+  const monthYear = document.getElementById("month-year");
+  const checkAttendanceBtn = document.getElementById("check-attendance");
 
+  let currentDate = new Date();
+  let attendanceDates = []; // 출석한 날짜 저장용 배열
 
-    const calendarBody = document.getElementById("calendar-body");
-    const monthYear = document.getElementById("month-year");
-    let currentDate = new Date();
+  function renderCalendar(date) {
+    calendarBody.innerHTML = "";
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
 
-    function renderCalendar(date) {
-      calendarBody.innerHTML = "";
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
-      const today = new Date();
-      monthYear.textContent = `📅${year}년 ${month + 1}월`;
-      let day = 1;
-      for (let i = 0; i < 6; i++) {
-        const row = document.createElement("tr");
-        for (let j = 0; j < 7; j++) {
-          const cell = document.createElement("td");
-          if (i === 0 && j < firstDay || day > lastDate) {
-            cell.innerHTML = "";
-          } else {
-            const thisDate = new Date(year, month, day);
-            cell.innerHTML = `<div>${day}</div>`;
-            if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
-              cell.classList.add("today");
-            }
-            if (j === 0) {
-              cell.classList.add("sunday");
-            }
-            day++;
+    monthYear.textContent = `📅 ${year}년 ${month + 1}월`;
+
+    let day = 1;
+    for (let i = 0; i < 6; i++) {
+      const row = document.createElement("tr");
+      for (let j = 0; j < 7; j++) {
+        const cell = document.createElement("td");
+
+        if (i === 0 && j < firstDay || day > lastDate) {
+          cell.innerHTML = "";
+        } else {
+          const thisDate = new Date(year, month, day);
+          const dateStr = `${year}-${month + 1}-${day}`;
+
+          const dayCircle = document.createElement("div");
+          dayCircle.classList.add("day-circle");
+          dayCircle.textContent = day;
+
+          if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
+            dayCircle.classList.add("today");
           }
-          row.appendChild(cell);
+
+          if (j === 0) {
+            cell.classList.add("sunday");
+          }
+
+          if (attendanceDates.includes(dateStr)) {
+            dayCircle.classList.add("attended");
+          }
+
+          cell.appendChild(dayCircle);
+          day++;
         }
-        calendarBody.appendChild(row);
-        if (day > lastDate) break;
+
+        row.appendChild(cell);
       }
+      calendarBody.appendChild(row);
+      if (day > lastDate) break;
     }
+  }
 
-    function changeMonth(step) {
-      currentDate.setMonth(currentDate.getMonth() + step);
-      renderCalendar(currentDate);
-    }
-
+  function changeMonth(step) {
+    currentDate.setMonth(currentDate.getMonth() + step);
     renderCalendar(currentDate);
-  </script>
+  }
+
+  checkAttendanceBtn.addEventListener("click", () => {
+    const today = new Date();
+    const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    if (!attendanceDates.includes(dateStr)) {
+      attendanceDates.push(dateStr);
+      alert("출석이 완료되었습니다!");
+      renderCalendar(currentDate); // 다시 렌더링
+    } else {
+      alert("이미 출석하셨습니다!");
+    }
+  });
+
+  renderCalendar(currentDate);
+
+</script>
+
 
 </body>
 
