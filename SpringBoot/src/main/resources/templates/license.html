@@ -28,8 +28,8 @@
       	</a>
       </div>
       <div class="header-links d-flex gap-2">
-        <button class="btn btn-sm btn-info">MYPAGE</button>
-        <button class="btn btn-sm btn-warning">LOGOUT</button>
+        <button class="btn btn-outline-secondary" >MYPAGE</button>
+        <button class="btn btn-outline-danger" >LOGOUT</button>
       </div>
     </div>
   </nav>
@@ -69,35 +69,29 @@
 
         <!-- 주제별 학습하기 -->
         <div class="dashboard-card p-4">
-          <h5 class="fw-bold mb-4">주제별 학습하기</h5>
-          <div class="d-flex align-items-center gap-2">
-              <form action="goTypeList.do" method="post">
-            <div class="position-relative" style="width:700px; padding-left: 100px;">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-              <!-- <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="주제 검색 (가장 많이 나온 순서대로 보여 주기)" style="padding-right: 40px;"> -->
-                <select name="category" class="form-control rounded-pill px-4 py-2">
-                  <option value="" disabled selected hidden>유형을 선택해주세요</option>
-                  <option value="101">1</option>
-                  <option value="102">2</option>
-                  <option value="103">3</option>
-                  <option value="104">4</option>
-                  <option value="105">5</option>
-                  <option value="106">6</option>
-                  <option value="107">7</option>
-                  <option value="108">8</option>
-                  <option value="109">9</option>
-                  <option value="110">10</option>
-                </select>
-            </div>
-            <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent">
-              <i class="bi bi-x"></i>
-            </button>	
-            <button class="btn btn-light">
-              <i class="bi bi-search"></i>
-            </button>
-            </form>
-          </div>
-        </div>
+		  <h5 class="fw-bold mb-4">주제별 학습하기</h5>
+		  <form action="goTypeList.do" method="post" class="d-flex align-items-center gap-2" style="padding-left: 100px;">
+		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		    
+		    <select name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
+		      <option value="" disabled selected hidden>유형을 선택해주세요</option>
+		      <option value="101">1</option>
+		      <option value="102">2</option>
+		      <option value="103">3</option>
+		      <option value="104">4</option>
+		      <option value="105">5</option>
+		      <option value="106">6</option>
+		      <option value="107">7</option>
+		      <option value="108">8</option>
+		      <option value="109">9</option>
+		      <option value="110">10</option>
+		    </select>
+		
+		    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;">
+		      <i class="bi bi-search"></i>
+		    </button>
+		  </form>
+		</div>
 
       </div>
 
