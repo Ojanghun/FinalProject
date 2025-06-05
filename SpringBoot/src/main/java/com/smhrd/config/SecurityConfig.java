@@ -27,7 +27,9 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/shuffle/**"),
                     new AntPathRequestMatcher("/correctAnswer/**"),
                     new AntPathRequestMatcher("/solution/**"),
-                    new AntPathRequestMatcher("/pay/submit") // ✅ 결제 POST 요청 CSRF 예외 처리
+                    new AntPathRequestMatcher("/pay/submit"), // ✅ 결제 POST 요청 CSRF 예외 처리
+                    new AntPathRequestMatcher("/atd_check")
+                    
                 )
             )
             .authorizeHttpRequests(authz -> authz
