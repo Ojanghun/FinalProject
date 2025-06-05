@@ -21,8 +21,8 @@
 		<!-- 🔷 커스텀 헤더 -->
 		<div class="custom-header">
 			<div class="logo">
-				<a href="/">
-					<img src="/images/로고.png" alt="로고"> <span class="logo-text"></span>
+				<a href="/"> <img src="/images/로고.png" alt="로고"> <span
+					class="logo-text"></span>
 				</a>
 			</div>
 
@@ -51,17 +51,14 @@
 						<button title="Search">🔍</button>
 					</div>
 
-					<!-- 추천 버튼 -->
+					<!-- 자격증 추천 버튼 영역 -->
 					<div class="search-suggestion">
-						<th:block th:if="${session.info == null}">
-							<a href="/login" class="btn btn-primary btn-lg">정보처리기사</a>
+						<th:block th:each="lic : ${licenseList}">
+							<a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
+								th:text="${lic.liName}" class="btn btn-primary btn-lg"></a>
 						</th:block>
-						<th:block th:unless="${session.info == null}">
-							<a href="/plan" class="btn btn-primary btn-lg">정보처리기사</a>
-						</th:block>
-						<button class="btn search-tag">SQLD</button>
-						<button class="btn search-tag">건축제도기능사</button>
 					</div>
+
 				</div>
 
 				<!-- 🔐 MyPayment -->
