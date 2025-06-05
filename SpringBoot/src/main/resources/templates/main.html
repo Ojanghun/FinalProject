@@ -45,10 +45,13 @@
 			<section class="row search-section">
 				<!-- 🔍 검색창 + 버튼 묶음 -->
 				<div class="search-group">
-					<div class="search-box">
-						<input type="text" placeholder="자격증 검색" />
-						<button title="Clear">✕</button>
-						<button title="Search">🔍</button>
+					<div class="search-container">
+						<div class="search-box">
+							<input id="search" type="text" placeholder="자격증 검색" />
+							<button title="Clear">✕</button>
+							<button title="Search">🔍</button>
+						</div>
+						<div id="suggestions" class="autocomplete"></div>
 					</div>
 
 					<!-- 자격증 추천 버튼 영역 -->
@@ -92,7 +95,6 @@
 	</div>
 
 	<!-- JS -->
-	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/search.js"></script>
 </body>
 </html>
