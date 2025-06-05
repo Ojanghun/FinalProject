@@ -303,3 +303,34 @@ h4 {
     opacity: 1;
   }
 }
+
+
+/* 검색 자동완성 기능 css */
+.search-container{
+  position: relative;
+}
+
+.autocomplete {
+  position: absolute;
+  top: 100%; /* input 바로 아래 */
+  left: 0;
+  width: 100%; /* 검색창 너비와 일치 */
+  border: 1px solid #ccc;
+  background: white;
+  z-index: 1000;
+  border-radius: 0 0 8px 8px;
+}
+
+.autocomplete div {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.autocomplete div:hover {
+  background-color: #f0f0f0;
+}
+
+.autocomplete:empty {
+  display: none;
+}

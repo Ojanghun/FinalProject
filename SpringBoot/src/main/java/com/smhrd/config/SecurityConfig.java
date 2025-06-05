@@ -43,7 +43,8 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/images/**"),
                         new AntPathRequestMatcher("/webjars/**"),
                         new AntPathRequestMatcher("/plan"),
-                        new AntPathRequestMatcher("/pay/**") // ✅ pay와 관련된 모든 요청 허용
+                        new AntPathRequestMatcher("/pay/**"), // ✅ pay와 관련된 모든 요청 허용
+                        new AntPathRequestMatcher("/searchLicenses")
                     ).permitAll()
                     .anyRequest().authenticated()
             )
