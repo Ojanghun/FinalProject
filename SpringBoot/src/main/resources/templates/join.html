@@ -22,7 +22,7 @@
             </div>
 
             <form th:action="@{/join}" th:object="${member}" method="post">
-                <!-- 🔽 카카오 프로필 이미지가 있을 경우 숨겨서 전달 -->
+                <!-- 카카오 프로필 이미지가 있을 경우 숨겨서 전달 -->
                 <input type="hidden" th:field="*{userpro}" />
 
                 <table class="table">
@@ -37,7 +37,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>PW</td>
+                        <td>비밀번호</td>
                         <td colspan="2"><input th:field="*{pw}" type="password" class="form-control" required>
                              <small th:if="${#fields.hasErrors('pw')}" th:errors="*{pw}" class="text-danger"></small>
                         </td>
@@ -52,8 +52,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>PHONE</td>
-                        <td colspan="2"><input th:field="*{phone}" type="text" class="form-control">
+                        <td>전화번호</td>
+                        <td colspan="2">
+                            <input th:field="*{phone}" id="phoneInput" type="text" class="form-control" 
+                                   placeholder="000-0000-0000" pattern="\d{3}-\d{4}-\d{4}" maxlength="13" required>
                             <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></small>
                         </td>
                     </tr>
@@ -98,6 +100,42 @@
             }
         });
     }
+
+    // 전화번호 입력 시 자동 하이픈 삽입
+    $(document).ready(function() {
+        $("#phoneInput").on("input", function() {
+            let input = $(this).val().replace(/[^0-9]/g, ""); // 숫자만 허용
+            let formatted = "";
+
+            if (input.length > 0) {
+                formatted = input.substring(0, 3); // 첫 3자리
+            }
+            if (input.length >= 4) {
+                formatted += "-" + input.substring(3, 7); // 하이픈 후 4자리
+            }
+            if (input.length >= 8) {
+                formatted += "-" + input.substring(7, 11); // 하이픈 후 4자리
+            }
+
+            $(this).val(formatted);
+
+            // 최대 11자리 숫자(하이픈 포함 13자)로 제한
+            if (input.length > 11) {
+                $(this).val(formatted.substring(0, 13));
+            }
+        });
+
+        // 폼 제출 시 전화번호 형식 검증
+        $("form").on("submit", function(e) {
+            let phone = $("#phoneInput").val();
+            let phonePattern = /^\d{3}-\d{4}-\d{4}$/;
+            if (!phonePattern.test(phone)) {
+                e.preventDefault();
+                alert("전화번호는 000-0000-0000 형식으로 입력해주세요.");
+                $("#phoneInput").focus();
+            }
+        });
+    });
 </script>
 </body>
 </html>
