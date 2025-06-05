@@ -35,5 +35,7 @@ public class Pay_Info {
     @Column(name = "PLAN_ED", nullable = false)
     private LocalDateTime planEd;
     
+    @Column(name = "PLAN_ACT", nullable = false)
+    private int planAct;
     
 }
