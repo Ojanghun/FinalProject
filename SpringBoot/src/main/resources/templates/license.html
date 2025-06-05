@@ -161,7 +161,21 @@
   </div>
 
   <!-- Script -->
-  <script>
+  <script th:inline="javascript">
+  const examPeriods = /*[[${exams}]]*/ [];
+  const examDates = [];
+
+  examPeriods.forEach(exam => {
+    const start = new Date(exam.appStd);
+    const end = new Date(exam.appEd);
+    let d = new Date(start);
+    while (d <= end) {
+      const dateStr = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+      examDates.push({ date: dateStr, title: exam.title });
+      d.setDate(d.getDate() + 1);
+    }
+  });
+
   
   function submitForm(actionUrl) {
       const form = document.getElementById("examForm");
@@ -186,7 +200,7 @@
     const today = new Date();
 
     monthYear.textContent = `📅 ${year}년 ${month + 1}월`;
-
+    
     let day = 1;
     for (let i = 0; i < 6; i++) {
       const row = document.createElement("tr");
@@ -214,6 +228,12 @@
           if (attendanceDates.includes(dateStr)) {
             dayCircle.classList.add("attended");
           }
+          /* 달력에 일정 표시 */
+          const exam = examDates.find(e => e.date === dateStr);
+			if (exam) {
+			  dayCircle.classList.add("exam-period-bar");
+			  
+			}
 
           cell.appendChild(dayCircle);
           day++;
