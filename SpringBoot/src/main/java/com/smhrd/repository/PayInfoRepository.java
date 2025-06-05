@@ -11,8 +11,7 @@ import java.util.List;
 @Repository
 public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 
-    // ✅ 유저 ID + 자격증 liIdx로 결제 정보 찾기 (조인 기반)
-    @Query("SELECT p FROM Pay_Info p WHERE p.id = :userId AND p.planAct=1 AND p.planIdx IN (SELECT pi.planIdx FROM Plan_Info pi WHERE pi.liIdx = :liIdx )")
+    // 유저 ID + 자격증 liIdx로 활성화된 결제 정보 찾기
+    @Query("SELECT p FROM Pay_Info p WHERE p.id = :userId AND p.planAct = 1 AND p.planIdx IN (SELECT pi.planIdx FROM Plan_Info pi WHERE pi.liIdx = :liIdx)")
     List<Pay_Info> findByUserIdAndLiIdx(@Param("userId") String userId, @Param("liIdx") int liIdx);
-
 }
