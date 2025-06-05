@@ -34,6 +34,7 @@ public class SecurityConfig {
                 authorizeRequests
                     .requestMatchers(
                         new AntPathRequestMatcher("/"),
+                        new AntPathRequestMatcher("/main"),
                         new AntPathRequestMatcher("/login"),
                         new AntPathRequestMatcher("/join"),
                         new AntPathRequestMatcher("/idCheck"),
