@@ -1,55 +1,99 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>결제 페이지</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #e6e6e6;
-            font-family: '맑은 고딕', sans-serif;
-        }
-        .container {
-            margin-top: 30px;
-        }
-        .payment-box {
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .plan-info {
-            font-size: 18px;
-            margin: 15px 0;
-        }
-        .btn-back {
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>결제 페이지</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/pay_plan.css">
 </head>
 <body>
-    <div class="container">
-        <div class="d-flex justify-content-between mb-4">
-            <a href="/" style="font-weight: bold; font-size: 20px;">문제? <span style="color: blue;">issue!</span></a>
-            <div>
-                <a href="/mypage" class="btn btn-default">Mypage</a>
-                <a href="/logout" class="btn btn-default">Logout</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="payment-box">
-                    <h2>결제 페이지</h2>
-                    <div class="plan-info">
-                        선택한 플랜: <strong th:text="${plan}"></strong>
-                    </div>
-                    <p class="text-muted">결제를 진행하여 플랜을 활성화하세요.</p>
-                    <a href="/" class="btn btn-default btn-back">홈으로 돌아가기</a>
-                </div>
-            </div>
-        </div>
+
+  <!-- 헤더 -->
+  <div class="container">
+    <div class="custom-header d-flex justify-content-between mb-4 align-items-center">
+      <div class="logo d-flex align-items-center">
+        <a href="/"><img src="/images/로고.png" alt="로고"></a>
+      </div>
+      <div class="header-buttons">
+        <a href="/mypage" class="btn btn-default">Mypage</a>
+        <a href="/logout" class="btn btn-default">Logout</a>
+      </div>
     </div>
+  </div>
+
+  <!-- 본문 -->
+  <div class="container">
+    <div class="row">
+      <!-- 좌측: 플랜 정보 -->
+      <div class="col-md-6">
+        <div class="payment-box text-left">
+          <h4>정보처리기사 필기</h4>
+          <h2><strong>탐색형</strong> <small>자유롭게 공부하고 싶으신가요?</small></h2>
+          <h3><strong>9000원</strong></h3>
+          <p style="color: green;">현재 00명이 이용중입니다.</p>
+          <div class="plan-desc mt-4">
+            <strong>탐색형 제공 서비스 나열 / 설명</strong>
+            <ol>
+              <li>주제별 풀이</li>
+              <li>실제 시험 환경 풀이</li>
+              <li>시험 합격시 환급</li>
+              <li>등등</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- 우측: 카드 결제 입력 -->
+      <div class="col-md-6">
+        <form method="post" action="/pay/submit" class="payment-box">
+          <h4>Credit Card Details</h4>
+
+          <div class="mb-3">
+            <label>Payment Method</label>
+            <div>
+              <img src="/images/card_logo.png" alt="카드로고" style="height: 32px;">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label>Name on card</label>
+            <input type="text" name="cardName" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label>Card number</label>
+            <input type="text" name="cardNumber" class="form-control" maxlength="19" required>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-6">
+              <label>Card expiration</label>
+              <div class="d-flex">
+                <select name="expMonth" class="form-control" required>
+                  <option disabled selected>Month</option>
+                  <option>01</option><option>02</option><option>03</option>...
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <label>&nbsp;</label>
+              <select name="expYear" class="form-control" required>
+                <option disabled selected>Year</option>
+                <option>2025</option><option>2026</option>...
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label>Card Security Code</label>
+            <input type="text" name="cvc" class="form-control" maxlength="4" required>
+          </div>
+
+          <button type="submit" class="btn btn-block btn-dark mt-4" style="width: 100%;">Continue</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

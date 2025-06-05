@@ -1,61 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/">
+<html xmlns:th="http://www.thymeleaf.org/">
 <head>
 <meta charset="UTF-8">
 <title>Plan</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<style>
-body {
-	background-color: #e6e6e6;
-	font-family: '맑은 고딕', sans-serif;
-}
-
-.container {
-	margin-top: 30px;
-}
-
-.plan-box {
-	background: #fff;
-	padding: 30px;
-	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	margin-bottom: 20px;
-}
-
-.plan-price {
-	font-size: 22px;
-	font-weight: bold;
-	margin: 10px 0;
-}
-
-.highlight {
-	color: green;
-	margin-bottom: 15px;
-}
-
-.plan-desc {
-	text-align: left;
-	margin-top: 20px;
-}
-
-.plan-desc li {
-	margin-bottom: 5px;
-}
-
-.select-button {
-	margin-top: 20px;
-}
-</style>
+<link rel="stylesheet" href="/css/pay_plan.css">
 </head>
 <body>
 	<div class="container">
-		<div class="d-flex justify-content-between mb-4">
-			<a href="/" style="font-weight: bold; font-size: 20px;">문제? <span
-				style="color: blue;">issue!</span></a>
-			<div>
-				<a href="mypage" class="btn btn-default">Mypage</a> <a href="logout"
+		<!-- 🔷 커스텀 헤더 -->
+		<div
+			class="custom-header d-flex justify-content-between mb-4 align-items-center">
+			<div class="logo d-flex align-items-center">
+				<a href="/">
+					<img src="/images/로고.png" alt="로고">
+				</a>
+			</div>
+			<div class="header-buttons">
+				<a href="/mypage" class="btn btn-default">Mypage</a> <a href="/logout"
 					class="btn btn-default">Logout</a>
 			</div>
 		</div>
@@ -77,8 +40,8 @@ body {
 							<li>등등</li>
 						</ol>
 					</div>
-					<!-- 자유형 -->
-					<a href="/pay?plan=자유형" class="btn btn-dark select-button">☞ Select Plan</a>
+					<a href="/pay?plan=자유형" class="btn btn-dark select-button">☞
+						Select Plan</a>
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -96,8 +59,8 @@ body {
 							<li>일일 할당량 제공 서비스</li>
 						</ol>
 					</div>
-					<!-- 계획형 -->
-					<a href="/pay?plan=계획형" class="btn btn-dark select-button">☞ Select Plan</a>
+					<a href="/pay?plan=계획형" class="btn btn-dark select-button">☞
+						Select Plan</a>
 				</div>
 			</div>
 		</div>
