@@ -27,44 +27,37 @@ h4 {
   margin-bottom: 15px;
 }
 
-/* 테이블 스타일 */
-.table th {
-  background-color: #FFC107;
-  color: white;
-  text-align: center;
+/* 헤더 */
+.custom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 16px 24px;
+  border-bottom: 1px solid #ddd;
 }
 
-.table td {
-  vertical-align: middle;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* 문제 목록 페이지 */
-.question-list table {
-  width: 100%;
-  border-collapse: collapse;
+.logo img {
+  height: 40px;
+  width: auto;
 }
 
-/* 문제 상세 페이지 */
-.question-detail {
-  background-color: #fff;
-  padding: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1E88E5;
 }
 
-/* AI 해설 공통 */
-.ai-explanation {
-  background-color: #eef9ff;
-  border-left: 4px solid #5bc0de;
-  padding: 10px;
-  margin-top: 10px;
-  font-style: italic;
-}
-
-/* 문제 블록 */
-.question-block {
-  margin-bottom: 30px;
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* 네비게이션 바 */
@@ -94,60 +87,25 @@ h4 {
   color: #1E88E5;
   border-radius: 20px 20px 0 0;
 }
-/* 헤더 (로고 + 로그인 버튼) */
-.custom-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+/* 공통 카드 스타일 */
+.card,
+.dashboard-card {
   background-color: white;
-  padding: 16px 24px;
-  border-bottom: 1px solid #ddd;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo img {
-  height: 40px; /* 👈 작게 조절 */
-  width: auto;
-}
-
-.logo-text {
-  font-size: 20px;
-  font-weight: bold;
-  color: #1E88E5;
-}
-
-.header-links {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* 레이아웃/그리드 가이드 */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -8px;
-}
-
-.col {
-  flex: 1;
-  padding: 0 8px;
-}
-
-.card {
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
+  border: 1px solid #ddd;
 }
 
-/* 🆕 메인 페이지 레이아웃 */
+.schedule-card {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+/* 메인 콘텐츠 */
 .main-content {
   display: flex;
   flex-direction: column;
@@ -155,17 +113,17 @@ h4 {
   padding: 40px 20px;
 }
 
-/* 검색 + 키워드 박스 */
+/* 검색 섹션 */
 .row.search-section {
   display: flex;
-  justify-content: space-between; /* 🔹 좌우 정렬 */
+  justify-content: space-between;
   align-items: flex-start;
   width: 100%;
   max-width: 1000px;
   margin-bottom: 40px;
   gap: 40px;
 }
-/* 검색창과 추천 버튼을 묶는 그룹 */
+
 .search-group {
   display: flex;
   flex-direction: column;
@@ -174,29 +132,28 @@ h4 {
   flex: 1;
 }
 
-
 /* 검색창 */
 .search-box {
-  flex: 1; /* 🔹 너비 자동 확장 */
+  flex: 1;
   display: flex;
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 30px;
   background-color: #fff;
-  padding: 12px 20px; /* 🔹 내부 여백 증가 */
-  max-width: 600px; /* 🔹 최대 폭 지정 */
+  padding: 12px 20px;
+  max-width: 600px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0;
 }
 
 .search-box input {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 18px; /* 🔹 글씨 크기 확대 */
+  font-size: 18px;
   padding: 8px;
   border-radius: 30px;
 }
-
 
 .search-box button {
   background: none;
@@ -205,30 +162,42 @@ h4 {
   font-size: 18px;
   margin-left: 8px;
 }
+
+/* 추천 버튼 */
+.search-suggestion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  padding-top: 10px;
+  padding-left: 4px;
+}
+
 .search-tag {
   padding: 6px 16px;
   font-size: 14px;
   border-radius: 20px;
   border: 1px solid #0076e0;
-  background-color: #ffffff;
+  background-color: white;
   color: #0076e0;
   white-space: nowrap;
+  transition: background-color 0.2s ease;
 }
 
 .search-tag:hover {
   background-color: #e3f2fd;
 }
+
 /* 키워드 박스 */
 .keyword-box {
-  width: 240px; /* 🔹 조금 더 넓게 */
+  width: 240px;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 16px;
-  margin-left: auto; /* 🔹 오른쪽으로 밀기 */
+  margin-left: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 .keyword-box h4 {
   font-size: 16px;
@@ -260,25 +229,44 @@ h4 {
   margin-bottom: 16px;
 }
 
-.search-suggestion {
-  display: flex;
-  flex-wrap: wrap;           /* 줄바꿈 허용 */
-  gap: 10px;
-  justify-content: flex-start;
-  margin-top: 8px;           /* 검색창과 간격 */
-}
-
-.search-suggestion .btn {
-  padding: 6px 16px;
-  font-size: 14px;
-  border-radius: 20px;
+/* 달력 박스 */
+.calendar-box {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  background-color: white;
-  color: #0076e0;
-  transition: background-color 0.2s ease;
+  min-width: 100%;
+  font-size: 16px;
 }
 
-.search-suggestion .btn:hover {
-  background-color: #e3f2fd;
+.calendar-box table {
+  width: 100%;
+  table-layout: fixed;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 16px;
 }
 
+.calendar-box th,
+.calendar-box td {
+  padding: 14px 0;
+  vertical-align: middle;
+}
+
+.calendar-box td div {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  margin: auto;
+  border-radius: 50%;
+}
+
+.calendar-box td.today div {
+  background-color: #1E88E5;
+  color: white;
+  font-weight: bold;
+}
+
+.calendar-box .sunday {
+  color: red;
+}
