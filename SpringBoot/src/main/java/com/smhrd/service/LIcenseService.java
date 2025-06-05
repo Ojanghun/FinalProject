@@ -12,11 +12,19 @@ public class LIcenseService {
 	@Autowired
 	LicenseRepository repository;
 
-	public void atd_check(String id) {
-        Atd_Log log = new Atd_Log();
-        log.setId(id);
-        repository.save(log);
+	public boolean atd_check(String id) {
+	    int count = repository.countTodayLogById(id);
+
+	    if (count == 0) {
+	        Atd_Log log = new Atd_Log();
+	        log.setId(id);
+	        repository.save(log);
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
+
 	
 	
 }

@@ -38,8 +38,9 @@ public class LicenseController {
 	}
 	
 	@PostMapping("/atd_check")
-	public @ResponseBody void atd_check(@RequestParam("id") String id) {
-		service.atd_check(id);
+	@ResponseBody
+	public boolean atd_check(@RequestParam("id") String id) {
+	    return service.atd_check(id);
 	}
 	
 	

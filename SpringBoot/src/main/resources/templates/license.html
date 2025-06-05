@@ -230,29 +230,34 @@
   }
 
   checkAttendanceBtn.addEventListener("click", () => {
-    const today = new Date();
-    const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-    if (!attendanceDates.includes(dateStr)) {
-      attendanceDates.push(dateStr);
-      const id = $("#id").val();
-      
-      console.log(id);
-      
-      $.ajax ({
-      	url: "/atd_check",
-      	type: "post",
-      	dataType: "text",
-      	data: {id : id},
-      	success: function(){
-      		alert("출석이 완료되었습니다!");
-        		renderCalendar(currentDate); // 다시 렌더링
-        	},
-      	error : function(){alert("error");}
-        });
-    } else {
-      alert("이미 출석하셨습니다!");
-    }
-  });
+	  const id = $("#id").val();
+
+	  $.ajax({
+	    url: "/atd_check",
+	    type: "post",
+	    dataType: "text",
+	    data: { id: id },
+	    success: function (response) {
+	      if (response === "true") {
+	        alert("출석이 완료되었습니다!");
+
+	        const today = new Date();
+	        const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+	        if (!attendanceDates.includes(dateStr)) {
+	          attendanceDates.push(dateStr);
+	        }
+
+	        renderCalendar(currentDate); // 다시 렌더링
+	      } else {
+	        alert("이미 출석하셨습니다!");
+	      }
+	    },
+	    error: function () {
+	      alert("서버 오류가 발생했습니다.");
+	    }
+	  });
+	});
+
 
   renderCalendar(currentDate);
 
