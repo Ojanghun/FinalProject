@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 
 import com.smhrd.entity.Exam;
-import com.smhrd.entity.Member;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Integer>{
@@ -18,7 +17,5 @@ public interface ExamRepository extends JpaRepository<Exam, Integer>{
 	List<Exam> findAllByOrderByPbTopicAsc();
 
 	List<Exam> findAllByOrderByPbNum(Pageable pageable);
-
-
 	
 }

@@ -80,7 +80,7 @@ public class PayController {
         String userId = ((Member) info).getId();
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime end = now.plusDays(30); // 기본 30일 플랜
+        LocalDateTime end = now.plusDays(180); // 기본 30일 플랜
 
         Pay_Info payInfo = new Pay_Info();
         payInfo.setId(userId);
