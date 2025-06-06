@@ -1,12 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>Mypage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <style>
     body {
       font-family: '맑은 고딕', sans-serif;
       background-color: #f8f9fa;
+    }
+
+    .custom-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      margin-bottom: 30px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      height: 48px;
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .header-links a {
+      margin-left: 10px;
     }
 
     .container {
@@ -16,7 +48,7 @@
       padding: 30px;
       background-color: white;
       border-radius: 15px;
-      margin-top: 40px;
+      margin-top: 20px;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
 
@@ -95,15 +127,29 @@
       background-color: #17a2b8;
       border-color: #17a2b8;
     }
-
-    .refund-section {
-      text-align: right;
-      margin-top: -10px;
-      margin-bottom: 30px;
-    }
   </style>
 </head>
 <body>
+
+  <!-- ✅ 헤더 -->
+  <div class="custom-header">
+    <div class="logo">
+      <a href="/" style="display: flex; align-items: center;">
+        <img src="/images/로고.png" alt="로고">
+        <span class="logo-text"></span>
+      </a>
+    </div>
+    <div class="header-links">
+      <th:block th:if="${session.info == null}">
+        <a href="/login" class="btn btn-sm btn-primary">로그인</a>
+      </th:block>
+      <th:block th:unless="${session.info == null}">
+        <a href="/mypage" class="btn btn-sm btn-info">마이페이지</a>
+        <a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
+      </th:block>
+    </div>
+  </div>
+
   <div class="container">
     <div class="profile-section">
       <img th:src="${member.userpro}" alt="프로필 이미지" class="profile-img" />
@@ -143,9 +189,9 @@
             <div class="product-footer"
                  th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
             </div>
-          </div>
-          <div class="refund-section">
-            <button class="btn btn-primary">합격 인증 후 환급 받기</button>
+            <div style="text-align: right; margin-top: 10px;">
+              <button class="btn btn-primary">합격 인증 후 환급 받기</button>
+            </div>
           </div>
         </th:block>
       </th:block>
