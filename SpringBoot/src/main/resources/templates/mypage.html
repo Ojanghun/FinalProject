@@ -1,201 +1,209 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>Mypage</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <style>
-    body {
-      font-family: '맑은 고딕', sans-serif;
-      background-color: #f8f9fa;
-    }
+<meta charset="UTF-8">
+<title>Mypage</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style>
+body {
+	font-family: '맑은 고딕', sans-serif;
+	background-color: #f8f9fa;
+}
 
-    .custom-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      margin-bottom: 30px;
-      background-color: #ffffff;
-      border-bottom: 1px solid #ddd;
-      border-radius: 8px;
-    }
+.custom-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 30px;
+	margin-bottom: 30px;
+	background-color: #ffffff;
+	border-bottom: 1px solid #ddd;
+	border-radius: 8px;
+}
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
 
-    .logo img {
-      height: 48px;
-    }
+.logo img {
+	height: 48px;
+}
 
-    .logo-text {
-      font-size: 22px;
-      font-weight: bold;
-      color: #007bff;
-    }
+.logo-text {
+	font-size: 22px;
+	font-weight: bold;
+	color: #007bff;
+}
 
-    .header-links a {
-      margin-left: 10px;
-    }
+.header-links a {
+	margin-left: 10px;
+}
 
-    .container {
-      width: 90%;
-      max-width: 900px;
-      margin: auto;
-      padding: 30px;
-      background-color: white;
-      border-radius: 15px;
-      margin-top: 20px;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    }
+.container {
+	width: 90%;
+	max-width: 900px;
+	margin: auto;
+	padding: 30px;
+	background-color: white;
+	border-radius: 15px;
+	margin-top: 20px;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
 
-    .profile-section {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
+.profile-section {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
 
-    .profile-img {
-      width: 80px;
-      height: 80px;
-      background-color: #ddd;
-      border-radius: 50%;
-    }
+.profile-img {
+	width: 80px;
+	height: 80px;
+	background-color: #ddd;
+	border-radius: 50%;
+}
 
-    .info {
-      margin-top: 20px;
-    }
+.info {
+	margin-top: 20px;
+}
 
-    .info input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      background-color: #f1f1f1;
-    }
+.info input {
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+	background-color: #f1f1f1;
+}
 
-    .products {
-      margin-top: 30px;
-    }
+.products {
+	margin-top: 30px;
+}
 
-    .product-card {
-      background-color: #fefefe;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
+.product-card {
+	background-color: #fefefe;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	padding: 20px;
+	margin-bottom: 20px;
+}
 
-    .product-card h4 {
-      margin: 0;
-      font-weight: bold;
-    }
+.product-card h4 {
+	margin: 0;
+	font-weight: bold;
+}
 
-    .product-footer {
-      text-align: right;
-      font-size: 14px;
-      color: #555;
-    }
+.product-footer {
+	text-align: right;
+	font-size: 14px;
+	color: #555;
+}
 
-    .btn {
-      display: inline-block;
-      font-weight: 400;
-      color: #fff;
-      text-align: center;
-      vertical-align: middle;
-      user-select: none;
-      background-color: #007bff;
-      border: 1px solid transparent;
-      padding: 0.375rem 0.75rem;
-      font-size: 1rem;
-      border-radius: 0.25rem;
-      cursor: pointer;
-      text-decoration: none;
-    }
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	color: #fff;
+	text-align: center;
+	vertical-align: middle;
+	user-select: none;
+	background-color: #007bff;
+	border: 1px solid transparent;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+	cursor: pointer;
+	text-decoration: none;
+}
 
-    .btn-primary {
-      background-color: #007bff;
-      border-color: #007bff;
-    }
+.btn-primary {
+	background-color: #007bff;
+	border-color: #007bff;
+}
 
-    .btn-edit {
-      float: right;
-      background-color: #17a2b8;
-      border-color: #17a2b8;
-    }
-  </style>
+.btn-edit {
+	float: right;
+	background-color: #17a2b8;
+	border-color: #17a2b8;
+}
+</style>
 </head>
 <body>
 
-  <!-- ✅ 헤더 -->
-  <div class="custom-header">
-    <div class="logo">
-      <a href="/" style="display: flex; align-items: center;">
-        <img src="/images/로고.png" alt="로고">
-        <span class="logo-text"></span>
-      </a>
-    </div>
-    <div class="header-links">
-      <th:block th:if="${session.info == null}">
-        <a href="/login" class="btn btn-sm btn-primary">로그인</a>
-      </th:block>
-      <th:block th:unless="${session.info == null}">
-        <a href="/mypage" class="btn btn-sm btn-info">마이페이지</a>
-        <a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
-      </th:block>
-    </div>
-  </div>
+	<!-- ✅ 헤더 -->
+	<div class="custom-header">
+		<div class="logo">
+			<a href="/" style="display: flex; align-items: center;"> <img
+				src="/images/로고.png" alt="로고"> <span class="logo-text"></span>
+			</a>
+		</div>
+		<div class="header-links">
+			<th:block th:if="${session.info == null}">
+				<a href="/login" class="btn btn-sm btn-primary">로그인</a>
+			</th:block>
+			<th:block th:unless="${session.info == null}">
+				<a href="/mypage" class="btn btn-sm btn-info">마이페이지</a>
+				<a href="/logout" class="btn btn-sm btn-danger">로그아웃</a>
+			</th:block>
+		</div>
+	</div>
 
-  <div class="container">
-    <div class="profile-section">
-      <img th:src="${member.userpro}" alt="프로필 이미지" class="profile-img" />
-      <div>
-        <h3 th:text="${member.name}">이름</h3>
-        <button class="btn btn-primary btn-edit">회원정보수정</button>
-      </div>
-    </div>
+	<div class="container">
+		<div class="profile-section">
+			<img th:src="${member.userpro}" alt="프로필 이미지" class="profile-img" />
+			<div>
+				<h3 th:text="${member.name}">이름</h3>
+				<button class="btn btn-primary btn-edit">회원정보수정</button>
+			</div>
+		</div>
 
-    <div class="info">
-      <label>비밀번호</label>
-      <input type="password" value="********" disabled>
+		<div class="info">
+			<label>비밀번호</label> <input type="password" value="********" disabled>
 
-      <label>전화번호</label>
-      <input type="text" th:value="${member.phone}" disabled>
-    </div>
+			<label>전화번호</label> <input type="text" th:value="${member.phone}"
+				disabled>
+		</div>
 
-    <div class="products">
-      <h4>결제한 상품</h4>
-      <th:block th:each="pay : ${payList}">
-        <th:block th:if="${pay.planAct == 1}">
-          <div class="product-card">
-            <h4 th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜 이름</h4>
-            <a th:href="@{'/license?liIdx=' + ${pay.planIdx}}" class="btn btn-primary">자격증 사이트로 이동</a>
-            <div class="product-footer"
-                 th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
-            </div>
-          </div>
-        </th:block>
-      </th:block>
+		<div class="products">
+			<h4>결제한 상품</h4>
+			<th:block th:each="pay : ${payList}">
+				<th:block th:if="${pay.planAct == 1}">
+					<div class="product-card">
+						<h4
+							th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜
+							이름</h4>
+						<a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
+							class="btn btn-primary">자격증 사이트로 이동</a>
+						<div class="product-footer"
+							th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
+						</div>
+					</div>
+				</th:block>
+			</th:block>
 
-      <h4>결제했던 상품</h4>
-      <th:block th:each="pay : ${payList}">
-        <th:block th:if="${pay.planAct == 0}">
-          <div class="product-card">
-            <h4 th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜 이름</h4>
-            <div class="product-footer"
-                 th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
-            </div>
-            <div style="text-align: right; margin-top: 10px;">
-              <button class="btn btn-primary">합격 인증 후 환급 받기</button>
-            </div>
-          </div>
-        </th:block>
-      </th:block>
-    </div>
-  </div>
+			<h4>결제했던 상품</h4>
+			<th:block th:each="pay : ${payList}">
+				<th:block th:if="${pay.planAct == 0}">
+					<div class="product-card">
+						<h4
+							th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜
+							이름</h4>
+						<div class="product-footer"
+							th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
+						</div>
+						<div class="product-footer"
+							th:text="'환급 기간: ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd.plusDays(7), 'yyyy-MM-dd')}">
+						</div>
+
+						<div style="text-align: right; margin-top: 10px;">
+							<button class="btn btn-primary">합격 인증 후 환급 받기</button>
+						</div>
+					</div>
+				</th:block>
+			</th:block>
+		</div>
+	</div>
 </body>
 </html>
