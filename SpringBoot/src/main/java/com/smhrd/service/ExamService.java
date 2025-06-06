@@ -97,10 +97,19 @@ public class ExamService {
 	}
 	
 
-	public List<Exam> loadExam1(int pageNum, int pageSize) {
-	    Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("pbNum").ascending());
-	    return repository.findAllByOrderByPbNum(pageable);
-	}
+	public List<Exam> loadExam1(int pageNum, int pageSize, int category) {
+        // 100문제만 미리 가져오고, 그 중에서 해당 페이지 데이터 추출
+        List<Exam> allQuestions = repository.findTop100ByExIdOrderByPbNum(category);
+
+        int start = pageNum * pageSize;
+        int end = Math.min(start + pageSize, allQuestions.size());
+
+        if (start >= allQuestions.size()) {
+            return new ArrayList<>(); // 빈 리스트 반환
+        }
+
+        return allQuestions.subList(start, end);
+}
 
 	public List<List<String>> shuffle1(int pageNum, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("pbNum").ascending());

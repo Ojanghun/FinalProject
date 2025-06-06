@@ -20,21 +20,21 @@ public class LicenseController {
 	public String goExam(@RequestParam("category") int category, Model model) {
 		model.addAttribute("category", category);
 		System.out.println("카테고리 값: "+category);
-		return "pastPage";
+		return "past";
 	}
 	
 	@PostMapping("/goTest.do")
 	public String goTest(@RequestParam("category") String category, Model model) {
 		model.addAttribute("category", category);
 		System.out.println("카테고리 값: "+category);
-		return "testPage";	
+		return "test";	
 	}
 	
 	@RequestMapping("/goTypeList.do")
 	public String goTypeList(@RequestParam("category") int category, Model model) {
 		model.addAttribute("category", category);
 		System.out.println("카테고리 값: "+category);
-		return "topicPage";	
+		return "topic";	
 	}
 	
 	@PostMapping("/atd_check")
