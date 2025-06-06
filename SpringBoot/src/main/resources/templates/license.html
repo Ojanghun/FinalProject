@@ -20,6 +20,7 @@
 
   <!-- Header -->
    <input type="hidden" id="id" th:value="${member.id}" />
+   
   <nav class="custom-header">
     <div class="container d-flex justify-content-between align-items-center">
       <div class="logo d-flex align-items-center gap-2">
@@ -38,7 +39,9 @@
   <!-- Main -->
   <div class="container mt-5">
     <h4 class="text-center mb-5">
-      오장훈님! 시험까지 <strong>00일</strong> 남았어요~
+	  <span th:text="${member.name} + '님! 시험까지 '"></span>
+	  <strong>00일</strong>
+	  <span> 남았어요~</span>
     </h4>
 
     <div class="row">
@@ -159,7 +162,9 @@
   </div>
 
   <!-- Script -->
-  <script>
+  <script th:inline="javascript">
+  
+
   
   function submitForm(actionUrl) {
       const form = document.getElementById("examForm");
@@ -168,65 +173,90 @@
       form.submit();
     }
   
+  // calendarBody: 달력 테이블(<tbody>)을 넣을 위치
   const calendarBody = document.getElementById("calendar-body");
+  
+  // monthYear: "2025년 6월" 등 달력 상단 타이틀
   const monthYear = document.getElementById("month-year");
+    
   const checkAttendanceBtn = document.getElementById("check-attendance");
-
+    
+  // currentDate: 현재 기준 달력 날짜
   let currentDate = new Date();
-  let attendanceDates = []; // 출석한 날짜 저장용 배열
+  
+  // attendanceDates: 출석체크 된 날짜들 (나중에 서버에서 받아올 수도 있음)
+  let attendanceDates = JSON.parse('[[${date}]]'); // 출석한 날짜 저장용 배열
+  renderCalendar(currentDate);  // 페이지 로드시 달력 렌더링
+  
+  // 날짜 함수 2자리 수로 변경 ex 2025-6-6 -> 2025-06-06
+  function pad(n) {
+	  return n < 10 ? "0" + n : n;
+	}
 
+  // 달력을 렌더링하는 함수
   function renderCalendar(date) {
-    calendarBody.innerHTML = "";
+    calendarBody.innerHTML = ""; // 기존 달력 초기화
     const year = date.getFullYear();
     const month = date.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1).getDay(); // 1일의 요일 (0=일, 6=토)
+    const lastDate = new Date(year, month + 1, 0).getDate(); // 월의 마지막 일
     const today = new Date();
 
     monthYear.textContent = `📅 ${year}년 ${month + 1}월`;
 
+    // 6주 × 7일 달력 만들기 ( 한 달은 최대 6주까지 있어서 )
     let day = 1;
     for (let i = 0; i < 6; i++) {
       const row = document.createElement("tr");
       for (let j = 0; j < 7; j++) {
         const cell = document.createElement("td");
 
+        
+        // 첫 주(i==0)에서 firstDay 이전에는 빈칸
+        // day > lastDate면 월이 끝났으므로 빈칸
         if (i === 0 && j < firstDay || day > lastDate) {
           cell.innerHTML = "";
         } else {
           const thisDate = new Date(year, month, day);
-          const dateStr = `${year}-${month + 1}-${day}`;
+          const dateStr = `${year}-${pad(month + 1)}-${pad(day)}`;
 
           const dayCircle = document.createElement("div");
           dayCircle.classList.add("day-circle");
           dayCircle.textContent = day;
 
+       	  // 오늘 날짜 표시
           if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
             dayCircle.classList.add("today");
           }
 
+          // 일요일 스타일
           if (j === 0) {
             cell.classList.add("sunday");
           }
 
+          // 출석한 날짜(dateStr)는 표시
           if (attendanceDates.includes(dateStr)) {
             dayCircle.classList.add("attended");
           }
 
+          // 현재 셀에 해당 날짜를 시각적으로 보여줄 div.day-circle을 삽입하는 역할
           cell.appendChild(dayCircle);
           day++;
         }
 
+        // 현재 tr 줄에 td 하나를 추가
         row.appendChild(cell);
       }
       calendarBody.appendChild(row);
-      if (day > lastDate) break;
+      if (day > lastDate) break; // 다 채우면 루프 탈출
     }
   }
 
+  
   function changeMonth(step) {
     currentDate.setMonth(currentDate.getMonth() + step);
     renderCalendar(currentDate);
+    
   }
 
   checkAttendanceBtn.addEventListener("click", () => {
@@ -238,11 +268,14 @@
 	    dataType: "text",
 	    data: { id: id },
 	    success: function (response) {
-	      if (response === "true") {
+	      if (response === "true") { // 응답이 True일 경우
 	        alert("출석이 완료되었습니다!");
 
+	        // 여기서부터 else전까지 전부 동그라미 표시 영역
 	        const today = new Date();
-	        const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+	        console.log(today);
+	        // 년,월,일 문자열 표시 - ex) "2025-06-06" / Month는 0부터 시작하므로 +1
+	        const dateStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
 	        if (!attendanceDates.includes(dateStr)) {
 	          attendanceDates.push(dateStr);
 	        }
@@ -250,6 +283,7 @@
 	        renderCalendar(currentDate); // 다시 렌더링
 	      } else {
 	        alert("이미 출석하셨습니다!");
+	        
 	      }
 	    },
 	    error: function () {
@@ -257,6 +291,7 @@
 	    }
 	  });
 	});
+	
 
 
   renderCalendar(currentDate);

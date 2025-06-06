@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.smhrd.service.LIcenseService;
+import com.smhrd.service.LicenseService;
 
 @Controller
 public class LicenseController {
 	
 	@Autowired
-	LIcenseService service;
+	LicenseService service;
 	
 	@RequestMapping("/goExam.do")
 	public String goExam(@RequestParam("category") int category, Model model) {
