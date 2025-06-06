@@ -27,16 +27,14 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 
 	// ✅ 사용자 ID 기준 결제 이력 + liName을 projection으로 가져오기
 	// ✅ PayInfoRepository.java
-	@Query("""
-	    SELECT p.planIdx AS planIdx, li.liName AS liName, 
-	           p.planStd AS planStd, p.planEd AS planEd, pi.planType AS planType
-	    FROM Pay_Info p 
-	    JOIN Plan_Info pi ON p.planIdx = pi.planIdx 
-	    JOIN Li_Info li ON pi.liIdx = li.liIdx 
-	    WHERE p.id = :userId 
-	    ORDER BY p.planStd DESC
-	""")
-	List<PayWithLicenseDTO> findDetailedPaymentsByUserId(@Param("userId") String userId);
+	@Query("SELECT new com.smhrd.projection.PayWithLicenseDTOImpl(p.planIdx, li.liName, p.planStd, p.planEd, pi.planType, p.planAct) " +
+		       "FROM Pay_Info p " +
+		       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
+		       "JOIN Li_Info li ON pi.liIdx = li.liIdx " +
+		       "WHERE p.id = :userId " +
+		       "ORDER BY p.planStd DESC")
+		List<PayWithLicenseDTO> findDetailedPaymentsByUserId(@Param("userId") String userId);
+
 
 
 

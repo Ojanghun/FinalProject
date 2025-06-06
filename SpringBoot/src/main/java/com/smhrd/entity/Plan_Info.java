@@ -25,7 +25,7 @@ public class Plan_Info {
     private int liIdx;
     
     @Column(name = "PLAN_TYPE", nullable = false)
-    private Boolean planType; // 플랜 타입(0: 선택형, 1: 필수형)
+    private Boolean planType; // 플랜 타입(0: 탐구형, 1: 필수형)
     
     @Column(name = "PLAN_PRICE", nullable = false)
     private int planPrice;
