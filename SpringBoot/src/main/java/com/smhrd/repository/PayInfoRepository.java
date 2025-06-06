@@ -4,8 +4,10 @@ import com.smhrd.entity.Pay_Info;
 import com.smhrd.projection.PayWithLicenseDTO;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -35,6 +37,12 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 		       "ORDER BY p.planStd DESC")
 		List<PayWithLicenseDTO> findDetailedPaymentsByUserId(@Param("userId") String userId);
 
+
+	
+	@Modifying
+	@Transactional
+	@Query("UPDATE Pay_Info p SET p.planAct = 0 WHERE p.planEd < CURRENT_TIMESTAMP AND p.planAct = 1")
+	void deactivateExpiredPlans();
 
 
 
