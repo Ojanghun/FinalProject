@@ -230,19 +230,31 @@
 
      html += `<div style="margin-bottom:20px;" id="exam${qNum}">`;
      html += `<p><strong>문제 ${qNum}.</strong> ${exam.pbQues}</p>`;
+     
+     // 문제 디테일
+     if(exam.pbDetail != null){
+    	 html += `<br><div><img src="${exam.pbDetail}"></div><br>`;
+     }	     
 
      for (let j = 0; j < choices.length; j++) {
        const choiceText = choices[j];
        const isSelected = userSelections[qNum] === (j + 1); // 선택된 선지 확인
        const choiceMark = isSelected ? "●" : circledNumbers[j]; 
+       
+       // 보기 내용이 이미지 링크인지 텍스트인지 판별
+       if (choiceText.includes("http")) {
+         displayContent = `<img src="${choiceText}" style="max-width: 100%;">`;
+       } else {
+         displayContent = choiceText;
+       }
 
        html += `
-         <div style="cursor:pointer;" onclick="selectChoice(${qNum}, ${j + 1}, \`${choiceText}\`)">
-           <span id="choice${qNum}-${j + 1}" style="margin-right: 8px; font-family: monospace;">${choiceMark}</span>
-           ${choiceText}
-         </div>
-       `;
-     }
+    	    <div style="cursor:pointer;" onclick="selectChoice(${qNum}, ${j + 1}, \`${choiceText}\`)">
+    	      <span id="choice${qNum}-${j + 1}" style="margin-right: 8px; font-family: monospace;">${choiceMark}</span>
+    	      ${displayContent}
+    	    </div>
+    	  `;
+    	}
      html += `</div>`;
    }
 
