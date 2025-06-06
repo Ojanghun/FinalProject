@@ -150,21 +150,18 @@ body {
 		</div>
 	</div>
 
-	<div class="container">
-		<div class="profile-section">
-			<img th:src="${member.userpro}" alt="프로필 이미지" class="profile-img" />
-			<div>
-				<h3 th:text="${member.name}">이름</h3>
-				<button class="btn btn-primary btn-edit">회원정보수정</button>
-			</div>
-		</div>
+  <div class="container">
+    <div class="profile-section">
+      <img th:src="${member.userpro}" alt="프로필 이미지" class="profile-img" />
+      <div>
+        <h3 th:text="${member.name}">이름</h3>
+      </div>
+    </div>
 
-		<div class="info">
-			<label>비밀번호</label> <input type="password" value="********" disabled>
-
-			<label>전화번호</label> <input type="text" th:value="${member.phone}"
-				disabled>
-		</div>
+    <div class="info">
+      <label>전화번호</label>
+      <input type="text" th:value="${member.phone}" disabled>
+    </div>
 
 		<div class="products">
 			<h4>결제한 상품</h4>
