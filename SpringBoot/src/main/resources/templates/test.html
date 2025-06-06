@@ -1,51 +1,300 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="testPage.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+
 </head>
 <body>
 	<div class="container">
-      <h2>Spring Boot RestController Member</h2>
       <div class="panel panel-warning">
-         <div class="panel-heading">Test
-         
-			<span style="float: right;">
-				<th:block th:if="${session.info == null}">
-         			<a href="login">로그인</a>
-         			<a href="join">회원가입</a>
-         		</th:block>
-         		
-    			<!-- 로그인 했을 때 영역 -->
-         		<th:block th:unless="${session.info == null}">
-         		
-	         		<!-- 관리자 영역 -->
-	         		<th:block th:if="${session.info.id == 'admin'}">
-		         		<a href="list">회원정보보기</a>
-	    			</th:block>
-	    			
-	        		<a href="update">회원정보수정</a>
-	        		<a href="logout">로그아웃</a>
-        		</th:block>
-         	</span>
-         		
-         
+         <!-- <div class="panel-heading">examPage -->
+         <div class='header-block'>
+         		<div class='test-nm-block'>
+         			<label id="sheetNum" class="sheetNum">01</label>
+         			<label class="test-info-testNm">정보처리기사</label>		
+         		</div>
+         		<div class='user-info-block'>
+         			<div class="user-id-block">
+         				<span class="user-info-userId-label">수험번호 : </span>
+         				<input class="user-info-userId" readonly="true" onfocus="this.blur()" style="cursor:default;" value="7777">
+         			</div>
+         			<div class="user-nm-block">
+         				<span class="user-info-userNm-label">수험자명 : </span>
+         				<input class="user-info-userNm" readonly="true" onfocus="this.blur()" style="cursor:default;" value="오장훈">
+         			</div>
+         		</div>
+				<div id ='timerImage' class='test-timer-block' style="background-image:url(&quot;https://www.q-net.or.kr/cbt/viewer/images/clock_icon.gif&quot;) !important">
+					<div class='max-time-block'>
+						<label class='label-max-time'>제한 시간 : 
+							<label class='test-max-time-control'>1시간</label>
+						</label>
+					</div>
+					<div class='left-time-block'>
+						<label class='label-left-time'>남은 시간: </label>
+						<input class='test-left-time-control saningong_timer panel_saningong_timer' readonly='true'  onfocus='this.blur()' style='cursor:default;' ctrl='saningong_timer' >
+						<input class='left-time-hidden' style='display:none;'>
+					</div>
+	         </div>
          </div>
-         
-
-         
          <div class="panel-body">
-            
-
+            <div class='text-box'>
+            	<div class='section-tool-block'>
+		            <div class='screen-tool'>
+		         		<!-- 100% 150% 200% 배치 ㅡ : 한줄로 보기 ㅣ : 두줄로 보기 ㅁ : 한문제 보기 -->
+		         		<div class='zoom-tool'>
+		         			<span class='zoom-tool-title'>글자크기</span>
+			         		<button class='zoomBtn' onclick="magnification(14)" style='background: url(/images/100.gif) no-repeat;'></button>
+			         		<button class='zoomBtn' onclick="magnification(20)" style='background: url(/images/150.gif) no-repeat;'></button>
+			         		<button class='zoomBtn' onclick="magnification(25)" style='background: url(/images/200.gif) no-repeat;'></button>
+			         	</div>
+			         	<div class='layout-tool'>
+			         		<span class='layout-tool-title'>화면배치</span>
+							<button onclick="arrangement('oneLine')" class='layoutBtn' style='background: url(/images/one.gif) no-repeat;'></button>
+							<button onclick="arrangement('twoLine')" class='layoutBtn' style='background: url(/images/two.gif) no-repeat;'></button>
+							<button onclick="arrangement('singleQuestion')" class='layoutBtn' style='background: url(/images/layout3_off.gif) no-repeat;'></button>
+			         	</div>
+		         	</div>
+		         	<div class='section-name-block'></div>
+		         	
+		         	<div class='progress-info-block'>
+		         		<div class="total-count-block">전체 문제 수  : 
+			         		<span class="count-info-total">100</span>
+		         		</div>
+		         		<div class="unsolved-count-block">안 푼 문제 수 : 
+			         		<span class="count-info-unsolved" >100</span>
+		         		</div>
+		         	</div>
+         		</div>
+				  <!-- 문제 출력 영역 -->
+				  <input type="hidden" id="category" th:value="${category}" />  
+				  <div id="print" style="height: 527px;" class='test-page-block-holder'></div>
+			</div>
+				  <!-- 답안 표기란 -->
+				  <div id="number" class="number-box"></div>
          </div>
-         <div class="panel-footer">빅데이터 개발자과정 - 박병관</div>
+         <div class="footer-block">
+         		<div class="footer-left-block">					
+         			<button id="btnCaculator" >
+	         			 <img src="/images/cal.gif" class="calculator_icon">
+	         			 <span class="calculator_label">계산기</span>
+         			 </button>
+         			 <div id="volumeIcon" class="button_volume_on" style="display:none;"></div>
+         			<div id="volumeSlider"></div>
+         		</div>
+         		<div class="footer-center-block">
+         		    <button id="prev-page" class="prev-page">◀ 이전</button>
+         		   	<label class="page-position-label">1/3</label>
+         		   	<button id="next-page" class="next-page">다음 ▶</button>
+         		 </div>
+         		 <div class="footer-right-block">
+         		 	<button id="btnUnsolved">
+         		 		<img src="/images/unsolved_icon.gif" class="unsolved_icon">
+         		 		<span class="unsolved_label">안 푼 문제</span></button>
+         		 	<button id="btnLabel">
+         		 		<img src="/images/submit_icon.gif" class="submit_icon">
+         		 		<span class="submit_label">답안 제출</span></button>
+         		  </div>
+         	</div>
       </div>
    </div>
+   
+   <script type="text/javascript">
+   let allExData = [];     // 전체 문제
+   let currentPage = 0;    // 현재 페이지 (0부터 시작)
+   const pageExamNum = 5; // 한페이지당 5문제(고정)
+   const userSelections = {};
+   
+   // 문제 번호 : 선택 선지 텍스트
+   const circledNumbers = ["①", "②", "③", "④"];
+   
+	$(document).ready(function(){
+		// ready() : html 코드가 준비가 되면 실행되는 메소드
+		// 게시글을 모두 가져올 수 있는 메소드!
+		loadExam();
+		Number();
+		timer();
+	});
+	
+	function timer() {
+		  let sec = 3600; // 30분
+		  const input = document.querySelector('.saningong_timer');
+		  const update = () => {
+		    if (sec < 0) return;
+		    const h = String(Math.floor(sec / 3600)).padStart(1, '0');
+		    const m = String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+		    const s = String(sec % 60).padStart(2, '0');
+		    input.value = `${h}시 ${m}분 ${s}초`;
+		    sec--;
+		  };
+		  update(); // 초기값 표시
+		  setInterval(update, 1000);
+	}
+
+
+	
+	// 문제 배율
+	function magnification(value) {
+		$("#print").css("font-size",value);
+	}
+	
+	// 문제 배치
+	function arrangement(value) {
+		if(value === "oneLine"){	
+			$("#print").css("column-count",1);
+		}else if(value === "twoLine"){	
+			$("#print").css("column-count",2);
+		}else if(value === "singleQuestion"){
+			$("#print").css("column-count",1);
+		}
+/* 		else if(value === "singleQuestion"){	
+			$("#print").css("column-count",1);
+		} */
+	}
+	
+	function Number() {
+		
+		let num = "";
+		
+		num += "<div style='text-align:center; color: #fff; background: url(/images/answer.gif) #6689C5; height: 47px; line-height: 46px; font-size: 1.6em; font-weight: bold; border-bottom: 1px solid #fff;'>답안표기란</div>";
+
+		// 100문제 for문
+		for (let i = 1; i <= 100; i++) {
+		  num += "<div style='height: 42.85px;'>";
+		  num += "<label onclick='goNum("+ i +")' class='rightNum'>" + i + "</label>";
+		  num += "<span class='rightChoice'>";
+		  
+		  for (let j = 1; j<= 4;  j++) {
+		    num += "<img id='number" + i + "-" + j + "' src='/images/n" + j + ".jpg' style='padding: 3px;' onclick='selectChoice("+i+","+j+")'>";
+		  }
+		
+		  num += "</span>";
+		  num += "</div>";
+		}
+		
+		$("#number").html(num);
+	}
+	
+/* 	$(document).on("click", "[id^='goNum']", function () {
+		  const qNum = $(this).attr("id").replace("goNum", "");
+		  const target = $("#choice" + qNum + "-1");
+		  if (target.length) {
+		    $("html, body").animate({
+		      scrollTop: target.offset().top
+		    }, 400);
+		  }
+		});
+ */
+ 	function goNum(i){
+	 $("#exam"+i)[0].scrollIntoView({behavior:'smooth'});
+ }
+	 
+//1. 문제 불러오기
+ function loadExam(pageNum = 0) {
+	 const category = parseInt($("#category").val(),10);
+	 
+	 console.log("카테고리 값:"+category);
+
+   $.ajax({
+     url: "/loadExam1",
+     type: "post",
+     data: { page: pageNum, category: category },
+     dataType: "json",
+     success: function (data) {
+       allExData = data;
+
+       currentPage = pageNum;
+       renderPage();
+     },
+     error: function () {
+       alert("error");
+     },
+   });
+ }
+
+
+ // 2. renderPage
+ function renderPage() {
+   let html = "";
+   const startIdx = currentPage * pageExamNum;
+
+   for (let i = 0; i < allExData.length; i++) {
+     const qNum = startIdx + i + 1;
+     const exam = allExData[i];
+     const choices = [exam.pbChoi1, exam.pbChoi2, exam.pbChoi3, exam.pbChoi4]; 
+
+     html += `<div style="margin-bottom:20px;" id="exam${qNum}">`;
+     html += `<p><strong>문제 ${qNum}.</strong> ${exam.pbQues}</p>`;
+
+     for (let j = 0; j < choices.length; j++) {
+       const choiceText = choices[j];
+       const isSelected = userSelections[qNum] === (j + 1); // 선택된 선지 확인
+       const choiceMark = isSelected ? "●" : circledNumbers[j]; 
+
+       html += `
+         <div style="cursor:pointer;" onclick="selectChoice(${qNum}, ${j + 1}, \`${choiceText}\`)">
+           <span id="choice${qNum}-${j + 1}" style="margin-right: 8px; font-family: monospace;">${choiceMark}</span>
+           ${choiceText}
+         </div>
+       `;
+     }
+     html += `</div>`;
+   }
+
+   html += `<div style="margin-top:30px;">`;
+   if (currentPage > 0) {
+     html += `<button onclick="prevPage()">이전</button> &nbsp`;
+   }
+   if ((currentPage + 1) * pageExamNum < 100) {
+     html += `<button onclick="nextPage()">다음</button>`;
+   }
+   html += `</div>`;
+
+   $("#print").html(html);
+ }
+
+	
+	// 번호 클릭시 발생하는 함수(문제번호,선지번호,선지내용)
+function selectChoice(questionNum, choiceNum, choiceText) {
+  const currentSelection = userSelections[questionNum];
+
+  if (currentSelection === choiceNum) {
+    // 선택 해제
+    delete userSelections[questionNum];
+    $(`#choice${questionNum}-${choiceNum}`).text(circledNumbers[choiceNum - 1]);
+    $(`#number${questionNum}-${choiceNum}`).attr("src", `/images/n${choiceNum}.jpg`);
+  } else {
+    // 선택 변경
+    userSelections[questionNum] = choiceNum;
+    for (let i = 1; i <= 4; i++) {
+      $(`#choice${questionNum}-${i}`).text(circledNumbers[i - 1]);
+      $(`#number${questionNum}-${i}`).attr("src", `/images/n${i}.jpg`);
+    }
+    $(`#choice${questionNum}-${choiceNum}`).text("●");
+    $(`#number${questionNum}-${choiceNum}`).attr("src", "/images/marking.jpg");
+  }
+}
+
+function prevPage() {
+  if (currentPage > 0) {
+    loadExam(currentPage - 1);
+  }
+}
+
+function nextPage() {
+  const maxPage = Math.floor(100 / pageExamNum);
+  if (currentPage < maxPage - 1) {
+    loadExam(currentPage + 1);
+  }
+}
+ 
+   </script>
+   
+   
 </body>
 </html>
