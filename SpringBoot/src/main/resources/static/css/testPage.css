@@ -11,7 +11,7 @@
     height: 58px !important;
     border-bottom: 5px solid #3664B1;
   }
-  .number-box{
+  .number-box {
     position: absolute;
     right: 10px;
     width: 230px;
@@ -39,9 +39,10 @@
  	 width: 21px; 
  	 vertical-align: middle;
  	 padding-left: 15px;
+ 	 cursor: pointer;
  }
     
-.test-page-block-holder {
+ .test-page-block-holder {
     border-bottom: none !important;
     position: absolute;
     left: 10px;
@@ -51,7 +52,7 @@
     overflow-y: auto;
 }
 
-  .text-box{    
+  .text-box {    
     position: absolute;
     left: 10px;
     right: 250px;
@@ -59,7 +60,7 @@
     bottom: 40px;
     border: solid 1px #ccc; 
 }
-.test-timer-block {
+ .test-timer-block {
     position: absolute;
     width: 250px;
     right: 0px;
@@ -75,7 +76,7 @@
     margin-top: 5px;
     
 }
-.header-block .test-timer-block .left-time-block .test-left-time-control {
+ .test-left-time-control {
     color: #ee3e77;
     font-weight: bold;
     width: 90px;
@@ -83,20 +84,20 @@
     border: none;
 	
 }
-.header-block .test-timer-block .max-time-block .label-max-time {
+ .label-max-time {
     padding-left: 55px;
 	
 }
-.header-block .test-timer-block .left-time-block {
+ .left-time-block {
     color: #ee3e77;
     font-weight: bold;
     height: 40px;
     margin-top: -5px;
 }
-.header-block .test-timer-block .left-time-block .label-left-time {
+ .label-left-time {
     padding-left: 55px;
 }
-.header-block .test-nm-block {
+ .header-block .test-nm-block {
     position: absolute;
     left: 0px;
     right: 400px;
@@ -104,10 +105,10 @@
     bottom: 0px;
     background: silver;
 }
-.header-block .test-nm-block {
+ .test-nm-block {
     background: url(/images/header_title_bg.gif) repeat-x !important;
 }
-.sheetNum {
+ .sheetNum {
     position: absolute !important;
     width: 45px !important;
     height: 45px !important;
@@ -120,7 +121,7 @@
     font: 800 1.9em 'NanumGothic', '나눔고딕', 'Dotum', '돋움', 'Gulim', '굴림', 'AppleGothic', Sans-serif !important;
     z-index: 1000 !important;
 }
-.header-block .test-info-testNm {
+ .test-info-testNm {
     position: absolute !important;
     line-height: 54px !important;
     font-size: 15pt !important;
@@ -133,7 +134,7 @@
     color: #000;
 }
 
-.header-block .user-info-block {
+ .user-info-block {
     position: absolute;
     width: 219px;
     right: 240px;
@@ -142,25 +143,20 @@
     background: silver;
     border-left: solid 1px #aaa;
 }
-.header-block .user-info-block {
-    background: url(../images/user_info_bg.gif) repeat-x !important;
-    font-size: 11pt;
-    border: solid 1px #d3d4d7 !important;
-}
 
-.header-block .user-info-block {
+ .user-info-block {
     background: url(/images/user_info_bg.gif) repeat-x !important;
     font-size: 11pt;
     border: solid 1px #d3d4d7 !important;
     background: silver;
 }
-.header-block .user-id-block {
+ .user-id-block {
     height: 20px;
 }
-.header-block .user-nm-block {
+ .user-nm-block {
     margin-top: 8px !important;
 }
-.header-block .user-nm-block {
+ .user-nm-block {
     margin-top: 5px;
     height: 20px;
 }
@@ -168,7 +164,7 @@
     float: left;
     padding-left: 5px;
 }
-.user-info-userId {
+ .user-info-userId {
     background: white;
     border: 1px solid #bec4cc;
     height: 19px;
@@ -176,11 +172,11 @@
     padding-right: 10px;
     width: 130px;
 }
-.user-info-userNm-label {
+ .user-info-userNm-label {
     float: left;
     padding-left: 5px;
 }
-.user-info-userNm {
+ .user-info-userNm {
     background: white;
     border: 1px solid #bec4cc;
     height: 19px;
@@ -193,7 +189,7 @@
     top: 0px;
     left: 0px;
     right: 0px;
-    height: 49px;
+    height: 50px;
     border-bottom: solid 1px #ccc;
 }
  .screen-tool {
@@ -204,16 +200,12 @@
     border-right: solid 1px #ccc;
     
     width: 475px !important;
-    height: 50px !important;
     background: #eff1f4 !important;
     display: inline-block !important;
 }
  .zoom-tool {
     float: left !important;
     width: 225px !important;
-    border-bottom: 1px solid #ccc;
-    height: 49px !important;      /* 높이를 49px로 통일 */
-    line-height: 15px !important; /* 세로 정렬을 위해 line-height도 49px */
     margin-top: 0 !important;
     padding-left: 15px !important;
     font-size: 10pt;
@@ -223,17 +215,16 @@
  .layout-tool {
     float: left !important;
     width: 225px !important;
-    border-bottom: 1px solid #ccc;
-    height: 49px !important;      /* 높이를 49px로 통일 */
     line-height: 15px !important; /* 세로 정렬을 위해 line-height도 49px */
     margin-top: 0 !important;
+    margin-left: 15px;
     padding-left: 15px !important;
     font-size: 10pt;
     background: none !important;  /* layout-tool은 배경 필요하면 추가하세요 */
 }
 
 
-.layout-tool-title {
+ .layout-tool-title {
     display: inline-block;
     width: 30px;          /* 글자 길이에 맞게 조금 넓힘 (필요시 조정) */
     height: 49px;
@@ -242,7 +233,8 @@
     vertical-align: middle; /* inline-block 세로 정렬 */
     margin-top: 0;        /* margin-top 제거 */
 }
- .zoom-tool-title{
+
+  .zoom-tool-title {
 	display: inline-block;
     width: 30px;          /* 글자 길이에 맞게 조금 넓힘 (필요시 조정) */
     height: 49px;
@@ -306,7 +298,7 @@
     margin-top: 3px;
     height: 20px;
 }
-.total-count-block .count-info-total, .unsolved-count-block .count-info-unsolved {
+ .count-info-unsolved {
     color:#ff0000;
     font-weight: bold;
     font-size: 11pt !important;
@@ -316,7 +308,7 @@
     height: 20px;
 }
 
-.footer-block {
+ .footer-block {
     position: fixed;
     left: 0px;
     right: 0px;
@@ -333,9 +325,9 @@
 .footer-left-block button {
     cursor: pointer;
     text-align: center;
-
 }
-#btnCaculator {
+
+ #btnCaculator {
     width: 131px !important;
     height: 36px !important;
     display: inline-block;
@@ -358,13 +350,13 @@
     line-height: 20px;
 }
 
- .calculator_label{
+ .calculator_label {
     font-weight: bold;
     font-size: 12pt;
  	vertical-align: middle !important;
  }
 
- .footer-center-block{
+ .footer-center-block {
     position: absolute;
     left: 200px;
     right: 200px;
@@ -385,13 +377,13 @@
     
 }
 
- .footer-block .page-position-label{
+ .page-position-label {
  	font-size: 1.25em;
     color: #3664b1;
     width: 50px !important;
  }
  
-  .footer-block .next-page {
+ .next-page {
 	color: #3664b1;
     width: 92px !important;
     height: 36px !important;
@@ -401,7 +393,7 @@
     border: none;
 }
 
-.footer-block .footer-right-block {
+ .footer-right-block {
     position: absolute;
     right: 0px;
     width: 300px;
@@ -419,14 +411,14 @@
 	border: none;
 }
 
-.footer-block .unsolved_icon {
+ .unsolved_icon {
     display: inline-block !important;
     line-height: 30px !important;
     vertical-align: middle !important;
     margin-bottom: 5px;
 }
 
-.footer-block .unsolved_label {
+ .unsolved_label {
  	display: inline-block !important;
     margin-bottom: 7px !important;
     font-weight: bold;
@@ -451,14 +443,14 @@
 
 }
 
-.footer-block .submit_icon {
+ .submit_icon {
     display: inline-block !important;
     line-height: 30px !important;
     vertical-align: middle !important;
     margin-bottom: 5px;
 }
 
- .footer-block .submit_label{
+ .submit_label {
     font-weight: bold;
     font-size: 12pt;
  	vertical-align: middle !important;

@@ -66,8 +66,8 @@
                 <option value="8">2022-04-24</option>
               </select>
             </div>
-            <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
-            <button style="margin-right:50px;" class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
+            <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">연습</button>
+            <button style="margin-right:50px;" class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">시험</button>
           </form>
         </div>
 
@@ -77,8 +77,8 @@
 		  <form action="goTypeList.do" method="post" class="d-flex align-items-center gap-2" style="padding-left: 100px;">
 		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		    
-		    <select name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
-		      <option value="" disabled selected hidden>유형을 선택해주세요</option>
+		    <select id="category" name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
+		      <option value="" disabled selected hidden>유형 선택</option>
 		      <option value="101">1</option>
 		      <option value="102">2</option>
 		      <option value="103">3</option>
@@ -91,7 +91,8 @@
 		      <option value="110">10</option>
 		    </select>
 		
-		    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;">
+			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
+			    	onclick="if(document.getElementById('category').value == ''){ alert('유형을 선택해주세요.'); return false; }">
 		      <i class="bi bi-search"></i>
 		    </button>
 		  </form>
@@ -168,9 +169,14 @@
   
   function submitForm(actionUrl) {
       const form = document.getElementById("examForm");
-      console.log("form값: "+ form);
-      form.action = actionUrl;
-      form.submit();
+      if(form == ""){
+	      console.log("form값: "+ form);
+	      form.action = actionUrl;
+	      form.submit();
+      }else{
+    	  alert("회차를 선택해주세요.");
+    	  event.preventDefault(); // 폼 제출 막기
+      }
     }
   
   // calendarBody: 달력 테이블(<tbody>)을 넣을 위치
