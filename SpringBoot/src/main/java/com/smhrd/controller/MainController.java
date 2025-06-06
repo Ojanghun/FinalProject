@@ -65,6 +65,8 @@ public class MainController {
 
         List<Li_Info> licenseList = liInfoRepository.findAll();
         model.addAttribute("licenseList", licenseList);
+        System.out.println("li정보: "+licenseList);
+ 
 
         model.addAttribute("session", session.getAttribute("info"));
 

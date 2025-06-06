@@ -13,7 +13,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+	<!-- 자동 로그인 -->
+	<form id="autoLogin" th:action="@{/login}" method="post">
+	  <input type="hidden" id="id" name="id" value="admin">
+	  <input type="hidden" id="pw" name="pw" value="admin">
+	</form>
   <div class="container">
     
     <!-- ✅ 결제 성공 메시지 표시 -->
@@ -96,5 +100,14 @@
 
   <!-- JS -->
   <script type="text/javascript" src="js/search.js"></script>
+  <script type="text/javascript">
+	  //자동 로그인
+	  window.onload = function() {
+		    if (!sessionStorage.getItem('autoLoginDone')) {
+		        document.getElementById('autoLogin').submit();
+		        sessionStorage.setItem('autoLoginDone', 'true');
+		      }
+		  }
+  </script>
 </body>
 </html>

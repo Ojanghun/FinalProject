@@ -1,5 +1,7 @@
 package com.smhrd.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.smhrd.entity.Li_Info;
+import com.smhrd.entity.Member;
 import com.smhrd.service.LicenseService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class LicenseController {
@@ -16,7 +22,7 @@ public class LicenseController {
 	@Autowired
 	LicenseService service;
 	
-	@RequestMapping("/goExam.do")
+	@PostMapping("/goExam.do")
 	public String goExam(@RequestParam("category") int category, Model model) {
 		model.addAttribute("category", category);
 		System.out.println("카테고리 값: "+category);
@@ -24,16 +30,51 @@ public class LicenseController {
 	}
 	
 	@PostMapping("/goTest.do")
-	public String goTest(@RequestParam("category") String category, Model model) {
-		model.addAttribute("category", category);
-		System.out.println("카테고리 값: "+category);
-		return "test";	
+	public String goTest(
+	    @RequestParam("category") String category,
+	    @RequestParam("liIdx") int liIdx,
+	    @RequestParam("liName") String liName,
+	    @RequestParam("liTime") String liTime,
+	    @RequestParam("liPbc") String liPbc,
+	    HttpSession session,
+	    Model model) {
+		
+		Member member = (Member) session.getAttribute("info");
+		if (member != null) {
+			// member 값이 있을 때 모델에 member이라는 이름으로 저장
+			model.addAttribute("member", member);
+		}
+		
+	    // 시간 가공 (분 → 시/분/초 포맷)
+	    int totalMinutes = Integer.parseInt(liTime); // 예: "150"
+	    int totalSeconds = totalMinutes * 60;
+
+	    String formattedTime = String.format("%d시 %d분 %02d초", totalMinutes / 60, totalMinutes % 60, 0);
+
+	    model.addAttribute("category", category);
+	    model.addAttribute("liIdx", liIdx);
+	    model.addAttribute("liName", liName);
+	    model.addAttribute("liTime", formattedTime);     // 보기용
+	    model.addAttribute("liTimeSec", totalSeconds);   // 타이머용
+	    model.addAttribute("liPbc", liPbc);
+
+
+	    return "test";
 	}
+
+	
+	/*
+	 * @PostMapping("/goTest.do") public String goTest(@RequestParam("category")
+	 * String category,Model model) { model.addAttribute("category", category);
+	 * System.out.println("카테고리 값: "+category); return "test"; }
+	 */
 	
 	@RequestMapping("/goTypeList.do")
-	public String goTypeList(@RequestParam("category") int category, Model model) {
+	public String goTypeList(@RequestParam("licenseList") List<Li_Info> licenseList, @RequestParam("category") int category, Model model) {
 		model.addAttribute("category", category);
 		System.out.println("카테고리 값: "+category);
+		Li_Info licenseInfo = licenseList.get(0);
+		model.addAttribute("licenseInfo", licenseInfo);
 		return "topic";	
 	}
 	
