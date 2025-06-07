@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.smhrd.entity.Exam;
+import com.smhrd.entity.Topic_Info;
 import com.smhrd.repository.ExamRepository;
+import com.smhrd.repository.TopicInfoRpository;
 
 @Service
 public class ExamService {
@@ -20,16 +22,25 @@ public class ExamService {
 	@Autowired
 	private ExamRepository repository;
 	
+	@Autowired
+	private TopicInfoRpository TIrepository;
+	
 	// 년도 별 문제 불러오기
 	public List<Exam> loadExam(int category) { // 카테고리 값을 받아왔음, 2가지 값 받아오는게 가능할지도?
 		
 		if(category < 100) {
 			return repository.findTop100ByExIdOrderByPbNum(category);
 		}else { // 유형별 문제는 0~56 
-			return repository.findAllByOrderByPbTopicAsc();
+			return repository.findByPbTopicOrderByPbTopicAsc(category);
 		}
 	}
 	
+	
+	
+	// Topic info 가져오기
+	public List<Topic_Info> loadTopic(int category){
+		return TIrepository.findByTopicIdxOrderByTopicNumAsc(category);
+	}
 	
 	// 년도 별 선지 랜덤화
 	public List<List<String>> shuffle(int category) {
@@ -39,7 +50,7 @@ public class ExamService {
 		if(category < 100) { // 년도별 문제는 1~8 -> 그대로 1~8
 			exList = repository.findTop100ByExIdOrderByPbNum(category);
 		}else { // 유형별 문제는 0~56 -> 100~156
-			exList = repository.findAllByOrderByPbTopicAsc();
+			exList = repository.findByPbTopicOrderByPbTopicAsc(category);
 		}
 			 
 		// 섞인 선지 데이터 모든 세트를 담아줄 리스트
@@ -125,6 +136,13 @@ public class ExamService {
 			choice.add(options);
 		}
 		return choice;
+	}
+
+
+
+	public void updateTopic() {	
+		TIrepository.updateTopicNumPlus100IfLessThan100();
+		// TODO Auto-generated method stub
 	}
 
 	

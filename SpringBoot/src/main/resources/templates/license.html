@@ -43,6 +43,7 @@
 	  <strong>00일</strong>
 	  <span> 남았어요~</span>
     </h4>
+   
 
     <div class="row">
       <!-- Left Column -->
@@ -78,7 +79,7 @@
         <!-- 주제별 학습하기 -->
         <div class="dashboard-card p-4">
 		  <h5 class="fw-bold mb-4">주제별 학습하기</h5>
-		  <form action="goTypeList.do" method="post" class="d-flex align-items-center gap-2" style="padding-left: 100px;">
+		  <form action="/goTopic.do" method="post" class="d-flex align-items-center gap-2" style="padding-left: 100px;">
 		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		    <select id="category" name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
 		      <option value="" disabled selected hidden>유형 선택</option>
@@ -107,6 +108,10 @@
       <div class="col-md-4">
         <div class="dashboard-card p-4" style="height: 350px;">
           <h5 class="fw-bold mb-3" th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
+          	<form action="/updateTopicNums.do" method="post" style="display:inline;">
+          	  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			  <button type="submit" class="btn btn-light">팀장님 발작버튼</button>
+			</form>
           <canvas id="wrongChart" height="250"></canvas>
         </div>
       </div>

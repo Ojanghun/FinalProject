@@ -42,7 +42,7 @@ public class ProductController {
 		model.addAttribute("licenseList", licenseList);
 		System.out.println("li정보 : "+licenseList);
 		
-		// 위에서 로그인시 받아온 id 값 기준으로 /서비스에서 저장된 날짜들 List에 받아오기 
+		// 위에서 로그인시 받아온 id 값 기준으로 /출석된 날짜들 서비스에서 불러오기
 		List<LocalDate> date = licenseservice.getAllAttendanceDates(id);
 		if (date != null) {
 			// 모델에 저장

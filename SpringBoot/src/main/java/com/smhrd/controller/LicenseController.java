@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
+import com.smhrd.service.ExamService;
 import com.smhrd.service.LicenseService;
 
 import jakarta.servlet.http.HttpSession;
@@ -21,6 +22,9 @@ public class LicenseController {
 	
 	@Autowired
 	LicenseService service;
+	
+	@Autowired
+	ExamService Exservice;
 	
 	@PostMapping("/goExam.do")
 	public String goExam(@RequestParam("category") int category, Model model) {
@@ -63,25 +67,25 @@ public class LicenseController {
 	}
 
 	
-	/*
-	 * @PostMapping("/goTest.do") public String goTest(@RequestParam("category")
-	 * String category,Model model) { model.addAttribute("category", category);
-	 * System.out.println("카테고리 값: "+category); return "test"; }
-	 */
-	
-	@RequestMapping("/goTypeList.do")
-	public String goTypeList(@RequestParam("licenseList") List<Li_Info> licenseList, @RequestParam("category") int category, Model model) {
+	@RequestMapping("/goTopic.do")
+	public String goTopic(@RequestParam("category") int category, Model model) {
 		model.addAttribute("category", category);
 		System.out.println("카테고리 값: "+category);
-		Li_Info licenseInfo = licenseList.get(0);
-		model.addAttribute("licenseInfo", licenseInfo);
-		return "topic";	
+		return "topic";
 	}
 	
+	// 출석체크
 	@PostMapping("/atd_check")
 	@ResponseBody
 	public boolean atd_check(@RequestParam("id") String id) {
 	    return service.atd_check(id);
+	}
+	
+	@PostMapping("/updateTopicNums.do")
+	public String updateTopicNums() {
+	    Exservice.updateTopic();
+	    System.out.println("완료");
+	    return "redirect:/license"; // 원하는 페이지로 이동
 	}
 	
 	
