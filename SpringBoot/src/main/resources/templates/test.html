@@ -24,15 +24,17 @@
          		<div class='test-nm-block'>
          		    <label id="sheetNum" class="sheetNum" th:text="${liIdx}"></label>
          			<label class="test-info-testNm" th:text="${liName}"></label>
+         			<label style="position: absolute; right: 70px; bottom: 23px;"><button onclick="lotto()">수험번호 뽑기</button></label>
+         			<label style="position: absolute; right: 70px; bottom: -5px;"><button onclick="lottoName()">수험이름 뽑기</button></label>
          		</div>
          		<div class='user-info-block'>
          			<div class="user-id-block">
          				<span class="user-info-userId-label">수험번호 : </span>
-         				<input class="user-info-userId" readonly="true" onfocus="this.blur()" style="cursor:default;" value="7777">
+         				<input id='lotto' class="user-info-userId" readonly="true" onfocus="this.blur()" style="cursor:default;" value="7777">
          			</div>
          			<div class="user-nm-block">
          				<span class="user-info-userNm-label">수험자명 : </span>
-         				<input class="user-info-userNm" readonly="true" onfocus="this.blur()" style="cursor:default;" th:value="${member.name}">
+         				<input id='lottoName' class="user-info-userNm" readonly="true" onfocus="this.blur()" style="cursor:default;" th:value="${member.name}">
          			</div>
          		</div>
 				<div id ='timerImage' class='test-timer-block' style="background-image:url(&quot;https://www.q-net.or.kr/cbt/viewer/images/clock_icon.gif&quot;) !important">
@@ -393,6 +395,23 @@ function nextPage() {
 
   }
 }
+
+function lotto(){
+    // 10000000부터 99999999 사이의 무작위 정수 생성
+    const number = Math.floor(Math.random() * 90000000) + 10000000;
+    $("#lotto").val(number);
+}
+function lottoName() {
+    const startCode = 0xAC00; // '가'
+    const endCode = 0xD7A3;   // '힣'
+    let result = "";
+    for (let i = 0; i < 3; i++) {
+      const code = Math.floor(Math.random() * (endCode - startCode + 1)) + startCode;
+      result += String.fromCharCode(code);
+    }
+    $("#lottoName").val(result);
+   
+  }
  
    </script>
    
