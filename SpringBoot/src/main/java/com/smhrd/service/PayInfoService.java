@@ -20,4 +20,10 @@ public class PayInfoService {
     public void deactivateExpiredPlans() {
         payInfoRepository.deactivateExpiredPlans();
     }
+    
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
+    public void updateRefundStatus() {
+        payInfoRepository.updateRefundStatus();
+    }
 }

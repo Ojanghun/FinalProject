@@ -45,5 +45,13 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 	void deactivateExpiredPlans();
 
 
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE pay_info " +
+	               "SET rf_act = CASE " +
+	               "    WHEN NOW() BETWEEN plan_ed AND DATE_ADD(plan_ed, INTERVAL 7 DAY) THEN 1 " +
+	               "    ELSE 0 " +
+	               "END", nativeQuery = true)
+	void updateRefundStatus();
 
 }
