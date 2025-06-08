@@ -120,7 +120,7 @@ public class ExamService {
         }
 
         return allQuestions.subList(start, end);
-}
+	}
 
 	public List<List<String>> shuffle1(int pageNum, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("pbNum").ascending());

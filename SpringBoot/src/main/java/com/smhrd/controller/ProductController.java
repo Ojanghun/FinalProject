@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.smhrd.entity.Atd_Log;
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
+import com.smhrd.entity.Topic_Info;
 import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.service.LicenseService;
 
@@ -21,10 +22,6 @@ public class ProductController {
 	
 	@Autowired
 	LicenseService licenseservice;
-	
-    @Autowired
-    private LiInfoRepository liInfoRepository;
-	
 
 	@GetMapping("/license")
 	public String license(HttpSession session, Model model) {
@@ -38,17 +35,21 @@ public class ProductController {
 			// 출석을 위해 id값 저장해두기
 			id = member.getId();
 		}
-		List<Li_Info> licenseList = liInfoRepository.findByLiName("정보처리기사");
+		List<Li_Info> licenseList = licenseservice.liInfo();
 		model.addAttribute("licenseList", licenseList);
 		System.out.println("li정보 : "+licenseList);
 		
 		// 위에서 로그인시 받아온 id 값 기준으로 /출석된 날짜들 서비스에서 불러오기
 		List<LocalDate> date = licenseservice.getAllAttendanceDates(id);
+		
 		if (date != null) {
 			// 모델에 저장
-			model.addAttribute("date", date);
-
+			model.addAttribute("date", date);	
 		}
+		
+		List<Topic_Info> topicList = licenseservice.topicInfo();
+		model.addAttribute("topicList", topicList);
+		
 		return "license";
 	}
 	

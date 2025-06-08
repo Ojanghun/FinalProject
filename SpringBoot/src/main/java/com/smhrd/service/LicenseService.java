@@ -8,13 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.smhrd.entity.Atd_Log;
+import com.smhrd.entity.Li_Info;
+import com.smhrd.entity.Topic_Info;
+import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.repository.LicenseRepository;
+import com.smhrd.repository.TopicInfoRpository;
 
 @Service
 public class LicenseService {
 
 	@Autowired
 	LicenseRepository repository;
+	
+    @Autowired
+    LiInfoRepository liInforepository;
+    
+    @Autowired
+    TopicInfoRpository TopicInforepository;
 
 	// 출석 가능 여부를 True와 False로 받아주기
 	public boolean atd_check(String id) {
@@ -48,5 +58,15 @@ public class LicenseService {
 		}
 		return date;
 	}
+	
+	// 정보처리기사에 대한 정보 가져오기
+	public List<Li_Info> liInfo(){
+		return liInforepository.findByLiName("정보처리기사");
+	}
+	
+	public List<Topic_Info> topicInfo(){
+		return TopicInforepository.findByLiIdx(1);
+	}
+	
 	
 }

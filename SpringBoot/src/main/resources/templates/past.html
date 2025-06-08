@@ -21,7 +21,7 @@
 			<div class="panel-body">
 
 				<input type="hidden" id="category" th:value="${category}" />
-				<div id="print" style="column-count: 2; column-gap: 40px;"></div>
+				<div id="examBoard" style="column-count: 2; column-gap: 40px;"></div>
 
 			</div>
 			<div class="panel-footer">빅데이터 개발자과정 - 손종희</div>
@@ -65,8 +65,8 @@
 	     let listHtml = "";
 	     
 	     
-	     // div의 id가 print인 부분이 비어있다면 실행, 안그러면 클릭할 때마다 선지 랜덤이 실행되버림..
-	     if ($("#print").html().trim() === "") {
+	     // div의 id가 examBoard인 부분이 비어있다면 실행, 안그러면 클릭할 때마다 선지 랜덤이 실행되버림..
+	     if ($("#examBoard").html().trim() === "") {
 	       $.each(shufData, function(index, options) {
 	    	 const pbId = exData[index].pbId-1;
 	    	   
@@ -128,14 +128,15 @@
 	         listHtml += "<br>"
 	         
 	       });
-	       // div의 id가 print인 부분에 listHtml 추가
-	       $("#print").html(listHtml);
+	       // div의 id가 examBoard인 부분에 listHtml 추가
+	       $("#examBoard").html(listHtml);
 	     }
 	   }).fail(function() { // 실패시
 	     alert("Error!"); // 오류시 출력문
 	   });
 	 }
    
+    // 정답 확인
     function correctAnswer(pbId, index){
     	
     	$.ajax({
@@ -155,12 +156,14 @@
     						}
     					}
     				    if(userSelections[index+1] === data){
+    				    	// 일치하는 경우 o
     				    	console.log("클릭 data: ", userSelections[index+1]);
     				    	$("#check" + (index+1)).css("display","block");
     				    	$("#check" + (index+1)).attr("src","/images/o.png");
 
     				    }
     				    else{
+    				    	// 일치하지 않는 경우 x
     				    	console.log("클릭 data: ", userSelections);
     				    	$("#check" + (index+1)).css("display","block");
     				    	$("#check" + (index+1)).attr("src","/images/x.png");
