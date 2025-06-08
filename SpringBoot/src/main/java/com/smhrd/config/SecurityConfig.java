@@ -30,7 +30,9 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/pay/submit"), // ✅ 결제 POST 요청 CSRF 예외 처리
                     new AntPathRequestMatcher("/loadExam1/**"),
                     new AntPathRequestMatcher("/atd_check/**"),
-                    new AntPathRequestMatcher("/loadTopic/**")
+                    new AntPathRequestMatcher("/loadTopic/**"),
+                    new AntPathRequestMatcher("/submitPbsData"),
+                    new AntPathRequestMatcher("/submitPbsData/**")
                     
                 )
             )
