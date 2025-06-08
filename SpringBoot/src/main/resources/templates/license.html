@@ -21,6 +21,7 @@
   <!-- Header -->
    <input type="hidden" id="id" th:value="${member.id}" />
    
+   
   <nav class="custom-header">
     <div class="container d-flex justify-content-between align-items-center">
       <div class="logo d-flex align-items-center gap-2">
@@ -82,8 +83,8 @@
 		  <form action="/goTopic.do" method="post" class="d-flex align-items-center gap-2" style="padding-left: 100px;">
 		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		    <select id="category" name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
-		      <option value="" disabled selected hidden>유형 선택</option>
-		      <option th:each="topic : ${topicList}" th:value="${topic.topicIdx}" th:text="${topic.topicName}"></option>
+		      <div id="topicSelect"></div>
+
 		    </select>
 		
 			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
@@ -163,7 +164,35 @@
 
   <!-- Script -->
   <script th:inline="javascript">
-  
+	$(document).ready(function(){
+		// ready() : html 코드가 준비가 되면 실행되는 메소드
+		loadTopic();
+	});
+	
+ function loadTopic() {
+	 
+	 	// 리스트라서.. 이렇게 가져옴
+	    let topicList = /*[[${topicList}]]*/ [];
+
+		const Name = [];
+
+	    listHtml = "";
+	    listHtml = "<option value='' disabled selected hidden>유형 선택</option>";
+	    
+	    for (let i = 0; i < topicList.length; i++) {
+	    	  let parts = topicList[i].topicName.split(" - ");
+	    	  Name.push(parts[0]);
+	    	}
+	    
+	    for(let i=0; i<topicList.length; i++){
+				    	
+	    	listHtml += "<option value='" + topicList[i].topicIdx + "'>"+ topicList[i].topicNum+". " + Name[i] + "</option>";
+
+
+	    }
+	    $("#topicSelect").html(listHtml);   
+	    
+ } 
 
   
   function submitForm(actionUrl) {

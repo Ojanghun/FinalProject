@@ -3,14 +3,17 @@ package com.smhrd.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.entity.Exam;
+import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
 import com.smhrd.service.ExamService;
 
@@ -88,5 +91,22 @@ public class ExamController {
 	    return choice;
 	}
 	
+	@PostMapping("/submitPbsData")
+	public void submitPbsData(@RequestBody List<Pbs_Log> dataList) {
+	    dataList.forEach(log -> {
+	        Pbs_Log entity = new Pbs_Log();
+	        entity.setUserId(log.getUserId());
+	        entity.setPbId(log.getPbId());
+	        entity.setPbsCheck(log.getPbsCheck());
+
+	        service.submitPbsData(entity);
+	    });
+	}
+
+	
+	@GetMapping("/submitPbsData")
+	public void blockGet() {
+	    System.out.println("🔥 누가 GET으로 submitPbsData를 호출함");
+	}
 	
 }

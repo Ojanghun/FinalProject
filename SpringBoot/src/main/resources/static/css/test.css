@@ -63,7 +63,7 @@
  }
 
  .scoreBox {
-	display: flex;
+	display: none;
 	position: absolute;
 	top: 15%;
 	left: 35%;
