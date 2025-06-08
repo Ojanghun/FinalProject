@@ -50,7 +50,87 @@
     top: 60px;
     bottom: 100px;
     overflow-y: auto;
+    left: 10px;
+    right: 0px;
+    top: 60px;
+    bottom: 100px;
 }
+ .modal_border_helper {
+ 	margin: auto;
+    width: 910px;
+    overflow: hidden;
+    background: #3664B1;
+ }
+
+ .scoreBox {
+	display: flex;
+	position: absolute;
+	top: 15%;
+	left: 35%;
+  	flex-direction: column;
+ }
+/*  .scoreBox {
+ 	display: none;
+	justify-content: center;
+	align-items: center;
+	height: 100vh; 화면 전체 기준으로 정중앙
+	transform: translateY(-100px); ← 살짝 위로
+	display: flex;
+  	flex-direction: column;
+  	gap: 10px;
+ } */
+ .scoreComment {
+ 	display: flex;
+ 	align-items: center;
+ 	margin-top: 50px;
+ 	padding-bottom: 20px;
+ }
+
+ .scoreBoard {
+ 	background: #f2f2f2;
+ 	padding: 3px;
+ 	border-radius: 8px;
+ 	position: absolute;
+	text-align: center;
+	margin: auto;
+    width: 800px;
+    height: 300px;
+    overflow: hidden;
+  
+}
+
+ .scoreContainer {
+	 border-radius: 10px;
+	 border: 3px solid #3664B1;
+ }
+ 
+  .scoreText {
+	background: #f1faff;
+	vertical-align: middle;
+    text-align: center;
+  	display: flex;
+  	height: 40px;
+  }
+  .scoreValue {
+  	vertical-align: middle;
+    text-align: center;
+  	display: flex;
+  	height: 50px;
+  }
+ 
+ .scoreText div {
+ 	background: #f1faff;
+    width: 25%; /* 4칸이므로 100% / 4 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+ }
+ .scoreValue div {
+    width: 25%; /* 4칸이므로 100% / 4 */
+    padding: 10px;
+    border: 1px solid #ccc;
+ }
+ 
 
   .text-box {    
     position: absolute;

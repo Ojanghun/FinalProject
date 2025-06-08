@@ -136,6 +136,7 @@
 	   });
 	 }
    
+    // 정답 확인
     function correctAnswer(pbId, index){
     	
     	$.ajax({
@@ -155,12 +156,14 @@
     						}
     					}
     				    if(userSelections[index+1] === data){
+    				    	// 일치하는 경우 o
     				    	console.log("클릭 data: ", userSelections[index+1]);
     				    	$("#check" + (index+1)).css("display","block");
     				    	$("#check" + (index+1)).attr("src","/images/o.png");
 
     				    }
     				    else{
+    				    	// 일치하지 않는 경우 x
     				    	console.log("클릭 data: ", userSelections);
     				    	$("#check" + (index+1)).css("display","block");
     				    	$("#check" + (index+1)).attr("src","/images/x.png");
