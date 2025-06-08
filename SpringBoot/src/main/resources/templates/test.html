@@ -229,15 +229,23 @@
 	// 문제 배치
 	function arrangement(value) {
 		if(value === "oneLine"){	
-			$("#print").css("column-count",1);
+		    $("#print").css({
+		        "column-count": "initial"
+
+		    });
 		}else if(value === "twoLine"){	
-			$("#print").css("column-count",2);
+		    $("#print").css({
+		        "column-count": "2",
+		        "column-gap": "20px",
+		        "width": "100%"
+		    });
 		}
 /* 		else if(value === "singleQuestion"){	
 			$("#print").css("column-count",1);
 		} */
 	}
 	
+	// 오른쪽 1~100까지 숫자
 	function Number() {
 		
 		let num = "";
@@ -315,7 +323,7 @@ function goNum(i) {
      const choices = [exam.pbChoi1, exam.pbChoi2, exam.pbChoi3, exam.pbChoi4];
 
 
-     html += `<div style="margin-bottom:20px;" id="exam${qNum}">`;
+     html += `<div class="oneExam" id="exam${qNum}">`;
      html += `<p><strong>문제 ${qNum}.</strong> ${exam.pbQues}</p>`;
      
      // 문제 디테일
