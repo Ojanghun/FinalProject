@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,10 +28,14 @@ public class Pay_Info {
     private int planIdx;
     
     @Column(name = "PLAN_STD", nullable = false, insertable = false, updatable = false)
-    private LocalDateTime planStd; // 플랜 시작일 → 자동으로 결재된 시간이 들어와야함
+    private LocalDateTime planStd; // 플랜 시작일 → 자동으로 결재된 시간이 들어옴
     
     @Column(name = "PLAN_ED", nullable = false)
     private LocalDateTime planEd;
     
+    @Column(name = "PLAN_ACT", nullable = false)
+    private int planAct;
     
+    @Column(name = "RF_ACT", nullable = false)
+    private int rfAct;
 }

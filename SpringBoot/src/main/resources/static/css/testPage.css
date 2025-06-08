@@ -1,0 +1,457 @@
+@charset "UTF-8";
+
+  .header-block {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    height: 50px;
+    
+    background: url(/images/title_bg.gif) repeat-x !important;
+    height: 58px !important;
+    border-bottom: 5px solid #3664B1;
+  }
+  .number-box {
+    position: absolute;
+    right: 10px;
+    width: 230px;
+    top: 60px;
+    bottom: 40px;
+    background: #ffffff;
+    border-left: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+    overflow-y: auto;
+ }
+ 
+ .rightNum {
+	 color: #3664b1;
+	 background: #dbe9fd;
+	 width: 45px;
+	 padding: 10px 0;
+	 font-weight: bold;
+	 text-align: center;
+	 font-size: 16px;
+	 cursor: pointer;
+	 vertical-align: middle;
+}
+ .rightChoice {
+ 	 height: 21px; 
+ 	 width: 21px; 
+ 	 vertical-align: middle;
+ 	 padding-left: 15px;
+ 	 cursor: pointer;
+ }
+    
+ .test-page-block-holder {
+    border-bottom: none !important;
+    position: absolute;
+    left: 10px;
+    right: 0px;
+    top: 60px;
+    bottom: 100px;
+    overflow-y: auto;
+}
+
+  .text-box {    
+    position: absolute;
+    left: 10px;
+    right: 250px;
+    top: 60px;
+    bottom: 40px;
+    border: solid 1px #ccc; 
+}
+ .test-timer-block {
+    position: absolute;
+    width: 250px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background: #444;
+}
+.test-timer-block {
+    background: url(/images/clock_icon.gif) no-repeat 5px center !important;
+    height: 50px;
+    font-size: 10pt !important;
+    width: 230px !important;
+    margin-top: 5px;
+    
+}
+ .test-left-time-control {
+    color: #ee3e77;
+    font-weight: bold;
+    width: 90px;
+    background: transparent;
+    border: none;
+	
+}
+ .label-max-time {
+    padding-left: 55px;
+	
+}
+ .left-time-block {
+    color: #ee3e77;
+    font-weight: bold;
+    height: 40px;
+    margin-top: -5px;
+}
+ .label-left-time {
+    padding-left: 55px;
+}
+ .header-block .test-nm-block {
+    position: absolute;
+    left: 0px;
+    right: 400px;
+    top: 0px;
+    bottom: 0px;
+    background: silver;
+}
+ .test-nm-block {
+    background: url(/images/header_title_bg.gif) repeat-x !important;
+}
+ .sheetNum {
+    position: absolute !important;
+    width: 45px !important;
+    height: 45px !important;
+    left: 10px !important;
+    top: 5px !important;
+    padding: 8px 0 !important;
+    background: url(/images/sheetNum_bg.gif) no-repeat !important;
+    text-align: center !important;
+    color: #fff !important;
+    font: 800 1.9em 'NanumGothic', '나눔고딕', 'Dotum', '돋움', 'Gulim', '굴림', 'AppleGothic', Sans-serif !important;
+    z-index: 1000 !important;
+}
+ .test-info-testNm {
+    position: absolute !important;
+    line-height: 54px !important;
+    font-size: 15pt !important;
+    left: 50px !important;
+    
+    padding-left: 10px;
+    line-height: 50px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #000;
+}
+
+ .user-info-block {
+    position: absolute;
+    width: 219px;
+    right: 240px;
+    top: 0px;
+    bottom: 0px;
+    background: silver;
+    border-left: solid 1px #aaa;
+}
+
+ .user-info-block {
+    background: url(/images/user_info_bg.gif) repeat-x !important;
+    font-size: 11pt;
+    border: solid 1px #d3d4d7 !important;
+    background: silver;
+}
+ .user-id-block {
+    height: 20px;
+}
+ .user-nm-block {
+    margin-top: 8px !important;
+}
+ .user-nm-block {
+    margin-top: 5px;
+    height: 20px;
+}
+.user-info-userId-label {
+    float: left;
+    padding-left: 5px;
+}
+ .user-info-userId {
+    background: white;
+    border: 1px solid #bec4cc;
+    height: 19px;
+    margin-left: 2px;
+    padding-right: 10px;
+    width: 130px;
+}
+ .user-info-userNm-label {
+    float: left;
+    padding-left: 5px;
+}
+ .user-info-userNm {
+    background: white;
+    border: 1px solid #bec4cc;
+    height: 19px;
+    margin-left: 2px;
+    padding-right: 10px;
+    width: 130px;
+}
+ .section-tool-block {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    border-bottom: solid 1px #ccc;
+}
+ .screen-tool {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    border-right: solid 1px #ccc;
+    
+    width: 475px !important;
+    background: #eff1f4 !important;
+    display: inline-block !important;
+}
+ .zoom-tool {
+    float: left !important;
+    width: 225px !important;
+    margin-top: 0 !important;
+    padding-left: 15px !important;
+    font-size: 10pt;
+    background: none !important;  /* layout-tool은 배경 필요하면 추가하세요 */
+}
+
+ .layout-tool {
+    float: left !important;
+    width: 225px !important;
+    line-height: 15px !important; /* 세로 정렬을 위해 line-height도 49px */
+    margin-top: 0 !important;
+    margin-left: 15px;
+    padding-left: 15px !important;
+    font-size: 10pt;
+    background: none !important;  /* layout-tool은 배경 필요하면 추가하세요 */
+}
+
+
+ .layout-tool-title {
+    display: inline-block;
+    width: 30px;          /* 글자 길이에 맞게 조금 넓힘 (필요시 조정) */
+    height: 49px;
+    line-height: 15px;    /* 부모 높이에 맞춰 텍스트도 가운데 정렬 */
+    font-weight: bold;
+    vertical-align: middle; /* inline-block 세로 정렬 */
+    margin-top: 0;        /* margin-top 제거 */
+}
+
+  .zoom-tool-title {
+	display: inline-block;
+    width: 30px;          /* 글자 길이에 맞게 조금 넓힘 (필요시 조정) */
+    height: 49px;
+    line-height: 15px;    /* 부모 높이에 맞춰 텍스트도 가운데 정렬 */
+    font-weight: bold;
+    vertical-align: middle; /* inline-block 세로 정렬 */
+    margin-top: 5px;       
+}
+
+ .zoomBtn {
+    width: 43px !important;
+    height: 43px !important;
+    margin-top: 4px !important;
+    margin-left: 4px !important;
+    margin-bottom: 20px !important;
+    font-size: 12px !important;
+   
+    vertical-align: middle;
+
+    outline: none;
+    border: none;
+}
+  .layoutBtn {
+    width: 43px !important;
+    height: 43px !important;
+    margin-top: 8px !important;
+    margin-left: 4px !important;
+    margin-bottom: 18px !important;
+    
+    border-radius: 0 !important;
+
+    vertical-align: middle;
+    cursor: pointer;
+    display: inline-block;
+    
+    outline: none;
+    border: none;
+}
+.section-name-block {
+    position: absolute;
+    left: 475px;
+    right: 149px;
+    top: 0px;
+    bottom: 0px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 17px;
+    font-weight: bold;
+    background: #eff1f4 !important;
+}
+ .progress-info-block {
+    position: absolute;
+    right: 0px;
+    width: 150px;
+    top: 0px;
+    bottom: 0px;
+    border-left: solid 1px #ccc;
+}
+ .total-count-block {
+    padding-left: 10px;
+    margin-top: 3px;
+    height: 20px;
+}
+ .count-info-unsolved {
+    color:#ff0000;
+    font-weight: bold;
+    font-size: 11pt !important;
+}
+ .unsolved-count-block {
+    padding-left: 10px;
+    height: 20px;
+}
+
+ .footer-block {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 0px;
+    background: #cfd2d8;
+    
+    border-top: 1px solid #dcdcdc;
+    height: 48px !important;
+}
+
+
+
+.footer-left-block button {
+    cursor: pointer;
+    text-align: center;
+}
+
+ #btnCaculator {
+    width: 131px !important;
+    height: 36px !important;
+    display: inline-block;
+    background: url(/images/unsolved_btn.gif) no-repeat center center !important;
+    color: #3664b1 !important;
+    margin-top: 7px;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+}
+
+.calculator_icon {
+    cursor: pointer;
+    display: inline-block;
+    padding: 2px;
+    border-radius: 5px;
+    margin: 2px;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+}
+
+ .calculator_label {
+    font-weight: bold;
+    font-size: 12pt;
+ 	vertical-align: middle !important;
+ }
+
+ .footer-center-block {
+    position: absolute;
+    left: 200px;
+    right: 200px;
+    text-align: center;
+	top: 10px;
+
+ }
+ 
+  .footer-block .prev-page {
+	color: #3664b1;
+    width: 92px !important;
+    height: 36px !important;
+    background: url(/images/move_page.gif) no-repeat center center !important;
+    font-size: 12pt;
+    outline: none;
+    border: none;
+    margin-bottom: 3px;
+    
+}
+
+ .page-position-label {
+ 	font-size: 1.25em;
+    color: #3664b1;
+    width: 50px !important;
+ }
+ 
+ .next-page {
+	color: #3664b1;
+    width: 92px !important;
+    height: 36px !important;
+    background: url(/images/move_page.gif) no-repeat center center !important;
+    font-size: 12pt;
+    outline: none;
+    border: none;
+}
+
+ .footer-right-block {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    bottom: 5px;
+    
+}
+ #btnUnsolved {
+	color: #3664b1 !important;
+    width: 131px !important;
+    height: 36px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    background: url(/images/unsolved_btn.gif) no-repeat center center !important;
+    outline: none;
+	border: none;
+}
+
+ .unsolved_icon {
+    display: inline-block !important;
+    line-height: 30px !important;
+    vertical-align: middle !important;
+    margin-bottom: 5px;
+}
+
+ .unsolved_label {
+ 	display: inline-block !important;
+    margin-bottom: 7px !important;
+    font-weight: bold;
+    font-size: 12pt;
+    line-height: 36px !important;
+    vertical-align: middle !important;
+    color: #3664b1 !important;
+
+}
+
+ #btnLabel {
+    border: solid 1px #eee;
+    background: #3bb2f2;
+    color: #fff;
+	width: 131px !important;
+    height: 36px !important;
+    display: inline-block;
+    background: url(/images/submit_btn.gif) no-repeat center center !important;
+    outline: none;
+    border: none;
+    margin-left: 10px;
+
+}
+
+ .submit_icon {
+    display: inline-block !important;
+    line-height: 30px !important;
+    vertical-align: middle !important;
+    margin-bottom: 5px;
+}
+
+ .submit_label {
+    font-weight: bold;
+    font-size: 12pt;
+ 	vertical-align: middle !important;
+ }

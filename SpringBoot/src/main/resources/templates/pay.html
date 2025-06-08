@@ -27,17 +27,23 @@
       <!-- 좌측: 플랜 정보 -->
       <div class="col-md-6">
         <div class="payment-box text-left">
-          <h4>정보처리기사 필기</h4>
-          <h2><strong>탐색형</strong> <small>자유롭게 공부하고 싶으신가요?</small></h2>
-          <h3><strong>9000원</strong></h3>
+          <h4 th:text="${liName}">정보처리기사 필기</h4>
+          <h2>
+            <strong th:text="${plan}">플랜이름</strong>
+            <small th:if="${plan == '자유형'}">자유롭게 공부하고 싶으신가요?</small>
+            <small th:if="${plan == '계획형'}">우리가 알아서 계획 짜줄게!</small>
+          </h2>
+          <h3><strong th:text="${planPrice + '원'}">9000원</strong></h3>
           <p style="color: green;">현재 00명이 이용중입니다.</p>
+
           <div class="plan-desc mt-4">
-            <strong>탐색형 제공 서비스 나열 / 설명</strong>
+            <strong th:if="${plan == '자유형'}">탐색형 제공 서비스</strong>
+            <strong th:if="${plan == '계획형'}">필수형 제공 서비스</strong>
             <ol>
               <li>주제별 풀이</li>
               <li>실제 시험 환경 풀이</li>
               <li>시험 합격시 환급</li>
-              <li>등등</li>
+              <li>일일 할당량 제공</li>
             </ol>
           </div>
         </div>
@@ -88,6 +94,11 @@
             <label>Card Security Code</label>
             <input type="text" name="cvc" class="form-control" maxlength="4" required>
           </div>
+
+          <!-- 필수 데이터 히든 전달 -->
+          <input type="hidden" name="planIdx" th:value="${planIdx}">
+          <input type="hidden" name="liName" th:value="${liName}">
+          <input type="hidden" name="plan" th:value="${plan}">
 
           <button type="submit" class="btn btn-block btn-dark mt-4" style="width: 100%;">Continue</button>
         </form>

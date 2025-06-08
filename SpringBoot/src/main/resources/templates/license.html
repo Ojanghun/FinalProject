@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="https://www.thymeleaf.org/">
 
 <head>
   <meta charset="utf-8">
@@ -9,7 +9,7 @@
   <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <!-- Main Style -->
   <link href="/css/style.css" rel="stylesheet">
 
@@ -19,6 +19,8 @@
 <body>
 
   <!-- Header -->
+   <input type="hidden" id="id" th:value="${member.id}" />
+   
   <nav class="custom-header">
     <div class="container d-flex justify-content-between align-items-center">
       <div class="logo d-flex align-items-center gap-2">
@@ -28,8 +30,8 @@
       	</a>
       </div>
       <div class="header-links d-flex gap-2">
-        <button class="btn btn-sm btn-info">MYPAGE</button>
-        <button class="btn btn-sm btn-warning">LOGOUT</button>
+        <button class="btn btn-outline-secondary" >MYPAGE</button>
+        <button class="btn btn-outline-danger" >LOGOUT</button>
       </div>
     </div>
   </nav>
@@ -37,8 +39,11 @@
   <!-- Main -->
   <div class="container mt-5">
     <h4 class="text-center mb-5">
-      오장훈님! 시험까지 <strong>00일</strong> 남았어요~
+	  <span th:text="${member.name} + '님! 시험까지 '"></span>
+	  <strong>00일</strong>
+	  <span> 남았어요~</span>
     </h4>
+   
 
     <div class="row">
       <!-- Left Column -->
@@ -48,8 +53,12 @@
         <div class="dashboard-card p-4">
           <h5 class="fw-bold mb-4">기출 풀기</h5>
           <form id="examForm" method="post" class="d-flex align-items-center gap-2">
-            <div class="flex-grow-1">
+            <div class="flex-grow-1" style="width:300px; padding-left: 100px;">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			      <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
+			      <input type="hidden" name="liName" th:value="${licenseList[0].liName}" />
+			      <input type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
+			      <input type="hidden" name="liPbc" th:value="${licenseList[0].liPbc}" />
               <select name="category" class="form-control rounded-pill px-4 py-2">
                 <option value="" disabled selected hidden>회차 검색</option>
                 <option value="1">2020-06-06</option>
@@ -62,48 +71,47 @@
                 <option value="8">2022-04-24</option>
               </select>
             </div>
-            <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">시험</button>
-            <button class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">연습</button>
+            <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">연습</button>
+            <button style="margin-right:50px;" class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">시험</button>
           </form>
         </div>
 
         <!-- 주제별 학습하기 -->
         <div class="dashboard-card p-4">
-          <h5 class="fw-bold mb-4">주제별 학습하기</h5>
-          <div class="d-flex align-items-center gap-2">
-              <form action="goTypeList.do" method="post">
-            <div class="position-relative" style="width:700px; padding-left: 100px;">
-              <!-- <input type="text" class="form-control rounded-pill px-4 py-2" placeholder="주제 검색 (가장 많이 나온 순서대로 보여 주기)" style="padding-right: 40px;"> -->
-                <select name="category" class="form-control rounded-pill px-4 py-2">
-                  <option value="" disabled selected hidden>유형을 선택해주세요</option>
-                  <option value="101">1</option>
-                  <option value="102">2</option>
-                  <option value="103">3</option>
-                  <option value="104">4</option>
-                  <option value="105">5</option>
-                  <option value="106">6</option>
-                  <option value="107">7</option>
-                  <option value="108">8</option>
-                  <option value="109">9</option>
-                  <option value="110">10</option>
-                </select>
-            </div>
-            <button class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent">
-              <i class="bi bi-x"></i>
-            </button>	
-            <button class="btn btn-light">
-              <i class="bi bi-search"></i>
-            </button>
-            </form>
-          </div>
-        </div>
+		  <h5 class="fw-bold mb-4">주제별 학습하기</h5>
+		  <form action="/goTopic.do" method="post" class="d-flex align-items-center gap-2" style="padding-left: 100px;">
+		    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		    <select id="category" name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
+		      <option value="" disabled selected hidden>유형 선택</option>
+		      <option value="101">1</option>
+		      <option value="102">2</option>
+		      <option value="103">3</option>
+		      <option value="104">4</option>
+		      <option value="105">5</option>
+		      <option value="106">6</option>
+		      <option value="107">7</option>
+		      <option value="108">8</option>
+		      <option value="109">9</option>
+		      <option value="110">10</option>
+		    </select>
+		
+			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
+			    	onclick="if(document.getElementById('category').value == ''){ alert('유형을 선택해주세요.'); return false; }">
+		      <i class="bi bi-search"></i>
+		    </button>
+		  </form>
+		</div>
 
       </div>
 
       <!-- Right Column -->
       <div class="col-md-4">
         <div class="dashboard-card p-4" style="height: 350px;">
-          <h5 class="fw-bold mb-3">오장훈 님의 주제별 오답 TOP 5</h5>
+          <h5 class="fw-bold mb-3" th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
+          	<form action="/updateTopicNums.do" method="post" style="display:inline;">
+          	  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			  <button type="submit" class="btn btn-light">팀장님 발작버튼</button>
+			</form>
           <canvas id="wrongChart" height="250"></canvas>
         </div>
       </div>
@@ -119,6 +127,9 @@
             <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeMonth(-1)">←</button>
             <span id="month-year"></span>
             <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeMonth(1)">→</button>
+            <button class="btn btn-primary rounded-pill px-3" type="button" 
+            id="check-attendance" style="margin-left: 565px">출석</button>
+            
           </h4>
           <table>
             <thead>
@@ -142,14 +153,6 @@
             <span>📌 접수</span>
           </div>
           <div class="card-body">
-            <h5>빅데이터분석기사</h5>
-            <p>제10회 실기 접수:<br>05.19(월)~05.23(금)</p>
-            <hr>
-            <h5>SQLD</h5>
-            <p>제57회 SQL 개발자:<br>04.28(월)~05.02(금)</p>
-            <hr>
-            <h5>생신</h5>
-            <p>오장훈 팀장님 생신<br>06.02(월)</p>
           </div>
         </div>
       </div>
@@ -163,63 +166,154 @@
         <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
         <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
       </ul>
-      <p class="text-center text-muted">© 2022 Company, Inc</p>
+      <p class="text-center text-muted">© 2025 문제 Issue!</p>
     </footer>
   </div>
 
   <!-- Script -->
-  <script>
-    function submitForm(actionUrl) {
+  <script th:inline="javascript">
+  
+
+  
+  function submitForm(actionUrl) {
       const form = document.getElementById("examForm");
-      form.action = actionUrl;
-      form.submit();
-    }
-
-
-    const calendarBody = document.getElementById("calendar-body");
-    const monthYear = document.getElementById("month-year");
-    let currentDate = new Date();
-
-    function renderCalendar(date) {
-      calendarBody.innerHTML = "";
-      const year = date.getFullYear();
-      const month = date.getMonth();
-      const firstDay = new Date(year, month, 1).getDay();
-      const lastDate = new Date(year, month + 1, 0).getDate();
-      const today = new Date();
-      monthYear.textContent = `📅${year}년 ${month + 1}월`;
-      let day = 1;
-      for (let i = 0; i < 6; i++) {
-        const row = document.createElement("tr");
-        for (let j = 0; j < 7; j++) {
-          const cell = document.createElement("td");
-          if (i === 0 && j < firstDay || day > lastDate) {
-            cell.innerHTML = "";
-          } else {
-            const thisDate = new Date(year, month, day);
-            cell.innerHTML = `<div>${day}</div>`;
-            if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
-              cell.classList.add("today");
-            }
-            if (j === 0) {
-              cell.classList.add("sunday");
-            }
-            day++;
-          }
-          row.appendChild(cell);
-        }
-        calendarBody.appendChild(row);
-        if (day > lastDate) break;
+      const category = form.querySelector("select[name='category']").value;
+      console.log("제출한 값: "+form);
+      if(category != ""){
+	      console.log("form값: "+ form);
+	      form.action = actionUrl;
+	      form.submit();
+      }else{
+    	  alert("회차를 선택해주세요.");
+    	  event.preventDefault(); // 폼 제출 막기
       }
     }
+  
+  // calendarBody: 달력 테이블(<tbody>)을 넣을 위치
+  const calendarBody = document.getElementById("calendar-body");
+  
+  // monthYear: "2025년 6월" 등 달력 상단 타이틀
+  const monthYear = document.getElementById("month-year");
+    
+  const checkAttendanceBtn = document.getElementById("check-attendance");
+    
+  // currentDate: 현재 기준 달력 날짜
+  let currentDate = new Date();
+  
+  // attendanceDates: 출석체크 된 날짜들 (나중에 서버에서 받아올 수도 있음)
+  let attendanceDates = JSON.parse('[[${date}]]'); // 출석한 날짜 저장용 배열
+  renderCalendar(currentDate);  // 페이지 로드시 달력 렌더링
+  
+  // 날짜 함수 2자리 수로 변경 ex 2025-6-6 -> 2025-06-06
+  function pad(n) {
+	  return n < 10 ? "0" + n : n;
+	}
 
-    function changeMonth(step) {
-      currentDate.setMonth(currentDate.getMonth() + step);
-      renderCalendar(currentDate);
+  // 달력을 렌더링하는 함수
+  function renderCalendar(date) {
+    calendarBody.innerHTML = ""; // 기존 달력 초기화
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1).getDay(); // 1일의 요일 (0=일, 6=토)
+    const lastDate = new Date(year, month + 1, 0).getDate(); // 월의 마지막 일
+    const today = new Date();
+
+    monthYear.textContent = `📅 ${year}년 ${month + 1}월`;
+
+    // 6주 × 7일 달력 만들기 ( 한 달은 최대 6주까지 있어서 )
+    let day = 1;
+    for (let i = 0; i < 6; i++) {
+      const row = document.createElement("tr");
+      for (let j = 0; j < 7; j++) {
+        const cell = document.createElement("td");
+
+        
+        // 첫 주(i==0)에서 firstDay 이전에는 빈칸
+        // day > lastDate면 월이 끝났으므로 빈칸
+        if (i === 0 && j < firstDay || day > lastDate) {
+          cell.innerHTML = "";
+        } else {
+          const thisDate = new Date(year, month, day);
+          const dateStr = `${year}-${pad(month + 1)}-${pad(day)}`;
+
+          const dayCircle = document.createElement("div");
+          dayCircle.classList.add("day-circle");
+          dayCircle.textContent = day;
+
+       	  // 오늘 날짜 표시
+          if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
+            dayCircle.classList.add("today");
+          }
+
+          // 일요일 스타일
+          if (j === 0) {
+            cell.classList.add("sunday");
+          }
+
+          // 출석한 날짜(dateStr)는 표시
+          if (attendanceDates.includes(dateStr)) {
+            dayCircle.classList.add("attended");
+          }
+
+          // 현재 셀에 해당 날짜를 시각적으로 보여줄 div.day-circle을 삽입하는 역할
+          cell.appendChild(dayCircle);
+          day++;
+        }
+
+        // 현재 tr 줄에 td 하나를 추가
+        row.appendChild(cell);
+      }
+      calendarBody.appendChild(row);
+      if (day > lastDate) break; // 다 채우면 루프 탈출
     }
+  }
 
+  
+  function changeMonth(step) {
+    currentDate.setMonth(currentDate.getMonth() + step);
     renderCalendar(currentDate);
-  </script>
+    
+  }
+
+  checkAttendanceBtn.addEventListener("click", () => {
+	  const id = $("#id").val();
+
+	  $.ajax({
+	    url: "/atd_check",
+	    type: "post",
+	    dataType: "text",
+	    data: { id: id },
+	    success: function (response) {
+	      if (response === "true") { // 응답이 True일 경우
+	        alert("출석이 완료되었습니다!");
+
+	        // 여기서부터 else전까지 전부 동그라미 표시 영역
+	        const today = new Date();
+	        console.log(today);
+	        // 년,월,일 문자열 표시 - ex) "2025-06-06" / Month는 0부터 시작하므로 +1
+	        const dateStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+	        if (!attendanceDates.includes(dateStr)) {
+	          attendanceDates.push(dateStr);
+	        }
+
+	        renderCalendar(currentDate); // 다시 렌더링
+	      } else {
+	        alert("이미 출석하셨습니다!");
+	        
+	      }
+	    },
+	    error: function () {
+	      alert("서버 오류가 발생했습니다.");
+	    }
+	  });
+	});
+	
+
+
+  renderCalendar(currentDate);
+
+</script>
+
 
 </body>
 

@@ -28,4 +28,7 @@ public class Li_Info {
     @Column(name = "LI_TIME", nullable = false) 
     private int liTime; // 자격증 시험시간 인덱스
     
+    @Column(name = "LI_PBC", nullable = false)
+    private int liPbc; // 자격증 문제 개수
+    
 }
