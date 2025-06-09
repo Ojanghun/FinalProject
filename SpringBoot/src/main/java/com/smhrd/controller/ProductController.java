@@ -27,9 +27,13 @@ public class ProductController {
 	
 	@Autowired
 	LicenseService licenseservice;
+	
+	@Autowired
+	private final ExInfoRepository exinfoRepository;
+
 
 	@GetMapping("/license")
-	public String license(HttpSession session, Model model) {
+	public String License(HttpSession session, Model model) {
 		// session에서 info로 저장된 Member 데이터를 꺼내서 member에 저장
 		Member member = (Member) session.getAttribute("info");
 		String id = null;
@@ -55,31 +59,20 @@ public class ProductController {
 		List<Topic_Info> topicList = licenseservice.topicInfo();
 		model.addAttribute("topicList", topicList);
 		
+        LocalDateTime now = LocalDateTime.now();
+        List<Ex_Info> exams = exinfoRepository.findByExStdAfterOrderByExStdAsc(now);
+
+        model.addAttribute("exams", exams);
+        model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
 		return "license";
 	}
-	
-	private final ExInfoRepository exinfoRepository;
 
     // 생성자를 통한 의존성 주입
     public ProductController(ExInfoRepository exinfoRepository) {
         this.exinfoRepository = exinfoRepository;
     }
 	
-    @GetMapping("/license")
-    public String license(HttpSession session, Model model) {
-        Member member = (Member) session.getAttribute("info");
-        if (member != null) {
-            model.addAttribute("member", member);
-        }
-
-        LocalDateTime now = LocalDateTime.now();
-        List<Ex_Info> exams = exinfoRepository.findByExStdAfterOrderByExStdAsc(now);
-
-        model.addAttribute("exams", exams);
-        model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
-        return "license";
-    }
     
 	@GetMapping("/topic")
 	public String subject() {
