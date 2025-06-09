@@ -33,7 +33,7 @@
      <div class="header-links d-flex gap-2">
         <!-- ❌ 로그인하지 않은 경우 -->
         <th:block th:if="${session.info == null}">
-          <a href="login" class="btn btn-sm btn-primary">로그인</a>
+          <a href="login" class="btn btn-outline-primary">로그인</a>
         </th:block>
 
         <!-- ✅ 로그인한 경우 -->
@@ -55,7 +55,7 @@
             <div class="search-box">
               <input id="search" type="text" placeholder="자격증 검색" />
               <button title="Clear">✕</button>
-              <button title="Search">🔍</button>
+              <button class="bi bi-search"></button>
             </div>
             <div id="suggestions" class="autocomplete"></div>
           </div>

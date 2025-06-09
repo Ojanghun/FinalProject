@@ -1,72 +1,143 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" data-bs-theme="auto">
 <head>
-    <meta charset="UTF-8">
-    <title>Plan</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/pay_plan.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/css/pricing.css"	rel="stylesheet">
+  
 </head>
 <body>
-<div class="container">
-    <!-- 🔷 커스텀 헤더 -->
-    <div class="custom-header d-flex justify-content-between mb-4 align-items-center">
-        <div class="logo d-flex align-items-center">
-            <a href="/"><img src="/images/로고.png" alt="로고"></a>
-        </div>
-        <div class="header-buttons">
-            <a href="/mypage" class="btn btn-default">Mypage</a>
-            <a href="/logout" class="btn btn-default">Logout</a>
-        </div>
-    </div>
+  <div class="container py-3">
+    <header>
+      <div class="custom-header d-flex justify-content-between mb-4 align-items-center">
+      
+        <a href="/">
+		  <img src="/images/로고.png" alt="로고" style="height: 40px;">
+		</a>
+        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+          <a class="btn btn-outline-secondary me-2" href="mypage">MYPAGE</a>
+          <a class="btn btn-outline-danger" href="logout">LOGOUT</a>
+        </nav>
+      </div>
+      <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h3 class="display-5 fw-normal" th:text="${liName}">자격증 이름</h3>
+        <p class="fs-5 text-muted">간략한 소개</p>
+      </div>
+    </header>
 
-    <div class="row">
-        <!-- 자유형 -->
-        <div class="col-md-6">
-            <div class="plan-box">
-                <h4 th:text="${liName}">자격증 이름</h4>
-                <h3>자유형</h3>
-                <p class="text-muted">자유롭게 공부하고 싶으신가요?</p>
-
-                <div class="plan-price" th:if="${freePlan != null}" th:text="${freePlan.planPrice + '원'}">9000원</div>
-                <div class="plan-price" th:if="${freePlan == null}">가격 정보 없음</div>
-
-                <div class="highlight">현재 00명이 이용중입니다.</div>
-                <div class="plan-desc">
-                    <strong>탐색형 제공 서비스 나열 / 설명</strong>
-                    <ol>
-                        <li>주제별 풀이</li>
-                        <li>실제 시험 환경 풀이</li>
-                        <li>시험 합격시 환급</li>
-                        <li>등등</li>
-                    </ol>
-                </div>
-                <a th:href="@{/pay(liIdx=${liIdx}, plan='자유형')}" class="btn btn-dark select-button">☞ Select Plan</a>
+    <main>
+      <div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">자유형</h4>
+              
             </div>
-        </div>
-
-        <!-- 계획형 -->
-        <div class="col-md-6">
-            <div class="plan-box">
-                <h4 th:text="${liName}">자격증 이름</h4>
-                <h3>계획형</h3>
-                <p class="text-muted">혹시 혼자서 공부 안하는 스타일? 우리가 알아서 계획 짜줄게!</p>
-
-                <div class="plan-price" th:if="${strictPlan != null}" th:text="${strictPlan.planPrice + '원'}">9900원</div>
-                <div class="plan-price" th:if="${strictPlan == null}">가격 정보 없음</div>
-
-                <div class="highlight">현재 00명이 이용중입니다.</div>
-                <div class="plan-desc">
-                    <strong>필수형 제공 서비스 나열 / 설명</strong>
-                    <ol>
-                        <li>탐색형 서비스</li>
-                        <li>문자 알림 서비스</li>
-                        <li>일일 할당량 제공 서비스</li>
-                    </ol>
-                </div>
-                <a th:href="@{/pay(liIdx=${liIdx}, plan='계획형')}" class="btn btn-dark select-button">☞ Select Plan</a>
+            <div class="card-body">
+            <p class="text-muted">자유롭게 공부하고 싶으신가요?</p>
+              <h1 class="card-title pricing-card-title" th:if="${freePlan != null}" th:text="${freePlan.planPrice + '원'}">9000원</h1>
+              <h2 class="card-title pricing-card-title" th:if="${freePlan == null}">가격 정보 없음</h2>
+              <div class="highlight" style="color: green;">현재 00명이 이용중입니다.</div>
+              <ul class="list-unstyled mt-3 mb-4">
+              <strong>자유형 제공 서비스 나열 / 설명</strong>
+                <li>주제별 풀이</li>
+                <li>실제 시험 환경 풀이</li>
+                <li>시험 합격시 환급</li>
+                <li>~~</li>
+              </ul>
+              <a th:href="@{/pay(liIdx=${liIdx}, plan='자유형')}" class="w-100 btn btn-lg btn-outline-primary">☞ Select Plan</a>
             </div>
+          </div>
         </div>
-    </div>
+
+        <div class="col">
+          <div class="card mb-3 rounded-3 shadow-sm">
+            <div class="card-header py-3 text-bg-primary border-primary">
+              <h4 class="my-0 fw-normal" style="color: white;">계획형</h4>
+            </div>
+            <div class="card-body">
+            <p class="text-muted">혹시 혼자서 공부 안하는 스타일? 우리가 알아서 계획 짜줄게!</p>
+              <h1 class="card-title pricing-card-title"th:if="${strictPlan != null}" th:text="${strictPlan.planPrice + '원'}">9900원</h1>
+              <h2 class="plan-price" th:if="${strictPlan == null}">가격 정보 없음</h2>
+              <div class="highlight" style="color: green;">현재 00명이 이용중입니다.</div>
+              <ul class="list-unstyled mt-3 mb-4">
+              <strong>필수형 제공 서비스 나열 / 설명</strong>
+                <li>탐색형 서비스</li>
+                <li>문자 알림 서비스</li>
+                <li>일일 할당량 제공 서비스</li>
+                <li>~~</li>
+              </ul>
+              <button th:href="@{/pay(liIdx=${liIdx}, plan='계획형')}" class="w-100 btn btn-lg btn-primary">☞ Select Plan</button>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </main>
+    <!-- 체크 아이콘 정의 (head 안에 포함) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="check" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M13.485 1.929a.75.75 0 0 1 1.06 1.06l-8.25 8.25a.75.75 0 0 1-1.06 0L1.454 7.517a.75.75 0 1 1 1.06-1.06l3.72 3.72 7.25-7.25z"/>
+  </symbol>
+</svg>
+
+<!-- 비교 테이블 -->
+<div class="container my-5">
+  <h1 class="text-center mb-4">Compare Plans</h1>
+  <div class="table-responsive">
+    <table class="table text-center">
+      <thead>
+        <tr >
+          <th style="width: 34%;"></th>
+          <th style="width: 30%;">자유형</th>
+          <th style="width: 30%;">계획형</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th class="text-start">일정 관리</th>
+          <td></td>
+          <td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td>
+        </tr>
+        <tr>
+          <th class="text-start">목표 설정</th>
+          <td></td>
+          <td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td>
+        </tr>
+        <tr>
+          <th class="text-start">알림 기능</th>
+          <td></td>
+          <td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td>
+        </tr>
+        <tr>
+          <th class="text-start">자유도</th>
+          <td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+    
+</div>
+ <!-- Footer -->
+<footer class="footer mt-5 py-4 border-top">
+  <div class="container text-center">
+    <nav class="nav justify-content-center mb-3">
+      <a href="#" class="footer-link">Home</a>
+      <a href="#" class="footer-link">About</a>
+      <a href="#" class="footer-link">Contact</a>
+    </nav>
+    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+  </div>
+</footer> 
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
