@@ -33,15 +33,16 @@
           <h3 th:text="${liName}">정보처리기사 필기</h3>
           <h2>
             <strong th:text="${plan}">플랜이름</strong>
-            <small th:if="${plan == '자유형'}">자유롭게 공부하고 싶으신가요?</small>
-            <small th:if="${plan == '계획형'}">우리가 알아서 계획 짜줄게!</small>
+            <small th:if="${plan == '탐구형'}">자유롭게 공부하고 싶으신가요?</small>
+            <small th:if="${plan == '필수형'}">우리가 알아서 계획 짜줄게!</small>
           </h2>
           <h3><strong th:text="${planPrice + '원'}">9000원</strong></h3>
-          <p style="color: green;">현재 00명이 이용중입니다.</p>
+          <p style="color: green;" th:text="'현재 ' + ${activeUserCount} + '명이 이용중입니다.'">현재 00명이 이용중입니다.</p>
+
 
           <div class="plan-desc mt-4">
-            <strong th:if="${plan == '자유형'}">탐색형 제공 서비스</strong>
-            <strong th:if="${plan == '계획형'}">필수형 제공 서비스</strong>
+            <strong th:if="${plan == '탐구형'}">탐색형 제공 서비스</strong>
+            <strong th:if="${plan == '필수형'}">필수형 제공 서비스</strong>
             <ol>
               <li>주제별 풀이</li>
               <li>실제 시험 환경 풀이</li>

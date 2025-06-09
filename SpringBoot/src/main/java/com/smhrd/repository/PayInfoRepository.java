@@ -54,4 +54,16 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 	               "END", nativeQuery = true)
 	void updateRefundStatus();
 
+	// 자유형 이용자 수 (plan_type = false)
+	@Query("SELECT COUNT(p) FROM Pay_Info p " +
+	       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
+	       "WHERE pi.liIdx = :liIdx AND pi.planType = false AND p.planAct = 1")
+	int countActiveUsersForFreePlan(@Param("liIdx") int liIdx);
+
+	// 계획형 이용자 수 (plan_type = true)
+	@Query("SELECT COUNT(p) FROM Pay_Info p " +
+	       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
+	       "WHERE pi.liIdx = :liIdx AND pi.planType = true AND p.planAct = 1")
+	int countActiveUsersForStrictPlan(@Param("liIdx") int liIdx);
+
 }

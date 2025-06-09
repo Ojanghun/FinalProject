@@ -28,7 +28,6 @@ public class PayController {
     @Autowired
     private PayInfoRepository payInfoRepository;
 
-    // 결제 페이지 진입
     @GetMapping("/pay")
     public String payPage(@RequestParam("liIdx") int liIdx,
                           @RequestParam("plan") String plan,
@@ -37,7 +36,7 @@ public class PayController {
 
         model.addAttribute("session", session.getAttribute("info"));
 
-        // 자격증 이름 + 필기/실기 태그 구성
+        // 자격증 정보
         Li_Info license = liInfoRepository.findById(liIdx).orElse(null);
         if (license != null) {
             String fullName = license.getLiName();
@@ -47,19 +46,25 @@ public class PayController {
             model.addAttribute("liName", fullName);
         }
 
-        // 플랜 가격 및 인덱스 조회
-        List<Plan_Info> plans = planInfoRepository.findByLiIdx(liIdx);
-        if (plans.size() >= 2) {
-            if ("자유형".equals(plan)) {
-                model.addAttribute("planPrice", plans.get(0).getPlanPrice());
-                model.addAttribute("planIdx", plans.get(0).getPlanIdx());
-            } else if ("계획형".equals(plan)) {
-                model.addAttribute("planPrice", plans.get(1).getPlanPrice());
-                model.addAttribute("planIdx", plans.get(1).getPlanIdx());
-            }
+        // 플랜 정보 및 사용자 수
+        Plan_Info selectedPlan = null;
+        int activeUserCount = 0;
+
+        if ("탐구형".equals(plan)) {
+            selectedPlan = planInfoRepository.findByLiIdxAndPlanType(liIdx, false);
+            activeUserCount = payInfoRepository.countActiveUsersForFreePlan(liIdx);
+        } else if ("필수형".equals(plan)) {
+            selectedPlan = planInfoRepository.findByLiIdxAndPlanType(liIdx, true);
+            activeUserCount = payInfoRepository.countActiveUsersForStrictPlan(liIdx);
         }
 
-        model.addAttribute("plan", plan); // 자유형/계획형 전달
+        if (selectedPlan != null) {
+            model.addAttribute("planPrice", selectedPlan.getPlanPrice());
+            model.addAttribute("planIdx", selectedPlan.getPlanIdx());
+        }
+
+        model.addAttribute("activeUserCount", activeUserCount);
+        model.addAttribute("plan", plan); // 탐구형/필수형
 
         return "pay";
     }
