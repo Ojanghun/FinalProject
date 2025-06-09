@@ -83,20 +83,23 @@
 				</th:block>
 
 				<th:block th:unless="${session.info == null}">
+					<!-- ✅ 결제한 자격증 확인 -->
 					<div class="card keyword-box">
 						<h4>결제한 자격증 확인</h4>
-
-						<!-- 실제 결제한 자격증 목록 -->
-						<ul>
-							<th:block th:if="${#lists.isEmpty(payList)}">
-								<li>결제 내역이 없습니다.</li>
-							</th:block>
-							<th:block th:each="pay : ${payList}">
-								<li><a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
-									th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">
-								</a></li>
-							</th:block>
-						</ul>
+						<th:block th:if="${payList != null}">
+							<ul>
+								<th:block th:each="pay : ${payList}">
+									<th:block th:if="${pay.planAct == 1}">
+										<li><a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
+											th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">
+												자격증 이름 </a></li>
+									</th:block>
+								</th:block>
+							</ul>
+						</th:block>
+						<th:block th:if="${payList == null or #lists.isEmpty(payList)}">
+							<p>결제한 자격증이 없습니다.</p>
+						</th:block>
 					</div>
 				</th:block>
 			</section>
