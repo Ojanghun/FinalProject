@@ -31,20 +31,15 @@
       	</a>
       </div>
       <div class="header-links d-flex gap-2">
-        <button class="btn btn-outline-secondary" >MYPAGE</button>
-        <button class="btn btn-outline-danger" >LOGOUT</button>
+        <a href="mypage" class="btn btn-outline-secondary" >MYPAGE</a>
+        <a href="logout" class="btn btn-outline-danger" >LOGOUT</a>
       </div>
     </div>
   </nav>
 
   <!-- Main -->
   <div class="container mt-5">
-    <h4 class="text-center mb-5">
-	  <span th:text="${member.name} + '님! 시험까지 '"></span>
-	  <strong>00일</strong>
-	  <span> 남았어요~</span>
-    </h4>
-   
+    <h4 class="text-center mb-5" th:text="${member.name} + '님 시험까지 ~일 남았습니다.'"></h4>
 
     <div class="row">
       <!-- Left Column -->
@@ -145,22 +140,29 @@
             <span>📌 접수</span>
           </div>
           <div class="card-body">
-          </div>
+		    <div th:each="exam : ${exams}">
+		    	<h5>정보처리기사</h5>
+			   <span th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd')}"></span>-
+			   <span th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd')}"></span>
+			</div>
+		</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <div class="container">
-    <footer class="py-3 my-4">
-      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-      </ul>
-      <p class="text-center text-muted">© 2025 문제 Issue!</p>
-    </footer>
+<!-- Footer -->
+<footer class="footer mt-5 py-4 border-top">
+  <div class="container text-center">
+    <nav class="nav justify-content-center mb-3">
+      <a href="#" class="footer-link">Home</a>
+      <a href="#" class="footer-link">About</a>
+      <a href="#" class="footer-link">Contact</a>
+    </nav>
+    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
   </div>
+</footer>
+
 
   <!-- Script -->
   <script th:inline="javascript">
@@ -193,6 +195,19 @@
 	    $("#topicSelect").html(listHtml);   
 	    
  } 
+  const examPeriods = /*[[${exams}]]*/ [];
+  const examDates = [];
+
+  examPeriods.forEach(exam => {
+    const start = new Date(exam.appStd);
+    const end = new Date(exam.appEd);
+    let d = new Date(start);
+    while (d <= end) {
+      const dateStr = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+      examDates.push({ date: dateStr, title: exam.title });
+      d.setDate(d.getDate() + 1);
+    }
+  });
 
   
   function submitForm(actionUrl) {
@@ -274,6 +289,12 @@
           if (attendanceDates.includes(dateStr)) {
             dayCircle.classList.add("attended");
           }
+          /* 달력에 일정 표시 */
+          const exam = examDates.find(e => e.date === dateStr);
+			if (exam) {
+			  dayCircle.classList.add("exam-period-bar");
+			  
+			}
 
           // 현재 셀에 해당 날짜를 시각적으로 보여줄 div.day-circle을 삽입하는 역할
           cell.appendChild(dayCircle);
