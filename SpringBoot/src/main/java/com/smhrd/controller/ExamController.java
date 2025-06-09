@@ -76,7 +76,7 @@ public class ExamController {
 	// 문제 불러오기(페이지 나누기)
 	@PostMapping("/loadExam1")
 	public List<Exam> loadExam1(@RequestParam("page") int page, @RequestParam("category") int category) {
-	    int pageSize = 5; // 고정값이든 클라이언트에서 받아오든
+	    int pageSize = 10; // 고정값이든 클라이언트에서 받아오든
 	    System.out.println("페이지"+page);
 	    System.out.println("사이즈"+pageSize);
 	    System.out.println("카테고리"+category);

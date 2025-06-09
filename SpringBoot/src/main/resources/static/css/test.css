@@ -11,10 +11,13 @@
     height: 58px !important;
     border-bottom: 5px solid #3664B1;
   }
+  
+  /* 넘버박스 */
   .number-box {
     position: absolute;
     right: 10px;
     width: 230px;
+    height: 89%;
     top: 60px;
     bottom: 40px;
     background: #ffffff;
@@ -42,15 +45,16 @@
  	 cursor: pointer;
  }
  
+ /* 바디 */
   .text-box {    
     position: absolute;
     left: 10px;
     right: 250px;
     top: 60px;
     bottom: 40px;
-    border: solid 1px #ccc; 
-}
     
+}
+ /* 문제 영역 */   
  .test-page-block-holder {
     border-bottom: none !important;
     position: absolute;
@@ -59,6 +63,8 @@
     top: 60px;
     bottom: 100px;
     overflow-y: auto;
+    height: 600px;
+    padding-bottom: 50px;
 }
 
  .oneExam {
@@ -266,7 +272,7 @@
     left: 0px;
     right: 0px;
     height: 50px;
-    border-bottom: solid 1px #ccc;
+    border: solid 1px #ccc;
 }
  .screen-tool {
     position: absolute;
