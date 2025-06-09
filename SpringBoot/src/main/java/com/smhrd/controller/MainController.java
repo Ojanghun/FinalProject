@@ -3,6 +3,7 @@ package com.smhrd.controller;
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
 import com.smhrd.entity.Pay_Info;
+import com.smhrd.projection.PayWithLicenseDTO;
 import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.repository.PayInfoRepository;
 
@@ -63,12 +64,19 @@ public class MainController {
             session.removeAttribute("paymentSuccess");
         }
 
+        // 자격증 리스트
         List<Li_Info> licenseList = liInfoRepository.findAll();
         model.addAttribute("licenseList", licenseList);
-        System.out.println("li정보: "+licenseList);
- 
 
-        model.addAttribute("session", session.getAttribute("info"));
+        // 로그인한 사용자 정보
+        Member loginUser = (Member) session.getAttribute("info");
+        model.addAttribute("session", loginUser);
+
+        // ✅ 사용자 결제 리스트 payList 모델에 전달
+        if (loginUser != null) {
+            List<PayWithLicenseDTO> payList = payInfoRepository.findDetailedPaymentsByUserId(loginUser.getId());
+            model.addAttribute("payList", payList);
+        }
 
         return "main";
     }
