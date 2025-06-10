@@ -59,6 +59,12 @@ public class ProductController {
 		List<Topic_Info> topicList = licenseservice.topicInfo();
 		model.addAttribute("topicList", topicList);
 		
+		LocalDateTime now = LocalDateTime.now();
+        List<Ex_Info> exams = exinfoRepository.findByExStdAfterOrderByExStdAsc(now);
+
+        model.addAttribute("exams", exams);
+        model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+		
 		return "license";
 	}
 
