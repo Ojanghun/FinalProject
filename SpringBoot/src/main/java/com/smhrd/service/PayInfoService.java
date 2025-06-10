@@ -4,6 +4,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.smhrd.entity.Pay_Info;
 import com.smhrd.repository.PayInfoRepository;
 
 @Service
@@ -26,4 +27,9 @@ public class PayInfoService {
     public void updateRefundStatus() {
         payInfoRepository.updateRefundStatus();
     }
+    
+    public Pay_Info getRefundablePlan(String userId, int planIdx) {
+        return payInfoRepository.findTop1RefundableByUserIdAndLiIdx(userId, planIdx);
+    }
+    
 }
