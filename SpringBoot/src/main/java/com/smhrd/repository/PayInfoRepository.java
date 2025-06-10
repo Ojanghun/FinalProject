@@ -65,5 +65,7 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 	       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
 	       "WHERE pi.liIdx = :liIdx AND pi.planType = true AND p.planAct = 1")
 	int countActiveUsersForStrictPlan(@Param("liIdx") int liIdx);
+	
+	
 
 }
