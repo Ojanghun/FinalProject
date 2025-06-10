@@ -5,9 +5,10 @@
 <title>문제? Issue!</title>
 
 <!-- CSS 링크 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" th:href="@{/css/style.css}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+	
+  <link href="/css/style.css" rel="stylesheet">
 
 <!-- JS 링크 -->
 <script
@@ -21,7 +22,7 @@
 		<input type="hidden" id="id" name="id" value="admin"> <input
 			type="hidden" id="pw" name="pw" value="admin">
 	</form>
-	<div class="container">
+
 
 		<!-- ✅ 결제 성공 메시지 표시 -->
 		<div th:if="${paymentSuccess}" class="alert alert-success mt-3"
@@ -30,26 +31,30 @@
 		</div>
 
 		<!-- 🔷 커스텀 헤더 -->
-		<div class="custom-header">
-			<div class="logo">
-				<a href="/"> <img src="/images/로고.png" alt="로고"> <span
-					class="logo-text"></span>
-				</a>
-			</div>
+		
+		 <nav class="custom-header">
+		    <div class="container container-fluid d-flex justify-content-between align-items-center px-4">
+		      <div class="logo d-flex align-items-center gap-2">
+		      	<a href="/">
+		        <img src="/images/로고.png" height="40" alt="로고">
+		        <span class="logo-text"></span>
+		      	</a>
+		      </div>
+	
 
-			<div class="header-links">
+			<div class="header-links d-flex gap-2">
 				<!-- ❌ 로그인하지 않은 경우 -->
 				<th:block th:if="${session.info == null}">
-					<a href="login" class="btn btn-sm btn-primary">로그인</a>
+					<a href="login" class="btn btn-outline-primary">LOGIN</a>
 				</th:block>
 
 				<!-- ✅ 로그인한 경우 -->
 				<th:block th:unless="${session.info == null}">
-					<a href="mypage" class="btn btn-sm btn-info">마이페이지</a>
-					<a href="logout" class="btn btn-sm btn-danger">로그아웃</a>
+					<a href="mypage" class="btn btn-outline-secondary">MYPAGE</a>
+					<a href="logout" class="btn btn-outline-danger">LOGOUT</a>
 				</th:block>
 			</div>
-		</div>
+		</div></nav>
 
 		<!-- 🔍 검색 및 키워드 추천 -->
 		<div class="main-content">
@@ -107,18 +112,17 @@
 				<p>이곳에 서비스 설명이나 배너를 넣을 수 있습니다.</p>
 			</section>
 		</div>
-	</div>
 
 	<!-- Footer -->
 	<footer class="footer mt-5 py-4 border-top">
-	<div class="container text-center">
-		<nav class="nav justify-content-center mb-3">
-		<a href="#" class="footer-link">Home</a>
-		<a href="#" class="footer-link">About</a>
-		<a href="#" class="footer-link">Contact</a>
-		</nav>
-		<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-	</div>
+	  <div class="container text-center">
+	    <nav class="nav justify-content-center mb-3">
+	      <a href="#" class="footer-link">Home</a>
+	      <a href="#" class="footer-link">About</a>
+	      <a href="#" class="footer-link">Contact</a>
+	    </nav>
+	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+	  </div>
 	</footer>
 
 	<!-- JS -->

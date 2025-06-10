@@ -97,7 +97,6 @@
           <h5 class="fw-bold mb-3" th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
           	<form action="/updateTopicNums.do" method="post" style="display:inline;">
           	  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-			  <button type="submit" class="btn btn-light">팀장님 발작버튼</button>
 			</form>
           <canvas id="wrongChart" height="250"></canvas>
         </div>
@@ -140,11 +139,12 @@
             <span>📌 접수</span>
           </div>
           <div class="card-body">
-		    <div th:each="exam : ${exams}">
-		    	<h5>정보처리기사</h5>
-			   <span th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd')}"></span>-
-			   <span th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd')}"></span>
-			</div>
+		     <div th:each="exam : ${exams}">
+             <div th:each="license : ${licenseList}">
+                <h5><span th:text="${license.liName}"></span></h5>
+             </div>
+            <span th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd')}"></span> ~
+            <span th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd')}"></span>
 		</div>
         </div>
       </div>
@@ -166,34 +166,34 @@
 
   <!-- Script -->
   <script th:inline="javascript">
-	$(document).ready(function(){
-		// ready() : html 코드가 준비가 되면 실행되는 메소드
-		loadTopic();
-	});
-	
+   $(document).ready(function(){
+      // ready() : html 코드가 준비가 되면 실행되는 메소드
+      loadTopic();
+   });
+   
  function loadTopic() {
-	 
-	 	// 리스트라서.. 이렇게 가져옴
-	    let topicList = /*[[${topicList}]]*/ [];
+    
+       // 리스트라서.. 이렇게 가져옴
+       let topicList = /*[[${topicList}]]*/ [];
 
-		const Name = [];
+      const Name = [];
 
-	    listHtml = "";
-	    listHtml = "<option value='' disabled selected hidden>유형 선택</option>";
-	    
-	    for (let i = 0; i < topicList.length; i++) {
-	    	  let parts = topicList[i].topicName.split(" - ");
-	    	  Name.push(parts[0]);
-	    	}
-	    
-	    for(let i=0; i<topicList.length; i++){
-				    	
-	    	listHtml += "<option value='" + topicList[i].topicIdx + "'>"+ topicList[i].topicNum+". " + Name[i] + "</option>";
+       listHtml = "";
+       listHtml = "<option value='' disabled selected hidden>유형 선택</option>";
+       
+       for (let i = 0; i < topicList.length; i++) {
+            let parts = topicList[i].topicName.split(" - ");
+            Name.push(parts[0]);
+          }
+       
+       for(let i=0; i<topicList.length; i++){
+                   
+          listHtml += "<option value='" + topicList[i].topicIdx + "'>"+ topicList[i].topicNum+". " + Name[i] + "</option>";
 
 
-	    }
-	    $("#topicSelect").html(listHtml);   
-	    
+       }
+       $("#topicSelect").html(listHtml);   
+       
  } 
   const examPeriods = /*[[${exams}]]*/ [];
   const examDates = [];
@@ -203,7 +203,7 @@
     const end = new Date(exam.appEd);
     let d = new Date(start);
     while (d <= end) {
-      const dateStr = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       examDates.push({ date: dateStr, title: exam.title });
       d.setDate(d.getDate() + 1);
     }
@@ -215,12 +215,12 @@
       const category = form.querySelector("select[name='category']").value;
       console.log("제출한 값: "+form);
       if(category != ""){
-	      console.log("form값: "+ form);
-	      form.action = actionUrl;
-	      form.submit();
+         console.log("form값: "+ form);
+         form.action = actionUrl;
+         form.submit();
       }else{
-    	  alert("회차를 선택해주세요.");
-    	  event.preventDefault(); // 폼 제출 막기
+         alert("회차를 선택해주세요.");
+         event.preventDefault(); // 폼 제출 막기
       }
     }
   
@@ -241,8 +241,8 @@
   
   // 날짜 함수 2자리 수로 변경 ex 2025-6-6 -> 2025-06-06
   function pad(n) {
-	  return n < 10 ? "0" + n : n;
-	}
+     return n < 10 ? "0" + n : n;
+   }
 
   // 달력을 렌더링하는 함수
   function renderCalendar(date) {
@@ -275,7 +275,7 @@
           dayCircle.classList.add("day-circle");
           dayCircle.textContent = day;
 
-       	  // 오늘 날짜 표시
+            // 오늘 날짜 표시
           if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
             dayCircle.classList.add("today");
           }
@@ -291,10 +291,10 @@
           }
           /* 달력에 일정 표시 */
           const exam = examDates.find(e => e.date === dateStr);
-			if (exam) {
-			  dayCircle.classList.add("exam-period-bar");
-			  
-			}
+         if (exam) {
+           dayCircle.classList.add("exam-period-bar");
+           
+         }
 
           // 현재 셀에 해당 날짜를 시각적으로 보여줄 div.day-circle을 삽입하는 역할
           cell.appendChild(dayCircle);
@@ -317,38 +317,38 @@
   }
 
   checkAttendanceBtn.addEventListener("click", () => {
-	  const id = $("#id").val();
+     const id = $("#id").val();
 
-	  $.ajax({
-	    url: "/atd_check",
-	    type: "post",
-	    dataType: "text",
-	    data: { id: id },
-	    success: function (response) {
-	      if (response === "true") { // 응답이 True일 경우
-	        alert("출석이 완료되었습니다!");
+     $.ajax({
+       url: "/atd_check",
+       type: "post",
+       dataType: "text",
+       data: { id: id },
+       success: function (response) {
+         if (response === "true") { // 응답이 True일 경우
+           alert("출석이 완료되었습니다!");
 
-	        // 여기서부터 else전까지 전부 동그라미 표시 영역
-	        const today = new Date();
-	        console.log(today);
-	        // 년,월,일 문자열 표시 - ex) "2025-06-06" / Month는 0부터 시작하므로 +1
-	        const dateStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
-	        if (!attendanceDates.includes(dateStr)) {
-	          attendanceDates.push(dateStr);
-	        }
+           // 여기서부터 else전까지 전부 동그라미 표시 영역
+           const today = new Date();
+           console.log(today);
+           // 년,월,일 문자열 표시 - ex) "2025-06-06" / Month는 0부터 시작하므로 +1
+           const dateStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+           if (!attendanceDates.includes(dateStr)) {
+             attendanceDates.push(dateStr);
+           }
 
-	        renderCalendar(currentDate); // 다시 렌더링
-	      } else {
-	        alert("이미 출석하셨습니다!");
-	        
-	      }
-	    },
-	    error: function () {
-	      alert("서버 오류가 발생했습니다.");
-	    }
-	  });
-	});
-	
+           renderCalendar(currentDate); // 다시 렌더링
+         } else {
+           alert("이미 출석하셨습니다!");
+           
+         }
+       },
+       error: function () {
+         alert("서버 오류가 발생했습니다.");
+       }
+     });
+   });
+   
 
 
   renderCalendar(currentDate);

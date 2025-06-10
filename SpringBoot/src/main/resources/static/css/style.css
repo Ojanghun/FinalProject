@@ -273,6 +273,7 @@ h4 {
   color: red;
 }
 
+
 /* 출석 동그라미 */
 .day-circle {
   width: 36px;
@@ -336,7 +337,7 @@ h4 {
 }
 
 .day-circle.exam-period-bar {
-  background-color: #ffe082; /* 옅은 노란색 */
+  background-color:rgba(217, 229, 255, 0.5); 
   border-radius: 0; /* 바 형식 */
   width: 100%;
   height: 100%;
@@ -346,14 +347,34 @@ h4 {
 }
 
 /* footer  */
- .footer-link {
-    margin: 0 15px;
-    color: #6c757d;
-    text-decoration: none;
-    transition: color 0.2s ease-in-out;
-  }
+.footer {
+  border-top: 1px solid #ddd;
+}
 
-  .footer-link:hover {
-    color: #0d6efd;
-    text-decoration: underline;
-  }
+.footer .nav a {
+  color: #666;
+  margin: 0 10px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.footer .text-muted {
+  font-size: 13px;
+}
+
+.day-circle {
+ 
+  position: relative;
+}
+
+.day-circle.today::after {
+  content: "";
+  position: absolute;
+  bottom: -15px; /* 숫자 아래 간격 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%; /* 언더라인 길이 */
+  height: 2px;
+  background-color: rgba(0, 34, 102, 0.8);
+  border-radius: 1px;
+}

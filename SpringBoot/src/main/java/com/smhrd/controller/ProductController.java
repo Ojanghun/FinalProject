@@ -47,6 +47,13 @@ public class ProductController {
 		// 위에서 로그인시 받아온 id 값 기준으로 /출석된 날짜들 서비스에서 불러오기
 		List<LocalDate> date = licenseservice.getAllAttendanceDates(id);
 		
+		 LocalDateTime now = LocalDateTime.now();
+	     List<Ex_Info> exams = exinfoRepository.findByExStdAfterOrderByExStdAsc(now);
+
+	     model.addAttribute("exams", exams);
+	     model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+		
 		if (date != null) {
 			// 모델에 저장
 			model.addAttribute("date", date);	
@@ -65,21 +72,6 @@ public class ProductController {
         this.exinfoRepository = exinfoRepository;
     }
 	
-    @GetMapping("/license")
-    public String license(HttpSession session, Model model) {
-        Member member = (Member) session.getAttribute("info");
-        if (member != null) {
-            model.addAttribute("member", member);
-        }
-
-        LocalDateTime now = LocalDateTime.now();
-        List<Ex_Info> exams = exinfoRepository.findByExStdAfterOrderByExStdAsc(now);
-
-        model.addAttribute("exams", exams);
-        model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
-        return "license";
-    }
     
 	@GetMapping("/topic")
 	public String subject() {
