@@ -52,8 +52,5 @@ public class Exam {
 	private String pbCr; // 문제 정답률
 
 	@Column(name = "TOPIC_IDX", nullable = false) 
-    private int pbTopic;
-	
-	@Column(name = "PB_CHAP", length = 255, nullable = false)
-	private String pbChap;
+    private int pbTopic; // 주제 인덱스
 }
