@@ -49,6 +49,7 @@ public class AuthController {
         return "login";
     }
 
+    
     @GetMapping("/join")
     public String joinPage(HttpSession session, Model model) {
         if (!model.containsAttribute("member")) {

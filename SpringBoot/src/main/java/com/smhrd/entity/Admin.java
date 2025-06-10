@@ -25,7 +25,7 @@ public class Admin {
     private String adminId; // 관리자 아이디
      
     @Column(name = "ADMIN_PW", nullable = false, length = 255)
-    private String atminPw; // 관리자 비밀번호
+    private String adminPw; // 관리자 비밀번호
     
     @Column(name = "ADMIN_AT", nullable = false, insertable = false, updatable = false)
     private LocalDateTime adminAt; // 회원가입 날짜 → 자동으로 날짜 입력됨
