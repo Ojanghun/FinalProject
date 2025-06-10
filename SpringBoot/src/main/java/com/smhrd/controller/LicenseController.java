@@ -27,8 +27,27 @@ public class LicenseController {
 	ExamService Exservice;
 	
 	@PostMapping("/goExam.do")
-	public String goExam(@RequestParam("category") int category, Model model) {
+	public String goExam(@RequestParam("category") int category,
+			@RequestParam("liIdx") String liIdx,
+		    @RequestParam("liName") String liName,
+		    @RequestParam("liTime") String liTime,
+		    @RequestParam("liPbc") String liPbc,
+		    @RequestParam("liChap1") String liChap1,
+		    @RequestParam("liChap2") String liChap2,
+		    @RequestParam("liChap3") String liChap3,
+		    @RequestParam("liChap4") String liChap4,
+		    @RequestParam("liChap5") String liChap5,
+		    Model model) {
 		model.addAttribute("category", category);
+	    model.addAttribute("liIdx", liIdx);
+	    model.addAttribute("liName", liName);
+	    model.addAttribute("liTime", liTime);
+	    model.addAttribute("liPbc", liPbc);
+	    model.addAttribute("liChap1", liChap1);
+	    model.addAttribute("liChap2", liChap2);
+	    model.addAttribute("liChap3", liChap3);
+	    model.addAttribute("liChap4", liChap4);
+	    model.addAttribute("liChap5", liChap5);
 		System.out.println("카테고리 값: "+category);
 		return "past";
 	}

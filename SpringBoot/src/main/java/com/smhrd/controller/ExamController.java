@@ -102,11 +102,5 @@ public class ExamController {
 	        service.submitPbsData(entity);
 	    });
 	}
-
-	
-	@GetMapping("/submitPbsData")
-	public void blockGet() {
-	    System.out.println("🔥 누가 GET으로 submitPbsData를 호출함");
-	}
 	
 }

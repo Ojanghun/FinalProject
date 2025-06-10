@@ -31,4 +31,25 @@ public class Li_Info {
     @Column(name = "LI_PBC", nullable = false)
     private int liPbc; // 자격증 문제 개수
     
+    @Column(name = "LI_CPC", nullable = false)
+    private int liCpc; 
+    
+   @Column(name = "LI_CHAP1", length = 255)
+   private String liChap1;
+   
+   @Column(name = "LI_CHAP2", length = 255)
+   private String liChap2;
+   
+   @Column(name = "LI_CHAP3", length = 255)
+   private String liChap3;
+   
+   @Column(name = "LI_CHAP4", length = 255)
+   private String liChap4;
+   
+   @Column(name = "LI_CHAP5", length = 255)
+   private String liChap5;
+   
+   @Column(name = "LI_CHAP6", length = 255)
+   private String liChap6;
+    
 }

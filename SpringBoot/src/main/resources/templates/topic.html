@@ -172,12 +172,14 @@
     						if (choiceText === data.trim()) {
     							$("#choice" + (index + 1) + "-" + i).css("color", "red");
     				    		$("#passRate" + (index+1)).css("display","block");
+    				    		$("#pbans"+index).prop("disabled", true);
     						}
     					}
     				    if(userSelections[index+1] === data){
     				    	console.log("클릭 data: ", userSelections[index+1]);
     				    	$("#check" + (index+1)).css("display","block");
     				    	$("#check" + (index+1)).attr("src","/images/o.png");
+    				    	$("#pbans"+index).prop("disabled", true);
 
     				    }
     				    else{

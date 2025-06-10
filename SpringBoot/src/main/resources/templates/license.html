@@ -45,30 +45,64 @@
       <!-- Left Column -->
       <div class="col-md-8 d-flex flex-column gap-4">
 
-        <!-- 기출 풀기 -->
+        <!-- 시험 풀기 -->
         <div class="dashboard-card p-4">
-          <h5 class="fw-bold mb-4">기출 풀기</h5>
-          <form id="examForm" method="post" class="d-flex align-items-center gap-2">
+          <h5 class="fw-bold mb-4">시험 풀기</h5>
+          <form method="post" action="/goTest.do" class="d-flex align-items-center gap-2">
             <div class="flex-grow-1" style="width:300px; padding-left: 100px;">
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            	  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			      <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
 			      <input type="hidden" name="liName" th:value="${licenseList[0].liName}" />
 			      <input type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
 			      <input type="hidden" name="liPbc" th:value="${licenseList[0].liPbc}" />
-              <select name="category" class="form-control rounded-pill px-4 py-2">
+			      <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
+              <select id="category" name="category" class="form-control rounded-pill px-4 py-2">
                 <option value="" disabled selected hidden>회차 검색</option>
+                <option value="0">랜덤 문제</option>
                 <option value="1">2020-06-06</option>
                 <option value="2">2020-08-22</option>
                 <option value="3">2020-09-26</option>
                 <option value="4">2021-03-07</option>
                 <option value="5">2021-05-15</option>
                 <option value="6">2021-08-14</option>
-                <option value="7">2022-03-05</option>
+                <option value="7">2022-03-05</option>	
                 <option value="8">2022-04-24</option>
               </select>
             </div>
-            <button class="btn btn-light" type="submit" onclick="submitForm('goExam.do')">연습</button>
-            <button style="margin-right:50px;" class="btn btn-light" type="submit" onclick="submitForm('goTest.do')">시험</button>
+			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
+			    	onclick="if(document.getElementById('category').value == ''){ alert('유형을 선택해주세요.'); return false; }">시험</button>            
+          </form>
+        </div>
+        
+        <!-- 기출 풀기 -->
+        <div class="dashboard-card p-4">
+          <h5 class="fw-bold mb-4">기출 풀기</h5>
+          <form method="post" action="goExam.do"  class="d-flex align-items-center gap-2">
+            <div class="flex-grow-1" style="width:300px; padding-left: 100px;">
+               <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+               <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
+			   <input type="hidden" name="liName" th:value="${licenseList[0].liName}" />
+			   <input type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
+			   <input type="hidden" name="liPbc" th:value="${licenseList[0].liPbc}" />
+               <input type="hidden" name="liChap1" th:value="${licenseList[0].liChap1}" />
+               <input type="hidden" name="liChap2" th:value="${licenseList[0].liChap2}" />
+               <input type="hidden" name="liChap3" th:value="${licenseList[0].liChap3}" />
+               <input type="hidden" name="liChap4" th:value="${licenseList[0].liChap4}" />
+               <input type="hidden" name="liChap5" th:value="${licenseList[0].liChap5}" />
+              <select id="category" name="category" class="form-control rounded-pill px-4 py-2">
+				<option value="default" disabled selected hidden>회차 검색</option>
+                <option value="1">2020-06-06</option>
+                <option value="2">2020-08-22</option>
+                <option value="3">2020-09-26</option>
+                <option value="4">2021-03-07</option>
+                <option value="5">2021-05-15</option>
+                <option value="6">2021-08-14</option>
+                <option value="7">2022-03-05</option>	
+                <option value="8">2022-04-24</option>
+              </select>
+            </div>
+			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
+			    	onclick="if(document.getElementById('category').value == 'default'){ alert('유형을 선택해주세요.'); return false; }">연습</button>
           </form>
         </div>
 
@@ -95,6 +129,10 @@
       <div class="col-md-4">
         <div class="dashboard-card p-4" style="height: 350px;">
           <h5 class="fw-bold mb-3" th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
+          	<div th:each="pbIdxList : ${pbIdxList}">
+          		<div th:text="${pbIdxList}"></div>
+          	</div>
+          
           	<form action="/updateTopicNums.do" method="post" style="display:inline;">
           	  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			  <button type="submit" class="btn btn-light">팀장님 발작버튼</button>
@@ -203,27 +241,12 @@
     const end = new Date(exam.appEd);
     let d = new Date(start);
     while (d <= end) {
-      const dateStr = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       examDates.push({ date: dateStr, title: exam.title });
       d.setDate(d.getDate() + 1);
     }
   });
 
-  
-  function submitForm(actionUrl) {
-      const form = document.getElementById("examForm");
-      const category = form.querySelector("select[name='category']").value;
-      console.log("제출한 값: "+form);
-      if(category != ""){
-	      console.log("form값: "+ form);
-	      form.action = actionUrl;
-	      form.submit();
-      }else{
-    	  alert("회차를 선택해주세요.");
-    	  event.preventDefault(); // 폼 제출 막기
-      }
-    }
-  
   // calendarBody: 달력 테이블(<tbody>)을 넣을 위치
   const calendarBody = document.getElementById("calendar-body");
   
