@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 public class PayController {
@@ -65,6 +64,7 @@ public class PayController {
 
         model.addAttribute("activeUserCount", activeUserCount);
         model.addAttribute("plan", plan); // 탐구형/필수형
+        model.addAttribute("liIdx", liIdx); // ✅ plan으로 돌아가기용
 
         return "pay";
     }
@@ -85,7 +85,7 @@ public class PayController {
         String userId = ((Member) info).getId();
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime end = now.plusDays(180); // 기본 30일 플랜
+        LocalDateTime end = now.plusDays(180); // 180일 사용 가능
 
         Pay_Info payInfo = new Pay_Info();
         payInfo.setId(userId);
