@@ -128,5 +128,26 @@
       <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
     </div>
   </footer>
+
+  <!-- 사용자 수 실시간 갱신 스크립트 -->
+  <script>
+    const liIdx = /*[[${liIdx}]]*/ 0;
+    const plan = /*[[${plan}]]*/ "";
+
+    function updateUserCount() {
+      fetch(`/api/plan/userCount?liIdx=${liIdx}`)
+        .then(response => response.json())
+        .then(data => {
+          const count = plan === '탐구형' ? data.free : data.strict;
+          document.getElementById("userCountText").textContent = `현재 ${count}명이 이용중입니다.`;
+        });
+    }
+
+    setInterval(updateUserCount, 5000);
+  </script>
+
+</body>
+</html>
+
 </body>
 </html>

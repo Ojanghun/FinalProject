@@ -35,7 +35,6 @@ public class PayController {
 
         model.addAttribute("session", session.getAttribute("info"));
 
-        // 자격증 정보
         Li_Info license = liInfoRepository.findById(liIdx).orElse(null);
         if (license != null) {
             String fullName = license.getLiName();
@@ -45,7 +44,6 @@ public class PayController {
             model.addAttribute("liName", fullName);
         }
 
-        // 플랜 정보 및 사용자 수
         Plan_Info selectedPlan = null;
         int activeUserCount = 0;
 
@@ -63,11 +61,12 @@ public class PayController {
         }
 
         model.addAttribute("activeUserCount", activeUserCount);
-        model.addAttribute("plan", plan); // 탐구형/필수형
-        model.addAttribute("liIdx", liIdx); // ✅ plan으로 돌아가기용
+        model.addAttribute("plan", plan);
+        model.addAttribute("liIdx", liIdx);
 
         return "pay";
     }
+
 
     // 결제 완료 처리
     @PostMapping("/pay/submit")

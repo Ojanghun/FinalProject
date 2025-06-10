@@ -1,132 +1,168 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plan</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="/css/pricing.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 추가 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+<link href="/css/pricing.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery 추가 -->
 </head>
 <body>
-  <div class="container py-3">
-    <header>
-      <div class="custom-header d-flex justify-content-between mb-4 align-items-center">
-        <a href="/"> <img src="/images/로고.png" alt="로고" style="height: 40px;"></a>
-        <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-          <a class="btn btn-outline-secondary me-2" href="mypage">MYPAGE</a>
-          <a class="btn btn-outline-danger" href="logout">LOGOUT</a>
-        </nav>
-      </div>
-      <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-        <h3 class="display-5 fw-normal" th:text="${liName}">자격증 이름</h3>
-        <p class="fs-5 text-muted">간략한 소개</p>
-      </div>
-    </header>
+	<div class="container py-3">
+		<header>
+			<div
+				class="custom-header d-flex justify-content-between mb-4 align-items-center">
+				<a href="/"> <img src="/images/로고.png" alt="로고"
+					style="height: 40px;"></a>
+				<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+					<a class="btn btn-outline-secondary me-2" href="mypage">MYPAGE</a>
+					<a class="btn btn-outline-danger" href="logout">LOGOUT</a>
+				</nav>
+			</div>
+			<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+				<h3 class="display-5 fw-normal" th:text="${liName}">자격증 이름</h3>
+				<p class="fs-5 text-muted">간략한 소개</p>
+			</div>
+		</header>
 
-    <main>
-      <div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
-        <!-- 탐구형 -->
-        <div class="col">
-          <div class="card mb-4 rounded-3 shadow-sm">
-            <div class="card-header py-3">
-              <h4 class="my-0 fw-normal">탐구형</h4>
-            </div>
-            <div class="card-body">
-              <p class="text-muted">자유롭게 공부하고 싶으신가요?</p>
-              <h1 class="card-title pricing-card-title"
-                  th:if="${freePlan != null}"
-                  th:text="${freePlan.planPrice + '원'}">9000원</h1>
-              <h2 class="card-title pricing-card-title" th:if="${freePlan == null}">가격 정보 없음</h2>
-              <!-- 탐구형 이용자 수 -->
-              <div id="freeUserCount" class="highlight text-success"
-                   th:text="'현재 ' + ${freeUserCount} + '명이 이용중입니다.'">현재 0명이 이용중입니다.</div>
-              <ul class="list-unstyled mt-3 mb-4">
-                <strong>탐구형 제공 서비스</strong>
-                <li>주제별 풀이</li>
-                <li>실제 시험 환경 풀이</li>
-                <li>시험 합격시 환급</li>
-                <li>~~</li>
-              </ul>
-              <a th:href="@{/pay(liIdx=${liIdx}, plan='탐구형')}" class="w-100 btn btn-lg btn-outline-primary">☞ Select Plan</a>
-            </div>
-          </div>
-        </div>
+		<main>
+			<div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
+				<!-- 탐구형 -->
+				<div class="col">
+					<div class="card mb-4 rounded-3 shadow-sm">
+						<div class="card-header py-3">
+							<h4 class="my-0 fw-normal">탐구형</h4>
+						</div>
+						<div class="card-body">
+							<p class="text-muted">자유롭게 공부하고 싶으신가요?</p>
+							<h1 class="card-title pricing-card-title"
+								th:if="${freePlan != null}"
+								th:text="${freePlan.planPrice + '원'}">9000원</h1>
+							<h2 class="card-title pricing-card-title"
+								th:if="${freePlan == null}">가격 정보 없음</h2>
+							<!-- 탐구형 이용자 수 -->
+							<div id="freeUserCount" class="highlight text-success"
+								th:text="'현재 ' + ${freeUserCount} + '명이 이용중입니다.'">현재 0명이
+								이용중입니다.</div>
+							<ul class="list-unstyled mt-3 mb-4">
+								<strong>탐구형 제공 서비스</strong>
+								<li>주제별 풀이</li>
+								<li>실제 시험 환경 풀이</li>
+								<li>시험 합격시 환급</li>
+								<li>~~</li>
+							</ul>
+							<a th:href="@{/pay(liIdx=${liIdx}, plan='탐구형')}"
+								class="w-100 btn btn-lg btn-outline-primary">☞ Select Plan</a>
+						</div>
+					</div>
+				</div>
 
-        <!-- 필수형 -->
-        <div class="col">
-          <div class="card mb-3 rounded-3 shadow-sm">
-            <div class="card-header py-3 text-bg-primary border-primary">
-              <h4 class="my-0 fw-normal" style="color: white;">필수형</h4>
-            </div>
-            <div class="card-body">
-              <p class="text-muted">혼자 공부가 어렵다면, 우리가 계획을 도와드려요!</p>
-              <h1 class="card-title pricing-card-title"
-                  th:if="${strictPlan != null}"
-                  th:text="${strictPlan.planPrice + '원'}">9900원</h1>
-              <h2 class="plan-price" th:if="${strictPlan == null}">가격 정보 없음</h2>
-              <!-- 필수형 이용자 수 -->
-              <div id="strictUserCount" class="highlight text-success"
-                   th:text="'현재 ' + ${strictUserCount} + '명이 이용중입니다.'">현재 0명이 이용중입니다.</div>
-              <ul class="list-unstyled mt-3 mb-4">
-                <strong>필수형 제공 서비스</strong>
-                <li>탐색형 서비스</li>
-                <li>문자 알림 서비스</li>
-                <li>일일 학습량 제공</li>
-                <li>~~</li>
-              </ul>
-              <a th:href="@{/pay(liIdx=${liIdx}, plan='필수형')}" class="w-100 btn btn-lg btn-primary">☞ Select Plan</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+				<!-- 필수형 -->
+				<div class="col">
+					<div class="card mb-3 rounded-3 shadow-sm">
+						<div class="card-header py-3 text-bg-primary border-primary">
+							<h4 class="my-0 fw-normal" style="color: white;">필수형</h4>
+						</div>
+						<div class="card-body">
+							<p class="text-muted">혼자 공부가 어렵다면, 우리가 계획을 도와드려요!</p>
+							<h1 class="card-title pricing-card-title"
+								th:if="${strictPlan != null}"
+								th:text="${strictPlan.planPrice + '원'}">9900원</h1>
+							<h2 class="plan-price" th:if="${strictPlan == null}">가격 정보
+								없음</h2>
+							<!-- 필수형 이용자 수 -->
+							<div id="strictUserCount" class="highlight text-success"
+								th:text="'현재 ' + ${strictUserCount} + '명이 이용중입니다.'">현재 0명이
+								이용중입니다.</div>
+							<ul class="list-unstyled mt-3 mb-4">
+								<strong>필수형 제공 서비스</strong>
+								<li>탐색형 서비스</li>
+								<li>문자 알림 서비스</li>
+								<li>일일 학습량 제공</li>
+								<li>~~</li>
+							</ul>
+							<a th:href="@{/pay(liIdx=${liIdx}, plan='필수형')}"
+								class="w-100 btn btn-lg btn-primary">☞ Select Plan</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
 
-    <div class="container my-5">
-      <h1 class="text-center mb-4">Compare Plans</h1>
-      <div class="table-responsive">
-        <table class="table text-center">
-          <thead>
-            <tr>
-              <th style="width: 34%;"></th>
-              <th style="width: 30%;">탐구형</th>
-              <th style="width: 30%;">필수형</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><th class="text-start">일정 관리</th><td></td><td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td></tr>
-            <tr><th class="text-start">목표 설정</th><td></td><td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td></tr>
-            <tr><th class="text-start">알림 기능</th><td></td><td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td></tr>
-            <tr><th class="text-start">자유도</th><td><svg class="bi" width="20" height="20"><use xlink:href="#check"/></svg></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+		<div class="container my-5">
+			<h1 class="text-center mb-4">Compare Plans</h1>
+			<div class="table-responsive">
+				<table class="table text-center">
+					<thead>
+						<tr>
+							<th style="width: 34%;"></th>
+							<th style="width: 30%;">탐구형</th>
+							<th style="width: 30%;">필수형</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th class="text-start">일정 관리</th>
+							<td></td>
+							<td><svg class="bi" width="20" height="20">
+									<use xlink:href="#check" /></svg></td>
+						</tr>
+						<tr>
+							<th class="text-start">목표 설정</th>
+							<td></td>
+							<td><svg class="bi" width="20" height="20">
+									<use xlink:href="#check" /></svg></td>
+						</tr>
+						<tr>
+							<th class="text-start">알림 기능</th>
+							<td></td>
+							<td><svg class="bi" width="20" height="20">
+									<use xlink:href="#check" /></svg></td>
+						</tr>
+						<tr>
+							<th class="text-start">자유도</th>
+							<td><svg class="bi" width="20" height="20">
+									<use xlink:href="#check" /></svg></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
-  <footer class="footer mt-5 py-4 border-top">
-    <div class="container text-center">
-      <nav class="nav justify-content-center mb-3">
-        <a href="#" class="footer-link">Home</a>
-        <a href="#" class="footer-link">About</a>
-        <a href="#" class="footer-link">Contact</a>
-      </nav>
-      <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-    </div>
-  </footer>
+	<footer class="footer mt-5 py-4 border-top">
+		<div class="container text-center">
+			<nav class="nav justify-content-center mb-3">
+				<a href="#" class="footer-link">Home</a> <a href="#"
+					class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
+			</nav>
+			<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+		</div>
+	</footer>
 
-  <!-- AJAX로 5초마다 사용자 수 업데이트 -->
-  <script>
-    setInterval(() => {
-      const liIdx = new URLSearchParams(window.location.search).get("liIdx");
-      $.get("/userCount?liIdx=" + liIdx, function(data) {
-        $("#freeUserCount").text(`현재 ${data.freeUserCount}명이 이용중입니다.`);
-        $("#strictUserCount").text(`현재 ${data.strictUserCount}명이 이용중입니다.`);
-      });
-    }, 5000);
-  </script>
+	<!-- AJAX로 5초마다 사용자 수 업데이트 -->
+	<script>
+  setInterval(() => {
+    const liIdx = new URLSearchParams(window.location.search).get("liIdx");
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    $.get("/api/plan/userCount?liIdx=" + liIdx, function(data) {
+      // 키 이름은 "free", "strict"임
+      $("#freeUserCount").text(`현재 ${data.free}명이 이용중입니다.`);
+      $("#strictUserCount").text(`현재 ${data.strict}명이 이용중입니다.`);
+    });
+  }, 5000);
+</script>
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
