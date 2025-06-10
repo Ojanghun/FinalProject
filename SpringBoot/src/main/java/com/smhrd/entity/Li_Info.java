@@ -31,4 +31,25 @@ public class Li_Info {
     @Column(name = "LI_PBC", nullable = false)
     private int liPbc; // 자격증 문제 개수
     
+    @Column(name = "LI_CPC", nullable = false)
+    private int liCpc; // 자격증 과목 개수
+    
+	@Column(name = "LI_CHAP1", length = 255)
+	private String liChap1; // 자격증 1번째 과목 이름
+	
+	@Column(name = "LI_CHAP2", length = 255)
+	private String liChap2; // 자격증 2번째 과목 이름
+	
+	@Column(name = "LI_CHAP3", length = 255)
+	private String liChap3; // 자격증 3번째 과목 이름
+	
+	@Column(name = "LI_CHAP4", length = 255)
+	private String liChap4; // 자격증 4번째 과목 이름
+	
+	@Column(name = "LI_CHAP5", length = 255)
+	private String liChap5; // 자격증 5번째 과목 이름
+	
+	@Column(name = "LI_CHAP6", length = 255)
+	private String liChap6; // 자격증 6번째 과목 이름
+    
 }
