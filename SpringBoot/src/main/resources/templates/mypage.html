@@ -75,7 +75,7 @@
             <th:block
               th:if="${#temporals.createNow().isAfter(pay.planEd) and #temporals.createNow().isBefore(pay.planEd.plusDays(7))}">
               <div style="text-align: right; margin-top: 10px;">
-                <button class="btn btn-primary">합격 인증 후 환급 받기</button>
+                <a href="/certify" class="btn btn-primary btn-move-link">합격 인증 후 환급 받기</a>
               </div>
             </th:block>
           </div>
