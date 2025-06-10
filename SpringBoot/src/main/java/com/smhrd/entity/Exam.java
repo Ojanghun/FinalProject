@@ -54,4 +54,6 @@ public class Exam {
 	@Column(name = "TOPIC_IDX", nullable = false) 
     private int pbTopic;
 	
+	@Column(name = "PB_CHAP", length = 255, nullable = false)
+	private String pbChap;
 }
