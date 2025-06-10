@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 로그인</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container" style="margin-top: 100px; max-width: 400px;">
+    <h2 class="text-center">🔐 관리자 로그인</h2>
+
+    <!-- 관리자 로그인 실패 메시지 -->
+    <div th:if="${loginError}" class="alert alert-danger" th:text="${loginError}"></div>
+
+    <form th:action="@{/adminLoginCheck}" method="post">
+        <div class="form-group">
+            <label for="id">아이디</label>
+            <input type="text" class="form-control" id="id" name="id" placeholder="관리자 아이디" required>
+        </div>
+        <div class="form-group">
+            <label for="pw">비밀번호</label>
+            <input type="password" class="form-control" id="pw" name="pw" placeholder="비밀번호" required>
+        </div>
+        <button type="submit" class="btn btn-danger btn-block">관리자 로그인</button>
+    </form>
+
+    <hr>
+    <p class="text-center">
+        <a href="/" class="btn btn-default btn-block">← 메인으로 돌아가기</a>
+    </p>
+</div>
+</body>
+</html>
