@@ -27,10 +27,10 @@ public class Pbs_Log {
     private int pbsIdx; // 문제 풀이 로그 인덱스
 
     @Column(name = "USER_ID", nullable = false, length = 50) 
-    private String userId;
+    private String userId; // 회원 아이디
     
     @Column(name = "PB_IDX", nullable = false)
-	private int pbId;
+	private int pbId; // 문제 인덱스
     
     @Column(name = "PBS_CHECK", nullable = false)
     private int pbsCheck; // 문제 정답 여부(0: 틀림, 1: 맞음)
