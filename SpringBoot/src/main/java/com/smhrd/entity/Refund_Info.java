@@ -24,10 +24,10 @@ public class Refund_Info {
     private int rfIdx; // 환불 인덱스
 
     @Column(name = "PAY_IDX", nullable = false)
-    private int payIdx;
-    
+    private int payIdx; // 결재 인덱스
+
     @Column(name = "USER_ID", nullable = false, length = 50) 
-    private String id;
+    private String id; // 회원 아이디
    
     @Column(name = "RF_VPATH", nullable = false, length = 255)
     private String rfVpath; // 합격 인증 영상 경로

@@ -22,8 +22,8 @@ public class Atd_Log {
     private int atdIdx; // 출석 인덱스
 
     @Column(name = "USER_ID", nullable = false, length = 50) 
-    private String userId;
-    
+    private String userId; // 회원 아이디
+     
     @Column(name = "ATD_AT", nullable = false, insertable = false, updatable = false)
     private LocalDateTime atdAt; // 출석 날짜 → 자동으로 날짜가 입력됨
     

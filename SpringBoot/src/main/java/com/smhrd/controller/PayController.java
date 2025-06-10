@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 public class PayController {
@@ -36,7 +35,6 @@ public class PayController {
 
         model.addAttribute("session", session.getAttribute("info"));
 
-        // 자격증 정보
         Li_Info license = liInfoRepository.findById(liIdx).orElse(null);
         if (license != null) {
             String fullName = license.getLiName();
@@ -46,7 +44,6 @@ public class PayController {
             model.addAttribute("liName", fullName);
         }
 
-        // 플랜 정보 및 사용자 수
         Plan_Info selectedPlan = null;
         int activeUserCount = 0;
 
@@ -64,10 +61,12 @@ public class PayController {
         }
 
         model.addAttribute("activeUserCount", activeUserCount);
-        model.addAttribute("plan", plan); // 탐구형/필수형
+        model.addAttribute("plan", plan);
+        model.addAttribute("liIdx", liIdx);
 
         return "pay";
     }
+
 
     // 결제 완료 처리
     @PostMapping("/pay/submit")
@@ -85,7 +84,7 @@ public class PayController {
         String userId = ((Member) info).getId();
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime end = now.plusDays(180); // 기본 30일 플랜
+        LocalDateTime end = now.plusDays(180); // 180일 사용 가능
 
         Pay_Info payInfo = new Pay_Info();
         payInfo.setId(userId);

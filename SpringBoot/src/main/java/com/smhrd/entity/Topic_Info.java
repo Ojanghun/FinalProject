@@ -22,7 +22,7 @@ public class Topic_Info {
     private int topicIdx; // 문제 주제 인덱스
     
     @Column(name = "LI_IDX", nullable = false) 
-    private int liIdx;
+    private int liIdx; // 자격증 인덱스
     
     @Column(name = "TOPIC_NUM", nullable = false) 
     private int topicNum; // 자격증 내 주제 번호
