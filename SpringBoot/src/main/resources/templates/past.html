@@ -61,42 +61,36 @@
 </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Spring Boot RestController Member</h2>
-        <div class="panel panel-warning">
-            <div class="panel-heading">
-                examPage <span style="float: right;"> </span>
-            </div>
-            <div class="panel-body">
-                <input type="hidden" id="category" th:value="${category}" />
-                <div id="examBoard" style="column-count: 2; column-gap: 40px;"></div>
-            </div>
-            <div class="panel-footer">빅데이터 개발자과정 - 손종희</div>
-        </div>
-    </div>
+	<div class="container">
+		<h2 th:text="'자격증 이름: ' + ${liName}"></h2>
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				examPage <span style="float: right;"> </span>
+			</div>
+			<div class="panel-body">
 
-    <!-- 챗봇 컨테이너 -->
-    <div id="chatbot-container">
-        <div id="chatbot-header">
-            Issue Bot
-            <button onclick="toggleChatbot()" class="btn btn-sm btn-default">닫기</button>
-        </div>
-        <div id="chatbot-body"></div>
-        <div id="chatbot-input">
-            <input type="text" id="chatbot-message" placeholder="질문을 입력하세요" />
-            <button onclick="sendChatbotMessage()" class="btn btn-sm btn-primary">전송</button>
-        </div>
-    </div>
+				<input type="hidden" id="category" th:value="${category}" />
+				<div id="examBoard"></div>
 
-    <script type="text/javascript">
-    $(document).ready(function(){
-        loadExam();
-    });
-
-    // 챗봇 토글
-    function toggleChatbot() {
-        $("#chatbot-container").toggle();
-    }
+			</div>
+			<div class="panel-footer">빅데이터 개발자과정 - 손종희</div>
+		</div>
+	</div>
+	
+<!-- Thymeleaf에서 JS로 챕터명 전달 -->	
+<script th:inline="javascript">
+    const chapterTitles = [
+        /*[[${liChap1}]]*/,
+        /*[[${liChap2}]]*/,
+        /*[[${liChap3}]]*/,
+        /*[[${liChap4}]]*/,
+        /*[[${liChap5}]]*/
+    ];
+</script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		// ready() : html 코드가 준비가 되면 실행되는 메소드
+		// 게시글을 모두 가져올 수 있는 메소드!
 
     // 챗봇 메시지 전송
     function sendChatbotMessage() {
@@ -104,9 +98,10 @@
         let pbId = $("#chatbot-pbId").val();
         if (message === "") return;
 
-        $("#chatbot-body").append(`<div class="chat-message user-message">${message}</div>`);
-        $("#chatbot-message").val("");
-        $("#chatbot-body").scrollTop($("#chatbot-body")[0].scrollHeight);
+	   let exData = []; // 모든 데이터 담아주기. 그 후 여기서 쪼개자
+	   let shufData = []; // 모든 선지 데이터 담아주기. 그 후 여기서 쪼개자
+	   let subjectExam = []; // 쪼개진 데이터들(20개씩)
+	   let subjectshuf = []; // 쪼개진 데이터들()
 
         $.ajax({
             url: "/chatbot/" + pbId,
@@ -203,6 +198,81 @@
         });
     }
 
+	     // examData, shuffleData는 배열 형태 ([data, status, jqXHR])
+	     // examData, shuffleData = [실제데이터, "success", jqXHR 객체]
+	     // 그래서 [0]번째 데이터 추출
+	     exData = examData[0];
+	     shufData = shuffleData[0];
+		   let subjectExam = [];
+		   let subjectshuf = [];
+		   
+		   for (let i = 0; i < 5; i++) {        // 과목 5개
+			   let examSlice = [];
+			   let shufSlice = [];
+
+			   for (let j = 0; j < 20; j++) {     // 각 과목당 20문제
+			     let idx = i * 20 + j; // 0~19번만 반복되지 않게 i 값 *20을 더해주기
+			     examSlice.push(exData[idx]); // 20개 데이터 push
+			     shufSlice.push(shufData[idx]); // 20개 데이터 push
+			   }
+
+			   subjectExam.push(examSlice); // 20개로 묶인 데이터 push
+			   subjectshuf.push(shufSlice);
+			 }
+	     
+	     
+	     
+	     let listHtml = "";
+	     
+	     
+	     $.each(subjectshuf, function(subjectIdx, problemList) {
+	    	  listHtml += "<h4 style='margin-top: 30px; font-size:50px; font-weight: bold; text-align: center;'>"
+	    	           + chapterTitles[subjectIdx]
+	    	           + "</h4>";
+	    	  listHtml += "<p><hr></p>"         
+			  listHtml += "<div style='column-count: 2; column-gap: 40px;'>"
+	    	  $.each(problemList, function(questionIdx, options) {
+	    	    const globalIdx = subjectIdx * 20 + questionIdx;
+	    	    const pbId = exData[globalIdx].pbId - 1;
+
+	    	    listHtml += "<div style='break-inside: avoid;'>";
+	    	    listHtml += "<div id='examYear" + (globalIdx + 1) + "'></div>";
+
+	    	    listHtml += "<div style='position: relative; width: fit-content; max-width: 100%;'>" +
+	    	                "<img id='check" + (globalIdx + 1) + "' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
+	    	                (globalIdx + 1) + ". " + exData[globalIdx].pbQues + "</div>";
+
+	    	    if (exData[globalIdx].pbDetail != null) {
+	    	      listHtml += "<br><div><img src='" + exData[globalIdx].pbDetail + "'></div><br>";
+	    	    }
+
+	    	    for (let k = 0; k < 4; k++) {
+	    	      listHtml += "<div id='choice" + (globalIdx + 1) + "-" + (k + 1) + "' onclick='selectChoice(" + (globalIdx + 1) + "," + (k + 1) + ", \"" + options[k] + "\")' style='display: flex;'>";
+	    	      listHtml += "<div id='choiceNum" + (globalIdx + 1) + "-" + (k + 1) + "'> " + ["①", "②", "③", "④"][k] + " &nbsp; </div>";
+	    	      if (options[k].includes("http")) {
+	    	        listHtml += "<div id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'><img src='" + options[k] + "'></div></div>";
+	    	      } else {
+	    	        listHtml += "<div id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'>" + options[k] + "</div></div>";
+	    	      }
+	    	    }
+
+	    	    listHtml += "<br>";
+	    	    listHtml += "<button id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+	    	    listHtml += "<button onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
+	    	    listHtml += "<br><br>";
+	    	    listHtml += "<div id='solution" + globalIdx + "'></div>";
+	    	    listHtml += "</div><br>";
+	    	  });
+			  listHtml += "</div>"
+	    	});
+
+	       // div의 id가 examBoard인 부분에 listHtml 추가
+	       $("#examBoard").html(listHtml);
+	   }).fail(function() { // 실패시
+	     alert("Error!"); // 오류시 출력문
+	   });
+	 }
+   
     // 정답 확인
     function correctAnswer(pbId, index) {
         $.ajax({

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -117,7 +118,14 @@ public class ExamService {
 
 	public List<Exam> loadExam1(int pageNum, int pageSize, int category) {
         // 100문제만 미리 가져오고, 그 중에서 해당 페이지 데이터 추출
-        List<Exam> allQuestions = repository.findTop100ByExIdOrderByPbNum(category);
+		List<Exam> allQuestions;
+		if(category == 0) {
+			allQuestions = repository.findRandom100();
+		}else {
+			allQuestions = repository.findTop100ByExIdOrderByPbNum(category);
+		}
+		
+		System.out.println("전체 데이터 : "+allQuestions);
 
         int start = pageNum * pageSize;
         int end = Math.min(start + pageSize, allQuestions.size());

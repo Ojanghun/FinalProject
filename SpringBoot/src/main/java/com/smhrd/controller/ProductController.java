@@ -3,6 +3,7 @@ package com.smhrd.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.smhrd.entity.Atd_Log;
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
+import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
-import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.service.LicenseService;
 import com.smhrd.entity.Ex_Info;
-import com.smhrd.entity.Member;
 import com.smhrd.repository.ExInfoRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,7 +40,7 @@ public class ProductController {
 			// member 값이 있을 때 모델에 member이라는 이름으로 저장
 			model.addAttribute("member", member);
 			
-			// 출석을 위해 id값 저장해두기
+			// 로그인한 id값 저장해두기
 			id = member.getId();
 		}
 		List<Li_Info> licenseList = licenseservice.liInfo();
@@ -64,7 +63,18 @@ public class ProductController {
 
         model.addAttribute("exams", exams);
         model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        
+        List<Pbs_Log> pbsLog = licenseservice.PbsLog(id);
+        List<Integer> pbIdxList = new ArrayList<>();
+        
+        for(int i=0;i<pbsLog.size(); i++) {
+        	pbIdxList.add(pbsLog.get(i).getPbId());
+        }
+        
+        
 		
+        model.addAttribute("pbIdxList", pbIdxList);
+        
 		return "license";
 	}
 

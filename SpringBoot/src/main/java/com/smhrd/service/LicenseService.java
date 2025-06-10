@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.smhrd.entity.Atd_Log;
 import com.smhrd.entity.Li_Info;
+import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
 import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.repository.LicenseRepository;
+import com.smhrd.repository.PbsLogRepository;
 import com.smhrd.repository.TopicInfoRpository;
 
 @Service
@@ -25,6 +27,9 @@ public class LicenseService {
     
     @Autowired
     TopicInfoRpository TopicInforepository;
+    
+    @Autowired
+    PbsLogRepository PbsLogRepository;
 
 	// 출석 가능 여부를 True와 False로 받아주기
 	public boolean atd_check(String id) {
@@ -67,6 +72,18 @@ public class LicenseService {
 	public List<Topic_Info> topicInfo(){
 		return TopicInforepository.findByLiIdx(1);
 	}
+	
+	public List<Pbs_Log> PbsLog(String id){
+		List<Pbs_Log> pbsLog = PbsLogRepository.findByUserIdAndPbsCheck(id, 0);
+		return pbsLog;
+	}
+	
+	public void topicCount() {
+		
+		
+	}
+
+	
 	
 	
 }
