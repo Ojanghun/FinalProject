@@ -8,12 +8,16 @@ import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.smhrd.entity.Exam;
+import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
 import com.smhrd.repository.ExamRepository;
+import com.smhrd.repository.PbsLogRepository;
 import com.smhrd.repository.TopicInfoRpository;
 
 @Service
@@ -24,6 +28,9 @@ public class ExamService {
 	
 	@Autowired
 	private TopicInfoRpository TIrepository;
+	
+	@Autowired
+	private PbsLogRepository Pbsrepository;
 	
 	// 년도 별 문제 불러오기
 	public List<Exam> loadExam(int category) { // 카테고리 값을 받아왔음, 2가지 값 받아오는게 가능할지도?
@@ -120,7 +127,7 @@ public class ExamService {
         }
 
         return allQuestions.subList(start, end);
-}
+	}
 
 	public List<List<String>> shuffle1(int pageNum, int pageSize) {
 		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("pbNum").ascending());
@@ -143,6 +150,13 @@ public class ExamService {
 	public void updateTopic() {	
 		TIrepository.updateTopicNumPlus100IfLessThan100();
 		// TODO Auto-generated method stub
+	}
+
+
+
+	public void submitPbsData(Pbs_Log log) {
+		Pbsrepository.save(log);
+		
 	}
 
 	

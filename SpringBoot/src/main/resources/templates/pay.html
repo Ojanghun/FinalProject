@@ -3,23 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>결제 페이지</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/pay_plan.css">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/pricing.css">
 </head>
 <body>
 
   <!-- 헤더 -->
-  <div class="container">
+  <div class="container ">
+  <header>
     <div class="custom-header d-flex justify-content-between mb-4 align-items-center">
       <div class="logo d-flex align-items-center">
         <a href="/"><img src="/images/로고.png" alt="로고"></a>
       </div>
-      <div class="header-buttons">
-        <a href="/mypage" class="btn btn-default">Mypage</a>
-        <a href="/logout" class="btn btn-default">Logout</a>
+      <div class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <a href="/mypage" class="btn btn-outline-secondary me-2">MYPAGE</a>
+        <a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
       </div>
     </div>
   </div>
+  </header>
 
   <!-- 본문 -->
   <div class="container">
@@ -27,18 +30,19 @@
       <!-- 좌측: 플랜 정보 -->
       <div class="col-md-6">
         <div class="payment-box text-left">
-          <h4 th:text="${liName}">정보처리기사 필기</h4>
+          <h3 th:text="${liName}">정보처리기사 필기</h3>
           <h2>
             <strong th:text="${plan}">플랜이름</strong>
-            <small th:if="${plan == '자유형'}">자유롭게 공부하고 싶으신가요?</small>
-            <small th:if="${plan == '계획형'}">우리가 알아서 계획 짜줄게!</small>
+            <small th:if="${plan == '탐구형'}">자유롭게 공부하고 싶으신가요?</small>
+            <small th:if="${plan == '필수형'}">우리가 알아서 계획 짜줄게!</small>
           </h2>
           <h3><strong th:text="${planPrice + '원'}">9000원</strong></h3>
-          <p style="color: green;">현재 00명이 이용중입니다.</p>
+          <p style="color: green;" th:text="'현재 ' + ${activeUserCount} + '명이 이용중입니다.'">현재 00명이 이용중입니다.</p>
+
 
           <div class="plan-desc mt-4">
-            <strong th:if="${plan == '자유형'}">탐색형 제공 서비스</strong>
-            <strong th:if="${plan == '계획형'}">필수형 제공 서비스</strong>
+            <strong th:if="${plan == '탐구형'}">탐색형 제공 서비스</strong>
+            <strong th:if="${plan == '필수형'}">필수형 제공 서비스</strong>
             <ol>
               <li>주제별 풀이</li>
               <li>실제 시험 환경 풀이</li>
@@ -105,6 +109,16 @@
       </div>
     </div>
   </div>
-
+ <!-- Footer -->
+<footer class="footer mt-5 py-4 border-top">
+  <div class="container text-center">
+    <nav class="nav justify-content-center mb-3">
+      <a href="#" class="footer-link">Home</a>
+      <a href="#" class="footer-link">About</a>
+      <a href="#" class="footer-link">Contact</a>
+    </nav>
+    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+  </div>
+</footer> 
 </body>
 </html>

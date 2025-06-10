@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 <title>Insert title here</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/testPage.css">
+  <link rel="stylesheet" type="text/css" href="css/test.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
@@ -17,22 +19,27 @@
 	<input type="hidden" id="liTimeSec" th:value="${liTimeSec}" />
 	<input type="hidden" id="liPbc" th:value="${liPbc}" />
 	<input type="hidden" id="name" th:value="${member.name}" />
+	<input type="hidden" id="userId" th:value="${member.id}" />
 	<div class="container">
       <div class="panel panel-warning">
          <!-- <div class="panel-heading">examPage -->
          <div class='header-block'>
          		<div class='test-nm-block'>
+         			<!-- 자격증 인덱스, 자격증 이름 -->
          		    <label id="sheetNum" class="sheetNum" th:text="${liIdx}"></label>
          			<label class="test-info-testNm" th:text="${liName}"></label>
+         			
+         			<label style="position: absolute; right: 70px; bottom: 23px;"><button onclick="lotto()">수험번호 뽑기</button></label>
+         			<label style="position: absolute; right: 70px; bottom: -5px;"><button onclick="lottoName()">수험이름 뽑기</button></label>
          		</div>
          		<div class='user-info-block'>
          			<div class="user-id-block">
          				<span class="user-info-userId-label">수험번호 : </span>
-         				<input class="user-info-userId" readonly="true" onfocus="this.blur()" style="cursor:default;" value="7777">
+         				<input id='lotto' class="user-info-userId" readonly="true" onfocus="this.blur()" style="cursor:default;" value="7777">
          			</div>
          			<div class="user-nm-block">
          				<span class="user-info-userNm-label">수험자명 : </span>
-         				<input class="user-info-userNm" readonly="true" onfocus="this.blur()" style="cursor:default;" th:value="${member.name}">
+         				<input id='lottoName' class="user-info-userNm" readonly="true" onfocus="this.blur()" style="cursor:default;" th:value="${member.name}">
          			</div>
          		</div>
 				<div id ='timerImage' class='test-timer-block' style="background-image:url(&quot;https://www.q-net.or.kr/cbt/viewer/images/clock_icon.gif&quot;) !important">
@@ -75,10 +82,51 @@
 			         		<span id="solCount" class="count-info-unsolved"  th:text="${liPbc}"></span>
 		         		</div>
 		         	</div>
+		         	
          		</div>
 				  <!-- 문제 출력 영역 -->
-				  <input type="hidden" id="category" th:value="${category}" />  
-				  <div id="print" style="height: 527px;" class='test-page-block-holder'></div>
+				  <input type="hidden" id="category" th:value="${category}" />
+				  <div id="print" class='test-page-block-holder'></div>
+				  
+				<div id="scoreBox" class="scoreBox" style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+				
+				  <!-- 상단 안내 -->
+				  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
+				    <img src="images/icon_title_megaphone.gif" style="width: 24px; height: 24px; vertical-align: middle;">
+				    <span id="comment" style="margin-left: 10px;"></span>
+				  </div>
+				
+				  <!-- 하단 참고 문구 -->
+				  <div style="margin-bottom: 20px;">
+				    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기</p>
+				  </div>
+				
+				  <!-- 점수 표 -->
+				  <div class="scoreText">
+				    <div>수험자 이름</div>
+				    <div>응시 종목</div>
+				    <div>점수</div>
+				    <div>합격 여부</div>
+				  </div>
+				  <div class="scoreValue">
+				    <div th:text="${member.name}"></div>
+				    <div th:text="${liName}"></div>
+				    <div id="score"></div>
+				    <div id="pass"></div>
+				  </div>
+				
+				  <!-- 안내 문구 -->
+				  <div style="margin-top: 20px; text-align: center;">
+				    "득점 및 합격여부를 확인하셨습니까?"
+				  </div>
+				
+				  <!-- 버튼 -->
+				  <div style="margin-top: 10px; text-align: center;">
+				    <button onclick="location.href='/license'">확인 완료</button>
+				  </div>
+				
+				</div>
+
 			</div>
 				  <!-- 답안 표기란 -->
 				  <div id="number" class="number-box"></div>
@@ -101,7 +149,7 @@
          		 	<button id="btnUnsolved" onclick="unsolved()">
          		 		<img src="/images/unsolved_icon.gif" class="unsolved_icon">
          		 		<span class="unsolved_label">안 푼 문제</span></button>
-         		 	<button id="btnLabel">
+         		 	<button id="btnLabel" type="button" onclick="examSubmit()">
          		 		<img src="/images/submit_icon.gif" class="submit_icon">
          		 		<span class="submit_label">답안 제출</span></button>
          		  </div>
@@ -111,22 +159,30 @@
    
    <!-- 레이어 팝업 -->
 <div id="unsolvedPopup" style="display:none; position:fixed; top:100px; left:50%; transform:translateX(-50%);
-     background:white; border:2px solid #2a68af; border-radius:4px; z-index:9999; width:400px; box-shadow:0 0 10px rgba(0,0,0,0.3);">
+     background: white no-repeat 2px 4px; border:3px solid #3664b1; border-radius:4px; z-index:9999; width:400px; box-shadow:0 0 10px rgba(0,0,0,0.3);">
 
-  <div style="background:#e8f1fb; padding:8px; display:flex; justify-content:space-between; align-items:center;">
-    <span style="color:#2a68af; font-weight:bold;">❕ 안 푼 문제 번호 보기: <span style="font-weight:normal;">번호 클릭시 해당 문제로 이동합니다.</span></span>
+  <div style="background: #eefbfa; padding:8px; display:flex; justify-content:space-between; align-items:center;">
+    <span style="color:#2a68af; font-weight:bold;"><img src= "/images/ico_what.gif"> 안 푼 문제 번호 보기: <span style="font-weight:bold;">번호 클릭시 해당 문제로 이동합니다.</span></span>
     <button onclick="hideUnsolvedPopup()" style="border:none; background:none; font-size:16px;">✕</button>
   </div>
 
   <div id="unsolvedList" style="padding:12px; display:flex; flex-wrap:wrap; gap:6px;"></div>
 </div>
+
    
    <script type="text/javascript">
    let allExData = [];     // 전체 문제
    let currentPage = 0;    // 현재 페이지 (0부터 시작)
-   const pageExamNum = 5; // 한페이지당 5문제(고정)
+   let score = 0; // 점수
+   const pageExamNum = 10; // 한페이지당 5문제(고정)
    const userSelections = {};
    const solvedStatus = {}; // 문제 번호 -> 0 or 1
+   const category = $("#category").val(); // 카테고리 값( 회차)
+   const PbsData = [];  // 서버로 보낼 채점 데이터
+   const token = $("meta[name='_csrf']").attr("content");
+   const header = $("meta[name='_csrf_header']").attr("content");
+
+
    
    // 문제 번호 : 선택 선지 텍스트
    const circledNumbers = ["①", "②", "③", "④"];
@@ -136,8 +192,8 @@
 		// 게시글을 모두 가져올 수 있는 메소드!
 		loadExam();
 		Number();
-
 	});
+	
 	document.addEventListener("DOMContentLoaded", function () {
 		  const sec = parseInt(document.getElementById("liTimeSec").value, 10);
 		  if (!isNaN(sec)) {
@@ -167,15 +223,25 @@
 	// 문제 배치
 	function arrangement(value) {
 		if(value === "oneLine"){	
-			$("#print").css("column-count",1);
+		    $("#print").css({
+		        "column-count": "initial"
+
+		    });
 		}else if(value === "twoLine"){	
-			$("#print").css("column-count",2);
+		    $("#print").css({
+		        "column-count": "2",
+		        "width": "100%",
+		        "height": "1000px",
+		        "overflow-y": "auto"
+
+		    });
 		}
 /* 		else if(value === "singleQuestion"){	
 			$("#print").css("column-count",1);
 		} */
 	}
 	
+	// 오른쪽 1~100까지 숫자
 	function Number() {
 		
 		let num = "";
@@ -199,16 +265,7 @@
 		$("#number").html(num);
 	}
 	
-/* 	$(document).on("click", "[id^='goNum']", function () {
-		  const qNum = $(this).attr("id").replace("goNum", "");
-		  const target = $("#choice" + qNum + "-1");
-		  if (target.length) {
-		    $("html, body").animate({
-		      scrollTop: target.offset().top
-		    }, 400);
-		  }
-		});
- */
+
  	// 번호이동
 function goNum(i) {
   const page = Math.floor((i - 1) / pageExamNum); // 몇 번째 페이지인지 계산
@@ -227,10 +284,6 @@ function goNum(i) {
 	 
 //1. 문제 불러오기
  function loadExam(pageNum = 0) {
-	 const category = $("#category").val();
-
-	 
-	 console.log("카테고리 값:"+category);
 
    $.ajax({
      url: "/loadExam1",
@@ -256,15 +309,17 @@ function goNum(i) {
  // 2. renderPage
  function renderPage() {
    let html = "";
+   
+   // 현재 페이지와 페이지당 문제 수를 곱해 이 페이지의 첫 번째 문제 인덱스를 계산.
    const startIdx = currentPage * pageExamNum;
 
    for (let i = 0; i < allExData.length; i++) {
      const qNum = startIdx + i + 1;
      const exam = allExData[i];
-     const choices = [exam.pbChoi1, exam.pbChoi2, exam.pbChoi3, exam.pbChoi4]; 
+     const choices = [exam.pbChoi1, exam.pbChoi2, exam.pbChoi3, exam.pbChoi4];
 
 
-     html += `<div style="margin-bottom:20px;" id="exam${qNum}">`;
+     html += `<div class="oneExam" id="exam${qNum}">`;
      html += `<p><strong>문제 ${qNum}.</strong> ${exam.pbQues}</p>`;
      
      // 문제 디테일
@@ -305,8 +360,9 @@ function goNum(i) {
 	
 	// 번호 클릭시 발생하는 함수(문제번호,선지번호,선지내용)
 function selectChoice(questionNum, choiceNum, choiceText) {
-  let current = parseInt($("#solCount").text(), 10); // 현재 숫자 읽기
-  $("#solCount").text(current -1);                  // 1 더해서 다시 넣기
+  
+  let current = parseInt($("#solCount").text(), 10); // 안 푼 문제 수 체크하기 위해 현재 숫자 읽기
+  $("#solCount").text(current -1);  // 풀었을 경우 1 빼기
   
   const currentSelection = userSelections[questionNum];
 
@@ -315,7 +371,7 @@ function selectChoice(questionNum, choiceNum, choiceText) {
     delete userSelections[questionNum];
     solvedStatus[questionNum] = 0; // 안 푼 상태로 설정
     
-    $("#solCount").text(current +1);                  // 1 더해서 다시 넣기
+    $("#solCount").text(current +1);  // 같은 번호 클릭 시 1 다시 더하기
     
     
     $(`#choice${questionNum}-${choiceNum}`).text(circledNumbers[choiceNum - 1]);
@@ -325,6 +381,7 @@ function selectChoice(questionNum, choiceNum, choiceText) {
     const isFirstSelection = !userSelections[questionNum];
     userSelections[questionNum] = choiceNum;
     solvedStatus[questionNum] = choiceNum; // 1로 상태 저장
+    console.log(solvedStatus);
     
     for (let i = 1; i <= 4; i++) {
       $(`#choice${questionNum}-${i}`).text(circledNumbers[i - 1]);
@@ -334,11 +391,7 @@ function selectChoice(questionNum, choiceNum, choiceText) {
     $(`#number${questionNum}-${choiceNum}`).attr("src", "/images/marking.jpg");
   }
   
-  for (let i = 1; i <= 100; i++) {
-	  if (solvedStatus[i] === 0 || solvedStatus[i] === undefined) {
-	    console.log("안 푼 문제:", i);
-	  }
-	}  
+
 }
 
 	function unsolved() {
@@ -361,13 +414,15 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 				    unsolved.forEach(qNum => {
 				      const btn = document.createElement("button");
 				      btn.innerText = qNum;
+				      //console.log(qNum);
 				      btn.className = "btn btn-outline-secondary btn-sm";
-				      btn.onclick = () => {
-				    	    document.getElementById("unsolvedPopup").style.display = "none";
-				    	    goNum(qNum); // ← 여기가 핵심
-				      };
+				      btn.onclick = () => { // 클릭시 이벤트
+				    	    document.getElementById("unsolvedPopup").style.display = "none"; // 팝업 창 제거
+				    	    goNum(qNum); // qNum으로 이동
+ 				      };
 				      container.appendChild(btn);
 				    });
+
 				  }
 
 				  document.getElementById("unsolvedPopup").style.display = "block";
@@ -376,13 +431,115 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 				function hideUnsolvedPopup() {
 				  document.getElementById("unsolvedPopup").style.display = "none";
 				}
+				
+				// 시험 제출 함수 (시작점)
+				function examSubmit() {
+				  // 안 푼 문제는 0으로 초기화
+				  for (let i = 1; i <= 100; i++) {
+				    if (solvedStatus[i] === undefined) {
+				      solvedStatus[i] = 0;
+				    }
+				  }
+
+				  // 문제 정답 불러오기 Ajax 실행
+				  loadCorrectAnswers(category);
+				}
+
+				// 문제 정답 불러오기 Ajax
+				function loadCorrectAnswers(category) {
+				  $.ajax({
+				    url: "/loadExam/" + category,
+				    type: "post",
+				    dataType: "json",
+				    success: function (data) {
+				      // 채점 로직 실행 → 점수 + 전송용 데이터 생성
+				      const result = gradeExam(data);
+
+				      // 서버에 채점 결과 전송
+				      console.log("PbsData 확인:", PbsData[0]);
+
+				      sendPbsData(result.pbsData);
+
+				      // 점수에 따라 결과 UI 업데이트
+				      updateResultUI(result.score);
+				    },
+				    error: function () {
+				      alert("문제 정답 불러오기 실패");
+				    }
+				  });
+				}
+
+				// 채점 함수: 정답과 비교해 점수 계산 및 전송할 데이터 준비
+				function gradeExam(correctData) {
+				  const userId = $("#userId").val();     // 사용자 ID 가져오기
+				  const pbCheck = [];                  // 문제별 정오 배열
+				  const pbId = [];
+				  let score = 0;
+
+				  for (let i = 1; i <= 100; i++) {
+					  pbId[i] = correctData[i - 1].pbId
+				    // 정답 비교하여 점수 및 pbCheck 설정
+				    if (solvedStatus[i] == correctData[i - 1].pbAns) {
+				      score++;
+				      pbCheck[i] = 1;
+				    } else {
+				      pbCheck[i] = 0;
+				    }
+
+				    // 개별 문제 데이터 객체 생성하여 배열에 저장
+				    PbsData[i - 1] = {
+				      userId: userId,
+				      pbId: pbId[i],
+				      pbCheck: pbCheck[i]
+				    };
+				  }
+
+				  // 점수와 데이터 반환
+				  return { score, pbsData: PbsData };
+				}
+
+				// 채점 결과를 서버에 전송하는 Ajax
+				function sendPbsData(pbsData) {
+				console.log("📦 보내는 데이터:", pbsData);
+					
+				  $.ajax({
+				    url: "/submitPbsData",
+				    type: "post",
+				    contentType: "application/json",
+				    data: JSON.stringify(pbsData),
+				    beforeSend: function(xhr) {
+				        xhr.setRequestHeader(header, token);  // CSRF 토큰 전송 (있으면)
+				      },
+				    success: function () {
+				      console.log("채점 결과 전송 완료");
+				    },
+				    error: function () {
+				      alert("채점 결과 전송 실패!");
+				    }
+				  });
+				}
+
+				// 점수에 따라 UI 표시 변경
+				function updateResultUI(score) {
+				  $("#scoreBox").css("display", "flex");  // 점수 박스 표시
+				  $("#score").text(score);                // 점수 출력
+
+				  if (score > 60) {
+				    $("#comment").text("합격을 축하드립니다.");
+				    $("#pass").text("합격");
+				  } else {
+				    $("#comment").text("다음 기회에 꼭 합격하시길 기원합니다.");
+				    $("#pass").text("불합격");
+				  }
+				}
+
 		  
 
 
 function prevPage() {
   if (currentPage > 0) {
     loadExam(currentPage - 1);
-
+    $(".test-page-block-holder").animate({ scrollTop: 0 }, 300); // 300ms 동안 부드럽게 스크롤 0 으로 이동
   }
 }
 
@@ -390,9 +547,26 @@ function nextPage() {
   const maxPage = Math.floor(100 / pageExamNum);
   if (currentPage < maxPage - 1) {
     loadExam(currentPage + 1);
-
+    $(".test-page-block-holder").animate({ scrollTop: 0 }, 300); // 300ms 동안 부드럽게 스크롤 0 으로 이동
   }
 }
+
+function lotto(){
+    // 10000000부터 99999999 사이의 무작위 정수 생성
+    const number = Math.floor(Math.random() * 90000000) + 10000000;
+    $("#lotto").val(number);
+}
+function lottoName() {
+    const startCode = 0xAC00; // '가'
+    const endCode = 0xD7A3;   // '힣'
+    let result = "";
+    for (let i = 0; i < 3; i++) {
+      const code = Math.floor(Math.random() * (endCode - startCode + 1)) + startCode;
+      result += String.fromCharCode(code);
+    }
+    $("#lottoName").val(result);
+   
+  }
  
    </script>
    

@@ -22,5 +22,7 @@ public interface TopicInfoRpository extends JpaRepository<Topic_Info, Integer> {
 	@Query("UPDATE Topic_Info t SET t.topicNum = t.topicNum + 100 WHERE t.topicNum < 100")
 	void updateTopicNumPlus100IfLessThan100();
 
+	List<Topic_Info> findByLiIdx(int i);
+
 	
 }

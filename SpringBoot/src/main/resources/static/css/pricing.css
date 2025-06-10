@@ -1,0 +1,141 @@
+/* 기본 스타일 */
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+  color: #212121;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h2 {
+  color: #1E88E5;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+h4 {
+  color: #1E88E5;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* 헤더 */
+.custom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 16px 24px;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo img {
+  height: 40px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1E88E5;
+}
+
+.header-buttons a {
+  margin-left: 10px;
+  border-radius: 4px;
+}
+
+
+
+/* 카드 박스 */
+.payment-box {
+  background-color: white;
+  padding: 25px 30px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid #ddd;
+}
+
+.payment-box h2, .payment-box h3 {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.payment-box ol {
+  padding-left: 20px;
+}
+
+.payment-box li {
+  margin-bottom: 8px;
+}
+
+/* 입력 요소 */
+.payment-box input.form-control,
+.payment-box select.form-control {
+  border-radius: 6px;
+  box-shadow: none;
+  border-color: #ccc;
+}
+
+.payment-box input:focus,
+.payment-box select:focus {
+  border-color: #666;
+  outline: none;
+}
+
+/* 결제 버튼 */
+.btn-dark {
+  background-color: #343a40;
+  color: #fff;
+  border: none;
+}
+
+.btn-dark:hover {
+  background-color: #23272b;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .custom-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-buttons {
+    margin-top: 10px;
+  }
+}
+
+/* Footer 스타일 */
+.footer {
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.footer .nav a {
+  color: #666;
+  margin: 0 10px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.footer .nav a:hover {
+  text-decoration: underline;
+}
+
+.footer .text-muted {
+  font-size: 13px;
+}
+    

@@ -3,244 +3,272 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+<style>
+    #chatbot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        border: 1px solid #ccc;
+        background: #fff;
+        display: none;
+        flex-direction: column;
+        z-index: 1000;
+    }
+    #chatbot-header {
+        background: #f8c107;
+        padding: 10px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #chatbot-body {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        background: #f9f9f9;
+    }
+    #chatbot-input {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+    }
+    #chatbot-input input {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin-right: 5px;
+    }
+    .chat-message {
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 5px;
+    }
+    .user-message {
+        background: #d1e7dd;
+        margin-left: 20%;
+    }
+    .bot-message {
+        background: #f8d7da;
+        margin-right: 20%;
+    }
+</style>
 </head>
 <body>
-	<div class="container">
-		<h2>Spring Boot RestController Member</h2>
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				examPage <span style="float: right;"> </span>
-			</div>
-			<div class="panel-body">
+    <div class="container">
+        <h2>Spring Boot RestController Member</h2>
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                examPage <span style="float: right;"> </span>
+            </div>
+            <div class="panel-body">
+                <input type="hidden" id="category" th:value="${category}" />
+                <div id="examBoard" style="column-count: 2; column-gap: 40px;"></div>
+            </div>
+            <div class="panel-footer">빅데이터 개발자과정 - 손종희</div>
+        </div>
+    </div>
 
-				<input type="hidden" id="category" th:value="${category}" />
-				<div id="print" style="column-count: 2; column-gap: 40px;"></div>
+    <!-- 챗봇 컨테이너 -->
+    <div id="chatbot-container">
+        <div id="chatbot-header">
+            Issue Bot
+            <button onclick="toggleChatbot()" class="btn btn-sm btn-default">닫기</button>
+        </div>
+        <div id="chatbot-body"></div>
+        <div id="chatbot-input">
+            <input type="text" id="chatbot-message" placeholder="질문을 입력하세요" />
+            <button onclick="sendChatbotMessage()" class="btn btn-sm btn-primary">전송</button>
+        </div>
+    </div>
 
-			</div>
-			<div class="panel-footer">빅데이터 개발자과정 - 손종희</div>
-		</div>
-	</div>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        loadExam();
+    });
 
-	<script type="text/javascript">
-	$(document).ready(function(){
-		// ready() : html 코드가 준비가 되면 실행되는 메소드
-		// 게시글을 모두 가져올 수 있는 메소드!
-
-	 	
-		loadExam();
-		
-	});
-   
-   // 문제 불러오는 함수
-   function loadExam() {
-
-	   let exData = [];
-	   let shufData = [];
-
-	   const category = $("#category").val();
-
-
-	   console.log("카테고리 값: "+category);
-
-
-	   // 문제 데이터 + 선지 랜덤 데이터 갖져오기
-	   $.when(
-	     $.ajax({ url: "/loadExam/"+category, type: "post", dataType: "json"}), // 문제 데이터
-	     $.ajax({ url: "/shuffle/"+category, type: "post", dataType: "json"}) // 선지 랜덤 데이터
-	   ).done(function(examData, shuffleData) {
-
-	     // examData, shuffleData는 배열 형태 ([data, status, jqXHR])
-	     // examData, shuffleData = [실제데이터, "success", jqXHR 객체]
-	     // 그래서 [0]번째 데이터 추출
-	     exData = examData[0];
-	     shufData = shuffleData[0];
-
-	     let listHtml = "";
-	     
-	     
-	     // div의 id가 print인 부분이 비어있다면 실행, 안그러면 클릭할 때마다 선지 랜덤이 실행되버림..
-	     if ($("#print").html().trim() === "") {
-	       $.each(shufData, function(index, options) {
-	    	 const pbId = exData[index].pbId-1;
-	    	   
-		     // 한 문제 div
-		     listHtml += "<div style='break-inside: avoid;'>" 
-		     // 문제 년도
-		     listHtml += "<div id='examYear"+(index+1)+"'>(출제일)</div>";
-
-		         
-		     // 문제 지문
-		     listHtml += "<div style='position: relative; width: fit-content; max-width: 100%;'>" +"<img id='check"+(index+1)+"' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" + (index + 1) + ". " + exData[index].pbQues +"</div>";
-		     
-		     // 문제 디테일
-		     if(exData[index].pbDetail != null){
-		    	 listHtml += "<br><div><img src='"+ exData[index].pbDetail +"'></div><br>"
-		     }	     
-	         // 선지
-	         // 1번 id=choice+i-1(문제 i번 - 선지 1번)
-	         listHtml += "<div id='choice" + (index+1) + "-1' onclick='selectChoice(" + (index+1) + ",1, \"" + options[0] + "\")' style='display: flex;' >"
-	         listHtml += "<div id='choiceNum" + (index+1) + "-1' class='cell'> ① &nbsp; </div>"
-	         if(options[0].includes("http")){
-	        	 listHtml += "<div id='choiceText" + (index+1) + "-1' ><img src='"+ options[0] + "'></div></div>";
-	         }else{
-	         	listHtml += "<div id='choiceText" + (index+1) + "-1' >"+ options[0] + "</div></div>";
-	         }
-			 // 2번 id=choice+i-1(문제 i번 - 선지 2번)
-			 listHtml += "<div id='choice" + (index+1) + "-2' onclick='selectChoice(" + (index+1) + ",2, \"" + options[1] + "\")' style='display: flex;' >"
-			 listHtml += "<div id='choiceNum" + (index+1) + "-2' > ② &nbsp; </div> "
-	         if(options[1].includes("http")){
-	        	 listHtml += "<div id='choiceText" + (index+1) + "-1' ><img src='"+ options[1] + "'></div></div>";
-	         }else{
-	         	listHtml += "<div id='choiceText" + (index+1) + "-2'>"+ options[1] + "</div></div>";
-	         }
-	         // 3번 id=choice+i-1(문제 i번 - 선지 3번)
-	         listHtml += "<div id='choice" + (index+1) + "-3' onclick='selectChoice(" + (index+1) + ",3, \"" + options[2] + "\")' style='display: flex;' >"
-	         listHtml += "<div id='choiceNum" + (index+1) + "-3' >③ &nbsp; </div>"
-	         if(options[2].includes("http")){
-	        	 listHtml += "<div id='choiceText" + (index+1) + "-1' ><img src='"+ options[2] + "'></div></div>";
-	         }else{
-	         	listHtml += "<div id='choiceText" + (index+1) + "-3'>"+ options[2] + "</div></div>";
-	         }
-			 // 4번 id=choice+i-1(문제 i번 - 선지 4번)
-			 listHtml += "<div id='choice" + (index+1) + "-4' onclick='selectChoice(" + (index+1) + ",4, \"" + options[3] + "\")' style='display: flex;' >"
-			 listHtml += "<div id='choiceNum" + (index+1) + "-4' >④ &nbsp; </div>"
-	         if(options[3].includes("http")){
-	        	 listHtml += "<div id='choiceText" + (index+1) + "-1' ><img src='"+ options[3] + "'></div></div>";
-	         }else{
-	         	listHtml += "<div id='choiceText" + (index+1) + "-4'>"+ options[3] + "</div></div>";
-	         }
-	         // 정답 확인
-	         listHtml += "<br>"
-			 listHtml += "<button id='pbans"+index+"' onclick='correctAnswer("+pbId+", " + index + ")'>정답 확인</button> &nbsp; ";
-	         // 해설
-			 listHtml += "<button onclick='solution("+pbId+", " + index + ")'>해설</button>";
-	         listHtml += "<br>"
-	         listHtml += "<br>"
-			 listHtml += "<div id='solution"+index+"'></div>";
-	         listHtml += "</div>"
-	         listHtml += "<br>"
-	         
-	       });
-	       // div의 id가 print인 부분에 listHtml 추가
-	       $("#print").html(listHtml);
-	     }
-	   }).fail(function() { // 실패시
-	     alert("Error!"); // 오류시 출력문
-	   });
-	 }
-   
-    function correctAnswer(pbId, index){
-    	
-    	$.ajax({
-    		url : "/correctAnswer/"+pbId,
-    		type : "put",
-    		data:{},
-    		dataType : "text",
-    		success : function(data){
-    			console.log("받은 data: ", data);
-    			 if ($("#pbans"+index).text().trim() === "정답 확인") {
-    					// 정답 텍스트와 일치하는 보기 찾아서 빨간색 적용
-    					for (let i = 1; i <= 4; i++) {
-    						let choiceText = $("#choiceText" + (index + 1) + "-" + i).text().trim();
-    						if (choiceText === data.trim()) {
-    							$("#choice" + (index + 1) + "-" + i).css("color", "red");
-    				    		$("#passRate" + (index+1)).css("display","block");
-    						}
-    					}
-    				    if(userSelections[index+1] === data){
-    				    	console.log("클릭 data: ", userSelections[index+1]);
-    				    	$("#check" + (index+1)).css("display","block");
-    				    	$("#check" + (index+1)).attr("src","/images/o.png");
-
-    				    }
-    				    else{
-    				    	console.log("클릭 data: ", userSelections);
-    				    	$("#check" + (index+1)).css("display","block");
-    				    	$("#check" + (index+1)).attr("src","/images/x.png");
-    				    }
-    				}
-/*     			 else {
-    				    $("#pbans"+index).text("정답 확인");
-    				} */
-    		},
-    		error : function(){alert("Error!");}
-    	});
-
+    // 챗봇 토글
+    function toggleChatbot() {
+        $("#chatbot-container").toggle();
     }
-    
-    // 해결책
-    function solution(pbId, index){
-    	
-    	$.ajax({
-    		url : "/solution/"+pbId,
-    		type : "put",
-    		dataType : "text",
-    		success : function(data){
-    			console.log("받은 data: ", data);
-    			 if ($("#solution"+index).text().trim() === "") {
-    				    $("#solution"+index).text(data);
-    				} else {
-    				    $("#solution"+index).text("");
-    				}
-    		},
-    		error : function(){alert("Error!");}
-    	});
 
+    // 챗봇 메시지 전송
+    function sendChatbotMessage() {
+        let message = $("#chatbot-message").val().trim();
+        let pbId = $("#chatbot-pbId").val();
+        if (message === "") return;
+
+        $("#chatbot-body").append(`<div class="chat-message user-message">${message}</div>`);
+        $("#chatbot-message").val("");
+        $("#chatbot-body").scrollTop($("#chatbot-body")[0].scrollHeight);
+
+        $.ajax({
+            url: "/chatbot/" + pbId,
+            type: "post",
+            data: JSON.stringify({ question: message }),
+            contentType: "application/json",
+            dataType: "text",
+            success: function(data) {
+                $("#chatbot-body").append(`<div class="chat-message bot-message">${data}</div>`);
+                $("#chatbot-body").scrollTop($("#chatbot-body")[0].scrollHeight);
+            },
+            error: function() {
+                $("#chatbot-body").append(`<div class="chat-message bot-message">오류가 발생했습니다.</div>`);
+                $("#chatbot-body").scrollTop($("#chatbot-body")[0].scrollHeight);
+            }
+        });
     }
-   
-	// 문제 번호 : 선택 선지 텍스트
-	const userSelections = {};  // 선택한 답을 계속 저장하고, 클릭할 때마다 그 내용을 유지하면서 갱신하기 위해 밖에 선언.
 
-	// 번호 클릭시 발생하는 함수(문제번호,선지번호,선지내용)
+ 	// 챗봇 버튼 클릭
+    function askChatbot(pbNum) {
+        $("#chatbot-container").show();
+        $("#chatbot-pbId").val(pbNum);
+        $("#chatbot-body").html("");
+        $("#chatbot-body").append(`<div class="chat-message bot-message">문제 ${pbNum}에 대해 질문이 있으면 말씀해주세요!</div>`);
+        $("#chatbot-body").scrollTop($("#chatbot-body")[0].scrollHeight);
+    }
+
+    // 문제 불러오는 함수
+    function loadExam() {
+        let exData = [];
+        let shufData = [];
+        const category = $("#category").val();
+
+        $.when(
+            $.ajax({ url: "/loadExam/"+category, type: "post", dataType: "json"}),
+            $.ajax({ url: "/shuffle/"+category, type: "post", dataType: "json"})
+        ).done(function(examData, shuffleData) {
+            exData = examData[0];
+            shufData = shuffleData[0];
+            let listHtml = "";
+
+            if ($("#examBoard").html().trim() === "") {
+                $.each(shufData, function(index, options) {
+                    const pbId = exData[index].pbId-1;
+                    const pbNum = exData[index].pbNum;
+                    listHtml += "<div style='break-inside: avoid;'>";
+                    listHtml += "<div id='examYear"+(index+1)+"'>(출제일)</div>";
+                    listHtml += "<div style='position: relative; width: fit-content; max-width: 100%;'>" +
+                                "<img id='check"+(index+1)+"' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
+                                (index + 1) + ". " + exData[index].pbQues + "</div>";
+                    if(exData[index].pbDetail != null) {
+                        listHtml += "<br><div><img src='"+ exData[index].pbDetail +"'></div><br>";
+                    }
+                    listHtml += "<div id='choice" + (index+1) + "-1' onclick='selectChoice(" + (index+1) + ",1, \"" + options[0] + "\")' style='display: flex;' >";
+                    listHtml += "<div id='choiceNum" + (index+1) + "-1' class='cell'> ①   </div>";
+                    if(options[0].includes("http")) {
+                        listHtml += "<div id='choiceText" + (index+1) + "-1' ><img src='"+ options[0] + "'></div></div>";
+                    } else {
+                        listHtml += "<div id='choiceText" + (index+1) + "-1' >"+ options[0] + "</div></div>";
+                    }
+                    listHtml += "<div id='choice" + (index+1) + "-2' onclick='selectChoice(" + (index+1) + ",2, \"" + options[1] + "\")' style='display: flex;' >";
+                    listHtml += "<div id='choiceNum" + (index+1) + "-2' > ②   </div>";
+                    if(options[1].includes("http")) {
+                        listHtml += "<div id='choiceText" + (index+1) + "-2' ><img src='"+ options[1] + "'></div></div>";
+                    } else {
+                        listHtml += "<div id='choiceText" + (index+1) + "-2'>"+ options[1] + "</div></div>";
+                    }
+                    listHtml += "<div id='choice" + (index+1) + "-3' onclick='selectChoice(" + (index+1) + ",3, \"" + options[2] + "\")' style='display: flex;' >";
+                    listHtml += "<div id='choiceNum" + (index+1) + "-3' >③   </div>";
+                    if(options[2].includes("http")) {
+                        listHtml += "<div id='choiceText" + (index+1) + "-3' ><img src='"+ options[2] + "'></div></div>";
+                    } else {
+                        listHtml += "<div id='choiceText" + (index+1) + "-3'>"+ options[2] + "</div></div>";
+                    }
+                    listHtml += "<div id='choice" + (index+1) + "-4' onclick='selectChoice(" + (index+1) + ",4, \"" + options[3] + "\")' style='display: flex;' >";
+                    listHtml += "<div id='choiceNum" + (index+1) + "-4' >④   </div>";
+                    if(options[3].includes("http")) {
+                        listHtml += "<div id='choiceText" + (index+1) + "-4' ><img src='"+ options[3] + "'></div></div>";
+                    } else {
+                        listHtml += "<div id='choiceText" + (index+1) + "-4'>"+ options[3] + "</div></div>";
+                    }
+                    listHtml += "<br>";
+                    listHtml += "<button id='pbans"+index+"' onclick='correctAnswer("+pbId+", " + index + ")'>정답 확인</button>   ";
+                    listHtml += "<button onclick='solution("+pbId+", " + index + ")'>해설</button>   ";
+                    listHtml += "<button onclick='askChatbot("+pbNum+")'>챗봇에게 물어보기</button>";
+                    listHtml += "<br><br>";
+                    listHtml += "<div id='solution"+index+"'></div>";
+                    listHtml += "</div><br>";
+                });
+                $("#examBoard").html(listHtml);
+            }
+        }).fail(function() {
+            alert("Error!");
+        });
+    }
+
+    // 정답 확인
+    function correctAnswer(pbId, index) {
+        $.ajax({
+            url: "/correctAnswer/"+pbId,
+            type: "put",
+            data: {},
+            dataType: "text",
+            success: function(data) {
+                if ($("#pbans"+index).text().trim() === "정답 확인") {
+                    for (let i = 1; i <= 4; i++) {
+                        let choiceText = $("#choiceText" + (index + 1) + "-" + i).text().trim();
+                        if (choiceText === data.trim()) {
+                            $("#choice" + (index + 1) + "-" + i).css("color", "red");
+                        }
+                    }
+                    if(userSelections[index+1] === data) {
+                        $("#check" + (index+1)).css("display","block");
+                        $("#check" + (index+1)).attr("src","/images/o.png");
+                    } else {
+                        $("#check" + (index+1)).css("display","block");
+                        $("#check" + (index+1)).attr("src","/images/x.png");
+                    }
+                }
+            },
+            error: function() { alert("Error!"); }
+        });
+    }
+
+    // 해설
+    function solution(pbId, index) {
+        $.ajax({
+            url: "/solution/"+pbId,
+            type: "put",
+            dataType: "text",
+            success: function(data) {
+                if ($("#solution"+index).text().trim() === "") {
+                    $("#solution"+index).text(data);
+                } else {
+                    $("#solution"+index).text("");
+                }
+            },
+            error: function() { alert("Error!"); }
+        });
+    }
+
+    // 문제 번호 : 선택 선지 텍스트
+    const userSelections = {};
+
     function selectChoice(questionNum, choiceNum, choiceText) {
-	 
-	 // 선택한 선지내용
-     const currentSelection = userSelections[questionNum];
-     
-	 // 지금 클릭한 선지가 이미 선택된 것과 같은지 비교하기 위함.
-     if (currentSelection === choiceText) {
-        // 같은 번호 다시 클릭 → 선택 해제
-        delete userSelections[questionNum];
-
-        // 문제 번호에 해당하는 모든 선택지 이미지 원복
-        for(let i=1; i<=4; i++) {
-          //document.getElementById("choice" + questionNum + "-" + i).src = "/images/" + i + ".gif"
-          $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
-          $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
+        const currentSelection = userSelections[questionNum];
+        if (currentSelection === choiceText) {
+            delete userSelections[questionNum];
+            for(let i=1; i<=4; i++) {
+                $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
+                $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
+            }
+        } else {
+            userSelections[questionNum] = choiceText;
+            for(let i=1; i<=4; i++) {
+                $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
+                $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
+            }
+            $("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
+            $("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
         }
-        console.log("문제 " + questionNum + " 선택 해제", userSelections);
-
-      } else {
-        // 다른 번호 클릭 or 처음 선택 → 새로 선택 처리
-        userSelections[questionNum] = choiceText;
-
-
-        // 모든 이미지를 체크 없는 이미지로 변경 후 클릭한 이미지를 다시 체크한 이미지로 변경
-        for(let i=1; i<=4; i++) {
-          //1~4번 이미지를 체크 없는 이미지로 변경.
-          //document.getElementById("choice" + questionNum + "-" + i).src = "/images/" + i + ".gif";
-          $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
-          $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
-        }
-        // 클릭한 이미지를 체크한 이미지로 변경하기
-        //document.getElementById("choice" + questionNum + "-" + choiceNum).src = "/images/" + choiceNum + "red.gif";
-		//$("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "bold");
-		$("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
-		//$("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "bold");
-		$("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
-        // console.log("문제 " + questionNum + " 선택 변경", userSelections);
-      }
     }
- 
-   </script>
-
-
+    </script>
 </body>
 </html>

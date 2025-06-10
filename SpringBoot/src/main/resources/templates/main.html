@@ -1,113 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org/" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>문제? Issue!</title>
+<meta charset="UTF-8">
+<title>문제? Issue!</title>
 
-  <!-- CSS 링크 -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+<!-- CSS 링크 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+	
+  <link href="/css/style.css" rel="stylesheet">
 
-  <!-- JS 링크 -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- JS 링크 -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<!-- 자동 로그인 -->
-	<form id="autoLogin" th:action="@{/login}" method="post">
-	  <input type="hidden" id="id" name="id" value="admin">
-	  <input type="hidden" id="pw" name="pw" value="admin">
-	</form>
-  <div class="container">
-    
-    <!-- ✅ 결제 성공 메시지 표시 -->
-    <div th:if="${paymentSuccess}" class="alert alert-success mt-3" role="alert">
-      <span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
-    </div>
+	
+	<div class="container">
 
-    <!-- 🔷 커스텀 헤더 -->
-    <div class="custom-header">
-      <div class="logo">
-        <a href="/">
-          <img src="/images/로고.png" alt="로고">
-          <span class="logo-text"></span>
-        </a>
-      </div>
+		<!-- ✅ 결제 성공 메시지 표시 -->
+		<div th:if="${paymentSuccess}" class="alert alert-success mt-3"
+			role="alert">
+			<span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
+		</div>
 
-      <div class="header-links">
-        <!-- ❌ 로그인하지 않은 경우 -->
-        <th:block th:if="${session.info == null}">
-          <a href="login" class="btn btn-sm btn-primary">로그인</a>
-        </th:block>
+		<!-- 🔷 커스텀 헤더 -->
+		
+		 <nav class="custom-header">
+		    <div class="container container-fluid d-flex justify-content-between align-items-center px-4">
+		      <div class="logo d-flex align-items-center gap-2">
+		      	<a href="/">
+		        <img src="/images/로고.png" height="40" alt="로고">
+		        <span class="logo-text"></span>
+		      	</a>
+		      </div>
+	
 
-        <!-- ✅ 로그인한 경우 -->
-        <th:block th:unless="${session.info == null}">
-          <a href="mypage" class="btn btn-sm btn-info">마이페이지</a>
-          <a href="logout" class="btn btn-sm btn-danger">로그아웃</a>
-        </th:block>
-      </div>
-    </div>
+			<div class="header-links d-flex gap-2">
+				<!-- ❌ 로그인하지 않은 경우 -->
+				<th:block th:if="${session.info == null}">
+					<a href="login" class="btn btn-outline-primary">LOGIN</a>
+				</th:block>
 
-    <!-- 🔍 검색 및 키워드 추천 -->
-    <div class="main-content">
-      <section class="row search-section">
-        <!-- 🔍 검색창 + 버튼 묶음 -->
-        <div class="search-group">
-          <div class="search-container">
-            <div class="search-box">
-              <input id="search" type="text" placeholder="자격증 검색" />
-              <button title="Clear">✕</button>
-              <button title="Search">🔍</button>
-            </div>
-            <div id="suggestions" class="autocomplete"></div>
-          </div>
+				<!-- ✅ 로그인한 경우 -->
+				<th:block th:unless="${session.info == null}">
+					<a href="mypage" class="btn btn-outline-secondary">MYPAGE</a>
+					<a href="logout" class="btn btn-outline-danger">LOGOUT</a>
+				</th:block>
+			</div>
+		</div></nav>
 
-          <!-- 자격증 추천 버튼 영역 -->
-          <div class="search-suggestion">
-            <th:block th:each="lic : ${licenseList}">
-              <a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
-                 th:text="${lic.liName}" class="btn btn-primary btn-lg"></a>
-            </th:block>
-          </div>
-        </div>
+		<!-- 🔍 검색 및 키워드 추천 -->
+		<div class="main-content">
+			<section class="row search-section">
+				<!-- 🔍 검색창 + 버튼 묶음 -->
+				<div class="search-group">
+					<div class="search-container">
+						<div class="search-box">
+							<input id="search" type="text" placeholder="자격증 검색" />
+							<button title="Clear">✕</button>
+							<button title="Search">🔍</button>
+						</div>
+						<div id="suggestions" class="autocomplete"></div>
+					</div>
 
-        <!-- 🔐 MyPayment -->
-        <th:block th:if="${session.info == null}">
-          <div class="card keyword-box">
-            <h4>MyPayment</h4>
-            <p>로그인을 해주세요</p>
-          </div>
-        </th:block>
+					<!-- 자격증 추천 버튼 영역 -->
+					<div class="search-suggestion">
+						<th:block th:each="lic : ${licenseList}">
+							<a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
+								th:text="${lic.liName}" class="btn btn-primary btn-lg"></a>
+						</th:block>
+					</div>
+				</div>
 
-        <th:block th:unless="${session.info == null}">
-          <div class="card keyword-box">
-            <h4>결제한 자격증 확인</h4>
-            <ul>
-              <li><a href="license">추천 강의</a></li>
-              <li><a href="license">최근 본 문제</a></li>
-            </ul>
-          </div>
-        </th:block>
-      </section>
+				<!-- 🔐 MyPayment -->
+				<th:block th:if="${session.info == null}">
+					<div class="card keyword-box">
+						<h4>MyPayment</h4>
+						<p>로그인을 해주세요</p>
+					</div>
+				</th:block>
 
-      <!-- 📢 서비스 홍보 -->
-      <section class="promotion-section">
-        <h2>서비스 소개 / 홍보</h2>
-        <p>이곳에 서비스 설명이나 배너를 넣을 수 있습니다.</p>
-      </section>
-    </div>
-  </div>
+				<th:block th:unless="${session.info == null}">
+					<!-- ✅ 결제한 자격증 확인 -->
+					<div class="card keyword-box">
+						<h4>결제한 자격증 확인</h4>
+						<th:block th:if="${payList != null}">
+							<ul>
+								<th:block th:each="pay : ${payList}">
+									<th:block th:if="${pay.planAct == 1}">
+										<li><a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
+											th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">
+												자격증 이름 </a></li>
+									</th:block>
+								</th:block>
+							</ul>
+						</th:block>
+						<th:block th:if="${payList == null or #lists.isEmpty(payList)}">
+							<p>결제한 자격증이 없습니다.</p>
+						</th:block>
+					</div>
+				</th:block>
+			</section>
 
-  <!-- JS -->
-  <script type="text/javascript" src="js/search.js"></script>
-  <script type="text/javascript">
-	  //자동 로그인
-	  window.onload = function() {
-		    if (!sessionStorage.getItem('autoLoginDone')) {
-		        document.getElementById('autoLogin').submit();
-		        sessionStorage.setItem('autoLoginDone', 'true');
-		      }
-		  }
-  </script>
+			<!-- 📢 서비스 홍보 -->
+			<section class="promotion-section">
+				<h2>서비스 소개 / 홍보</h2>
+				<p>이곳에 서비스 설명이나 배너를 넣을 수 있습니다.</p>
+			</section>
+		</div>
+
+	<!-- Footer -->
+	<footer class="footer mt-5 py-4 border-top">
+	  <div class="container text-center">
+	    <nav class="nav justify-content-center mb-3">
+	      <a href="#" class="footer-link">Home</a>
+	      <a href="#" class="footer-link">About</a>
+	      <a href="#" class="footer-link">Contact</a>
+	    </nav>
+	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+	  </div>
+	</footer>
+
+	<!-- JS -->
+	<script type="text/javascript" src="js/search.js"></script>
+
+  
+
+  
+  
 </body>
 </html>

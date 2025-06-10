@@ -11,10 +11,13 @@
     height: 58px !important;
     border-bottom: 5px solid #3664B1;
   }
+  
+  /* 넘버박스 */
   .number-box {
     position: absolute;
     right: 10px;
     width: 230px;
+    height: 89%;
     top: 60px;
     bottom: 40px;
     background: #ffffff;
@@ -41,7 +44,17 @@
  	 padding-left: 15px;
  	 cursor: pointer;
  }
+ 
+ /* 바디 */
+  .text-box {    
+    position: absolute;
+    left: 10px;
+    right: 250px;
+    top: 60px;
+    bottom: 40px;
     
+}
+ /* 문제 영역 */   
  .test-page-block-holder {
     border-bottom: none !important;
     position: absolute;
@@ -50,16 +63,85 @@
     top: 60px;
     bottom: 100px;
     overflow-y: auto;
+    height: 600px;
+    padding-bottom: 50px;
 }
 
-  .text-box {    
-    position: absolute;
-    left: 10px;
-    right: 250px;
-    top: 60px;
-    bottom: 40px;
-    border: solid 1px #ccc; 
+ .oneExam {
+  width: 500px;
+  margin-bottom:20px;
+  break-inside: avoid;
+ 
+ }
+ 
+
+ .modal_border_helper {
+ 	margin: auto;
+    width: 910px;
+    overflow: hidden;
+    background: #3664B1;
+ }
+
+ .scoreBox {
+	display: none;
+	position: absolute;
+	top: 15%;
+	left: 35%;
+  	flex-direction: column;
+ }
+
+ .scoreComment {
+ 	display: flex;
+ 	align-items: center;
+ 	margin-top: 50px;
+ 	padding-bottom: 20px;
+ }
+
+ .scoreBoard {
+ 	background: #f2f2f2;
+ 	padding: 3px;
+ 	border-radius: 8px;
+ 	position: absolute;
+	text-align: center;
+	margin: auto;
+    width: 800px;
+    height: 300px;
+    overflow: hidden;
+  
 }
+
+ .scoreContainer {
+	 border-radius: 10px;
+	 border: 3px solid #3664B1;
+ }
+ 
+  .scoreText {
+	background: #f1faff;
+	vertical-align: middle;
+    text-align: center;
+  	display: flex;
+  	height: 40px;
+  }
+  .scoreValue {
+  	vertical-align: middle;
+    text-align: center;
+  	display: flex;
+  	height: 50px;
+  }
+ 
+ .scoreText div {
+ 	background: #f1faff;
+    width: 25%; /* 4칸이므로 100% / 4 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+ }
+ .scoreValue div {
+    width: 25%; /* 4칸이므로 100% / 4 */
+    padding: 10px;
+    border: 1px solid #ccc;
+ }
+ 
  .test-timer-block {
     position: absolute;
     width: 250px;
@@ -190,7 +272,7 @@
     left: 0px;
     right: 0px;
     height: 50px;
-    border-bottom: solid 1px #ccc;
+    border: solid 1px #ccc;
 }
  .screen-tool {
     position: absolute;

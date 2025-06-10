@@ -81,6 +81,7 @@ public class LicenseController {
 	    return service.atd_check(id);
 	}
 	
+	// 발작버튼
 	@PostMapping("/updateTopicNums.do")
 	public String updateTopicNums() {
 	    Exservice.updateTopic();
