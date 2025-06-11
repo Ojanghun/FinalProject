@@ -492,13 +492,13 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 				  const pbsCheck = [];                  // 문제별 정오 배열
 				  const pbIdx = [];
 				  let score = 0;
-				  const now = new Date();
+				  const now = new Date(); // 현재 시간 계산
 				  const pbsAt = now.getFullYear() + "-" +
 				                String(now.getMonth() + 1).padStart(2, '0') + "-" +
 				                String(now.getDate()).padStart(2, '0') + "T" +
 				                String(now.getHours()).padStart(2, '0') + ":" +
 				                String(now.getMinutes()).padStart(2, '0') + ":" +
-				                String(now.getSeconds()).padStart(2, '0');
+				                String(now.getSeconds()).padStart(2, '0'); // db에 들어갈수있게 형태 수정
 				  
 
 				  for (let i = 1; i <= 100; i++) {
