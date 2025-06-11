@@ -4,61 +4,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/past.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
-<style>
-    #chatbot-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 300px;
-        height: 400px;
-        border: 1px solid #ccc;
-        background: #fff;
-        display: none;
-        flex-direction: column;
-        z-index: 1000;
-    }
-    #chatbot-header {
-        background: #f8c107;
-        padding: 10px;
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    #chatbot-body {
-        flex: 1;
-        padding: 10px;
-        overflow-y: auto;
-        background: #f9f9f9;
-    }
-    #chatbot-input {
-        display: flex;
-        padding: 10px;
-        border-top: 1px solid #ccc;
-    }
-    #chatbot-input input {
-        flex: 1;
-        border: 1px solid #ccc;
-        padding: 5px;
-        margin-right: 5px;
-    }
-    .chat-message {
-        margin: 5px 0;
-        padding: 8px;
-        border-radius: 5px;
-    }
-    .user-message {
-        background: #d1e7dd;
-        margin-left: 20%;
-    }
-    .bot-message {
-        background: #f8d7da;
-        margin-right: 20%;
-    }
-</style>
+
 </head>
 <body>
 	<div class="container">
@@ -139,7 +89,7 @@
 	     
 	     
 	     $.each(subjectshuf, function(subjectIdx, problemList) {
-	    	  listHtml += "<h4 style='margin-top: 30px; font-size:50px; font-weight: bold; text-align: center;'>"
+	    	  listHtml += "<h4 class='subjectIdx'>"
 	    	           + chapterTitles[subjectIdx]
 	    	           + "</h4>";
 	    	  listHtml += "<p><hr></p>"         
@@ -150,8 +100,10 @@
 
 	    	    listHtml += "<div style='break-inside: avoid;'>";
 	    	    listHtml += "<div id='examYear" + (globalIdx + 1) + "'></div>";
-
-	    	    listHtml += "<div style='position: relative; width: fit-content; max-width: 100%;'>" +
+				
+	    	    // 문제 지문
+	    	    listHtml += "<div class='question' style='position: relative; width: fit-content; max-width: 100%;'>" +
+	    	    			// 문제 
 	    	                "<img id='check" + (globalIdx + 1) + "' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
 	    	                (globalIdx + 1) + ". " + exData[globalIdx].pbQues + "</div>";
 

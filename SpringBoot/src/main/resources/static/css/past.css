@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+/* 과목명 */
+ .subjectIdx{
+	margin-top: 30px;
+	font-size:50px;
+	font-weight: bold;
+	text-align: center;
+}
+
+/* 지문 */
+ .question {
+ 	position: relative;
+ 	width: fit-content;
+  	max-width: 100%;
+ }
