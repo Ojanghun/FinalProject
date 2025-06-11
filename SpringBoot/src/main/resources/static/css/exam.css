@@ -1,0 +1,55 @@
+@charset "UTF-8";
+/* past&topic 문제 페이지 css */
+
+
+
+/* 과목명 */
+ .subjectIdx{
+	margin-top: 30px;
+	font-size:50px;
+	font-weight: bold;
+	text-align: center;
+}
+/* 한 문제 */
+ .oneExam{
+ 
+ }
+
+/* 지문 */
+ .question {
+ 	position: relative;
+ 	width: fit-content;
+  	max-width: 100%;
+ }
+  /*한 문제의 선지 공간  */
+  .choice {
+  
+  }
+  
+  /* 선지 번호 */
+  .oneChoiceNum {
+  
+  }
+  
+  /* 선지 텍스트 */
+  .oneChoiceText {
+  
+  
+  }
+  
+  
+  /* 정답확인&해설 버튼 */
+  .btn {
+  	
+  }
+  
+  /* 해설 표시 공간 */
+  .solution {
+  
+  
+  }
+  
+  
+  
+  
+ 

@@ -87,7 +87,7 @@
 	     
 	     let listHtml = "";
 	     
-	     
+	     // 과목명
 	     $.each(subjectshuf, function(subjectIdx, problemList) {
 	    	  listHtml += "<h4 class='subjectIdx'>"
 	    	           + chapterTitles[subjectIdx]
@@ -98,34 +98,38 @@
 	    	    const globalIdx = subjectIdx * 20 + questionIdx;
 	    	    const pbId = exData[globalIdx].pbId - 1;
 
-	    	    listHtml += "<div style='break-inside: avoid;'>";
+	    	    // 한 문제 div
+	    	    listHtml += "<div class='oneExam' style='break-inside: avoid;'>";
+	    	    
+	    	    // 문제 출제일
 	    	    listHtml += "<div id='examYear" + (globalIdx + 1) + "'></div>";
 				
-	    	    // 문제 지문
+	    	    // 문제 지문 div
 	    	    listHtml += "<div class='question' style='position: relative; width: fit-content; max-width: 100%;'>" +
-	    	    			// 문제 
 	    	                "<img id='check" + (globalIdx + 1) + "' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
 	    	                (globalIdx + 1) + ". " + exData[globalIdx].pbQues + "</div>";
 
+	    	     // 문제 디테일(사진)
 	    	    if (exData[globalIdx].pbDetail != null) {
 	    	      listHtml += "<br><div><img src='" + exData[globalIdx].pbDetail + "'></div><br>";
 	    	    }
 
+	    	    // 문제 선지
 	    	    for (let k = 0; k < 4; k++) {
-	    	      listHtml += "<div id='choice" + (globalIdx + 1) + "-" + (k + 1) + "' onclick='selectChoice(" + (globalIdx + 1) + "," + (k + 1) + ", \"" + options[k] + "\")' style='display: flex;'>";
-	    	      listHtml += "<div id='choiceNum" + (globalIdx + 1) + "-" + (k + 1) + "'> " + ["①", "②", "③", "④"][k] + " &nbsp; </div>";
+	    	      listHtml += "<div class='choice' id='choice" + (globalIdx + 1) + "-" + (k + 1) + "' onclick='selectChoice(" + (globalIdx + 1) + "," + (k + 1) + ", \"" + options[k] + "\")' style='display: flex;'>";
+	    	      listHtml += "<div class='oneChoiceNum' id='choiceNum" + (globalIdx + 1) + "-" + (k + 1) + "'> " + ["①", "②", "③", "④"][k] + " &nbsp; </div>";
 	    	      if (options[k].includes("http")) {
-	    	        listHtml += "<div id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'><img src='" + options[k] + "'></div></div>";
+	    	        listHtml += "<div class='oneChoice' id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'><img src='" + options[k] + "'></div></div>";
 	    	      } else {
-	    	        listHtml += "<div id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'>" + options[k] + "</div></div>";
+	    	        listHtml += "<div class='oneChoiceText' id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'>" + options[k] + "</div></div>";
 	    	      }
 	    	    }
 
 	    	    listHtml += "<br>";
-	    	    listHtml += "<button id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
-	    	    listHtml += "<button onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
+	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+	    	    listHtml += "<button class='btn' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
 	    	    listHtml += "<br><br>";
-	    	    listHtml += "<div id='solution" + globalIdx + "'></div>";
+	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
 	    	    listHtml += "</div><br>";
 	    	  });
 			  listHtml += "</div>"
