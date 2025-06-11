@@ -284,13 +284,52 @@ h4 {
   justify-content: center;
   margin: auto;
   font-weight: bold;
-}
+  position: relative;
+  overflow: visible;
+} 
 
 .attended {
   background-color: #d0f0ff; /* 밝은 파란색 */
   color: #0077aa;
   box-shadow: 0 0 6px rgba(0, 119, 170, 0.5);
   animation: pulse 0.4s ease;
+} 
+.day-circle.exam-period-bar {
+  background-color:rgba(178, 222, 255, 0.4); 
+  border-radius: 0; /* 바 형식 */
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+/* 마우스를 올렸을 때 툴팁 생성 */
+.exam-period-bar::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 120%; /* 요소 위쪽에 표시 */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 10;
+}
+
+/* 호버 시 보이기 */
+.exam-period-bar:hover::after {
+  opacity: 1;
+}
+
+
+.day-circle.today {
+  
 }
 
 /* 애니매이션 추가 */
@@ -336,15 +375,6 @@ h4 {
   display: none;
 }
 
-.day-circle.exam-period-bar {
-  background-color:rgba(217, 229, 255, 0.5); 
-  border-radius: 0; /* 바 형식 */
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-}
 
 /* footer  */
 .footer {
@@ -362,19 +392,119 @@ h4 {
   font-size: 13px;
 }
 
-.day-circle {
- 
-  position: relative;
+
+/* --- 탭 메뉴 (가운데 정렬, 깔끔한 디자인) --- */
+.tab-menu {
+  border-bottom: 1px solid #c3d0ff;
+  margin-top: 17px;
+  padding-bottom: 10px;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  user-select: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.day-circle.today::after {
+/* 탭 버튼 기본 */
+.tab-menu button {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding-bottom: 12px;
+  color: #5a6dbc;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.25s ease, border-bottom-color 0.3s ease;
+  outline: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 4px 4px 0 0;
+}
+
+/* 탭 버튼 호버 */
+.tab-menu button:hover:not(.active) {
+  color: #2f3f91;
+}
+
+/* 탭 버튼 활성화 */
+.tab-menu button.active {
+  color: #1a237e;
+  font-weight: 700;
+  border-bottom-color: #1a237e;
+}
+
+/* --- 자격증 항목 --- */
+.exam-item {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e3e9ff;
+}
+
+/* --- 자격증 제목 + 형광펜 효과 (파란 계열) --- */
+.exam-title {
+  font-weight: 700;
+  font-size: 1.4rem;
+  display: inline-block;
+  position: relative;
+  color: #273469;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  user-select: none;
+  z-index: 1;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 형광펜 느낌 */
+.exam-title::before {
   content: "";
   position: absolute;
-  bottom: -15px; /* 숫자 아래 간격 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%; /* 언더라인 길이 */
-  height: 2px;
-  background-color: rgba(0, 34, 102, 0.8);
-  border-radius: 1px;
+  left: 0;
+  bottom: 6px;
+  width: 100%;
+  height: 14px;
+  background: #e5f1f8;
+  border-radius: 3px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* --- 자격증 설명 --- */
+.exam-description {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #3e4a9e;
+  line-height: 1.5;
+}
+
+/* --- 날짜 --- */
+.exam-date {
+  color: #7a8dbf;
+  font-size:1.1rem;
+  margin-left:5px;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+/* --- 버튼 그룹 --- */
+.exam-buttons .btn {
+  margin-right: 10px;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border: 1.5px solid #3949ab;
+  background-color: #e8ebff;
+  color: #3949ab;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  user-select: none;
+}
+
+.exam-buttons .btn:hover {
+  background-color: #3949ab;
+  color: #fff;
+}
+
+.exam-buttons .btn:active {
+  transform: scale(0.95);
 }
