@@ -21,20 +21,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers(
-                    new AntPathRequestMatcher("/loadExam/**"),
-                    new AntPathRequestMatcher("/shuffle/**"),
-                    new AntPathRequestMatcher("/correctAnswer/**"),
-                    new AntPathRequestMatcher("/solution/**"),
-                    new AntPathRequestMatcher("/pay/submit"), // ✅ 결제 POST 요청 CSRF 예외 처리
-                    new AntPathRequestMatcher("/loadExam1/**"),
-                    new AntPathRequestMatcher("/atd_check/**"),
-                    new AntPathRequestMatcher("/loadTopic/**"),
-                    new AntPathRequestMatcher("/submitPbsData"),
-                    new AntPathRequestMatcher("/submitPbsData/**")
-                    
-                )
+        .csrf(csrf -> csrf
+        	    .ignoringRequestMatchers(
+        	        new AntPathRequestMatcher("/loadExam/**"),
+        	        new AntPathRequestMatcher("/shuffle/**"),
+        	        new AntPathRequestMatcher("/correctAnswer/**"),
+        	        new AntPathRequestMatcher("/solution/**"),
+        	        new AntPathRequestMatcher("/pay/submit"),
+        	        new AntPathRequestMatcher("/loadExam1/**"),
+        	        new AntPathRequestMatcher("/atd_check/**"),
+        	        new AntPathRequestMatcher("/loadTopic/**"),
+        	        new AntPathRequestMatcher("/submitPbsData"),
+        	        new AntPathRequestMatcher("/submitPbsData/**"),
+        	        new AntPathRequestMatcher("/adminLoginCheck") // ✅ 관리자 로그인 POST 예외 처리
+        	    )
+
             )
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
@@ -42,6 +43,7 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/main"),
                     new AntPathRequestMatcher("/login"),
                     new AntPathRequestMatcher("/join"),
+                    new AntPathRequestMatcher("/adminLogin.do"), // ✅ 관리자 로그인 페이지 허용
                     new AntPathRequestMatcher("/idCheck"),
                     new AntPathRequestMatcher("/oauth/kakao"),
                     new AntPathRequestMatcher("/css/**"),

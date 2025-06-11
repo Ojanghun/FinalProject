@@ -62,14 +62,14 @@
 		         		<!-- 100% 150% 200% 배치 ㅡ : 한줄로 보기 ㅣ : 두줄로 보기 ㅁ : 한문제 보기 -->
 		         		<div class='zoom-tool'>
 		         			<span class='zoom-tool-title'>글자크기</span>
-			         		<button class='zoomBtn' onclick="magnification(14)" style='background: url(/images/100.gif) no-repeat;'></button>
-			         		<button class='zoomBtn' onclick="magnification(20)" style='background: url(/images/150.gif) no-repeat;'></button>
-			         		<button class='zoomBtn' onclick="magnification(25)" style='background: url(/images/200.gif) no-repeat;'></button>
+			         		<button id="zoom14" class='zoomBtn' onclick="magnification(14)" style='background: url(/images/100.gif) no-repeat;'></button>
+			         		<button id="zoom20" class='zoomBtn' onclick="magnification(20)" style='background: url(/images/150.gif) no-repeat;'></button>
+			         		<button id="zoom25" class='zoomBtn' onclick="magnification(25)" style='background: url(/images/200.gif) no-repeat;'></button>
 			         	</div>
 			         	<div class='layout-tool'>
 			         		<span class='layout-tool-title'>화면배치</span>
-							<button onclick="arrangement('oneLine')" class='layoutBtn' style='background: url(/images/one.gif) no-repeat;'></button>
-							<button onclick="arrangement('twoLine')" class='layoutBtn' style='background: url(/images/two.gif) no-repeat;'></button>
+							<button id="oneLine" onclick="arrangement('oneLine')" class='layoutBtn' style='background: url(/images/one.gif) no-repeat;'></button>
+							<button id="twoLine" onclick="arrangement('twoLine')" class='layoutBtn' style='background: url(/images/two.gif) no-repeat;'></button>
 			         	</div>
 		         	</div>
 		         	<div class='section-name-block'></div>
@@ -218,23 +218,38 @@
 	// 문제 배율
 	function magnification(value) {
 		$("#print").css("font-size",value);
+		if(value=="14"){
+		$("#zoom14").css("background","url(/images/100-click.gif) no-repeat");
+		$("#zoom20").css("background","url(/images/150.gif) no-repeat");
+		$("#zoom25").css("background","url(/images/200.gif) no-repeat");
+		}if(value=="20"){
+		$("#zoom"+value).css("background","url(/images/150-click.gif) no-repeat");
+		$("#zoom14").css("background","url(/images/100.gif) no-repeat");
+		$("#zoom25").css("background","url(/images/200.gif) no-repeat");
+		}if(value=="25"){
+		$("#zoom"+value).css("background","url(/images/200-click.gif) no-repeat");
+		$("#zoom14").css("background","url(/images/100.gif) no-repeat");
+		$("#zoom20").css("background","url(/images/150.gif) no-repeat");
+		}
 	}
 	
 	// 문제 배치
 	function arrangement(value) {
 		if(value === "oneLine"){	
 		    $("#print").css({
-		        "column-count": "initial"
-
+		    	"display": "block"
 		    });
+		    $("#oneLine").css("background","url(/images/one-click.gif) no-repeat");
+		    $("#twoLine").css("background","url(/images/two.gif) no-repeat");
 		}else if(value === "twoLine"){	
 		    $("#print").css({
-		        "column-count": "2",
+		        "display": "flex",
+		        "flex-wrap" : "wrap",
 		        "width": "100%",
-		        "height": "1000px",
-		        "overflow-y": "auto"
-
+		        "align-items": "flex-start"
 		    });
+		    $("#oneLine").css("background","url(/images/one.gif) no-repeat");
+		    $("#twoLine").css("background","url(/images/two-click.gif) no-repeat");
 		}
 /* 		else if(value === "singleQuestion"){	
 			$("#print").css("column-count",1);
@@ -319,7 +334,7 @@ function goNum(i) {
      const choices = [exam.pbChoi1, exam.pbChoi2, exam.pbChoi3, exam.pbChoi4];
 
 
-     html += `<div class="oneExam" id="exam${qNum}">`;
+     html += `<div class="oneExam" id="exam${qNum}" style="width: 50%;">`;
      html += `<p><strong>문제 ${qNum}.</strong> ${exam.pbQues}</p>`;
      
      // 문제 디테일
@@ -472,25 +487,25 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 				// 채점 함수: 정답과 비교해 점수 계산 및 전송할 데이터 준비
 				function gradeExam(correctData) {
 				  const userId = $("#userId").val();     // 사용자 ID 가져오기
-				  const pbCheck = [];                  // 문제별 정오 배열
+				  const pbsCheck = [];                  // 문제별 정오 배열
 				  const pbId = [];
 				  let score = 0;
 
 				  for (let i = 1; i <= 100; i++) {
 					  pbId[i] = correctData[i - 1].pbId
-				    // 정답 비교하여 점수 및 pbCheck 설정
+				    // 정답 비교하여 점수 및 pbsCheck 설정
 				    if (solvedStatus[i] == correctData[i - 1].pbAns) {
 				      score++;
-				      pbCheck[i] = 1;
+				      pbsCheck[i] = 1;
 				    } else {
-				      pbCheck[i] = 0;
+				      pbsCheck[i] = 0;
 				    }
 
 				    // 개별 문제 데이터 객체 생성하여 배열에 저장
 				    PbsData[i - 1] = {
 				      userId: userId,
 				      pbId: pbId[i],
-				      pbCheck: pbCheck[i]
+				      pbsCheck : pbsCheck[i]
 				    };
 				  }
 

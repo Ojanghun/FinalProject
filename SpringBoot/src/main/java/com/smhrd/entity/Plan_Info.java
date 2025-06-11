@@ -22,12 +22,12 @@ public class Plan_Info {
     private int planIdx; // 플랜 인덱스
     
     @Column(name = "LI_IDX", nullable = false) 
-    private int liIdx;
+    private int liIdx; // 자격증 인덱스
     
     @Column(name = "PLAN_TYPE", nullable = false)
     private Boolean planType; // 플랜 타입(0: 탐구형, 1: 필수형)
     
     @Column(name = "PLAN_PRICE", nullable = false)
-    private int planPrice;
+    private int planPrice; // 플랜 가격
     
 }
