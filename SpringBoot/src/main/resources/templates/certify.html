@@ -57,15 +57,15 @@
         <form id="certifyForm" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="licenseName" class="form-label">자격증 이름</label>
-            <input type="text" class="form-control" id="licenseName" name="licenseName" required>
+            <input type="text" class="form-control" id="licenseName" name="licenseName" required th:value="${liName}">
           </div>
           <div class="mb-3">
             <label for="file" class="form-label">합격 영상</label>
-            <input type="file" class="form-control" id="file" name="file" accept="video/*" required>
+            <input type="file" class="form-control" id="fileInput" name="file" accept="video/*" required>
           </div>
           <div class="mb-3">
             <label for="bank" class="form-label">예금주</label>
-            <input type="text" class="form-control" id="holder" name="holder" required>
+            <input type="text" class="form-control" id="holder" name="holder" required th:value="${member.name}">
           </div>
           <div class="mb-3">
             <label for="bank" class="form-label">은행</label>
@@ -75,7 +75,7 @@
             <label for="account" class="form-label">계좌번호</label>
             <input type="text" class="form-control" id="account" name="account" required>
           </div>
-          <button type="submit" class="btn btn-primary w-100">환급 신청</button>
+          <button type="submit" id="uploadBtn" class="btn btn-primary w-100">환급 신청</button>
         </form>
         <div id="resultMsg" class="mt-3"></div>
       </div>
@@ -93,37 +93,6 @@
       <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
     </div>
   </footer>
-
-  <!-- JS: Ajax 업로드 -->
-  <script>
-    $(document).ready(function() {
-      $('#certifyForm').on('submit', function(e) {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-
-        $.ajax({
-          url: '/upload',
-          type: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(response) {
-            if (response === 'success') {
-              $('#resultMsg').html('<div class="alert alert-success">업로드가 완료되었습니다.</div>');
-            } else if (response === 'typeMismatch') {
-              $('#resultMsg').html('<div class="alert alert-warning">동영상 파일만 업로드 가능합니다.</div>');
-            } else {
-              $('#resultMsg').html('<div class="alert alert-danger">업로드 중 오류가 발생했습니다.</div>');
-            }
-          },
-          error: function() {
-            $('#resultMsg').html('<div class="alert alert-danger">서버 오류로 업로드에 실패했습니다.</div>');
-          }
-        });
-      });
-    });
-  </script>
 
 </body>
 </html>
