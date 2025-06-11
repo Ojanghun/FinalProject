@@ -74,8 +74,8 @@
 							<!-- ✅ 왼쪽: 환급 버튼 -->
 							<th:block
 								th:if="${#temporals.createNow().isAfter(pay.planEd) and #temporals.createNow().isBefore(pay.planEd.plusDays(7))}">
-								<button class="btn btn-primary btn-move-link">합격 인증 후
-									환급 받기</button>
+								<div class="product-footer"><a th:href="@{'/certify?planIdx=' + ${pay.planIdx}}" class="btn btn-primary btn-move-link">합격 인증 후
+									환급 받기</div></a>
 							</th:block>
 
 							<!-- ✅ 오른쪽: 기간 정보 -->
