@@ -3,12 +3,10 @@ package com.smhrd.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -96,8 +94,10 @@ public class ExamController {
 	    dataList.forEach(log -> {
 	        Pbs_Log entity = new Pbs_Log();
 	        entity.setUserId(log.getUserId());
-	        entity.setPbId(log.getPbId());
+	        entity.setPbIdx(log.getPbIdx());
 	        entity.setPbsCheck(log.getPbsCheck());
+	        entity.setPbsAt(log.getPbsAt());
+	        entity.setPbNum(log.getPbNum());
 
 	        service.submitPbsData(entity);
 	    });
