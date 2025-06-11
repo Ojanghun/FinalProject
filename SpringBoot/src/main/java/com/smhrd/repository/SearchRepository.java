@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.smhrd.entity.Li_Info;
-import com.smhrd.projection.LiNameOnly;
+import com.smhrd.projection.LiIdxAndLiName;
 
 @Repository
 public interface SearchRepository extends JpaRepository<Li_Info, Integer>{
 
-	List<LiNameOnly> findAllBy();
+	List<LiIdxAndLiName> findAllBy();
 	
 }

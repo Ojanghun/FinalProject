@@ -69,6 +69,6 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 	@Query("SELECT p FROM Pay_Info p " +
 		   "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
 		   "WHERE p.id = :userId AND pi.planIdx = :planIdx AND p.rfAct = 1")
-	Pay_Info findTop1RefundableByUserIdAndLiIdx(@Param("userId") String userId, @Param("planIdx") int planIdx);
+	Pay_Info findRefundableByUserIdAndLiIdx(@Param("userId") String userId, @Param("planIdx") int planIdx);
 	
 }

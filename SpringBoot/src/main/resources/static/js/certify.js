@@ -11,10 +11,14 @@ function uploadFile() {
 	const planIdx = urlParams.get("planIdx");
 
 	const formData = new FormData();
-	formData.append("file", fileInput.files[0]); // files -> 선택한 모든 파일을 나열하는 FileList 객체입니다.
-	if (planIdx !== null && planIdx !== undefined) {
-		formData.append("planIdx", planIdx);  // 이걸 추가해야 컨트롤러에서 @RequestParam으로 받을 수 있음
+	
+	if (planIdx === null || planIdx === undefined || planIdx === "") {
+		alert("선택된 플랜이 없습니다")
+		return;
 	}
+	
+	formData.append("file", fileInput.files[0]); // files -> 선택한 모든 파일을 나열하는 FileList 객체입니다.
+	formData.append("planIdx", planIdx);  // 이걸 추가해야 컨트롤러에서 @RequestParam으로 받을 수 있음
 
 	$.ajax({
 		url: "upload",

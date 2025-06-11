@@ -29,7 +29,7 @@ public class PayInfoService {
     }
     
     public Pay_Info getRefundablePlan(String userId, int planIdx) {
-        return payInfoRepository.findTop1RefundableByUserIdAndLiIdx(userId, planIdx);
+        return payInfoRepository.findRefundableByUserIdAndLiIdx(userId, planIdx);
     }
     
 }

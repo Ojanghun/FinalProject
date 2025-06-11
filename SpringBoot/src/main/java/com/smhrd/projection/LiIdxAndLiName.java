@@ -1,5 +1,6 @@
 package com.smhrd.projection;
 
-public interface LiNameOnly {
+public interface LiIdxAndLiName {
+	int getLiIdx();
 	String getLiName();
 }
