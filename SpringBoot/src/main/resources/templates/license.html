@@ -56,12 +56,11 @@
 			      <input type="hidden" name="liName" th:value="${licenseList[0].liName}" />
 			      <input type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
 			      <input type="hidden" name="liPbc" th:value="${licenseList[0].liPbc}" />
-			      
-			      
               <select name="category" class="form-control rounded-pill px-4 py-2">
 			  <option value="" disabled selected hidden>회차 검색</option>
+			  <option value="0" >랜덤 문제</option>
 			  <th:block th:each="round : ${rounds}">
-			    <option th:value="${round[0] + '-' + round[1]}"
+			    <option th:value="${round[2]}"
 			            th:text="${round[0] + '년 ' + round[1] + '회'}">
 			    </option>
 			  </th:block>
@@ -89,14 +88,10 @@
                <input type="hidden" name="liChap5" th:value="${licenseList[0].liChap5}" />
               <select id="category" name="category" class="form-control rounded-pill px-4 py-2">
 				<option value="default" disabled selected hidden>회차 검색</option>
-                <option value="1">2020-06-06</option>
-                <option value="2">2020-08-22</option>
-                <option value="3">2020-09-26</option>
-                <option value="4">2021-03-07</option>
-                <option value="5">2021-05-15</option>
-                <option value="6">2021-08-14</option>
-                <option value="7">2022-03-05</option>	
-                <option value="8">2022-04-24</option>
+			  <th:block th:each="round : ${rounds}">
+			    <option th:value="${round[2]}"
+			            th:text="${round[0] + '년 ' + round[1] + '회'}">
+			    </option>
               </select>
             </div>
 			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
