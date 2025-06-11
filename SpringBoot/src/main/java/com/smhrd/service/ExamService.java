@@ -1,5 +1,6 @@
 package com.smhrd.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,14 +13,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.smhrd.entity.Exam;
 import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
+import com.smhrd.entity.User_Score;
 import com.smhrd.repository.ExamRepository;
 import com.smhrd.repository.PbsLogRepository;
 import com.smhrd.repository.TopicInfoRpository;
+import com.smhrd.repository.UserScoreRepository;
 
 @Service
 public class ExamService {
@@ -32,6 +36,9 @@ public class ExamService {
 	
 	@Autowired
 	private PbsLogRepository Pbsrepository;
+	
+	@Autowired
+	private UserScoreRepository userScoreRepository;
 	
 	// 년도 별 문제 불러오기
 	public List<Exam> loadExam(int category) { // 카테고리 값을 받아왔음, 2가지 값 받아오는게 가능할지도?
@@ -159,7 +166,46 @@ public class ExamService {
 
 
 	public void submitPbsData(Pbs_Log log) {
-		Pbsrepository.save(log);
+		Pbsrepository.save(log);	
+	}
+
+	@Transactional
+	public void saveUserScoreFromPbsLog(String userId, LocalDateTime pbsAt) {
+		List<Pbs_Log> logs = Pbsrepository.findByUserIdAndPbsAt(userId, pbsAt);
+	    if (logs.isEmpty()) return;
+
+	    int[] scores = new int[6];
+	    int liIdx = 0;
+
+	    for (Pbs_Log log : logs) {
+	        if (log.getPbsCheck() == 1) {
+	            int chapter = (log.getPbNum() - 1) / 20;
+	            if (chapter >= 0 && chapter < 6) {
+	                scores[chapter]++;
+	            }
+	        }
+
+	        // liIdx 가져오기 (1회만)
+	        if (liIdx == 0) {
+	            liIdx = repository.findById(log.getPbIdx())
+	                                  .map(e -> e.getLiIdx())
+	                                  .orElse(0);
+	        }
+	    }
+
+	    User_Score score = new User_Score();
+	    score.setUserId(userId);
+	    score.setLiIdx(liIdx);
+	    score.setScChap1(scores[0]);
+	    score.setScChap2(scores[1]);
+	    score.setScChap3(scores[2]);
+	    score.setScChap4(scores[3]);
+	    score.setScChap5(scores[4]);
+	    score.setScChap6(scores[5]);
+	    score.setScAt(pbsAt);
+
+	    userScoreRepository.save(score);
+		
 	}
 
 	

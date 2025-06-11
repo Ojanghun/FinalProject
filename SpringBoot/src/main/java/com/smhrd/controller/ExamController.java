@@ -1,5 +1,6 @@
 package com.smhrd.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +102,12 @@ public class ExamController {
 
 	        service.submitPbsData(entity);
 	    });
+	    
+	    String userId = dataList.get(0).getUserId();
+	    LocalDateTime pbsAt = dataList.get(0).getPbsAt();
+	    
+	    // 점수 계산 및 저장
+	    service.saveUserScoreFromPbsLog(userId, pbsAt);
 	}
 	
 }
