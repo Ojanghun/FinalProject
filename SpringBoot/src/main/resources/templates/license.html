@@ -9,6 +9,7 @@
   <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <!-- Main Style -->
   <link href="/css/style.css" rel="stylesheet">
@@ -19,7 +20,7 @@
 <body>
 
   <!-- Header -->
-   <input type="hidden" id="id" th:value="${member.id}" />
+   <input type="hidden" id="id" th:if="${member != null}" th:value="${member.id}" />
    
    
   <nav class="custom-header">
@@ -39,7 +40,7 @@
 
   <!-- Main -->
   <div class="container mt-5">
-    <h4 class="text-center mb-5" th:text="${member.name} + '님 시험까지 ~일 남았습니다.'"></h4>
+    <h4 class="text-center mb-5" th:if="${member != null}" th:text="${member.name} + '님 시험까지 ~일 남았습니다.'"></h4>
 
     <div class="row">
       <!-- Left Column -->
@@ -55,19 +56,16 @@
 			      <input type="hidden" name="liName" th:value="${licenseList[0].liName}" />
 			      <input type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
 			      <input type="hidden" name="liPbc" th:value="${licenseList[0].liPbc}" />
-			      <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
-              <select id="category" name="category" class="form-control rounded-pill px-4 py-2">
-                <option value="" disabled selected hidden>회차 검색</option>
-                <option value="0">랜덤 문제</option>
-                <option value="1">2020-06-06</option>
-                <option value="2">2020-08-22</option>
-                <option value="3">2020-09-26</option>
-                <option value="4">2021-03-07</option>
-                <option value="5">2021-05-15</option>
-                <option value="6">2021-08-14</option>
-                <option value="7">2022-03-05</option>	
-                <option value="8">2022-04-24</option>
-              </select>
+			      
+			      
+              <select name="category" class="form-control rounded-pill px-4 py-2">
+			  <option value="" disabled selected hidden>회차 검색</option>
+			  <th:block th:each="round : ${rounds}">
+			    <option th:value="${round[0] + '-' + round[1]}"
+			            th:text="${round[0] + '년 ' + round[1] + '회'}">
+			    </option>
+			  </th:block>
+			</select>
             </div>
 			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
 			    	onclick="if(document.getElementById('category').value == ''){ alert('유형을 선택해주세요.'); return false; }">시험</button>            
@@ -128,7 +126,7 @@
       <!-- Right Column -->
       <div class="col-md-4">
         <div class="dashboard-card p-4" style="height: 350px;">
-          <h5 class="fw-bold mb-3" th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
+          <h5 class="fw-bold mb-3" th:if="${member != null}"  th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
 <!--           	<div th:each="pbIdxList : ${pbIdxList}">
           		<div th:text="${pbIdxList}"></div>
           	</div> -->
@@ -168,26 +166,67 @@
               </tr>
             </thead>
             <tbody id="calendar-body"></tbody>
+            
           </table>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card schedule-card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <span>📌 접수</span>
-          </div>
-          <div class="card-body">
-		     <div th:each="exam : ${exams}">
-             <div th:each="license : ${licenseList}">
-                <h5><span th:text="${license.liName}"></span></h5>
-             </div>
-            <span th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd')}"></span> ~
-            <span th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd')}"></span>
-		</div>
-        </div>
+   <div class="col-md-4">
+  <div class="card schedule-card">
+    <!-- 탭 메뉴 -->
+    <div >
+      <div class="tab-menu mb-3">
+        <button class="active" onclick="showTab(event, 'apply')">접수</button>
+        <button onclick="showTab(event, 'exam')">시험</button>
+        <button onclick="showTab(event, 'result')">결과발표</button>
       </div>
     </div>
+
+    <!-- 탭 콘텐츠 -->
+    <div class="card-body" >
+
+      <!-- 접수 탭 -->
+      <div id="apply" class="tab-content" >
+        <div class="exam-item" th:each="exam : ${exams}" >
+          <div th:each="license : ${licenseList}">
+            <h5><span class="exam-title" th:text="${license.liName}" >ADP</span></h5>
+          </div>
+          <div class="exam-date">
+            <span th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd (E)')}">2025-07-07</span> ~
+            <span th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd (E)')}">2025-07-11</span>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- 시험 탭 -->
+      <div id="exam" class="tab-content" style="display: none;">
+        <div class="exam-item" th:each="exam : ${exams}" >
+          <div th:each="license : ${licenseList}">
+            <h5><span class="exam-title" th:text="${license.liName}" >ADP</span></h5>
+          </div>
+          <div class="exam-date">
+            <span th:text="${#temporals.format(exam.exStd, 'yyyy-MM-dd (E)')}">2025-07-07</span> ~
+            <span th:text="${#temporals.format(exam.exEd, 'yyyy-MM-dd (E)')}">2025-07-11</span>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- 결과발표 탭 -->
+      <div id="result" class="tab-content" style="display: none;">
+        <div class="exam-item" th:each="exam : ${exams}" >
+          <div th:each="license : ${licenseList}">
+            <h5><span class="exam-title" th:text="${license.liName}" >ADP</span></h5>
+          </div>
+          <div class="exam-date">
+            <span th:text="${#temporals.format(exam.exRd, 'yyyy-MM-dd (E)')}">2025-07-07</span> 
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
+</div>
 
 <!-- Footer -->
 <footer class="footer mt-5 py-4 border-top">
@@ -209,6 +248,18 @@
       loadTopic();
    });
    
+   /* 시험 일정 박스 */
+   // showTab 함수에서 event 인자를 받아서 사용하도록 수정
+  function showTab(event, tabId) {
+    // 탭 컨텐츠 전부 숨김
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    // 선택한 탭만 표시
+    document.getElementById(tabId).style.display = 'block';
+
+    // 탭 메뉴 활성화 표시
+    document.querySelectorAll('.tab-menu button').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
  function loadTopic() {
     
        // 리스트라서.. 이렇게 가져옴
@@ -314,9 +365,9 @@
           }
           /* 달력에 일정 표시 */
           const exam = examDates.find(e => e.date === dateStr);
-         if (exam) {
+         if (exam ) {
            dayCircle.classList.add("exam-period-bar");
-           
+           dayCircle.setAttribute("data-title", exam.title);
          }
 
           // 현재 셀에 해당 날짜를 시각적으로 보여줄 div.day-circle을 삽입하는 역할

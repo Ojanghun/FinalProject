@@ -72,6 +72,9 @@ public class ProductController {
         }
         
         
+		// 기출 문제 - 회차 정보 불러오기
+		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds();
+		model.addAttribute("rounds", rounds);
 		
         model.addAttribute("pbIdxList", pbIdxList);
         
