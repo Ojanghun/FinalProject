@@ -42,4 +42,7 @@ public class Ex_Info {
     @Column(name = "EX_RD", nullable = false)
     private LocalDateTime exRd; // 합격자 발표일
     
+    @Column(name = "EX_PBEXIST", nullable = false) 
+    private int exPbexist; // 시험 문제 존재 여부
+    
 }

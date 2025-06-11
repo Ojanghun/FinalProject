@@ -8,3 +8,7 @@ DELETE FROM MEMBER;
 SELECT * FROM MEMBER;
 
 SELECT * FROM li_info;
+
+SELECT * FROM pay_info;
+
+SELECT * FROM plan_info;

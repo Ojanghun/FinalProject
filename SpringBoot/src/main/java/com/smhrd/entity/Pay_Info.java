@@ -38,4 +38,7 @@ public class Pay_Info {
     
     @Column(name = "RF_ACT", nullable = false)
     private int rfAct; // 환불 가능 상태(0: 환불 불가, 1: 환불 가능)
+    
+    @Column(name = "RF_CP", nullable = false)
+    private int rfCp; // 환불 여부(0: 환불 안됨, 1: 환불 됨)
 }
