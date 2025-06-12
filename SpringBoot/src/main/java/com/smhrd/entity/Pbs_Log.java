@@ -29,8 +29,8 @@ public class Pbs_Log {
     @Column(name = "USER_ID", nullable = false, length = 50) 
     private String userId; // 회원 아이디
     
-    @Column(name = "PB_IDX", nullable = false)
-	private int pbId; // 문제 인덱스
+    @Column(name = "pb_idx", nullable = false)
+	private int pbIdx; // 문제 인덱스
     
     @Column(name = "PBS_CHECK", nullable = false)
     private int pbsCheck; // 문제 정답 여부(0: 틀림, 1: 맞음)

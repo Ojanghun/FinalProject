@@ -96,7 +96,7 @@ public class ExamController {
 	    dataList.forEach(log -> {
 	        Pbs_Log entity = new Pbs_Log();
 	        entity.setUserId(log.getUserId());
-	        entity.setPbId(log.getPbId());
+	        entity.setPbIdx(log.getPbIdx());
 	        entity.setPbsCheck(log.getPbsCheck());
 
 	        service.submitPbsData(entity);

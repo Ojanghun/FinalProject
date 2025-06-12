@@ -68,7 +68,7 @@ public class ProductController {
         List<Integer> pbIdxList = new ArrayList<>();
         
         for(int i=0;i<pbsLog.size(); i++) {
-        	pbIdxList.add(pbsLog.get(i).getPbId());
+        	pbIdxList.add(pbsLog.get(i).getPbIdx());
         }
         
         

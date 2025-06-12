@@ -2,6 +2,7 @@ package com.smhrd.repository;
 
 import com.smhrd.entity.Pay_Info;
 import com.smhrd.projection.PayWithLicenseDTO;
+import com.smhrd.projection.PayWithLicenseDTOImpl;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
@@ -29,13 +31,15 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 
 	// ✅ 사용자 ID 기준 결제 이력 + liName을 projection으로 가져오기
 	// ✅ PayInfoRepository.java
-	@Query("SELECT new com.smhrd.projection.PayWithLicenseDTOImpl(p.planIdx, li.liName, p.planStd, p.planEd, pi.planType, p.planAct) " +
+	@Query("SELECT new com.smhrd.projection.PayWithLicenseDTOImpl(" +
+		       "p.planIdx, li.liName, p.planStd, p.planEd, pi.planType, p.planAct, pi.planPrice) " +
 		       "FROM Pay_Info p " +
 		       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
 		       "JOIN Li_Info li ON pi.liIdx = li.liIdx " +
 		       "WHERE p.id = :userId " +
 		       "ORDER BY p.planStd DESC")
-		List<PayWithLicenseDTO> findDetailedPaymentsByUserId(@Param("userId") String userId);
+		List<PayWithLicenseDTOImpl> findDetailedPaymentsByUserId(@Param("userId") String userId);
+
 
 
 	
@@ -67,5 +71,24 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 	int countActiveUsersForStrictPlan(@Param("liIdx") int liIdx);
 	
 	
+	@Query("""
+		    SELECT li.liName, COUNT(p), SUM(CASE WHEN p.rfCp = 1 THEN 1 ELSE 0 END)
+		    FROM Pay_Info p
+		    JOIN Plan_Info pi ON p.planIdx = pi.planIdx
+		    JOIN Li_Info li ON pi.liIdx = li.liIdx
+		    GROUP BY li.liName
+		""")
+		List<Object[]> getRefundRatesGroupedByLicense();
+
+		@Query("""
+		    SELECT li.liName, COUNT(p), SUM(CASE WHEN p.rfCp = 1 THEN 1 ELSE 0 END)
+		    FROM Pay_Info p
+		    JOIN Plan_Info pi ON p.planIdx = pi.planIdx
+		    JOIN Li_Info li ON pi.liIdx = li.liIdx
+		    WHERE li.liName = :license
+		    GROUP BY li.liName
+		""")
+		List<Object[]> getRefundRatesGroupedByLicenseName(@Param("license") String license);
+
 
 }
