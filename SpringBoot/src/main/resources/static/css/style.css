@@ -1,4 +1,4 @@
-/* 기본 스타일 */
+kk/* 기본 스타일 */
 body {
   font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
   background-color: #FAFAFA;
@@ -190,6 +190,7 @@ h4 {
   background-color: #e3f2fd;
 }
 
+
 /* 키워드 박스 */
 .keyword-box {
   width: 240px;
@@ -221,8 +222,6 @@ h4 {
 /* 서비스 홍보 영역 */
 .promotion-section {
   width: 100%;
-  background-color: #e0e0e0;
-  padding: 60px 20px;
   text-align: center;
 }
 
@@ -305,7 +304,7 @@ h4 {
 }
 /* 마우스를 올렸을 때 툴팁 생성 */
 .exam-period-bar::after {
-  content: attr(data-title);
+  content: attr(data-liname);
   position: absolute;
   bottom: 120%; /* 요소 위쪽에 표시 */
   left: 50%;
@@ -507,4 +506,56 @@ h4 {
 
 .exam-buttons .btn:active {
   transform: scale(0.95);
+}
+
+.image-placeholder {
+  font-size: 1.2rem;
+  font-weight: 500;
+  background-color: #6c757d;
+  color: white;
+  border-radius: 1rem;
+}
+/* main - 홍보구역  */
+.promotion-section {
+  background-color: #f8f9fa;
+  padding: 3rem 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.promotion-section h2.section-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #343a40;
+}
+
+.card2 {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 0.8rem;
+}
+
+.card2:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* main - 검색창 */
+.autocomplete-item {
+  cursor: pointer;
+}
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+#clearBtn {
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  text-decoration: none;
+}
+#clearBtn:focus {
+  outline: none;
+  box-shadow: none;
 }

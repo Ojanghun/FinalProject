@@ -58,7 +58,7 @@
 			      <input type="hidden" name="liPbc" th:value="${licenseList[0].liPbc}" />
 			      
 			      
-              <select name="category" class="form-control rounded-pill px-4 py-2">
+              <select name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
 			  <option value="" disabled selected hidden>회차 검색</option>
 			  <th:block th:each="round : ${rounds}">
 			    <option th:value="${round[0] + '-' + round[1]}"
@@ -67,7 +67,7 @@
 			  </th:block>
 			</select>
             </div>
-			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
+			    <button class="btn btn-light" type="submit" style="margin-right: 100px"
 			    	onclick="if(document.getElementById('category').value == ''){ alert('유형을 선택해주세요.'); return false; }">시험</button>            
           </form>
         </div>
@@ -75,8 +75,8 @@
         <!-- 기출 풀기 -->
         <div class="dashboard-card p-4">
           <h5 class="fw-bold mb-4">기출 풀기</h5>
-          <form method="post" action="goExam.do"  class="d-flex align-items-center gap-2">
-            <div class="flex-grow-1" style="width:300px; padding-left: 100px;">
+          <form method="post" action="goExam.do"  class="d-flex align-items-center gap-2" >
+            <div class="flex-grow-1" style="width:200px; padding-left: 100px;">
                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
 			   <input type="hidden" name="liName" th:value="${licenseList[0].liName}" />
@@ -87,19 +87,17 @@
                <input type="hidden" name="liChap3" th:value="${licenseList[0].liChap3}" />
                <input type="hidden" name="liChap4" th:value="${licenseList[0].liChap4}" />
                <input type="hidden" name="liChap5" th:value="${licenseList[0].liChap5}" />
-              <select id="category" name="category" class="form-control rounded-pill px-4 py-2">
-				<option value="default" disabled selected hidden>회차 검색</option>
-                <option value="1">2020-06-06</option>
-                <option value="2">2020-08-22</option>
-                <option value="3">2020-09-26</option>
-                <option value="4">2021-03-07</option>
-                <option value="5">2021-05-15</option>
-                <option value="6">2021-08-14</option>
-                <option value="7">2022-03-05</option>	
-                <option value="8">2022-04-24</option>
-              </select>
+               
+              <select name="category" class="form-control rounded-pill px-4 py-2" style="width: 600px;">
+			  <option value="" disabled selected hidden>회차 검색</option>
+			  <th:block th:each="round : ${rounds}">
+			    <option th:value="${round[0] + '-' + round[1]}"
+			            th:text="${round[0] + '년 ' + round[1] + '회'}">
+			    </option>
+			  </th:block>
+			</select>
             </div>
-			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
+			    <button class="btn btn-light" type="submit" style="margin-right: 100px"  
 			    	onclick="if(document.getElementById('category').value == 'default'){ alert('유형을 선택해주세요.'); return false; }">연습</button>
           </form>
         </div>
@@ -114,7 +112,7 @@
 
 		    </select>
 		
-			    <button class="btn btn-light" type="submit" style="width: 42px; height: 42px;"
+			    <button class="btn btn-light" type="submit" 
 			    	onclick="if(document.getElementById('category').value == ''){ alert('유형을 선택해주세요.'); return false; }">
 		      <i class="bi bi-search"></i>
 		    </button>
@@ -125,8 +123,8 @@
 
       <!-- Right Column -->
       <div class="col-md-4">
-        <div class="dashboard-card p-4" style="height: 350px;">
-          <h5 class="fw-bold mb-3" th:if="${member != null}"  th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
+        <div class="dashboard-card p-4" style="height: 505px;">
+          <h5 style="margin-left: 55px;" class="fw-bold mb-3" th:if="${member != null}"  th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
 <!--           	<div th:each="pbIdxList : ${pbIdxList}">
           		<div th:text="${pbIdxList}"></div>
           	</div> -->
@@ -216,11 +214,12 @@
       <div id="result" class="tab-content" style="display: none;">
         <div class="exam-item" th:each="exam : ${exams}" >
           <div th:each="license : ${licenseList}">
+          <div class="day-circle exam-period-bar" th:attr="data-liname=${license.liName}"></div>
             <h5><span class="exam-title" th:text="${license.liName}" >ADP</span></h5>
           </div>
           <div class="exam-date">
             <span th:text="${#temporals.format(exam.exRd, 'yyyy-MM-dd (E)')}">2025-07-07</span> 
-          </div>
+          </div></div>
         </div>
       </div>
 

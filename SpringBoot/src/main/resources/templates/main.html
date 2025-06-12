@@ -7,6 +7,12 @@
 <!-- CSS 링크 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="arrow-right-short" fill="currentColor" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M8.146 4.646a.5.5 0 0 1 .708 0L12 7.793a.5.5 0 0 1 0 .707l-3.146 3.147a.5.5 0 0 1-.708-.707L10.293 8H4.5a.5.5 0 0 1 0-1h5.793L8.146 5.354a.5.5 0 0 1 0-.708z"/>
+  </symbol>
+</svg>
+  
 	
   <link href="/css/style.css" rel="stylesheet">
 
@@ -15,6 +21,9 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 	
@@ -54,24 +63,45 @@
 
 		<!-- 🔍 검색 및 키워드 추천 -->
 		<div class="main-content">
-			<section class="row search-section">
+			<section class="row search-section mb-5">
 				<!-- 🔍 검색창 + 버튼 묶음 -->
 				<div class="search-group">
-					<div class="search-container">
-						<div class="search-box">
-							<input id="search" type="text" placeholder="자격증 검색" />
-							<button title="Clear">✕</button>
-							<button title="Search" class="bi bi-search"></button>
-						</div>
-						<div id="suggestions" class="autocomplete"></div>
-					</div>
+					<div class="search-group">
+			  <div class="search-container position-relative">
+			    <div class="search-box d-flex align-items-center rounded-pill shadow-sm px-3 py-2 bg-white border">
+			      <input id="searchInput" type="text" class="form-control border-0 flex-grow-1"
+			             placeholder="자격증 검색" autocomplete="off" />
+			      <button id="clearBtn" title="Clear" type="button" class="btn btn-link text-dark ">✕</button>
+			      <button id="searchBtn" type="button" class="btn btn-link text-primary px-2">
+			        <i class="bi bi-search fs-5"></i>
+			      </button>
+			    </div>
+
+				    <!-- 자동완성 목록 -->
+				    <div id="suggestions" class="autocomplete bg-white shadow-sm rounded-bottom mt-1 py-2 px-3 d-none">
+				      <th:block th:each="lic : ${licenseList}">
+				        <div class="autocomplete-item py-1 text-dark"
+				             th:data-id="${lic.liIdx}"
+				             th:data-name="${lic.liName}">
+				          <span th:text="${lic.liName}"></span>
+				        </div>
+				      </th:block>
+				    </div>
+				  </div>
+				</div>
 
 					<!-- 자격증 추천 버튼 영역 -->
-					<div class="search-suggestion">
-						<th:block th:each="lic : ${licenseList}">
-							<a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
-								th:text="${lic.liName}" class="btn btn-primary btn-lg"></a>
-						</th:block>
+					<div class="search-suggestion d-flex flex-wrap gap-2">
+					  <th:block th:each="lic : ${licenseList}">
+					    <a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
+					       class="btn btn-outline-primary d-inline-flex align-items-center">
+					      <span th:text="${lic.liName}"></span>
+					      <svg class="bi ms-2" width="16" height="16" aria-hidden="true">
+					        <use xlink:href="#arrow-right-short"></use>
+					      </svg>
+					    </a>
+					  </th:block>
+					  
 					</div>
 				</div>
 
@@ -104,12 +134,119 @@
 					</div>
 				</th:block>
 			</section>
+			<hr class="my-4">
 
 			<!-- 📢 서비스 홍보 -->
 			<section class="promotion-section">
-				<h2>서비스 소개 / 홍보</h2>
-				<p>이곳에 서비스 설명이나 배너를 넣을 수 있습니다.</p>
-			</section>
+  <main class="container py-5">
+    <div class="row" data-masonry='{"percentPosition": true }'>
+
+      <!-- 카드 1 -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm h-100">
+          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+            Image Placeholder
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Card title that wraps to a new line</h5>
+            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 2 (인용문) -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm h-100 p-3">
+          <figure class="mb-0">
+            <blockquote class="blockquote">
+              <p>“A well-known quote, contained in a blockquote element.”</p>
+            </blockquote>
+            <figcaption class="blockquote-footer text-muted mb-0">
+              Someone famous in <cite title="Source Title">Source Title</cite>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- 카드 3 -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm h-100">
+          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+            Image Placeholder
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 4 (강조 인용문) -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm text-bg-primary text-center h-100 p-4">
+          <figure class="mb-0">
+            <blockquote class="blockquote">
+              <p>“A well-known quote, contained in a blockquote element.”</p>
+            </blockquote>
+            <figcaption class="blockquote-footer text-white-50 mb-0">
+              Someone famous in <cite title="Source Title">Source Title</cite>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- 카드 5 -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm text-center h-100">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 6 -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm h-100">
+          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+            Image Placeholder
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Card title that wraps to a new line</h5>
+            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카드 7 (우측 정렬 인용문) -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm text-end h-100 p-3">
+          <figure class="mb-0">
+            <blockquote class="blockquote">
+              <p>“A well-known quote, contained in a blockquote element.”</p>
+            </blockquote>
+            <figcaption class="blockquote-footer text-muted mb-0">
+              Someone famous in <cite title="Source Title">Source Title</cite>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- 카드 8 (이미지만) -->
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card2 shadow-sm h-100">
+          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+            Image Placeholder
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</section>
+
 		</div>
 
 	<!-- Footer -->
@@ -125,11 +262,52 @@
 	</footer>
 
 	<!-- JS -->
-	<script type="text/javascript" src="js/search.js"></script>
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	    const input = document.getElementById('searchInput');
+	    const suggestions = document.getElementById('suggestions');
+	    const clearBtn = document.getElementById('clearBtn');
+	    const searchBtn = document.getElementById('searchBtn');
+	    let selectedId = null;
 
-  
+	    // 자동완성 클릭 → 입력창에 값 반영
+	    suggestions.addEventListener('click', function (e) {
+	      const item = e.target.closest('.autocomplete-item');
+	      if (item) {
+	        input.value = item.dataset.name;
+	        selectedId = item.dataset.id;
+	        suggestions.classList.add('d-none');
+	      }
+	    });
 
-  
-  
+	    // 검색 입력 시 자동완성 보이기
+	    input.addEventListener('input', function () {
+	      selectedId = null; // 직접 입력 시 초기화
+	      if (input.value.trim() === '') {
+	        suggestions.classList.add('d-none');
+	      } else {
+	        suggestions.classList.remove('d-none');
+	      }
+	    });
+
+	    // ✕ 버튼 → 입력 초기화
+	    clearBtn.addEventListener('click', function () {
+	      input.value = '';
+	      selectedId = null;
+	      suggestions.classList.add('d-none');
+	    });
+
+	    // 돋보기 클릭 → 해당 자격증으로 이동
+	    searchBtn.addEventListener('click', function () {
+	      if (selectedId) {
+	        window.location.href = `/redirectByLicense?liIdx=${selectedId}`;
+	      } else {
+	        alert('해당하는 자격증은 존재하지 않습니다.');
+	      }
+	    });
+	  });
+	</script>
+	
+
 </body>
 </html>
