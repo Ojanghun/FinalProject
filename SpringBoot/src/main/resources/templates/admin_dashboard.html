@@ -64,7 +64,8 @@ body {
 			환급률</div>
 		<div class="menu-item" onclick="showSection('planUsageSection')">📊
 			플랜 이용 현황</div>
-		<div class="menu-item" onclick="goToAllRefundRequests()">📁 환급 요청 보기</div>
+		<div class="menu-item" onclick="goToAllRefundRequests()">📁 환급
+			요청 보기</div>
 	</div>
 
 	<!-- 본문 콘텐츠 -->
@@ -218,6 +219,8 @@ body {
 						<th>은행</th>
 						<th>계좌</th>
 						<th>요청일</th>
+						<th>동영상</th>
+						<!-- ✅ 추가 -->
 					</tr>
 				</thead>
 				<tbody>
@@ -230,6 +233,9 @@ body {
 						<td th:text="${req.rfBank}"></td>
 						<td th:text="${req.rfAccnum}"></td>
 						<td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
+						<td><a th:href="@{${req.rfVpath}}" target="_blank"
+							th:if="${req.rfVpath != null}">보기</a> <span
+							th:if="${req.rfVpath == null}">없음</span></td>
 					</tr>
 				</tbody>
 			</table>
