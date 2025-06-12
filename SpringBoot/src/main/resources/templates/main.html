@@ -5,38 +5,54 @@
 <title>문제? Issue!</title>
 
 <!-- CSS 링크 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-	
-  <link href="/css/style.css" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+
+<link href="/css/style.css" rel="stylesheet">
 
 <!-- JS 링크 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+/* ✅ container 강제 통일 */
+.container {
+	max-width: 960px !important;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 12px;
+	padding-right: 12px;
+	box-sizing: border-box;
+}
+</style>
 </head>
 <body>
-	
-	<div class="container">
 
-		<!-- ✅ 결제 성공 메시지 표시 -->
-		<div th:if="${paymentSuccess}" class="alert alert-success mt-3"
-			role="alert">
-			<span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
-		</div>
 
-		<!-- 🔷 커스텀 헤더 -->
-		
-		 <nav class="custom-header">
-		    <div class="container container-fluid d-flex justify-content-between align-items-center px-4">
-		      <div class="logo d-flex align-items-center gap-2">
-		      	<a href="/">
-		        <img src="/images/로고.png" height="40" alt="로고">
-		        <span class="logo-text"></span>
-		      	</a>
-		      </div>
-	
+	<!-- ✅ 결제 성공 메시지 표시 -->
+	<div th:if="${paymentSuccess}" class="alert alert-success mt-3"
+		role="alert">
+		<span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
+	</div>
+
+	<!-- 🔷 커스텀 헤더 -->
+
+	<nav class="custom-header">
+		<div
+			class="d-flex justify-content-between align-items-center w-100 px-4">
+			<!-- ✅ 여기만 사용 -->
+			<div class="logo d-flex align-items-center gap-2">
+				<a href="/"> <img src="/images/로고.png" height="40" alt="로고">
+					<span class="logo-text"></span>
+				</a>
+			</div>
+
 
 			<div class="header-links d-flex gap-2">
 				<!-- ❌ 로그인하지 않은 경우 -->
@@ -50,7 +66,9 @@
 					<a href="logout" class="btn btn-outline-danger">LOGOUT</a>
 				</th:block>
 			</div>
-		</div></nav>
+		</div>
+	</nav>
+	<div class="container">
 
 		<!-- 🔍 검색 및 키워드 추천 -->
 		<div class="main-content">
@@ -112,24 +130,18 @@
 			</section>
 		</div>
 
-	<!-- Footer -->
-	<footer class="footer mt-5 py-4 border-top">
-	  <div class="container text-center">
-	    <nav class="nav justify-content-center mb-3">
-	      <a href="#" class="footer-link">Home</a>
-	      <a href="#" class="footer-link">About</a>
-	      <a href="#" class="footer-link">Contact</a>
-	    </nav>
-	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-	  </div>
-	</footer>
+		<!-- Footer -->
+		<footer class="footer mt-5 py-4 border-top">
+			<div class="container text-center">
+				<nav class="nav justify-content-center mb-3">
+					<a href="#" class="footer-link">Home</a> <a href="#"
+						class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
+				</nav>
+				<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+			</div>
+		</footer>
 
-	<!-- JS -->
-	<script type="text/javascript" src="js/search.js"></script>
-
-  
-
-  
-  
+		<!-- JS -->
+		<script type="text/javascript" src="js/search.js"></script>
 </body>
 </html>
