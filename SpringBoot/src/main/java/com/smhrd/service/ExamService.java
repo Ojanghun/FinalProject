@@ -42,7 +42,7 @@ public class ExamService {
 	
 	// 년도 별 문제 불러오기
 	public List<Exam> loadExam(int category) { // 카테고리 값을 받아왔음, 2가지 값 받아오는게 가능할지도?
-		
+		System.out.println(category);
 		if(category < 100) {
 			return repository.findTop100ByExIdOrderByPbNum(category);
 		}else { // 유형별 문제는 0~56 
@@ -170,7 +170,7 @@ public class ExamService {
 	}
 
 	@Transactional
-	public void saveUserScoreFromPbsLog(String userId, LocalDateTime pbsAt) {
+	public void saveUserScoreFromPbsLog(String userId, LocalDateTime pbsAt, String exCat) {
 		List<Pbs_Log> logs = Pbsrepository.findByUserIdAndPbsAt(userId, pbsAt);
 	    if (logs.isEmpty()) return;
 
@@ -196,6 +196,7 @@ public class ExamService {
 	    User_Score score = new User_Score();
 	    score.setUserId(userId);
 	    score.setLiIdx(liIdx);
+	    score.setExCat(exCat);
 	    score.setScChap1(scores[0]);
 	    score.setScChap2(scores[1]);
 	    score.setScChap3(scores[2]);
@@ -207,6 +208,4 @@ public class ExamService {
 	    userScoreRepository.save(score);
 		
 	}
-
-	
 }

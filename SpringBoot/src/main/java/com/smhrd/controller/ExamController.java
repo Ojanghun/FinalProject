@@ -27,7 +27,7 @@ public class ExamController {
 	public List<Exam> loadExam(@PathVariable("category") int category) {
 		
 		// 서비스에 문제 데이터 요청
-		List<Exam> exList =service.loadExam(category);
+		List<Exam> exList =service.loadExam(category); // 여기가 문제
 		System.out.println("문제 데이터: "+exList);
 		return exList;
 	}
@@ -91,7 +91,7 @@ public class ExamController {
 	}
 	
 	@PostMapping("/submitPbsData")
-	public void submitPbsData(@RequestBody List<Pbs_Log> dataList) {
+	public void submitPbsData(@RequestBody List<Pbs_Log> dataList, @RequestParam String exCat) {
 	    dataList.forEach(log -> {
 	        Pbs_Log entity = new Pbs_Log();
 	        entity.setUserId(log.getUserId());
@@ -105,9 +105,9 @@ public class ExamController {
 	    
 	    String userId = dataList.get(0).getUserId();
 	    LocalDateTime pbsAt = dataList.get(0).getPbsAt();
-	    
+	    System.out.println("받아왔나??" + exCat);
 	    // 점수 계산 및 저장
-	    service.saveUserScoreFromPbsLog(userId, pbsAt);
+	    service.saveUserScoreFromPbsLog(userId, pbsAt, exCat);
 	}
 	
 }
