@@ -174,11 +174,12 @@
    let allExData = [];     // 전체 문제
    let currentPage = 0;    // 현재 페이지 (0부터 시작)
    let score = 0; // 점수
-   const pageExamNum = 10; // 한페이지당 5문제(고정)
+   const pageExamNum = 10; // 한페이지당 10문제(고정)
    const userSelections = {};
    const solvedStatus = {}; // 문제 번호 -> 0 or 1
    const category = $("#category").val(); // 카테고리 값( 회차)
    const PbsData = [];  // 서버로 보낼 채점 데이터
+   const pbNum = []; // 문제 번호
    const token = $("meta[name='_csrf']").attr("content");
    const header = $("meta[name='_csrf_header']").attr("content");
 
@@ -332,7 +333,8 @@ function goNum(i) {
      const qNum = startIdx + i + 1;
      const exam = allExData[i];
      const choices = [exam.pbChoi1, exam.pbChoi2, exam.pbChoi3, exam.pbChoi4];
-
+     pbNum[i] = exam.pbNum; // 문제 번호 가지고 오기 → 과목별 점수 계산 할 때 사용
+     
 
      html += `<div class="oneExam" id="exam${qNum}" style="width: 50%;">`;
      html += `<p><strong>문제 ${qNum}.</strong> ${exam.pbQues}</p>`;
@@ -488,11 +490,22 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 				function gradeExam(correctData) {
 				  const userId = $("#userId").val();     // 사용자 ID 가져오기
 				  const pbsCheck = [];                  // 문제별 정오 배열
-				  const pbId = [];
+				  const pbIdx = [];				  
 				  let score = 0;
+				  const now = new Date(); // 현재 시간 계산
+				  const pbsAt = now.getFullYear() + "-" +
+				                String(now.getMonth() + 1).padStart(2, '0') + "-" +
+				                String(now.getDate()).padStart(2, '0') + "T" +
+				                String(now.getHours()).padStart(2, '0') + ":" +
+				                String(now.getMinutes()).padStart(2, '0') + ":" +
+				                String(now.getSeconds()).padStart(2, '0'); // db에 들어갈수있게 형태 수정
+				  
 
 				  for (let i = 1; i <= 100; i++) {
-					  pbId[i] = correctData[i - 1].pbId
+					  
+					  console.log(correctData); // 🔍 이거 찍어보세요 
+					  
+					  pbIdx[i] = correctData[i - 1].pbId
 				    // 정답 비교하여 점수 및 pbsCheck 설정
 				    if (solvedStatus[i] == correctData[i - 1].pbAns) {
 				      score++;
@@ -503,9 +516,11 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 
 				    // 개별 문제 데이터 객체 생성하여 배열에 저장
 				    PbsData[i - 1] = {
+				      pbNum: correctData[i - 1].pbNum,
 				      userId: userId,
-				      pbId: pbId[i],
-				      pbsCheck : pbsCheck[i]
+				      pbIdx: pbIdx[i],
+				      pbsCheck : pbsCheck[i],
+				      pbsAt: pbsAt,
 				    };
 				  }
 
@@ -514,11 +529,13 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 				}
 
 				// 채점 결과를 서버에 전송하는 Ajax
-				function sendPbsData(pbsData) {
-				console.log("📦 보내는 데이터:", pbsData);
+				function sendPbsData(pbsData) {					
+					console.log("📦 보내는 데이터:", pbsData);
+					const exCat = $("#category").val(); // 회차 정보
+					console.log("회차 인덱스: ", exCat);
 					
 				  $.ajax({
-				    url: "/submitPbsData",
+				    url: `/submitPbsData?exCat=${encodeURIComponent(exCat)}`,
 				    type: "post",
 				    contentType: "application/json",
 				    data: JSON.stringify(pbsData),

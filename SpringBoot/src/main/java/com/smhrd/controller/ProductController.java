@@ -68,15 +68,14 @@ public class ProductController {
         List<Integer> pbIdxList = new ArrayList<>();
         
         for(int i=0;i<pbsLog.size(); i++) {
-        	pbIdxList.add(pbsLog.get(i).getPbId());
+        	pbIdxList.add(pbsLog.get(i).getPbIdx());
         }
-        
+        model.addAttribute("pbIdxList", pbIdxList);
         
 		// 기출 문제 - 회차 정보 불러오기
 		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds();
 		model.addAttribute("rounds", rounds);
 		
-        model.addAttribute("pbIdxList", pbIdxList);
         
 		return "license";
 	}
