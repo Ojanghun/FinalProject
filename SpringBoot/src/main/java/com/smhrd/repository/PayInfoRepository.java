@@ -31,69 +31,70 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 
 	// ✅ 사용자 ID 기준 결제 이력 + liName을 projection으로 가져오기
 	// ✅ PayInfoRepository.java
-	@Query("SELECT new com.smhrd.projection.PayWithLicenseDTOImpl(" +
-		       "p.planIdx, li.liName, p.planStd, p.planEd, pi.planType, p.planAct, pi.planPrice) " +
-		       "FROM Pay_Info p " +
-		       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
-		       "JOIN Li_Info li ON pi.liIdx = li.liIdx " +
-		       "WHERE p.id = :userId " +
-		       "ORDER BY p.planStd DESC")
-		List<PayWithLicenseDTOImpl> findDetailedPaymentsByUserId(@Param("userId") String userId);
+	@Query("SELECT new com.smhrd.projection.PayWithLicenseDTOImpl("
+			+ "p.planIdx, li.liName, p.planStd, p.planEd, pi.planType, p.planAct, pi.planPrice) " + "FROM Pay_Info p "
+			+ "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " + "JOIN Li_Info li ON pi.liIdx = li.liIdx "
+			+ "WHERE p.id = :userId " + "ORDER BY p.planStd DESC")
+	List<PayWithLicenseDTOImpl> findDetailedPaymentsByUserId(@Param("userId") String userId);
 
-
-
-	
 	@Modifying
 	@Transactional
 	@Query("UPDATE Pay_Info p SET p.planAct = 0 WHERE p.planEd < CURRENT_TIMESTAMP AND p.planAct = 1")
 	void deactivateExpiredPlans();
 
-
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE pay_info " +
-	               "SET rf_act = CASE " +
-	               "    WHEN NOW() BETWEEN plan_ed AND DATE_ADD(plan_ed, INTERVAL 7 DAY) THEN 1 " +
-	               "    ELSE 0 " +
-	               "END", nativeQuery = true)
+	@Query(value = "UPDATE pay_info " + "SET rf_act = CASE "
+			+ "    WHEN NOW() BETWEEN plan_ed AND DATE_ADD(plan_ed, INTERVAL 7 DAY) THEN 1 " + "    ELSE 0 "
+			+ "END", nativeQuery = true)
 	void updateRefundStatus();
 
 	// 자유형 이용자 수 (plan_type = false)
-	@Query("SELECT COUNT(p) FROM Pay_Info p " +
-	       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
-	       "WHERE pi.liIdx = :liIdx AND pi.planType = false AND p.planAct = 1")
+	@Query("SELECT COUNT(p) FROM Pay_Info p " + "JOIN Plan_Info pi ON p.planIdx = pi.planIdx "
+			+ "WHERE pi.liIdx = :liIdx AND pi.planType = false AND p.planAct = 1")
 	int countActiveUsersForFreePlan(@Param("liIdx") int liIdx);
 
 	// 계획형 이용자 수 (plan_type = true)
-	@Query("SELECT COUNT(p) FROM Pay_Info p " +
-	       "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
-	       "WHERE pi.liIdx = :liIdx AND pi.planType = true AND p.planAct = 1")
+	@Query("SELECT COUNT(p) FROM Pay_Info p " + "JOIN Plan_Info pi ON p.planIdx = pi.planIdx "
+			+ "WHERE pi.liIdx = :liIdx AND pi.planType = true AND p.planAct = 1")
 	int countActiveUsersForStrictPlan(@Param("liIdx") int liIdx);
-	
-	
+
 	@Query("""
-		    SELECT li.liName, COUNT(p), SUM(CASE WHEN p.rfCp = 1 THEN 1 ELSE 0 END)
-		    FROM Pay_Info p
-		    JOIN Plan_Info pi ON p.planIdx = pi.planIdx
-		    JOIN Li_Info li ON pi.liIdx = li.liIdx
-		    GROUP BY li.liName
-		""")
-		List<Object[]> getRefundRatesGroupedByLicense();
+			    SELECT li.liName, COUNT(p), SUM(CASE WHEN p.rfCp = 1 THEN 1 ELSE 0 END)
+			    FROM Pay_Info p
+			    JOIN Plan_Info pi ON p.planIdx = pi.planIdx
+			    JOIN Li_Info li ON pi.liIdx = li.liIdx
+			    GROUP BY li.liName
+			""")
+	List<Object[]> getRefundRatesGroupedByLicense();
 
-		@Query("""
-		    SELECT li.liName, COUNT(p), SUM(CASE WHEN p.rfCp = 1 THEN 1 ELSE 0 END)
-		    FROM Pay_Info p
-		    JOIN Plan_Info pi ON p.planIdx = pi.planIdx
-		    JOIN Li_Info li ON pi.liIdx = li.liIdx
-		    WHERE li.liName = :license
-		    GROUP BY li.liName
-		""")
-		List<Object[]> getRefundRatesGroupedByLicenseName(@Param("license") String license);
+	@Query("""
+			    SELECT li.liName, COUNT(p), SUM(CASE WHEN p.rfCp = 1 THEN 1 ELSE 0 END)
+			    FROM Pay_Info p
+			    JOIN Plan_Info pi ON p.planIdx = pi.planIdx
+			    JOIN Li_Info li ON pi.liIdx = li.liIdx
+			    WHERE li.liName = :license
+			    GROUP BY li.liName
+			""")
+	List<Object[]> getRefundRatesGroupedByLicenseName(@Param("license") String license);
 
-
-	@Query("SELECT p FROM Pay_Info p " +
-		   "JOIN Plan_Info pi ON p.planIdx = pi.planIdx " +
-		   "WHERE p.id = :userId AND pi.planIdx = :planIdx AND p.rfAct = 1")
+	@Query("SELECT p FROM Pay_Info p " + "JOIN Plan_Info pi ON p.planIdx = pi.planIdx "
+			+ "WHERE p.id = :userId AND pi.planIdx = :planIdx AND p.rfAct = 1")
 	Pay_Info findRefundableByUserIdAndLiIdx(@Param("userId") String userId, @Param("planIdx") int planIdx);
-	
+
+	@Query(value =
+		    "SELECT pi.plan_type AS planType, " +
+		    "COUNT(DISTINCT p.USER_ID) AS userCount, " +
+		    "SUM(CASE WHEN p.RF_ACT = 1 THEN 1 ELSE 0 END) AS refundCount " +
+		    "FROM pay_info p " +
+		    "JOIN plan_info pi ON p.PLAN_IDX = pi.PLAN_IDX " +
+		    "JOIN li_info li ON pi.LI_IDX = li.LI_IDX " +
+		    "WHERE li.LI_NAME = :licenseName " +
+		    "GROUP BY pi.plan_type",
+		    nativeQuery = true)
+		List<Object[]> getPlanUsageByLicenseName(@Param("licenseName") String licenseName);
+
+
+
+
 }

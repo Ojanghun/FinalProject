@@ -83,7 +83,7 @@ public class MainController {
     }
 
     @GetMapping("/promote")
-    public String promote() {
+    public String promote() { 
         return "promote";
     }
 }

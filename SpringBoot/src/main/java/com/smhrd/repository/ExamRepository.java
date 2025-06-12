@@ -26,12 +26,6 @@ public interface ExamRepository extends JpaRepository<Exam, Integer> {
     // 유형 전체 불러오기
     List<Exam> findAllByOrderByPbTopicAsc();
 
-    // 페이징 처리된 문제 번호 순 정렬
-    List<Exam> findAllByOrderByPbNum(Pageable pageable);
-
-    // 무작위 100문제
-    @Query(value = "SELECT * FROM pb_info ORDER BY RAND() LIMIT 100", nativeQuery = true)
-    List<Exam> findRandom100();
 
     // 주어진 문제 ID 목록 기준 주제별 개수
     @Query(value = """
