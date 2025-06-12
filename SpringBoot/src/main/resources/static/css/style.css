@@ -5,19 +5,13 @@ body {
   color: #212121;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 .container {
-  max-width: 960px;
-  padding-left: 12px;
-  padding-right: 12px;
-  margin-left: auto;
-  margin-right: auto;
-    box-sizing: border-box;
-  
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
-
 
 h2 {
   color: #1E88E5;
@@ -32,27 +26,15 @@ h4 {
   font-weight: 600;
   margin-bottom: 15px;
 }
-/* 모든 container의 기본 여백 통일 */
-main.container {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
 
-/* ✅ 공통 헤더 스타일 */
+/* 헤더 */
 .custom-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  background-color: white;
   padding: 16px 24px;
-  height: 70px;
   border-bottom: 1px solid #ddd;
-}
-
-/* 헤더 아래 여백 통일 */
-.custom-header + * {
-  margin-top: 24px;
 }
 
 .logo {
@@ -65,6 +47,7 @@ main.container {
   height: 40px;
   width: auto;
   cursor: pointer;
+  
 }
 
 .logo-text {
@@ -77,12 +60,6 @@ main.container {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.header-links .btn {
-  padding: 6px 14px;
-  font-size: 14px;
-  height: auto;
 }
 
 /* 네비게이션 바 */
@@ -112,7 +89,6 @@ main.container {
   color: #1E88E5;
   border-radius: 20px 20px 0 0;
 }
-
 
 /* 공통 카드 스타일 */
 
