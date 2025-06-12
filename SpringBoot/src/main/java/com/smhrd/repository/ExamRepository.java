@@ -18,6 +18,10 @@ public interface ExamRepository extends JpaRepository<Exam, Integer> {
 
     // 카테고리 값에 맞는 유형 불러오기
     List<Exam> findByPbTopicOrderByPbTopicAsc(int category);
+	List<Exam> findAllByOrderByPbNum(Pageable pageable);
+	
+	@Query(value = "SELECT * FROM pb_info ORDER BY RAND() LIMIT 100", nativeQuery = true)
+	List<Exam> findRandom100(); // 이거 완전 무작위 같은데 → 챕터별로 무작위로 나오게 수정해야함
 
     // 유형 전체 불러오기
     List<Exam> findAllByOrderByPbTopicAsc();

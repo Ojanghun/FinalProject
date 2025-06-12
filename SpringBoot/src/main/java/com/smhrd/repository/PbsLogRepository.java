@@ -1,5 +1,6 @@
 package com.smhrd.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,4 +36,8 @@ public interface PbsLogRepository extends JpaRepository<Pbs_Log, Integer> {
 			    GROUP BY pb.topic_idx
 			""", nativeQuery = true)
 			List<Object[]> getWrongRatesByLicenseName(@Param("licenseName") String licenseName);
+			
+	@Query("SELECT p FROM Pbs_Log p WHERE p.userId = :userId AND p.pbsAt = :pbsAt")
+	List<Pbs_Log> findByUserIdAndPbsAt(@Param("userId") String userId, @Param("pbsAt") LocalDateTime pbsAt);
+
 }

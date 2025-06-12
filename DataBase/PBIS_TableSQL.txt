@@ -1,300 +1,390 @@
 ﻿-- 테이블 순서는 관계를 고려하여 한 번에 실행해도 에러가 발생하지 않게 정렬되었습니다.
 
--- LI_INFO Table Create SQL
--- 테이블 생성 SQL - LI_INFO
-CREATE TABLE LI_INFO
+-- li_info Table Create SQL
+-- 테이블 생성 SQL - li_info
+CREATE TABLE li_info
 (
-    `LI_IDX`   INT            NOT NULL    AUTO_INCREMENT COMMENT '자격증 인덱스', 
-    `LI_NAME`  VARCHAR(50)    NOT NULL    COMMENT '자격증 이름', 
-    `LI_TYPE`  CHAR(1)        NOT NULL    COMMENT '자격증 타입(필기: 0, 실기: 1)', 
-     PRIMARY KEY (LI_IDX)
+    `li_idx`    INT             NOT NULL    AUTO_INCREMENT COMMENT '자격증 인덱스', 
+    `li_name`   VARCHAR(50)     NOT NULL    COMMENT '자격증 이름', 
+    `li_type`   BIT             NOT NULL    COMMENT '자격증 타입(필기: 0, 실기: 1)', 
+    `li_time`   INT             NOT NULL    COMMENT '자격증 시험 시간(분단위)', 
+    `li_pbc`    INT             NOT NULL    COMMENT '자격증 문제 개수', 
+    `li_chap1`  VARCHAR(255)    NULL        COMMENT '1과목 이름', 
+    `li_chap2`  VARCHAR(255)    NULL        COMMENT '2과목 이름', 
+    `li_chap3`  VARCHAR(255)    NULL        COMMENT '3과목 이름', 
+    `li_chap4`  VARCHAR(255)    NULL        COMMENT '4과목 이름', 
+    `li_chap5`  VARCHAR(255)    NULL        COMMENT '5과목 이름', 
+    `li_chap6`  VARCHAR(255)    NULL        COMMENT '6과목 이름', 
+     PRIMARY KEY (li_idx)
 );
 
--- 테이블 Comment 설정 SQL - LI_INFO
-ALTER TABLE LI_INFO COMMENT '자격증 정보가 담긴 테이블 (LI: License). 여러 자격증 정보가 담긴 테이블';
+-- 테이블 Comment 설정 SQL - li_info
+ALTER TABLE li_info COMMENT '자격증 정보가 담긴 테이블 (li: license)';
 
 
--- PLAN_INFO Table Create SQL
--- 테이블 생성 SQL - PLAN_INFO
-CREATE TABLE PLAN_INFO
+-- ex_info Table Create SQL
+-- 테이블 생성 SQL - ex_info
+CREATE TABLE ex_info
 (
-    `PLAN_IDX`   INT        NOT NULL    AUTO_INCREMENT COMMENT '플랜 인덱스', 
-    `LI_IDX`     INT        NOT NULL    COMMENT '자격증 인덱스', 
-    `PLAN_TYPE`  CHAR(1)    NOT NULL    COMMENT '플랜 타입(0:선택형, 1:필수형)', 
-     PRIMARY KEY (PLAN_IDX)
+    `ex_idx`      INT         NOT NULL    AUTO_INCREMENT COMMENT '시험 인덱스', 
+    `li_idx`      INT         NOT NULL    COMMENT '자격증 인덱스', 
+    `app_std`     DATETIME    NOT NULL    COMMENT '원서 접수 시작일(app: apply)', 
+    `ap_ed`       DATETIME    NOT NULL    COMMENT '원서 접수 마감일', 
+    `ex_std`      DATETIME    NOT NULL    COMMENT '시험 시작일', 
+    `ex_ed`       DATETIME    NOT NULL    COMMENT '시험 종료 일', 
+    `ex_round`    INT         NOT NULL    COMMENT '시험 회차(보통 1, 2, 3)', 
+    `ex_rd`       DATETIME    NOT NULL    COMMENT '합격자 발표일(rd: result date)', 
+    `ex_pbexist`  INT         NOT NULL    COMMENT '시험 문제 존재 여부', 
+     PRIMARY KEY (ex_idx)
 );
 
--- 테이블 Comment 설정 SQL - PLAN_INFO
-ALTER TABLE PLAN_INFO COMMENT '플랜 정보가 담긴 테이블';
+-- 테이블 Comment 설정 SQL - ex_info
+ALTER TABLE ex_info COMMENT '시험 정보가 담긴 테이블';
 
--- Foreign Key 설정 SQL - PLAN_INFO(LI_IDX) -> LI_INFO(LI_IDX)
-ALTER TABLE PLAN_INFO
-    ADD CONSTRAINT FK_PLAN_INFO_LI_IDX_LI_INFO_LI_IDX FOREIGN KEY (LI_IDX)
-        REFERENCES LI_INFO (LI_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - ex_info(li_idx) -> li_info(li_idx)
+ALTER TABLE ex_info
+    ADD CONSTRAINT fk_ex_info_li_idx_li_info_li_idx FOREIGN KEY (li_idx)
+        REFERENCES li_info (li_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - PLAN_INFO(LI_IDX)
--- ALTER TABLE PLAN_INFO
--- DROP FOREIGN KEY FK_PLAN_INFO_LI_IDX_LI_INFO_LI_IDX;
+-- Foreign Key 삭제 SQL - ex_info(li_idx)
+-- ALTER TABLE ex_info
+-- DROP FOREIGN KEY fk_ex_info_li_idx_li_info_li_idx;
 
 
--- USER_INFO Table Create SQL
--- 테이블 생성 SQL - USER_INFO
-CREATE TABLE USER_INFO
+-- topic_info Table Create SQL
+-- 테이블 생성 SQL - topic_info
+CREATE TABLE topic_info
 (
-    `USER_IDX`    INT             NOT NULL    AUTO_INCREMENT COMMENT '회원 인덱스', 
-    `USER_ID`     VARCHAR(50)     NOT NULL    COMMENT '회원 아이디', 
-    `USER_PW`     VARCHAR(255)    NOT NULL    COMMENT '회원 비밀번호', 
-    `USER_NAME`   VARCHAR(50)     NOT NULL    COMMENT '회원 이름(카카오톡 아이디).', 
-    `USER_PRO`    BLOB            NOT NULL    COMMENT '회원 프로필(카카오톡 프로필)', 
-    `USER_POINT`  INT             NOT NULL    COMMENT '회원 포인트', 
-    `JOINED_AT`   DATETIME        NOT NULL    COMMENT '회원가입 날짜', 
-     PRIMARY KEY (USER_IDX)
+    `topic_idx`   INT             NOT NULL    AUTO_INCREMENT COMMENT '문제 주제 인덱스', 
+    `li_idx`      INT             NOT NULL    COMMENT '자격증 인덱스', 
+    `topic_num`   INT             NOT NULL    COMMENT '자격증 내 주제 번호', 
+    `topic_name`  VARCHAR(255)    NOT NULL    COMMENT '주제 이름', 
+     PRIMARY KEY (topic_idx)
 );
 
--- 테이블 Comment 설정 SQL - USER_INFO
-ALTER TABLE USER_INFO COMMENT '회원 정보가 담긴 테이블';
+-- 테이블 Comment 설정 SQL - topic_info
+ALTER TABLE topic_info COMMENT '주제 정보가 담긴 테이블';
+
+-- Foreign Key 설정 SQL - topic_info(li_idx) -> li_info(li_idx)
+ALTER TABLE topic_info
+    ADD CONSTRAINT fk_topic_info_li_idx_li_info_li_idx FOREIGN KEY (li_idx)
+        REFERENCES li_info (li_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - topic_info(li_idx)
+-- ALTER TABLE topic_info
+-- DROP FOREIGN KEY fk_topic_info_li_idx_li_info_li_idx;
 
 
--- EX_INFO Table Create SQL
--- 테이블 생성 SQL - EX_INFO
-CREATE TABLE EX_INFO
+-- plan_info Table Create SQL
+-- 테이블 생성 SQL - plan_info
+CREATE TABLE plan_info
 (
-    `EX_IDX`    INT         NOT NULL    AUTO_INCREMENT COMMENT '시험 인덱스', 
-    `LI_IDX`    INT         NOT NULL    COMMENT '자격증 인덱스', 
-    `APP_STD`   DATETIME    NOT NULL    COMMENT '원서 접수 시작일(APP: Apply)', 
-    `AP_ED`     DATETIME    NOT NULL    COMMENT '원서 접수 마감일', 
-    `EX_STD`    DATETIME    NOT NULL    COMMENT '시험 시작일', 
-    `EX_ED`     DATETIME    NOT NULL    COMMENT '시험 종료 일', 
-    `EX_ROUND`  INT         NOT NULL    COMMENT '시험 회차(보통 1, 2, 3)', 
-    `EX_RD`     DATETIME    NOT NULL    COMMENT '합격자 발표일(RD: Result Date)', 
-     PRIMARY KEY (EX_IDX)
+    `plan_idx`    INT    NOT NULL    AUTO_INCREMENT COMMENT '플랜 인덱스', 
+    `li_idx`      INT    NOT NULL    COMMENT '자격증 인덱스', 
+    `plan_type`   BIT    NOT NULL    COMMENT '플랜 타입(0:선택형, 1:필수형)', 
+    `plan_price`  INT    NOT NULL    COMMENT '플랜 가격', 
+     PRIMARY KEY (plan_idx)
 );
 
--- 테이블 Comment 설정 SQL - EX_INFO
-ALTER TABLE EX_INFO COMMENT '시험 정보가 담긴 테이블. 시험 회차 정보가 담기 테이블';
+-- 테이블 Comment 설정 SQL - plan_info
+ALTER TABLE plan_info COMMENT '플랜 정보가 담긴 테이블';
 
--- Foreign Key 설정 SQL - EX_INFO(LI_IDX) -> LI_INFO(LI_IDX)
-ALTER TABLE EX_INFO
-    ADD CONSTRAINT FK_EX_INFO_LI_IDX_LI_INFO_LI_IDX FOREIGN KEY (LI_IDX)
-        REFERENCES LI_INFO (LI_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - plan_info(li_idx) -> li_info(li_idx)
+ALTER TABLE plan_info
+    ADD CONSTRAINT fk_plan_info_li_idx_li_info_li_idx FOREIGN KEY (li_idx)
+        REFERENCES li_info (li_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - EX_INFO(LI_IDX)
--- ALTER TABLE EX_INFO
--- DROP FOREIGN KEY FK_EX_INFO_LI_IDX_LI_INFO_LI_IDX;
+-- Foreign Key 삭제 SQL - plan_info(li_idx)
+-- ALTER TABLE plan_info
+-- DROP FOREIGN KEY fk_plan_info_li_idx_li_info_li_idx;
 
 
--- TOPIC_INFO Table Create SQL
--- 테이블 생성 SQL - TOPIC_INFO
-CREATE TABLE TOPIC_INFO
+-- user_info Table Create SQL
+-- 테이블 생성 SQL - user_info
+CREATE TABLE user_info
 (
-    `TOPIC_IDX`   INT             NOT NULL    AUTO_INCREMENT COMMENT '문제 주제 인덱스', 
-    `LI_IDX`      INT             NOT NULL    COMMENT '자격증 인덱스', 
-    `TOPIC_NUM`   INT             NOT NULL    COMMENT '자격증 내 주제 번호', 
-    `TOPIC_NAME`  VARCHAR(255)    NOT NULL    COMMENT '주제 이름', 
-     PRIMARY KEY (TOPIC_IDX)
+    `user_id`       VARCHAR(50)     NOT NULL    COMMENT '회원 아이디', 
+    `user_pw`       VARCHAR(255)    NOT NULL    COMMENT '회원 비밀번호', 
+    `user_name`     VARCHAR(50)     NOT NULL    COMMENT '회원 이름(카카오톡 아이디).', 
+    `user_profile`  VARCHAR(255)    NULL        COMMENT '회원 프로필(카카오톡 프로필)', 
+    `user_phone`    VARCHAR(50)     NOT NULL    COMMENT '회원 전화번호', 
+    `user_point`    INT             NOT NULL    COMMENT '회원 포인트', 
+    `joined_at`     DATETIME        NOT NULL    COMMENT '회원가입 날짜', 
+     PRIMARY KEY (user_id)
 );
 
--- 테이블 Comment 설정 SQL - TOPIC_INFO
-ALTER TABLE TOPIC_INFO COMMENT '주제 정보가 담긴 테이블. 자격증 주제 정보가 담긴 테이블';
-
--- Foreign Key 설정 SQL - TOPIC_INFO(LI_IDX) -> LI_INFO(LI_IDX)
-ALTER TABLE TOPIC_INFO
-    ADD CONSTRAINT FK_TOPIC_INFO_LI_IDX_LI_INFO_LI_IDX FOREIGN KEY (LI_IDX)
-        REFERENCES LI_INFO (LI_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - TOPIC_INFO(LI_IDX)
--- ALTER TABLE TOPIC_INFO
--- DROP FOREIGN KEY FK_TOPIC_INFO_LI_IDX_LI_INFO_LI_IDX;
+-- 테이블 Comment 설정 SQL - user_info
+ALTER TABLE user_info COMMENT '회원 정보가 담긴 테이블';
 
 
--- PAY_INFO Table Create SQL
--- 테이블 생성 SQL - PAY_INFO
-CREATE TABLE PAY_INFO
+-- pb_info Table Create SQL
+-- 테이블 생성 SQL - pb_info
+CREATE TABLE pb_info
 (
-    `PAY_IDX`   INT         NOT NULL    AUTO_INCREMENT COMMENT '결재 인덱스', 
-    `USER_IDX`  INT         NOT NULL    COMMENT '회원 인덱스', 
-    `PLAN_IDX`  INT         NOT NULL    COMMENT '플랜 인덱스', 
-    `PLAN_STD`  DATETIME    NOT NULL    COMMENT '플랜 시작일(Start Date)', 
-    `PLAN_ED`   DATETIME    NOT NULL    COMMENT '플랜 마감일(End Date)', 
-     PRIMARY KEY (PAY_IDX)
+    `pb_idx`     INT              NOT NULL    AUTO_INCREMENT COMMENT '문제 인덱스', 
+    `li_idx`     INT              NOT NULL    COMMENT '자격증 인덱스', 
+    `ex_idx`     INT              NOT NULL    COMMENT '시험 인덱스', 
+    `pb_num`     INT              NOT NULL    COMMENT '한 회차 내의 문제 번호', 
+    `pb_ques`    VARCHAR(1000)    NOT NULL    COMMENT '문제 질문', 
+    `pb_detail`  VARCHAR(1000)    NULL        COMMENT '문제 세부 설명 사진 경로(.gif).', 
+    `pb_choi1`   VARCHAR(1000)    NOT NULL    COMMENT '문제 1번 선지', 
+    `pb_choi2`   VARCHAR(1000)    NOT NULL    COMMENT '문제 2번 선지', 
+    `pb_choi3`   VARCHAR(1000)    NOT NULL    COMMENT '문제 3번 선지', 
+    `pb_choi4`   VARCHAR(1000)    NOT NULL    COMMENT '문제 4번 선지', 
+    `pb_ans`     INT              NOT NULL    COMMENT '문제 정답 번호', 
+    `pb_solu`    VARCHAR(2000)    NOT NULL    COMMENT '문제 해설', 
+    `pb_cr`      VARCHAR(255)     NOT NULL    COMMENT '문제 정답률', 
+    `topic_idx`  INT              NOT NULL    COMMENT '문제 주제 인덱스', 
+     PRIMARY KEY (pb_idx)
 );
 
--- 테이블 Comment 설정 SQL - PAY_INFO
-ALTER TABLE PAY_INFO COMMENT '결재 정보가 담긴 테이블. 결재 정보가 담긴 테이블';
+-- 테이블 Comment 설정 SQL - pb_info
+ALTER TABLE pb_info COMMENT '문제 정보가 담긴 테이블';
 
--- Foreign Key 설정 SQL - PAY_INFO(PLAN_IDX) -> PLAN_INFO(PLAN_IDX)
-ALTER TABLE PAY_INFO
-    ADD CONSTRAINT FK_PAY_INFO_PLAN_IDX_PLAN_INFO_PLAN_IDX FOREIGN KEY (PLAN_IDX)
-        REFERENCES PLAN_INFO (PLAN_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - pb_info(li_idx) -> li_info(li_idx)
+ALTER TABLE pb_info
+    ADD CONSTRAINT fk_pb_info_li_idx_li_info_li_idx FOREIGN KEY (li_idx)
+        REFERENCES li_info (li_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - PAY_INFO(PLAN_IDX)
--- ALTER TABLE PAY_INFO
--- DROP FOREIGN KEY FK_PAY_INFO_PLAN_IDX_PLAN_INFO_PLAN_IDX;
+-- Foreign Key 삭제 SQL - pb_info(li_idx)
+-- ALTER TABLE pb_info
+-- DROP FOREIGN KEY fk_pb_info_li_idx_li_info_li_idx;
 
--- Foreign Key 설정 SQL - PAY_INFO(USER_IDX) -> USER_INFO(USER_IDX)
-ALTER TABLE PAY_INFO
-    ADD CONSTRAINT FK_PAY_INFO_USER_IDX_USER_INFO_USER_IDX FOREIGN KEY (USER_IDX)
-        REFERENCES USER_INFO (USER_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - pb_info(topic_idx) -> topic_info(topic_idx)
+ALTER TABLE pb_info
+    ADD CONSTRAINT fk_pb_info_topic_idx_topic_info_topic_idx FOREIGN KEY (topic_idx)
+        REFERENCES topic_info (topic_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - PAY_INFO(USER_IDX)
--- ALTER TABLE PAY_INFO
--- DROP FOREIGN KEY FK_PAY_INFO_USER_IDX_USER_INFO_USER_IDX;
+-- Foreign Key 삭제 SQL - pb_info(topic_idx)
+-- ALTER TABLE pb_info
+-- DROP FOREIGN KEY fk_pb_info_topic_idx_topic_info_topic_idx;
+
+-- Foreign Key 설정 SQL - pb_info(ex_idx) -> ex_info(ex_idx)
+ALTER TABLE pb_info
+    ADD CONSTRAINT fk_pb_info_ex_idx_ex_info_ex_idx FOREIGN KEY (ex_idx)
+        REFERENCES ex_info (ex_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - pb_info(ex_idx)
+-- ALTER TABLE pb_info
+-- DROP FOREIGN KEY fk_pb_info_ex_idx_ex_info_ex_idx;
 
 
--- PB_INFO Table Create SQL
--- 테이블 생성 SQL - PB_INFO
-CREATE TABLE PB_INFO
+-- pay_info Table Create SQL
+-- 테이블 생성 SQL - pay_info
+CREATE TABLE pay_info
 (
-    `PB_IDX`     INT              NOT NULL    AUTO_INCREMENT COMMENT '문제 인덱스', 
-    `LI_IDX`     INT              NOT NULL    COMMENT '자격증 인덱스', 
-    `EX_IDX`     INT              NOT NULL    COMMENT '시험 인덱스', 
-    `PB_NUM`     INT              NOT NULL    COMMENT '한 회차 내의 문제 번호', 
-    `PB_QUES`    VARCHAR(255)     NOT NULL    COMMENT '문제 질문', 
-    `PB_DETAIL`  VARCHAR(255)     NULL        COMMENT '문제 세부 설명 사진 경로(.gif).', 
-    `PB_CHOI1`   VARCHAR(255)     NOT NULL    COMMENT '문제 1번 선지', 
-    `PB_CHOI2`   VARCHAR(255)     NOT NULL    COMMENT '문제 2번 선지', 
-    `PB_CHOI3`   VARCHAR(255)     NOT NULL    COMMENT '문제 3번 선지', 
-    `PB_CHOI4`   VARCHAR(255)     NOT NULL    COMMENT '문제 4번 선지', 
-    `PB_ANS`     INT              NOT NULL    COMMENT '문제 정답 번호', 
-    `PB_SOLU`    VARCHAR(1000)    NOT NULL    COMMENT '문제 해설', 
-    `PB_CR`      INT              NOT NULL    COMMENT '문제 정답률', 
-    `TOPIC_IDX`  INT              NOT NULL    COMMENT '문제 주제 인덱스', 
-     PRIMARY KEY (PB_IDX)
+    `pay_idx`   INT            NOT NULL    AUTO_INCREMENT COMMENT '결재 인덱스', 
+    `user_id`   VARCHAR(50)    NOT NULL    COMMENT '회원 아이디', 
+    `plan_idx`  INT            NOT NULL    COMMENT '플랜 인덱스', 
+    `plan_std`  DATETIME       NOT NULL    COMMENT '플랜 시작일(start date)', 
+    `plan_ed`   DATETIME       NOT NULL    COMMENT '플랜 마감일(end date)', 
+    `plan_act`  INT            NOT NULL    COMMENT '플랜 활성화 상태', 
+    `rf_act`    INT            NOT NULL    COMMENT '환불 가능 상태', 
+    `rf_cp`     INT            NOT NULL    COMMENT '환불 여부', 
+     PRIMARY KEY (pay_idx)
 );
 
--- 테이블 Comment 설정 SQL - PB_INFO
-ALTER TABLE PB_INFO COMMENT '문제 정보가 담긴 테이블. 시험 문제 정보가 담긴 테이블';
+-- 테이블 Comment 설정 SQL - pay_info
+ALTER TABLE pay_info COMMENT '결재 정보가 담긴 테이블';
 
--- Foreign Key 설정 SQL - PB_INFO(LI_IDX) -> LI_INFO(LI_IDX)
-ALTER TABLE PB_INFO
-    ADD CONSTRAINT FK_PB_INFO_LI_IDX_LI_INFO_LI_IDX FOREIGN KEY (LI_IDX)
-        REFERENCES LI_INFO (LI_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - pay_info(plan_idx) -> plan_info(plan_idx)
+ALTER TABLE pay_info
+    ADD CONSTRAINT fk_pay_info_plan_idx_plan_info_plan_idx FOREIGN KEY (plan_idx)
+        REFERENCES plan_info (plan_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - PB_INFO(LI_IDX)
--- ALTER TABLE PB_INFO
--- DROP FOREIGN KEY FK_PB_INFO_LI_IDX_LI_INFO_LI_IDX;
+-- Foreign Key 삭제 SQL - pay_info(plan_idx)
+-- ALTER TABLE pay_info
+-- DROP FOREIGN KEY fk_pay_info_plan_idx_plan_info_plan_idx;
 
--- Foreign Key 설정 SQL - PB_INFO(TOPIC_IDX) -> TOPIC_INFO(TOPIC_IDX)
-ALTER TABLE PB_INFO
-    ADD CONSTRAINT FK_PB_INFO_TOPIC_IDX_TOPIC_INFO_TOPIC_IDX FOREIGN KEY (TOPIC_IDX)
-        REFERENCES TOPIC_INFO (TOPIC_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - pay_info(user_id) -> user_info(user_id)
+ALTER TABLE pay_info
+    ADD CONSTRAINT fk_pay_info_user_id_user_info_user_id FOREIGN KEY (user_id)
+        REFERENCES user_info (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - PB_INFO(TOPIC_IDX)
--- ALTER TABLE PB_INFO
--- DROP FOREIGN KEY FK_PB_INFO_TOPIC_IDX_TOPIC_INFO_TOPIC_IDX;
-
--- Foreign Key 설정 SQL - PB_INFO(EX_IDX) -> EX_INFO(EX_IDX)
-ALTER TABLE PB_INFO
-    ADD CONSTRAINT FK_PB_INFO_EX_IDX_EX_INFO_EX_IDX FOREIGN KEY (EX_IDX)
-        REFERENCES EX_INFO (EX_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - PB_INFO(EX_IDX)
--- ALTER TABLE PB_INFO
--- DROP FOREIGN KEY FK_PB_INFO_EX_IDX_EX_INFO_EX_IDX;
+-- Foreign Key 삭제 SQL - pay_info(user_id)
+-- ALTER TABLE pay_info
+-- DROP FOREIGN KEY fk_pay_info_user_id_user_info_user_id;
 
 
--- TMP Table Create SQL
--- 테이블 생성 SQL - TMP
-CREATE TABLE TMP
+-- admin Table Create SQL
+-- 테이블 생성 SQL - admin
+CREATE TABLE admin
 (
-    `TMP`  INT    NOT NULL    COMMENT '임시. 주제 아이디. 시험 아이디', 
-     PRIMARY KEY (TMP)
+    `admin_idx`  INT             NOT NULL    COMMENT '관리자 인덱스', 
+    `admin_id`   VARCHAR(50)     NULL        COMMENT '관리자 아이디', 
+    `admin_pw`   VARCHAR(255)    NULL        COMMENT '관리자 비밃번호', 
+    `admin_at`   DATETIME        NULL        COMMENT '관리자 가입 날짜', 
+     PRIMARY KEY (admin_idx)
 );
 
--- 테이블 Comment 설정 SQL - TMP
-ALTER TABLE TMP COMMENT '임시 테이블';
+-- 테이블 Comment 설정 SQL - admin
+ALTER TABLE admin COMMENT '관리자 정보가 담긴 테이블';
 
 
--- REFUND_INFO Table Create SQL
--- 테이블 생성 SQL - REFUND_INFO
-CREATE TABLE REFUND_INFO
+-- chatbot_info Table Create SQL
+-- 테이블 생성 SQL - chatbot_info
+CREATE TABLE chatbot_info
 (
-    `RF_IDX`     INT             NOT NULL    AUTO_INCREMENT COMMENT '환불 인덱스', 
-    `PAY_IDX`    INT             NOT NULL    COMMENT '결재 인덱스', 
-    `USER_IDX`   INT             NOT NULL    COMMENT '회원 인덱스', 
-    `RF_VPATH`   VARCHAR(255)    NOT NULL    COMMENT '합격 인증 영상 경로(Video Path)', 
-    `RF_NAME`    VARCHAR(50)     NOT NULL    COMMENT '환불 예금주', 
-    `RF_BANK`    VARCHAR(50)     NOT NULL    COMMENT '환불 은행', 
-    `RF_ACCNUM`  VARCHAR(50)     NOT NULL    COMMENT '환불 계좌번호(Account Number)', 
-     PRIMARY KEY (RF_IDX)
+    `cb_idx`   INT              NOT NULL    COMMENT '챗봇 인덱스', 
+    `pb_idx`   INT              NOT NULL    COMMENT '문제 인덱스', 
+    `cb_ques`  VARCHAR(2000)    NOT NULL    COMMENT '챗봇 질문', 
+    `cb_ans`   VARCHAR(2000)    NOT NULL    COMMENT '챗봇 대답', 
+     PRIMARY KEY (cb_idx)
 );
 
--- 테이블 Comment 설정 SQL - REFUND_INFO
-ALTER TABLE REFUND_INFO COMMENT '환급 신청 정보가 담긴 테이블';
+-- 테이블 Comment 설정 SQL - chatbot_info
+ALTER TABLE chatbot_info COMMENT '챗봇 질문, 대답 정보가 담긴 테이블';
 
--- Foreign Key 설정 SQL - REFUND_INFO(PAY_IDX) -> PAY_INFO(PAY_IDX)
-ALTER TABLE REFUND_INFO
-    ADD CONSTRAINT FK_REFUND_INFO_PAY_IDX_PAY_INFO_PAY_IDX FOREIGN KEY (PAY_IDX)
-        REFERENCES PAY_INFO (PAY_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - chatbot_info(pb_idx) -> pb_info(pb_idx)
+ALTER TABLE chatbot_info
+    ADD CONSTRAINT FK_chatbot_info_pb_idx_pb_info_pb_idx FOREIGN KEY (pb_idx)
+        REFERENCES pb_info (pb_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - REFUND_INFO(PAY_IDX)
--- ALTER TABLE REFUND_INFO
--- DROP FOREIGN KEY FK_REFUND_INFO_PAY_IDX_PAY_INFO_PAY_IDX;
-
--- Foreign Key 설정 SQL - REFUND_INFO(USER_IDX) -> USER_INFO(USER_IDX)
-ALTER TABLE REFUND_INFO
-    ADD CONSTRAINT FK_REFUND_INFO_USER_IDX_USER_INFO_USER_IDX FOREIGN KEY (USER_IDX)
-        REFERENCES USER_INFO (USER_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - REFUND_INFO(USER_IDX)
--- ALTER TABLE REFUND_INFO
--- DROP FOREIGN KEY FK_REFUND_INFO_USER_IDX_USER_INFO_USER_IDX;
+-- Foreign Key 삭제 SQL - chatbot_info(pb_idx)
+-- ALTER TABLE chatbot_info
+-- DROP FOREIGN KEY FK_chatbot_info_pb_idx_pb_info_pb_idx;
 
 
--- ATD_LOG Table Create SQL
--- 테이블 생성 SQL - ATD_LOG
-CREATE TABLE ATD_LOG
+-- refund_info Table Create SQL
+-- 테이블 생성 SQL - refund_info
+CREATE TABLE refund_info
 (
-    `ATD_IDX`   INT         NOT NULL    AUTO_INCREMENT COMMENT '출석 인덱스', 
-    `USER_IDX`  INT         NOT NULL    COMMENT '회원 인덱스', 
-    `ATD_AT`    DATETIME    NOT NULL    COMMENT '출석 날짜', 
-     PRIMARY KEY (ATD_IDX)
+    `rf_idx`     INT             NOT NULL    AUTO_INCREMENT COMMENT '환불 인덱스', 
+    `pay_idx`    INT             NOT NULL    COMMENT '결재 인덱스', 
+    `user_id`    VARCHAR(50)     NOT NULL    COMMENT '회원 아이디', 
+    `rf_vpath`   VARCHAR(255)    NOT NULL    COMMENT '합격 인증 영상 경로(video path)', 
+    `rf_name`    VARCHAR(50)     NOT NULL    COMMENT '환불 예금주', 
+    `rf_bank`    VARCHAR(50)     NOT NULL    COMMENT '환불 은행', 
+    `rf_accnum`  VARCHAR(50)     NOT NULL    COMMENT '환불 계좌번호(account number)', 
+    `rf_at`      DATETIME        NOT NULL    COMMENT '환불 날짜', 
+     PRIMARY KEY (rf_idx)
 );
 
--- 테이블 Comment 설정 SQL - ATD_LOG
-ALTER TABLE ATD_LOG COMMENT '출석 정보가 담긴 테이블(ATD = Attendance). 출석 정보가 담긴 테이블';
+-- 테이블 Comment 설정 SQL - refund_info
+ALTER TABLE refund_info COMMENT '환급 신청 정보가 담긴 테이블';
 
--- Foreign Key 설정 SQL - ATD_LOG(USER_IDX) -> USER_INFO(USER_IDX)
-ALTER TABLE ATD_LOG
-    ADD CONSTRAINT FK_ATD_LOG_USER_IDX_USER_INFO_USER_IDX FOREIGN KEY (USER_IDX)
-        REFERENCES USER_INFO (USER_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - refund_info(pay_idx) -> pay_info(pay_idx)
+ALTER TABLE refund_info
+    ADD CONSTRAINT fk_refund_info_pay_idx_pay_info_pay_idx FOREIGN KEY (pay_idx)
+        REFERENCES pay_info (pay_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - ATD_LOG(USER_IDX)
--- ALTER TABLE ATD_LOG
--- DROP FOREIGN KEY FK_ATD_LOG_USER_IDX_USER_INFO_USER_IDX;
+-- Foreign Key 삭제 SQL - refund_info(pay_idx)
+-- ALTER TABLE refund_info
+-- DROP FOREIGN KEY fk_refund_info_pay_idx_pay_info_pay_idx;
+
+-- Foreign Key 설정 SQL - refund_info(user_id) -> user_info(user_id)
+ALTER TABLE refund_info
+    ADD CONSTRAINT fk_refund_info_user_id_user_info_user_id FOREIGN KEY (user_id)
+        REFERENCES user_info (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - refund_info(user_id)
+-- ALTER TABLE refund_info
+-- DROP FOREIGN KEY fk_refund_info_user_id_user_info_user_id;
 
 
--- PBS_LOG Table Create SQL
--- 테이블 생성 SQL - PBS_LOG
-CREATE TABLE PBS_LOG
+-- atd_log Table Create SQL
+-- 테이블 생성 SQL - atd_log
+CREATE TABLE atd_log
 (
-    `PBS_IDX`    INT         NOT NULL    AUTO_INCREMENT COMMENT '문제 풀이 로그 인덱스', 
-    `USER_IDX`   INT         NOT NULL    COMMENT '회원 인덱스', 
-    `PB_IDX`     INT         NOT NULL    COMMENT '문제 인덱스', 
-    `PBS_CHECK`  CHAR(1)     NOT NULL    COMMENT '문제 정답 여부(0: 틀림, 1: 맞음)', 
-    `PBS_AT`     DATETIME    NOT NULL    COMMENT '문제 푼 날짜', 
-     PRIMARY KEY (PBS_IDX)
+    `atd_idx`  INT            NOT NULL    AUTO_INCREMENT COMMENT '출석 인덱스', 
+    `user_id`  VARCHAR(50)    NOT NULL    COMMENT '회원 아이디', 
+    `atd_at`   DATETIME       NOT NULL    COMMENT '출석 날짜', 
+     PRIMARY KEY (atd_idx)
 );
 
--- 테이블 Comment 설정 SQL - PBS_LOG
-ALTER TABLE PBS_LOG COMMENT '사용자가 문제를 풀었을 때 문제 푼 정보가 저장되는 테이블(PBS = Problem Solve). 문제를 풀었던 정보가 담기 테이블';
+-- 테이블 Comment 설정 SQL - atd_log
+ALTER TABLE atd_log COMMENT '출석 정보가 담긴 테이블(atd = attendance)';
 
--- Foreign Key 설정 SQL - PBS_LOG(PB_IDX) -> PB_INFO(PB_IDX)
-ALTER TABLE PBS_LOG
-    ADD CONSTRAINT FK_PBS_LOG_PB_IDX_PB_INFO_PB_IDX FOREIGN KEY (PB_IDX)
-        REFERENCES PB_INFO (PB_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
+-- Foreign Key 설정 SQL - atd_log(user_id) -> user_info(user_id)
+ALTER TABLE atd_log
+    ADD CONSTRAINT fk_atd_log_user_id_user_info_user_id FOREIGN KEY (user_id)
+        REFERENCES user_info (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - PBS_LOG(PB_IDX)
--- ALTER TABLE PBS_LOG
--- DROP FOREIGN KEY FK_PBS_LOG_PB_IDX_PB_INFO_PB_IDX;
+-- Foreign Key 삭제 SQL - atd_log(user_id)
+-- ALTER TABLE atd_log
+-- DROP FOREIGN KEY fk_atd_log_user_id_user_info_user_id;
 
--- Foreign Key 설정 SQL - PBS_LOG(USER_IDX) -> USER_INFO(USER_IDX)
-ALTER TABLE PBS_LOG
-    ADD CONSTRAINT FK_PBS_LOG_USER_IDX_USER_INFO_USER_IDX FOREIGN KEY (USER_IDX)
-        REFERENCES USER_INFO (USER_IDX) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - PBS_LOG(USER_IDX)
--- ALTER TABLE PBS_LOG
--- DROP FOREIGN KEY FK_PBS_LOG_USER_IDX_USER_INFO_USER_IDX;
+-- pbs_log Table Create SQL
+-- 테이블 생성 SQL - pbs_log
+CREATE TABLE pbs_log
+(
+    `pbs_idx`    INT            NOT NULL    AUTO_INCREMENT COMMENT '문제 풀이 로그 인덱스', 
+    `user_id`    VARCHAR(50)    NOT NULL    COMMENT '회원 아이디', 
+    `pb_idx`     INT            NOT NULL    COMMENT '문제 인덱스', 
+    `pbs_check`  INT            NOT NULL    COMMENT '문제 정답 여부(0: 틀림, 1: 맞음)', 
+    `pbs_at`     DATETIME       NOT NULL    COMMENT '문제 푼 날짜', 
+    `pb_um`      INT            NOT NULL    COMMENT '문제 번호', 
+     PRIMARY KEY (pbs_idx)
+);
+
+-- 테이블 Comment 설정 SQL - pbs_log
+ALTER TABLE pbs_log COMMENT '사용자가 문제를 풀었을 때 문제 푼 정보가 저장되는 테이블(pbs = problem solve)';
+
+-- Foreign Key 설정 SQL - pbs_log(pb_idx) -> pb_info(pb_idx)
+ALTER TABLE pbs_log
+    ADD CONSTRAINT fk_pbs_log_pb_idx_pb_info_pb_idx FOREIGN KEY (pb_idx)
+        REFERENCES pb_info (pb_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - pbs_log(pb_idx)
+-- ALTER TABLE pbs_log
+-- DROP FOREIGN KEY fk_pbs_log_pb_idx_pb_info_pb_idx;
+
+-- Foreign Key 설정 SQL - pbs_log(user_id) -> user_info(user_id)
+ALTER TABLE pbs_log
+    ADD CONSTRAINT fk_pbs_log_user_id_user_info_user_id FOREIGN KEY (user_id)
+        REFERENCES user_info (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - pbs_log(user_id)
+-- ALTER TABLE pbs_log
+-- DROP FOREIGN KEY fk_pbs_log_user_id_user_info_user_id;
+
+
+-- temp1 Table Create SQL
+-- 테이블 생성 SQL - temp1
+CREATE TABLE temp1
+(
+    `temp1`  INT    NULL   
+);
+
+
+-- user_score Table Create SQL
+-- 테이블 생성 SQL - user_score
+CREATE TABLE user_score
+(
+    `sc_idx`    INT            NOT NULL    COMMENT '점수 인덱스', 
+    `user_id`   VARCHAR(50)    NOT NULL    COMMENT '회원 아이디', 
+    `li_idx`    INT            NOT NULL    COMMENT '자격증 인덱스', 
+    `ex_cat`    VARCHAR(50)    NOT NULL    COMMENT '시험 카테고리(어떤 문제를 풀었는지)', 
+    `sc_chap1`  INT            NULL        COMMENT '1과목 점수', 
+    `sc_chap2`  INT            NULL        COMMENT '2과목 점수', 
+    `sc_chap3`  INT            NULL        COMMENT '3과목 점수', 
+    `sc_chap4`  INT            NULL        COMMENT '4과목 점수', 
+    `sc_chap5`  INT            NULL        COMMENT '5과목 점수', 
+    `sc_chap6`  INT            NULL        COMMENT '6과목 점수', 
+    `sc_at`     DATETIME       NOT NULL    COMMENT '시험 푼 날짜', 
+     PRIMARY KEY (sc_idx)
+);
+
+-- 테이블 Comment 설정 SQL - user_score
+ALTER TABLE user_score COMMENT '유저 문제 풀이 점수가 담긴 테이블';
+
+-- Foreign Key 설정 SQL - user_score(li_idx) -> li_info(li_idx)
+ALTER TABLE user_score
+    ADD CONSTRAINT FK_user_score_li_idx_li_info_li_idx FOREIGN KEY (li_idx)
+        REFERENCES li_info (li_idx) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - user_score(li_idx)
+-- ALTER TABLE user_score
+-- DROP FOREIGN KEY FK_user_score_li_idx_li_info_li_idx;
+
+-- Foreign Key 설정 SQL - user_score(user_id) -> user_info(user_id)
+ALTER TABLE user_score
+    ADD CONSTRAINT FK_user_score_user_id_user_info_user_id FOREIGN KEY (user_id)
+        REFERENCES user_info (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - user_score(user_id)
+-- ALTER TABLE user_score
+-- DROP FOREIGN KEY FK_user_score_user_id_user_info_user_id;
 
 

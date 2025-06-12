@@ -33,7 +33,7 @@
           <h3 th:text="${liName}">정보처리기사 필기</h3>
           <h2>
             <strong th:text="${plan}">플랜이름</strong>
-            <small th:if="${plan == '탐구형'}">자유롭게 공부하고 싶으신가요?</small>
+            <small style="color: grey" th:if="${plan == '탐구형'}">자유롭게 공부하고 싶으신가요?</small>
             <small th:if="${plan == '필수형'}">우리가 알아서 계획 짜줄게!</small>
           </h2>
           <h3><strong th:text="${planPrice + '원'}">9000원</strong></h3>
@@ -60,7 +60,7 @@
       <!-- 우측: 카드 결제 입력 -->
       <div class="col-md-6">
         <form method="post" action="/pay/submit" class="payment-box">
-          <h4>Credit Card Details</h4>
+          <h4>카드 정보 입력</h4>
 
           <div class="mb-3">
             <label>Payment Method</label>
@@ -81,29 +81,26 @@
 
           <div class="row">
             <div class="col-xs-6">
-              <label>Card expiration</label>
+              <label>Card expiration (MM/YY)</label>
               <div class="d-flex">
-                <select name="expMonth" class="form-control" required>
-                  <option disabled selected>Month</option>
-                  <option>01</option><option>02</option><option>03</option>
-                  <option>04</option><option>05</option><option>06</option>
-                  <option>07</option><option>08</option><option>09</option>
-                  <option>10</option><option>11</option><option>12</option>
-                </select>
+                <select id="expMonth" name="expMonth" class="form-control" required>
+				  <option disabled selected>Month</option>
+				</select>
+				<select id="expYear" name="expYear" class="form-control" required>
+				  <option disabled selected>Year</option>
+				</select>
               </div>
-            </div>
-            <div class="col-xs-6">
-              <label>&nbsp;</label>
-              <select name="expYear" class="form-control" required>
-                <option disabled selected>Year</option>
-                <option>2025</option><option>2026</option><option>2027</option>
-              </select>
             </div>
           </div>
 
           <div class="mb-3 mt-3">
-            <label>Card Security Code</label>
-            <input type="text" name="cvc" class="form-control" maxlength="4" required>
+            <label>Card Security Code (CSV)</label>
+            <input type="text" name="cvc" class="form-control" maxlength="3" required>
+          </div>
+          
+          <div class="mb-3 mt-3">
+            <label>Card password</label>
+            <input type="password" name="card_pwd" class="form-control" maxlength="4" required>
           </div>
 
           <!-- 필수 데이터 히든 전달 -->
@@ -117,21 +114,21 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer mt-5 py-4 border-top">
-    <div class="container text-center">
-      <nav class="nav justify-content-center mb-3">
-        <a href="#" class="footer-link">Home</a>
-        <a href="#" class="footer-link">About</a>
-        <a href="#" class="footer-link">Contact</a>
-      </nav>
-      <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-    </div>
-  </footer>
+ <!-- Footer -->
+<footer class="footer mt-5 py-4 border-top">
+  <div class="container text-center">
+    <nav class="nav justify-content-center mb-3">
+      <a href="#" class="footer-link">Home</a>
+      <a href="#" class="footer-link">About</a>
+      <a href="#" class="footer-link">Contact</a>
+    </nav>
+    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+  </div>
+</footer> 
 
-  <!-- 사용자 수 실시간 갱신 스크립트 -->
-  <script>
-    const liIdx = /*[[${liIdx}]]*/ 0;
+<script type="text/javascript">
+
+   const liIdx = /*[[${liIdx}]]*/ 0;
     const plan = /*[[${plan}]]*/ "";
 
     function updateUserCount() {
@@ -143,11 +140,27 @@
         });
     }
 
-    setInterval(updateUserCount, 5000);
-  </script>
+setInterval(updateUserCount, 5000);
+const monthSelect = document.getElementById("expMonth");
+const yearSelect = document.getElementById("expYear");
 
-</body>
-</html>
+// 월 (01 ~ 12)
+for (let i = 1; i <= 12; i++) {
+  const option = document.createElement("option");
+  const value = i.toString().padStart(2, '0'); // 01 ~ 12
+  option.value = value;
+  option.textContent = value;
+  monthSelect.appendChild(option);
+}
+
+// 연도 (2025 ~ 2035)
+for (let j = 25; j <= 35; j++) {
+  const option2 = document.createElement("option");
+  option2.value = j;
+  option2.textContent = `${j}`;
+  yearSelect.appendChild(option2);
+}
+</script>
 
 </body>
 </html>

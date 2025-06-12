@@ -29,13 +29,16 @@ public class Pbs_Log {
     @Column(name = "USER_ID", nullable = false, length = 50) 
     private String userId; // 회원 아이디
     
-    @Column(name = "pb_idx", nullable = false)
+    @Column(name = "PB_IDX", nullable = false)
 	private int pbIdx; // 문제 인덱스
     
     @Column(name = "PBS_CHECK", nullable = false)
     private int pbsCheck; // 문제 정답 여부(0: 틀림, 1: 맞음)
     
-    @Column(name = "PBS_AT", nullable = false, insertable = false, updatable = false)
-    private LocalDateTime pbsAt; // 문제 푼 날짜 → 자동으로 들어가야 함
+    @Column(name = "PBS_AT", nullable = false)
+    private LocalDateTime pbsAt; // 문제 푼 날짜 → 지정해줘야함
+    
+    @Column(name = "PB_NUM", nullable = false)
+	private int pbNum; // 문제 번호
     
 }

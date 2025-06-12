@@ -44,3 +44,4 @@ public class Pay_Info {
     @JoinColumn(name = "PLAN_IDX", insertable = false, updatable = false)
     private Plan_Info plan;
 }
+
