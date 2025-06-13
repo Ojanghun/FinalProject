@@ -24,7 +24,7 @@
 <style>
 /* ✅ container 강제 통일 */
 .container {
-	max-width: 1140px !important;
+	max-width: 1440px !important;
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
@@ -64,7 +64,7 @@
 
 			<div class="row mb-4">
 				<!-- Left Column -->
-				<div class="col-md-8 d-flex flex-column gap-2">
+				<div class="col-md-8 d-flex flex-column gap-2" style="height: 100%;">
 
 					<!-- 시험 풀기 -->
 					<div class="dashboard-card">
@@ -153,7 +153,7 @@
 
 				<!-- Right Column -->
 				<div class="col-md-4">
-					<div class="dashboard-card p-4">
+					<div class="dashboard-card p-4" style="height: 100%;">
 						<h5 class="fw-bold mb-3" th:if="${member != null}"
 							th:text="${member.name} + '님의 주제별 오답 TOP 5'">와아라랄</h5>
 						<!--           	<div th:each="pbIdxList : ${pbIdxList}">
@@ -174,13 +174,13 @@
 		<!-- Calendar & Schedule -->
 			<div class="row">
 				<div class="col-md-8 mb-4">
-					<div class="calendar-box">
+					<div class="calendar-box" style="height: 470px;">
 						
 						<h4 class="d-flex justify-content-between align-items-center mb-3">
 						<span style="margin-left: 28px;">
 							<button class="btn btn-outline-secondary btn-sm me-2"
 								onclick="changeMonth(-1)">←</button>
-							<span id="month-year"></span>
+							<span id="month-year" style="margin-right: 8px;"></span>
 							<button class="btn btn-outline-secondary btn-sm me-2"
 								onclick="changeMonth(1)">→</button>
 						</span>
@@ -206,7 +206,7 @@
 					</div>
 				</div>
 				<div class="col-md-4">
-					<div class="card schedule-card">
+					<div class="card schedule-card" style="height: 470px;">
 						<!-- 탭 메뉴 -->
 						<div>
 							<div class="tab-menu mb-3">
@@ -217,7 +217,7 @@
 						</div>
 
 						<!-- 탭 콘텐츠 -->
-						<div class="card-body">
+						<div class="card-body" style="height: 380px; overflow-y: auto;">
 
 							<!-- 접수 탭 -->
 							<div id="apply" class="tab-content">
