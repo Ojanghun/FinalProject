@@ -7,6 +7,10 @@ body {
 	padding: 0;
 }
 
+button {
+	cursor: pointer;
+}
+
 .container {
 	max-width: 1440px;
 	margin: 0 auto;
