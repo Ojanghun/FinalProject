@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en" data-bs-theme="auto" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +24,12 @@
 					style="height: 40px;"></a>
 				<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
 					<a class="btn btn-outline-secondary me-2" href="mypage">MYPAGE</a>
-					<a class="btn btn-outline-danger" href="logout">LOGOUT</a>
+					<form th:action="@{/logout}" method="post" class="d-inline">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
+					</form>
+
 				</nav>
 			</div>
 			<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
