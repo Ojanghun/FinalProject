@@ -1,165 +1,143 @@
 /* 기본 스타일 */
 body {
-	font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
-	background-color: #FAFAFA;
-	color: #212121;
-	margin: 0;
-	padding: 0;
+  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+  background-color: #FAFAFA;
+  color: #212121;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-	max-width: 1440px;
-	margin: 0 auto;
-	padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
 /* 헤더 */
 .custom-header {
-	background-color: white;
-	border-bottom: 1px solid #ddd;
-	padding: 0; /* ✅ 내부 여백 제거하고 container에 위임 */
-}
-
-.custom-header .container {
-	max-width: 1440px;
-	display: flex; /* ✅ 여기서 flex 적용 */
-	justify-content: space-between;
-	align-items: center;
-	padding: 16px 24px; /* ✅ 여백은 container에서 적용 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 16px 24px;
+  border-bottom: 1px solid #ddd;
 }
 
 .logo {
-	display: flex;
-	align-items: center;
-	gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .logo img {
-	height: 40px;
-	width: auto;
-	cursor: pointer;
+  height: 40px;
+  width: auto;
+  cursor: pointer;
 }
 
 .header-links {
-	display: flex;
-	gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .btn-outline-secondary {
-	color: #1E88E5;
-	border-color: #1E88E5;
+  color: #1E88E5;
+  border-color: #1E88E5;
 }
 
 .btn-outline-secondary:hover {
-	background-color: #e3f2fd;
-	color: #1E88E5;
+  background-color: #e3f2fd;
+  color: #1E88E5;
 }
 
 .btn-outline-danger {
-	border-color: #f44336;
-	color: #f44336;
+  border-color: #f44336;
+  color: #f44336;
 }
 
 .btn-outline-danger:hover {
-	background-color: #fddede;
-	color: #f44336;
+  background-color: #fddede;
+  color: #f44336;
 }
 
 /* 프로필 영역 */
 .profile-section {
-	display: flex;
-	align-items: center;
-	gap: 20px;
-	padding: 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
 }
 
 .profile-img {
-	width: 80px;
-	height: 80px;
-	object-fit: cover;
-	border-radius: 50%;
-	border: 2px solid #1E88E5;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #1E88E5;
 }
 
 .info {
-	margin: 20px 0;
+  margin: 20px 0;
 }
 
 .info label {
-	display: block;
-	margin-bottom: 6px;
-	font-weight: bold;
-	color: #1E88E5;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #1E88E5;
 }
 
 .info input {
-	width: 100%;
-	padding: 8px 12px;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	background-color: #f9f9f9;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
 /* 상품 카드 */
 .products {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 .product-card {
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-	margin-bottom: 10px;
-	border: 1px solid #ddd;
-	position: relative; /* 부모 기준 위치 설정 */
-	min-height: 80px; /* footer 공간 확보 */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  position: relative; /* 부모 기준 위치 설정 */
+  min-height: 80px; /* footer 공간 확보 */
 }
 
 .product-card h4 {
-	margin-top: 5px;
-	color: #1E88E5;
-	font-weight: 500;
-	font-size: 20px;
-	margin-bottom: 5px;
+  margin-top: 5px;
+  color: #1E88E5;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
 /* 버튼과 하단 정보 한 줄 정렬 */
 .product-bottom {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	margin-top: 7px;
-	margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 7px;
+  margin-bottom: 5px;
 }
 
 .btn-move-link {
-	margin-top: 5px;
-	position: relative;
-	top: 5px;
-}
-
-.btn-primary {
-  background-color: white;
-  border: 1px solid #1E88E5;
-  color: #1E88E5;
-  font-size: 14px;         /* ✅ 글자 크기 증가 */
-  padding: 8px 16px;       /* ✅ 버튼 안쪽 여백 조정 (상하, 좌우) */
-  border-radius: 30px;     /* ✅ 버튼 둥글게 (선택) */
-  font-weight: 500;        /* ✅ 글자 두께 적당히 */
-}
-
-.btn-primary:hover {
-	background-color: #e3f2fd; /* ✅ 하늘색 배경 on hover */
-	border-color: #1E88E5;
-	color: #1E88E5;
+  margin-top: 5px;
+  position: relative;
+  top: 5px;
 }
 
 /* 서비스 기간 텍스트 오른쪽 하단 정렬 */
 .product-footer {
-	right: 20px;
-	bottom: 20px;
-	font-size: 14px;
-	color: #555;
-	text-align: right;
+  right: 20px;
+  bottom: 20px;
+  font-size: 14px;
+  color: #555;
+  text-align: right;
 }

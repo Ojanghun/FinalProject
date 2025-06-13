@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Mypage</title>
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/css/mypage.css">
+<meta charset="UTF-8">
+<title>Mypage</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/mypage.css">
 
 </head>
 
@@ -13,21 +14,19 @@
 
 	<!-- ✅ 헤더 -->
 	<div class="custom-header">
-		<div class="container d-flex justify-content-between align-items-center">
-			<div class="logo">
-				<a href="/" style="display: flex; align-items: center;"> <img src="/images/로고.png" alt="로고"> <span
-						class="logo-text"></span>
-				</a>
-			</div>
-			<div class="header-links">
-				<th:block th:if="${session.info == null}">
-					<a href="/login" class="btn btn-sm btn-primary">로그인</a>
-				</th:block>
-				<th:block th:unless="${session.info == null}">
-					<a href="/mypage" class="btn btn-outline-secondary">MYPAGE</a>
-					<a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
-				</th:block>
-			</div>
+		<div class="logo">
+			<a href="/" style="display: flex; align-items: center;"> <img
+				src="/images/로고.png" alt="로고"> <span class="logo-text"></span>
+			</a>
+		</div>
+		<div class="header-links">
+			<th:block th:if="${session.info == null}">
+				<a href="/login" class="btn btn-sm btn-primary">로그인</a>
+			</th:block>
+			<th:block th:unless="${session.info == null}">
+				<a href="/mypage" class="btn btn-outline-secondary">MYPAGE</a>
+				<a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
+			</th:block>
 		</div>
 	</div>
 
@@ -40,7 +39,8 @@
 		</div>
 
 		<div class="info">
-			<label>전화번호</label> <input type="text" th:value="${member.phone}" disabled>
+			<label>전화번호</label> <input type="text" th:value="${member.phone}"
+				disabled>
 		</div>
 
 		<div class="products">
@@ -48,11 +48,12 @@
 			<th:block th:each="pay : ${payList}">
 				<th:block th:if="${pay.planAct == 1}">
 					<div class="product-card">
-						<h4 th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜
+						<h4
+							th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜
 							이름</h4>
 						<div class="product-bottom">
-							<a th:href="@{'/license?liIdx=' + ${pay.planIdx}}" class="btn btn-primary btn-move-link">자격증
-								사이트로 이동</a>
+							<a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
+								class="btn btn-primary btn-move-link">자격증 사이트로 이동</a>
 							<div class="product-footer"
 								th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
 							</div>
@@ -65,7 +66,8 @@
 			<th:block th:each="pay : ${payList}">
 				<th:block th:if="${pay.planAct == 0}">
 					<div class="product-card">
-						<h4 th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜
+						<h4
+							th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜
 							이름</h4>
 
 						<div class="product-bottom">
@@ -86,11 +88,9 @@
 							<!-- ✅ 오른쪽: 기간 정보 -->
 							<div class="product-footer text-end">
 								<div
-									th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
-								</div>
+									th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}"></div>
 								<div
-									th:text="'환급 기간: ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd.plusDays(7), 'yyyy-MM-dd')}">
-								</div>
+									th:text="'환급 기간: ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd.plusDays(7), 'yyyy-MM-dd')}"></div>
 							</div>
 						</div>
 
