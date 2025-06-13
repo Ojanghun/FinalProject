@@ -5,13 +5,19 @@ body {
   color: #212121;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 24px;
+  max-width: 1140px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  width: 100%;
 }
+
 
 h2 {
   color: #1E88E5;
@@ -26,15 +32,27 @@ h4 {
   font-weight: 600;
   margin-bottom: 15px;
 }
+/* 모든 container의 기본 여백 통일 */
+main.container {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
 
-/* 헤더 */
+/* ✅ 공통 헤더 스타일 */
 .custom-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: white;
+  background-color: white;
   padding: 16px 24px;
+  height: 70px;
   border-bottom: 1px solid #ddd;
+}
+
+/* 헤더 아래 여백 통일 */
+.custom-header + * {
+  margin-top: 24px;
 }
 
 .logo {
@@ -47,7 +65,6 @@ h4 {
   height: 40px;
   width: auto;
   cursor: pointer;
-  
 }
 
 .logo-text {
@@ -60,6 +77,12 @@ h4 {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.header-links .btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  height: auto;
 }
 
 /* 네비게이션 바 */
@@ -90,15 +113,29 @@ h4 {
   border-radius: 20px 20px 0 0;
 }
 
+
 /* 공통 카드 스타일 */
 
 .dashboard-card {
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 8px 12px;
+  margin-bottom: 5px;
   border: 1px solid #ddd;
+}
+.dashboard-card h5 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.dashboard-card .btn {
+  padding: 10px 10px;
+  font-size: 14px;
+  height: auto;
+  border-radius: 20px;
 }
 
 .schedule-card {
@@ -216,6 +253,10 @@ h4 {
 .keyword-box li {
   font-size: 14px;
   margin-bottom: 6px;
+}
+/* 세 개 카드 높이를 합친 총 높이 예시 맞춤 */
+.dashboard-card.p-4.h-100 {
+  min-height: 100%;
 }
 
 /* 서비스 홍보 영역 */

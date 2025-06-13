@@ -314,6 +314,7 @@ CREATE TABLE pbs_log
     `pb_idx`     INT            NOT NULL    COMMENT '문제 인덱스', 
     `pbs_check`  INT            NOT NULL    COMMENT '문제 정답 여부(0: 틀림, 1: 맞음)', 
     `pbs_at`     DATETIME       NOT NULL    COMMENT '문제 푼 날짜', 
+    `pb_um`      INT            NOT NULL    COMMENT '문제 번호', 
      PRIMARY KEY (pbs_idx)
 );
 
@@ -354,6 +355,7 @@ CREATE TABLE user_score
     `sc_idx`    INT            NOT NULL    COMMENT '점수 인덱스', 
     `user_id`   VARCHAR(50)    NOT NULL    COMMENT '회원 아이디', 
     `li_idx`    INT            NOT NULL    COMMENT '자격증 인덱스', 
+    `ex_cat`    VARCHAR(50)    NOT NULL    COMMENT '시험 카테고리(어떤 문제를 풀었는지)', 
     `sc_chap1`  INT            NULL        COMMENT '1과목 점수', 
     `sc_chap2`  INT            NULL        COMMENT '2과목 점수', 
     `sc_chap3`  INT            NULL        COMMENT '3과목 점수', 
