@@ -1,0 +1,551 @@
+/* 기본 스타일 */
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+  background-color: #FAFAFA;
+  color: #212121;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1140px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+
+h2 {
+  color: #1E88E5;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+h4 {
+  color: #1E88E5;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+/* 모든 container의 기본 여백 통일 */
+main.container {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+/* ✅ 공통 헤더 스타일 */
+.custom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  background-color: white;
+  padding: 16px 24px;
+  height: 70px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* 헤더 아래 여백 통일 */
+.custom-header + * {
+  margin-top: 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1E88E5;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-links .btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  height: auto;
+}
+
+/* 네비게이션 바 */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1E88E5;
+  padding: 10px 24px;
+  border-radius: 20px 20px 0 0;
+}
+
+.nav-item {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+}
+
+.nav-item:hover {
+  background-color: #FFC107;
+  color: #212121;
+  border-radius: 20px 20px 0 0;
+}
+
+.nav-item.active {
+  background-color: white;
+  color: #1E88E5;
+  border-radius: 20px 20px 0 0;
+}
+
+
+/* 공통 카드 스타일 */
+
+.dashboard-card {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+}
+.dashboard-card h5 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.dashboard-card .btn {
+  padding: 10px 10px;
+  font-size: 14px;
+  height: auto;
+  border-radius: 20px;
+}
+
+.schedule-card {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* 검색 섹션 */
+.row.search-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 40px;
+  gap: 40px;
+}
+
+.search-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  flex: 1;
+}
+
+/* 검색창 */
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  background-color: #fff;
+  padding: 12px 20px;
+  max-width: 600px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 8px;
+  border-radius: 30px;
+}
+
+.search-box button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 8px;
+}
+
+/* 추천 버튼 */
+.search-suggestion {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  padding-top: 10px;
+  padding-left: 4px;
+}
+
+.search-tag {
+  padding: 6px 16px;
+  font-size: 14px;
+  border-radius: 20px;
+  border: 1px solid #0076e0;
+  background-color: white;
+  color: #0076e0;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.search-tag:hover {
+  background-color: #e3f2fd;
+}
+
+/* 키워드 박스 */
+.keyword-box {
+  width: 240px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-left: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.keyword-box h4 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.keyword-box ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.keyword-box li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+/* 세 개 카드 높이를 합친 총 높이 예시 맞춤 */
+.dashboard-card.p-4.h-100 {
+  min-height: 100%;
+}
+
+/* 서비스 홍보 영역 */
+.promotion-section {
+  width: 100%;
+  background-color: #e0e0e0;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.promotion-section h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+/* 달력 박스 */
+.calendar-box {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  min-width: 100%;
+  font-size: 16px;
+}
+
+.calendar-box table {
+  width: 100%;
+  table-layout: fixed;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.calendar-box th,
+.calendar-box td {
+  padding: 14px 0;
+  vertical-align: middle;
+}
+
+.calendar-box td div {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  margin: auto;
+  border-radius: 50%;
+}
+
+.calendar-box td.today div {
+  background-color: #1E88E5;
+  color: white;
+  font-weight: bold;
+}
+
+.calendar-box .sunday {
+  color: red;
+}
+
+
+/* 출석 동그라미 */
+.day-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-weight: bold;
+  position: relative;
+  overflow: visible;
+} 
+
+.attended {
+  background-color: #d0f0ff; /* 밝은 파란색 */
+  color: #0077aa;
+  box-shadow: 0 0 6px rgba(0, 119, 170, 0.5);
+  animation: pulse 0.4s ease;
+} 
+.day-circle.exam-period-bar {
+  background-color:rgba(178, 222, 255, 0.4); 
+  border-radius: 0; /* 바 형식 */
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+/* 마우스를 올렸을 때 툴팁 생성 */
+.exam-period-bar::after {
+  content: attr(data-title);
+  position: absolute;
+  bottom: 120%; /* 요소 위쪽에 표시 */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 10;
+}
+
+/* 호버 시 보이기 */
+.exam-period-bar:hover::after {
+  opacity: 1;
+}
+
+
+.day-circle.today {
+  
+}
+
+/* 애니매이션 추가 */
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+/* 검색 자동완성 기능 css */
+.search-container{
+  position: relative;
+}
+
+.autocomplete {
+  position: absolute;
+  top: 100%; /* input 바로 아래 */
+  left: 0;
+  width: 100%; /* 검색창 너비와 일치 */
+  border: 1px solid #ccc;
+  background: white;
+  z-index: 1000;
+  border-radius: 0 0 8px 8px;
+}
+
+.autocomplete div {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.autocomplete div:hover {
+  background-color: #f0f0f0;
+}
+
+.autocomplete:empty {
+  display: none;
+}
+
+
+/* footer  */
+.footer {
+  border-top: 1px solid #ddd;
+}
+
+.footer .nav a {
+  color: #666;
+  margin: 0 10px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.footer .text-muted {
+  font-size: 13px;
+}
+
+
+/* --- 탭 메뉴 (가운데 정렬, 깔끔한 디자인) --- */
+.tab-menu {
+  border-bottom: 1px solid #c3d0ff;
+  margin-top: 17px;
+  padding-bottom: 10px;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  user-select: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 탭 버튼 기본 */
+.tab-menu button {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding-bottom: 12px;
+  color: #5a6dbc;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.25s ease, border-bottom-color 0.3s ease;
+  outline: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 4px 4px 0 0;
+}
+
+/* 탭 버튼 호버 */
+.tab-menu button:hover:not(.active) {
+  color: #2f3f91;
+}
+
+/* 탭 버튼 활성화 */
+.tab-menu button.active {
+  color: #1a237e;
+  font-weight: 700;
+  border-bottom-color: #1a237e;
+}
+
+/* --- 자격증 항목 --- */
+.exam-item {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e3e9ff;
+}
+
+/* --- 자격증 제목 + 형광펜 효과 (파란 계열) --- */
+.exam-title {
+  font-weight: 700;
+  font-size: 1.4rem;
+  display: inline-block;
+  position: relative;
+  color: #273469;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  user-select: none;
+  z-index: 1;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* 형광펜 느낌 */
+.exam-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  width: 100%;
+  height: 14px;
+  background: #e5f1f8;
+  border-radius: 3px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* --- 자격증 설명 --- */
+.exam-description {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #3e4a9e;
+  line-height: 1.5;
+}
+
+/* --- 날짜 --- */
+.exam-date {
+  color: #7a8dbf;
+  font-size:1.1rem;
+  margin-left:5px;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+/* --- 버튼 그룹 --- */
+.exam-buttons .btn {
+  margin-right: 10px;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border: 1.5px solid #3949ab;
+  background-color: #e8ebff;
+  color: #3949ab;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  user-select: none;
+}
+
+.exam-buttons .btn:hover {
+  background-color: #3949ab;
+  color: #fff;
+}
+
+.exam-buttons .btn:active {
+  transform: scale(0.95);
+}
