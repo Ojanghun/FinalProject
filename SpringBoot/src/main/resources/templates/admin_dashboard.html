@@ -1,18 +1,467 @@
-<!-- admin_dashboard.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>관리자 대시보드</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<meta charset="UTF-8">
+<title>관리자 대시보드</title>
+ <!-- ✅ CSRF 보호용 토큰 메타 태그 -->
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+	display: flex;
+	margin: 0;
+}
+
+.sidebar {
+	width: 220px;
+	background-color: #f8f9fa;
+	padding: 20px;
+	border-right: 1px solid #ddd;
+	height: 100vh;
+}
+
+.content {
+	flex: 1;
+	padding: 40px;
+	overflow-y: auto;
+}
+
+.menu-item {
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+.menu-item:hover {
+	background-color: #e9ecef;
+}
+
+.section-content {
+	display: none;
+}
+
+.section-content.active {
+	display: block;
+}
+
+.back-btn {
+	margin-bottom: 20px;
+}
+</style>
 </head>
 <body>
-  <div class="container" style="margin-top: 100px;">
-    <h2 class="text-center">🔧 관리자 대시보드</h2>
-    <p class="text-center">여기에 관리자 기능을 추가하세요.</p>
-    <div class="text-center mt-3">
-      <a href="/" class="btn btn-primary">메인으로</a>
-    </div>
-  </div>
+	<!-- 사이드바 -->
+	<div class="sidebar">
+		<h4>📂 메뉴</h4>
+		<div class="menu-item" onclick="showUserSection()">👤 회원 정보</div>
+		<div class="menu-item" onclick="showSection('questionSection')">🧠
+			문제 수</div>
+		<div class="menu-item" onclick="showSection('wrongRateSection')">❌
+			오답률</div>
+		<div class="menu-item"
+			onclick="showSection('refundRateSection'); fetchRefundPage()">💸
+			환급률</div>
+		<div class="menu-item" onclick="showSection('planUsageSection')">📊
+			플랜 이용 현황</div>
+		<div class="menu-item" onclick="goToAllRefundRequests()">📁 환급
+			요청 보기</div>
+		<div class="menu-item" onclick="showSection('refundCompleteSection')">✅
+			환급 완료 보기</div>
+
+	</div>
+
+	<!-- 본문 콘텐츠 -->
+	<div class="content container">
+		<section id="userSection" class="section-content active">
+			<h4>👤 회원 정보</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>아이디</th>
+						<th>이름</th>
+						<th>전화번호</th>
+						<th>포인트</th>
+						<th>가입일</th>
+					</tr>
+				</thead>
+				<tbody id="userTableBody">
+					<tr>
+						<td colspan="5">👆 상단 '회원 정보'를 클릭해서 데이터를 조회하세요.</td>
+					</tr>
+					<!-- ✅ 초기 메시지 -->
+				</tbody>
+			</table>
+		</section>
+
+		<!-- 문제 수 -->
+		<section id="questionSection" class="section-content">
+			<h4>🧠 자격증별 주제별 문제 수</h4>
+			<div class="mb-3" id="licenseButtons">
+				<button class="btn btn-outline-primary btn-sm"
+					onclick="filterByLicense('전체')">전체 보기</button>
+				<span th:each="liName : ${licenseNames}">
+					<button class="btn btn-outline-primary btn-sm" th:text="${liName}"
+						th:attr="onclick=|filterByLicense('${liName}')|"></button>
+				</span>
+			</div>
+			<table class="table table-striped" id="questionTable">
+				<thead>
+					<tr>
+						<th>자격증</th>
+						<th>주제 이름</th>
+						<th>주제 ID</th>
+						<th>문제 수</th>
+						<th>오답률</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="count : ${topicQuestionCounts}">
+						<td th:text="${count.liName}"></td>
+						<td th:text="${count.topicName}"></td>
+						<td th:text="${count.topicIdx}"></td>
+						<td th:text="${count.count}"></td>
+						<td th:text="${count.wrongRate + '%'}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+
+		<!-- 오답률 -->
+		<section id="wrongRateSection" class="section-content">
+			<h4>❌ 오답률</h4>
+			<div class="mb-3" id="wrongLicenseButtons">
+				<span th:each="liName : ${licenseNames}">
+					<button class="btn btn-outline-primary btn-sm" th:text="${liName}"
+						th:attr="onclick=|filterWrongByLicense('${liName}')|"></button>
+				</span>
+			</div>
+			<canvas id="wrongRateChart" height="100"></canvas>
+			<div class="d-flex justify-content-between align-items-center mt-3">
+				<button class="btn btn-outline-secondary" onclick="prevPage()">이전</button>
+				<span id="pageNum">1</span> / <span id="totalPages">?</span>
+				<button class="btn btn-outline-secondary" onclick="nextPage()">다음</button>
+			</div>
+		</section>
+
+		<section id="refundRateSection" class="section-content">
+			<h4>💸 환급률</h4>
+			<div class="mb-3" id="refundLicenseButtons">
+				<button class="btn btn-outline-primary btn-sm"
+					onclick="filterRefundByLicense('전체')">전체 보기</button>
+				<span th:each="liName : ${licenseNames}">
+					<button class="btn btn-outline-primary btn-sm" th:text="${liName}"
+						th:attr="onclick=|filterRefundByLicense('${liName}')|"></button>
+				</span>
+			</div>
+			<div id="refundChartWrapper" style="display: none;">
+				<canvas id="refundRateChart" height="100"></canvas>
+				<div class="d-flex justify-content-between align-items-center mt-3">
+					<button class="btn btn-outline-secondary"
+						onclick="prevRefundPage()">이전</button>
+					<span id="refundPageNum">1</span> / <span id="refundTotalPages">?</span>
+					<button class="btn btn-outline-secondary"
+						onclick="nextRefundPage()">다음</button>
+				</div>
+			</div>
+			<div id="noRefundDataMsg" class="text-muted">📉 환급률 데이터가 없습니다.</div>
+		</section>
+
+		<!-- 결제 정보 -->
+		<section id="payInfoSection" class="section-content">
+			<button class="btn btn-secondary back-btn"
+				onclick="showUserSection()">← 뒤로가기</button>
+			<h4>
+				💳 결제 정보 (<span id="selectedUserId">회원 선택</span>)
+			</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>플랜 이름</th>
+						<th>결제일</th>
+						<th>금액</th>
+					</tr>
+				</thead>
+				<tbody id="payInfoBody">
+					<tr>
+						<td colspan="3">회원 클릭 시 정보 표시됨</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<!-- 📊 플랜 이용자 수 섹션 -->
+		<section id="planUsageSection" class="section-content">
+			<h4>📊 자격증별 플랜 이용 현황</h4>
+			<div class="mb-3" id="planLicenseButtons">
+				<span th:each="liName : ${licenseNames}">
+					<button class="btn btn-outline-primary btn-sm" th:text="${liName}"
+						th:attr="onclick=|loadPlanUsage('${liName}')|"></button>
+				</span>
+			</div>
+			<table class="table table-bordered" id="planUsageTable">
+				<thead>
+					<tr>
+						<th>플랜 종류</th>
+						<th>이용자 수</th>
+						<th>비율 (%)</th>
+						<th>환급률 (%)</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</section>
+	
+		<section id="refundRequestSection" class="section-content">
+			<h4>📁 환급 요청 정보</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>자격증</th>
+						<th>플랜</th>
+						<th>가격</th>
+						<th>예금주</th>
+						<th>은행</th>
+						<th>계좌</th>
+						<th>요청일</th>
+						<th>동영상</th>
+						<th>승인</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="req : ${session.refundInfoList}">
+						<td th:text="${req.liName}"></td>
+						<td th:text="${req.planType}"></td>
+						<td
+							th:text="${#numbers.formatInteger(req.planPrice, 3, 'COMMA')} + '원'"></td>
+						<td th:text="${req.rfName}"></td>
+						<td th:text="${req.rfBank}"></td>
+						<td th:text="${req.rfAccnum}"></td>
+						<td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
+						
+						<td><a th:href="@{${req.rfVpath}}" target="_blank"
+							th:if="${req.rfVpath != null}">보기</a> <span
+							th:if="${req.rfVpath == null}">없음</span></td>
+						<td>
+							<button class="btn btn-sm btn-success"
+								th:onclick="|approveRefund(${req.rfIdx})|">승인</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<!-- 환급 완료 보기 -->
+		<section id="refundCompleteSection" class="section-content">
+			<h4>✅ 환급 완료 내역</h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>자격증</th>
+						<th>플랜</th>
+						<th>가격</th>
+						<th>예금주</th>
+						<th>은행</th>
+						<th>계좌</th>
+						<th>요청일</th>
+						<th>승인일</th> <!-- 추가 -->
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="req : ${session.refundCompletedList}">
+						<td th:text="${req.liName}"></td>
+						<td th:text="${req.planType}"></td>
+						<td
+							th:text="${#numbers.formatInteger(req.planPrice, 3, 'COMMA')} + '원'"></td>
+						<td th:text="${req.rfName}"></td>
+						<td th:text="${req.rfBank}"></td>
+						<td th:text="${req.rfAccnum}"></td>
+						<td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="${#temporals.format(req.apAt, 'yyyy-MM-dd HH:mm')}"></td> <!-- 승인일 -->
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+	<script>
+  const selectedUserId = document.getElementById("selectedUserId");
+  // 기존 JS 유지
+</script>
+</body>
+</html>
+<script>
+  function showUserSection() {
+	  showSection('userSection');
+	  fetchUsers();
+	}
+  function showSection(id) {
+      document.querySelectorAll(".section-content").forEach(el => el.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function fetchUsers() {
+      fetch("/admin/users")
+        .then(res => res.json())
+        .then(users => {
+          const tbody = document.getElementById("userTableBody");
+          if (users.length === 0) {
+            tbody.innerHTML = "<tr><td colspan='5'>회원 정보가 없습니다.</td></tr>";
+            return;
+          }
+          tbody.innerHTML = users.map(user => `
+            <tr>
+              <td><a href="#" onclick="fetchPayInfo('${user.id}')">${user.id}</a></td>
+              <td>${user.name}</td>
+              <td>${user.phone}</td>
+              <td>${user.userpoint}</td>
+              <td>${new Date(user.joinedat).toLocaleDateString()}</td>
+            </tr>
+          `).join('');
+        });
+    }
+
+    function filterByLicense(name) {
+      document.querySelectorAll("#questionTable tbody tr").forEach(row => {
+        row.style.display = (name === '전체' || row.cells[0].textContent === name) ? '' : 'none';
+      });
+    }
+
+    function fetchPayInfo(id) {
+      showSection('payInfoSection');
+      document.getElementById("selectedUserId").innerText = id;
+      fetch(`/admin/pay-info?userId=${id}`)
+        .then(r => r.json())
+        .then(data => {
+            const html = data.length
+              ? data.map(i => `<tr><td>${i.liName} (${i.planType?'필수형':'탐구형'})</td><td>${i.planStd}</td><td>${Number(i.planPrice).toLocaleString()}원</td></tr>`).join('')
+              : '<tr><td colspan="3">결제 정보가 없습니다.</td></tr>';
+            document.getElementById("payInfoBody").innerHTML = html;
+        });
+    }
+
+    // 오답률 페이징 + 필터
+    let wrongChart, wrongPage = 0, wrongTotalPages = 1, wrongCurrLicense = '전체';
+    function fetchWrongRatePage(page=0, lic=wrongCurrLicense) {
+      fetch(`/admin/wrong-rate-page?page=${page}&license=${lic}`)
+      .then(r => r.json()).then(res => {
+        wrongPage = page; wrongTotalPages = res.totalPages;
+        if(wrongChart) wrongChart.destroy();
+        wrongChart = new Chart(document.getElementById("wrongRateChart"), {
+          type:'bar',
+          data:{labels: res.data.map(i=>"주제 "+i.topic), datasets:[{label:'오답률(%)',data:res.data.map(i=>i.rate),backgroundColor:'rgba(255,99,132,0.5)'}]},
+          options:{scales:{y:{beginAtZero:true, max:100}}}
+        });
+        document.getElementById("pageNum").innerText = `${wrongPage+1}`;
+        document.getElementById("totalPages").innerText = wrongTotalPages;
+      });
+    }
+    function nextPage(){ if(wrongPage<wrongTotalPages-1) fetchWrongRatePage(wrongPage+1); }
+    function prevPage(){ if(wrongPage>0) fetchWrongRatePage(wrongPage-1); }
+    function filterWrongByLicense(name){ wrongCurrLicense=name; fetchWrongRatePage(0,name); }
+
+    let refundChart, refundPage = 0, refundTotalPages = 1, refundCurrLicense = '전체';
+
+    function fetchRefundPage(page = 0, lic = refundCurrLicense) {
+      fetch(`/admin/refund-rate-page?page=${page}&license=${lic}`)
+        .then(r => r.json())
+        .then(res => {
+          refundPage = page;
+          refundTotalPages = res.totalPages;
+
+          const wrapper = document.getElementById("refundChartWrapper");
+          const msg = document.getElementById("noRefundDataMsg");
+
+          if (res.data.length === 0) {
+            wrapper.style.display = "none";
+            msg.style.display = "block";
+            document.getElementById("refundTotalPages").style.display = "none";
+            return;
+          }
+
+          msg.style.display = "none";
+          wrapper.style.display = "block";
+          document.getElementById("refundTotalPages").style.display = "inline";
+
+          if (refundChart) refundChart.destroy();
+          refundChart = new Chart(document.getElementById("refundRateChart"), {
+            type: 'bar',
+            data: {
+              labels: res.data.map(i => i.topic),
+              datasets: [{
+                label: '환급률(%)',
+                data: res.data.map(i => i.rate),
+                backgroundColor: 'rgba(54,162,235,0.5)'
+              }]
+            },
+            options: {
+              scales: { y: { beginAtZero: true, max: 100 } }
+            }
+          });
+
+          document.getElementById("refundPageNum").innerText = `${refundPage + 1}`;
+          document.getElementById("refundTotalPages").innerText = refundTotalPages;
+        });
+    }
+
+    function filterRefundByLicense(name) {
+      refundCurrLicense = name;
+      fetchRefundPage(0, name);
+    }
+
+    function nextRefundPage() { if (refundPage < refundTotalPages - 1) fetchRefundPage(refundPage + 1); }
+    function prevRefundPage() { if (refundPage > 0) fetchRefundPage(refundPage - 1); }
+
+    function loadPlanUsage(licenseName) {
+    	  fetch(`/admin/plan-usage?licenseName=${licenseName}`)
+    	    .then(r => r.json())
+    	    .then(data => {
+    	      const tbody = document.querySelector("#planUsageTable tbody");
+    	      tbody.innerHTML = data.length ? data.map(row => `
+    	        <tr>
+    	          <td>${row.planType}</td>
+    	          <td>${row.userCount}</td>
+    	          <td>${row.ratio ?? 0}%</td>
+    	          <td>${row.refundRate ?? 0}%</td>
+    	        </tr>`).join('') : '<tr><td colspan="4">데이터 없음</td></tr>';
+    	    });
+    	}
+    function goToAllRefundRequests() {
+        location.href = "/admin/refund-session";  // <-- 변경
+    }
+    function approveRefund(rfIdx) {
+    	  if (!confirm("이 환급 요청을 승인하시겠습니까?")) return;
+
+    	  const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    	  const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    	  fetch(`/admin/approve-refund?rfIdx=${rfIdx}`, {
+    	    method: 'POST',
+    	    headers: {
+    	      [header]: token,
+    	      'Content-Type': 'application/x-www-form-urlencoded'
+    	    }
+    	  })
+    	  .then(res => {
+    	    if (res.ok) {
+    	      alert("환급이 승인되었습니다.");
+    	      location.reload();
+    	    } else {
+    	      alert("승인 중 오류가 발생했습니다.");
+    	    }
+    	  });
+    	}
+    // 초기 로드
+    
+    window.onload = () => {
+  const params = new URLSearchParams(location.search);
+  const section = params.get("section");
+  if (section === "refund") {
+    showSection('refundRequestSection'); // ✅ 이걸 자동 실행해야 함
+  }
+};
+      
+   
+  </script>
 </body>
 </html>

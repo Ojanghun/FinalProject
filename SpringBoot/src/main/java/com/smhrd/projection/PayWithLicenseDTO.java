@@ -10,4 +10,5 @@ public interface PayWithLicenseDTO {
     LocalDateTime getPlanStd();
     LocalDateTime getPlanEd();
     Integer getPlanAct(); // ✅ 결제 상태 추가
+    Integer getPlanPrice();
 }
