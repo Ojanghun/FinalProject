@@ -74,8 +74,15 @@
 							<!-- ✅ 왼쪽: 환급 버튼 -->
 							<th:block
 								th:if="${#temporals.createNow().isAfter(pay.planEd) and #temporals.createNow().isBefore(pay.planEd.plusDays(7))}">
-								<div class="product-footer"><a th:href="@{'/certify?planIdx=' + ${pay.planIdx}}" class="btn btn-primary btn-move-link">합격 인증 후
-									환급 받기</div></a>
+								<div class="product-footer">
+									<form action="/certify" method="post">
+										<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+										<input type="hidden" name="payIdx" th:value="${pay.payIdx}">
+										<input type="hidden" name="planIdx" th:value="${pay.planIdx}">
+										<input type="hidden" name="liName" th:value="${pay.liName}">
+										<button class="btn btn-primary btn-move-link">합격 인증 후 환급 받기</button>
+									</form>
+								</div>
 							</th:block>
 
 							<!-- ✅ 오른쪽: 기간 정보 -->
