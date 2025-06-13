@@ -43,8 +43,6 @@ public class ExamService {
 		}
 	}
 	
-	
-	
 	// Topic info 가져오기
 	public List<Topic_Info> loadTopic(int category){
 		return TIrepository.findByTopicIdxOrderByTopicNumAsc(category);
@@ -79,8 +77,6 @@ public class ExamService {
 	    }
 	    return choice;
 	}
-	
-	
 	
 	
 	// 해결책
@@ -164,7 +160,6 @@ public class ExamService {
 
 	public void submitPbsData(Pbs_Log log) {
 		Pbsrepository.save(log);
-		
 	}
 
 	
