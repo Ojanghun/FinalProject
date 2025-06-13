@@ -265,6 +265,7 @@ body {
 						<th>은행</th>
 						<th>계좌</th>
 						<th>요청일</th>
+						<th>승인일</th> <!-- 추가 -->
 					</tr>
 				</thead>
 				<tbody>
@@ -277,6 +278,7 @@ body {
 						<td th:text="${req.rfBank}"></td>
 						<td th:text="${req.rfAccnum}"></td>
 						<td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="${#temporals.format(req.apAt, 'yyyy-MM-dd HH:mm')}"></td> <!-- 승인일 -->
 					</tr>
 				</tbody>
 			</table>

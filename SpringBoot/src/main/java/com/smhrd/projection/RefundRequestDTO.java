@@ -23,5 +23,7 @@ public class RefundRequestDTO {
     private String planType;        // 플랜 종류 (필수형 / 탐구형)
     private int planPrice;          // 플랜 가격
     private int rfCp; // 0: 요청중, 1: 완료
+    private LocalDateTime apAt; // 환급 승인 일시
+
 
 }

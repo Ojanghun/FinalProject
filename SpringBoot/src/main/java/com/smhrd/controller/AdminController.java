@@ -279,10 +279,11 @@ public class AdminController {
 
             int planPrice = ((Number) row[9]).intValue();
             int rfCp = ((Number) row[10]).intValue();
+            LocalDateTime apAt = row[11] != null ? ((Timestamp) row[11]).toLocalDateTime() : null;
 
             RefundRequestDTO dto = new RefundRequestDTO(
-                rfIdx, userId, rfVpath, rfName, rfBank, rfAccnum, rfAt,
-                liName, planType, planPrice, rfCp
+                rfIdx, userId, rfVpath, rfName, rfBank, rfAccnum,
+                rfAt, liName, planType, planPrice, rfCp, apAt
             );
 
             if (rfCp == 1) {
@@ -297,6 +298,7 @@ public class AdminController {
 
         return "redirect:/admin/dashboard?section=refund";
     }
+    
     @PostMapping("/admin/approve-refund")
     @Transactional
     public ResponseEntity<String> approveRefund(@RequestParam int rfIdx) {
@@ -309,12 +311,16 @@ public class AdminController {
         // 2. pay_info 테이블의 rf_cp 값을 1로 변경
         int updated = payInfoRepository.updateRfCpByPayIdx(payIdx);
 
+        // 3. refund_info 테이블의 ap_at 값을 현재 시간으로 업데이트
+        refundInfoRepository.updateApprovalTimestamp(rfIdx);
+
         if (updated == 1) {
             return ResponseEntity.ok("승인 완료");
         } else {
             return ResponseEntity.status(500).body("변경 실패");
         }
     }
+
     
     
 }
