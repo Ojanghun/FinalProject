@@ -11,19 +11,16 @@ public class PayWithLicenseDTOImpl implements PayWithLicenseDTO {
     private LocalDateTime planEd;
     private Boolean planType;
     private Integer planAct; // ✅ 추가
-    private Integer planPrice;  // ✅ 추가
 
     // ✅ 모든 필드를 포함한 생성자 추가
     public PayWithLicenseDTOImpl(Integer planIdx, String liName, LocalDateTime planStd,
-            LocalDateTime planEd, Boolean planType, Integer planAct, Integer planPrice) {
+                                 LocalDateTime planEd, Boolean planType, Integer planAct) {
         this.planIdx = planIdx;
         this.liName = liName;
         this.planStd = planStd;
         this.planEd = planEd;
         this.planType = planType;
         this.planAct = planAct;
-        this.planPrice = planPrice;
-        
     }
 
     public Integer getPlanIdx() { return planIdx; }
@@ -32,5 +29,4 @@ public class PayWithLicenseDTOImpl implements PayWithLicenseDTO {
     public LocalDateTime getPlanEd() { return planEd; }
     public Boolean getPlanType() { return planType; }
     public Integer getPlanAct() { return planAct; } // ✅ 추가
-    public Integer getPlanPrice() { return planPrice; }  // ✅ 추가
 }

@@ -15,7 +15,7 @@ public class Chatbot_Info {
 	@Column(name = "CB_IDX", unique = true, nullable = false)
 	private int cbIdx; // 챗봇 인덱스 - PK
 
-	@Column(name = "pb_idx", nullable = false) 
+	@Column(name = "PB_IDX", nullable = false) 
     private int pbIdx; // 문제 인덱스
 	
 	@Column(name = "CB_QUES", length = 2000, nullable = false)
