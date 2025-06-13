@@ -23,11 +23,11 @@ public class ExamController {
 	private ExamService service;
 	
 	// 문제 불러오기
-	@PostMapping("/loadExam/{category}")
-	public List<Exam> loadExam(@PathVariable("category") int category) {
+	@PostMapping("/loadExam/")
+	public List<Exam> loadExam(@RequestParam("category") int category, @RequestParam("liIdx") int liIdx) {
 		
 		// 서비스에 문제 데이터 요청
-		List<Exam> exList =service.loadExam(category); // 여기가 문제
+		List<Exam> exList =service.loadExam(category,liIdx); // 여기가 문제
 		System.out.println("문제 데이터: "+exList);
 		return exList;
 	}
@@ -72,15 +72,7 @@ public class ExamController {
 		return pbans;
 	}
 	
-	// 문제 불러오기(페이지 나누기)
-	@PostMapping("/loadExam1")
-	public List<Exam> loadExam1(@RequestParam("page") int page, @RequestParam("category") int category) {
-	    int pageSize = 10; // 고정값이든 클라이언트에서 받아오든
-	    System.out.println("페이지"+page);
-	    System.out.println("사이즈"+pageSize);
-	    System.out.println("카테고리"+category);
-	    return service.loadExam1(page, pageSize, category);
-	}
+
 	
 	@PostMapping("/shuffle1")
 	public List<List<String>> shuffle1(@RequestParam int page) {

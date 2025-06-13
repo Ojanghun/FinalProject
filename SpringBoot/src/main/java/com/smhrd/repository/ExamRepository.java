@@ -24,8 +24,18 @@ public interface ExamRepository extends JpaRepository<Exam, Integer>{
 
 	List<Exam> findAllByOrderByPbNum(Pageable pageable);
 	
-	@Query(value = "SELECT * FROM pb_info ORDER BY RAND() LIMIT 100", nativeQuery = true)
-	List<Exam> findRandom100(); // 이거 완전 무작위 같은데 → 챕터별로 무작위로 나오게 수정해야함
+	@Query(value = """
+		    SELECT *
+		    FROM (
+		        SELECT *, ROW_NUMBER() OVER (PARTITION BY pb_num ORDER BY RAND()) AS rn
+		        FROM pb_info
+		        WHERE ( pb_num BETWEEN 1 AND 100 ) AND li_idx = :liIdx
+		    ) AS sub
+		    WHERE sub.rn = 1
+		    ORDER BY pb_num
+		    """, nativeQuery = true)
+	List<Exam> findRandom100(@Param("liIdx") int liIdx);
+
 
 
 	@Query(value = """

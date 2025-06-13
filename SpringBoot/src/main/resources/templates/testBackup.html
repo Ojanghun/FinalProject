@@ -88,46 +88,45 @@
 				  <input type="hidden" id="category" th:value="${category}" />
 				  <div id="print" class='test-page-block-holder'></div>
 				  
-				 <div class="scoreBackground" >
-					<div id="scoreBox" class="scoreBox" style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
-					
-					  <!-- 상단 안내 -->
-					  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
-					    <img src="images/icon_title_megaphone.gif" style="width: 24px; height: 24px; vertical-align: middle;">
-					    <span id="comment" style="margin-left: 10px;"></span>
-					  </div>
-					
-					  <!-- 하단 참고 문구 -->
-					  <div style="margin-bottom: 20px;">
-					    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기</p>
-					  </div>
-					
-					  <!-- 점수 표 -->
-					  <div class="scoreText">
-					    <div>수험자 이름</div>
-					    <div>응시 종목</div>
-					    <div>점수</div>
-					    <div>합격 여부</div>
-					  </div>
-					  <div class="scoreValue">
-					    <div th:text="${member.name}"></div>
-					    <div th:text="${liName}"></div>
-					    <div id="score"></div>
-					    <div id="pass"></div>
-					  </div>
-					
-					  <!-- 안내 문구 -->
-					  <div style="margin-top: 20px; text-align: center;">
-					    "득점 및 합격여부를 확인하셨습니까?"
-					  </div>
-					
-					  <!-- 버튼 -->
-					  <div style="margin-top: 10px; text-align: center;">
-					    <button onclick="location.href='/license'">확인 완료</button>
-					  </div>
-					
-					</div>
+				<div id="scoreBox" class="scoreBox" style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+				
+				  <!-- 상단 안내 -->
+				  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
+				    <img src="images/icon_title_megaphone.gif" style="width: 24px; height: 24px; vertical-align: middle;">
+				    <span id="comment" style="margin-left: 10px;"></span>
+				  </div>
+				
+				  <!-- 하단 참고 문구 -->
+				  <div style="margin-bottom: 20px;">
+				    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기</p>
+				  </div>
+				
+				  <!-- 점수 표 -->
+				  <div class="scoreText">
+				    <div>수험자 이름</div>
+				    <div>응시 종목</div>
+				    <div>점수</div>
+				    <div>합격 여부</div>
+				  </div>
+				  <div class="scoreValue">
+				    <div th:text="${member.name}"></div>
+				    <div th:text="${liName}"></div>
+				    <div id="score"></div>
+				    <div id="pass"></div>
+				  </div>
+				
+				  <!-- 안내 문구 -->
+				  <div style="margin-top: 20px; text-align: center;">
+				    "득점 및 합격여부를 확인하셨습니까?"
+				  </div>
+				
+				  <!-- 버튼 -->
+				  <div style="margin-top: 10px; text-align: center;">
+				    <button onclick="location.href='/license'">확인 완료</button>
+				  </div>
+				
 				</div>
+
 			</div>
 				  <!-- 답안 표기란 -->
 				  <div id="number" class="number-box"></div>
@@ -172,22 +171,22 @@
 
    
    <script type="text/javascript">
+   let allExData = [];     // 전체 문제
    let currentPage = 0;    // 현재 페이지 (0부터 시작)
    let score = 0; // 점수
-   const PageExam = []; // 한 페이지당 10개씩 담긴 문제리스트
    const pageExamNum = 10; // 한페이지당 10문제(고정)
-   const userSelections = {}; // 유저가 선택한 번호 저장
+   const userSelections = {};
    const solvedStatus = {}; // 문제 번호 -> 0 or 1
+   const category = $("#category").val(); // 카테고리 값( 회차)
    const PbsData = [];  // 서버로 보낼 채점 데이터
    const pbNum = []; // 문제 번호
-   const pbAns = []; // 정답 데이터
-   const pbIdx = []; // 문제 인덱스
-   const category = $("#category").val(); // 카테고리 값( 회차)
    const token = $("meta[name='_csrf']").attr("content");
    const header = $("meta[name='_csrf_header']").attr("content");
-   const circledNumbers = ["①", "②", "③", "④"]; // 문제 번호 : 선택 선지 텍스트
+
 
    
+   // 문제 번호 : 선택 선지 텍스트
+   const circledNumbers = ["①", "②", "③", "④"];
    
 	$(document).ready(function(){
 		// ready() : html 코드가 준비가 되면 실행되는 메소드
@@ -289,50 +288,32 @@ function goNum(i) {
 
   // 현재 페이지와 다르면 먼저 페이지 변경
   if (page !== currentPage) {
-	 renderPage(page);  // 페이지 로드 후 스크롤하려면 약간의 딜레이 필요
+    loadExam(page); // 페이지 로드 후 스크롤하려면 약간의 딜레이 필요
 
     setTimeout(() => {
-      document.getElementById(i)?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById("exam" + i)?.scrollIntoView({ behavior: 'smooth' });
     }, 200); // 페이지 로딩 시간 고려해서 약간 대기 (조정 가능)
   } else {
-    document.getElementById(i)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("exam" + i)?.scrollIntoView({ behavior: 'smooth' });
   }
 }
 	 
 //1. 문제 불러오기
- function loadExam() {
+ function loadExam(pageNum = 0) {
 
-	 const liIdx = $("#liIdx").val();
-	
-	
    $.ajax({
-     url: "/loadExam/",
+     url: "/loadExam1",
      type: "post",
+     data: { page: pageNum, category: category },
      dataType: "json",
-     data: { "category":category, "liIdx":liIdx },
-     beforeSend: function(xhr) {
-    	    xhr.setRequestHeader(header, token);  // ⬅️ CSRF 토큰 꼭 붙여줘야 함
-    	  },
      success: function (data) {
-       	   allExData = data;
-       		// 10개씩 쪼개기
-       		for(let i = 0; i<100; i++){
-       	  		 pbIdx[i] = allExData[i].pbId;
-     }
-		   for (let i = 0; i < allExData.length / 10; i++) {   // 페이지 수
-			   let examSlice = [];
-
-			   for (let j = 0; j < 10; j++) {     // 각 페이지당 10문제
-			     let idx = i * 10 + j; // 0~9번만 반복되지 않게 i 값 *10을 더해주기
-			     examSlice.push(allExData[idx]); // 10개 데이터 push
-			     pbAns[idx] = allExData[idx].pbAns;
-			   }
-
-			   PageExam.push(examSlice); // 10개로 묶인 데이터 push
-			 }
-		  
-		   renderPage();
-		   
+       allExData = data;
+       
+       currentPage = pageNum;
+       renderPage();
+       
+	   const maxPage = Math.floor(100 / pageExamNum);
+	   $("#pageIndex").text((currentPage+1)+"/"+maxPage);
      },
      error: function () {
        alert("error");
@@ -341,106 +322,93 @@ function goNum(i) {
  }
 
 
- // 2. 랜더링
- function renderPage(pageNum = 0) {
-	currentPage = pageNum;  // 현재 페이지를 업데이트해줌
+ // 2. renderPage
+ function renderPage() {
+   let html = "";
+   
    // 현재 페이지와 페이지당 문제 수를 곱해 이 페이지의 첫 번째 문제 인덱스를 계산.
    const startIdx = currentPage * pageExamNum;
-   const exam = PageExam[currentPage];
-   let listHtml = "";	
 
-   for (let j = 0; j < exam.length; j++) {
-	     let problem = exam[j];
-	   	 const qNum = startIdx + j + 1; // 문제 번호
-	     pbNum[j] = problem.pbNum; // 문제 번호 가지고 오기 → 과목별 점수 계산 할 때 사용
-	     
-	     // 한 문제 div
-	     listHtml += "<div class='oneExam' id='" + qNum + "' style='width: 50%;'>";
-	     
-	     // 문제 지문
-	     listHtml += "<p><strong>문제" + qNum + ".</strong> " + problem.pbQues + "</p>";
-	     // 문제 디테일
-	     if (problem.pbDetail != null) {
-	       listHtml += "<br><div><img src='" + problem.pbDetail + "'></div><br>";
-	     }
+   for (let i = 0; i < allExData.length; i++) {
+     const qNum = startIdx + i + 1;
+     const exam = allExData[i];
+     const choices = [exam.pbChoi1, exam.pbChoi2, exam.pbChoi3, exam.pbChoi4];
+     pbNum[i] = exam.pbNum; // 문제 번호 가지고 오기 → 과목별 점수 계산 할 때 사용
+     
 
-	     // 문제 선지
-	     for (let k = 1; k <=4; k++) {
-	       let choiceText = problem["pbChoi" + k];
+     html += `<div class="oneExam" id="exam${qNum}" style="width: 50%;">`;
+     html += `<p><strong>문제 ${qNum}.</strong> ${exam.pbQues}</p>`;
+     
+     // 문제 디테일
+     if(exam.pbDetail != null){
+    	 html += `<br><div><img src="${exam.pbDetail}"></div><br>`;
+     }	     
 
-	       // 문제 선지 묶음 div
-	       listHtml += "<div class='choice' id='choice" + qNum + "-" + k +
-	                   "' onclick='selectChoice(" + qNum + "," + k + ", \"" + choiceText + "\")' style='display: flex; cursor:pointer;'>";
+     for (let j = 0; j < choices.length; j++) {
+         const choiceText = choices[j];
+         const isSelected = userSelections[qNum] === (j + 1); // 선택된 선지 확인
+         const choiceMark = isSelected ? "●" : circledNumbers[j]; 
+       
+       // 보기 내용이 이미지 링크인지 텍스트인지 판별
+       if (choiceText.includes("http")) {
+         displayContent = `<img src="${choiceText}">`;
+       } else {
+         displayContent = choiceText;
+       }
 
-	       // 문제 번호
-	       listHtml += "<div class='oneChoiceNum' id='choiceNum" + qNum + "-" + k + "' style='font-family: monospace;'>" +
-	                   ["①", "②", "③", "④"][k-1] + " &nbsp; </div>";
-
-	       // 이미지가 있는지 판단
-	       if (choiceText.includes("http")) {
-	         listHtml += "<div class='oneChoice' id='choiceText" + qNum + "-" + k + "'><img src='" + choiceText + "'></div></div>";
-	       } else {
-	         listHtml += "<div class='oneChoiceText' id='choiceText" + qNum + "-" + k + "' ' >" + choiceText + "</div></div>";
-	       }
-	     }
-
-	     listHtml += "<br></div>"; // 한 문제 끝
-	 }
+       html += `
+    	    <div style="cursor:pointer;" onclick="selectChoice(${qNum}, ${j + 1}, \`${choiceText}\`)">
+    	      <span id="choice${qNum}-${j + 1}" style="margin-right: 8px; font-family: monospace;">${choiceMark}</span>
+    	      ${displayContent}
+    	    </div>
+    	  `;
+    	}
+     html += `</div>`;
+   }
 
    // 버튼 보이기 조건 처리
-   const totalExamCount = PageExam.length * pageExamNum;
+   let totalExamCount = 100;
    document.getElementById("prev-page").style.display = currentPage > 0 ? "inline-block" : "none";
    document.getElementById("next-page").style.display = (currentPage + 1) * pageExamNum < totalExamCount ? "inline-block" : "none";
 
-  	 $("#print").html(listHtml);
-  	 
-	   const maxPage = Math.floor(100 / pageExamNum);
-	   $("#pageIndex").text((currentPage+1)+"/"+maxPage);
-  	 
- 	}
- 
-	
-// 번호 클릭시 발생하는 함수(문제번호,선지번호,선지내용)
-function selectChoice(questionNum, choiceNum) {
- 
-	  let current = parseInt($("#solCount").text(), 10); // 안 푼 문제 수 체크하기 위해 현재 숫자 읽기
-	  $("#solCount").text(current -1);  // 풀었을 경우 1 빼기
-	
- // 선택한 선지내용
- const currentSelection = userSelections[questionNum];
- console.log("콘솔: "+currentSelection);
- // 지금 클릭한 선지가 이미 선택된 것과 같은지 비교하기 위함.
- if (currentSelection === choiceNum) {
-    // 같은 번호 다시 클릭 → 선택 해제
-	    // 선택 해제
-	    delete userSelections[questionNum];
-	    solvedStatus[questionNum] = 0; // 안 푼 상태로 설정
-	    
-	    $("#solCount").text(current +1);  // 같은 번호 클릭 시 1 다시 더하기
-	    
-	    
-	    $(`#choiceNum${questionNum}-${choiceNum}`).text(circledNumbers[choiceNum - 1]);
-	    $(`#number${questionNum}-${choiceNum}`).attr("src", `/images/n${choiceNum}.jpg`);
+   $("#print").html(html);
+ }
 
+	
+	// 번호 클릭시 발생하는 함수(문제번호,선지번호,선지내용)
+function selectChoice(questionNum, choiceNum, choiceText) {
+  
+  let current = parseInt($("#solCount").text(), 10); // 안 푼 문제 수 체크하기 위해 현재 숫자 읽기
+  $("#solCount").text(current -1);  // 풀었을 경우 1 빼기
+  
+  const currentSelection = userSelections[questionNum];
+
+  if (currentSelection === choiceNum) {
+    // 선택 해제
+    delete userSelections[questionNum];
+    solvedStatus[questionNum] = 0; // 안 푼 상태로 설정
+    
+    $("#solCount").text(current +1);  // 같은 번호 클릭 시 1 다시 더하기
+    
+    
+    $(`#choice${questionNum}-${choiceNum}`).text(circledNumbers[choiceNum - 1]);
+    $(`#number${questionNum}-${choiceNum}`).attr("src", `/images/n${choiceNum}.jpg`);
   } else {
-    // 다른 번호 클릭 or 처음 선택 → 새로 선택 처리
-     const isFirstSelection = !userSelections[questionNum];
+    // 선택 변경
+    const isFirstSelection = !userSelections[questionNum];
     userSelections[questionNum] = choiceNum;
     solvedStatus[questionNum] = choiceNum; // 1로 상태 저장
-
-
-    // 모든 이미지를 체크 없는 이미지로 변경 후 클릭한 이미지를 다시 체크한 이미지로 변경
+    console.log(solvedStatus);
+    
     for (let i = 1; i <= 4; i++) {
-        $(`#choiceNum${questionNum}-${i}`).text(circledNumbers[i - 1]);
-        $(`#number${questionNum}-${i}`).attr("src", `/images/n${i}.jpg`);
-      }
-      $(`#choiceNum${questionNum}-${choiceNum}`).text("●");
-      
-      $(`#number${questionNum}-${choiceNum}`).attr("src", "/images/marking.jpg");
+      $(`#choice${questionNum}-${i}`).text(circledNumbers[i - 1]);
+      $(`#number${questionNum}-${i}`).attr("src", `/images/n${i}.jpg`);
     }
+    $(`#choice${questionNum}-${choiceNum}`).text("●");
+    $(`#number${questionNum}-${choiceNum}`).attr("src", "/images/marking.jpg");
+  }
+  
 }
-	
-	
 
 	function unsolved() {
 		
@@ -489,21 +457,39 @@ function selectChoice(questionNum, choiceNum) {
 				    }
 				  }
 
-			        // 채점 로직 실행 → 점수 + 전송용 데이터 생성
-			        const result = gradeExam(pbAns,pbNum);
-			        
+				  // 문제 정답 불러오기 Ajax 실행
+				  loadCorrectAnswers(category);
+				}
 
-			        // 서버에 채점 결과 전송
-			        sendPbsData(result.pbsData);
-			        
-			        // 점수에 따라 결과 UI 업데이트
-			        updateResultUI(result.score);
+				// 문제 정답 불러오기 Ajax
+				function loadCorrectAnswers(category) {
+				  $.ajax({
+				    url: "/loadExam/" + category,
+				    type: "post",
+				    dataType: "json",
+				    success: function (data) {
+				      // 채점 로직 실행 → 점수 + 전송용 데이터 생성
+				      const result = gradeExam(data);
+
+				      // 서버에 채점 결과 전송
+				      console.log("PbsData 확인:", PbsData[0]);
+
+				      sendPbsData(result.pbsData);
+
+				      // 점수에 따라 결과 UI 업데이트
+				      updateResultUI(result.score);
+				    },
+				    error: function () {
+				      alert("문제 정답 불러오기 실패");
+				    }
+				  });
 				}
 
 				// 채점 함수: 정답과 비교해 점수 계산 및 전송할 데이터 준비
 				function gradeExam(correctData) {
 				  const userId = $("#userId").val();     // 사용자 ID 가져오기
 				  const pbsCheck = [];                  // 문제별 정오 배열
+				  const pbIdx = [];				  
 				  let score = 0;
 				  const now = new Date(); // 현재 시간 계산
 				  const pbsAt = now.getFullYear() + "-" +
@@ -512,10 +498,15 @@ function selectChoice(questionNum, choiceNum) {
 				                String(now.getHours()).padStart(2, '0') + ":" +
 				                String(now.getMinutes()).padStart(2, '0') + ":" +
 				                String(now.getSeconds()).padStart(2, '0'); // db에 들어갈수있게 형태 수정
+				  
 
 				  for (let i = 1; i <= 100; i++) {
+					  
+					  console.log(correctData); // 🔍 이거 찍어보세요 
+					  
+					  pbIdx[i] = correctData[i - 1].pbId
 				    // 정답 비교하여 점수 및 pbsCheck 설정
-				    if (solvedStatus[i] == pbAns[i - 1]) {
+				    if (solvedStatus[i] == correctData[i - 1].pbAns) {
 				      score++;
 				      pbsCheck[i] = 1;
 				    } else {
@@ -524,9 +515,9 @@ function selectChoice(questionNum, choiceNum) {
 
 				    // 개별 문제 데이터 객체 생성하여 배열에 저장
 				    PbsData[i - 1] = {
-				      pbNum: pbNum[i - 1],
+				      pbNum: correctData[i - 1].pbNum,
 				      userId: userId,
-				      pbIdx: pbIdx[i - 1],
+				      pbIdx: pbIdx[i],
 				      pbsCheck : pbsCheck[i],
 				      pbsAt: pbsAt,
 				    };
@@ -561,15 +552,7 @@ function selectChoice(questionNum, choiceNum) {
 
 				// 점수에 따라 UI 표시 변경
 				function updateResultUI(score) {
-
-					const scoreBox = $("#scoreBox").clone(true); // 💡 원래 이벤트 등 유지하며 복사
-					$("body").empty();                           // 🔥 body 전체 비우고
-					$("body").append(scoreBox);                  // ✅ #scoreBox만 다시 추가
-					scoreBox.css("display", "flex");             // flex 설정
-					
-
-
-
+				  $("#scoreBox").css("display", "flex");  // 점수 박스 표시
 				  $("#score").text(score);                // 점수 출력
 
 				  if (score > 60) {
@@ -586,16 +569,15 @@ function selectChoice(questionNum, choiceNum) {
 
 function prevPage() {
   if (currentPage > 0) {
-	  renderPage(currentPage -1	);
+    loadExam(currentPage - 1);
     $(".test-page-block-holder").animate({ scrollTop: 0 }, 300); // 300ms 동안 부드럽게 스크롤 0 으로 이동
   }
 }
 
 function nextPage() {
-	  const maxPage = Math.floor(100 / pageExamNum);
-	  if (currentPage < maxPage - 1) {
-	    currentPage++;
-	    renderPage(currentPage);
+  const maxPage = Math.floor(100 / pageExamNum);
+  if (currentPage < maxPage - 1) {
+    loadExam(currentPage + 1);
     $(".test-page-block-holder").animate({ scrollTop: 0 }, 300); // 300ms 동안 부드럽게 스크롤 0 으로 이동
   }
 }
