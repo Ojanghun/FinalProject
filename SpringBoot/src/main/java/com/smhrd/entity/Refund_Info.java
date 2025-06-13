@@ -44,4 +44,7 @@ public class Refund_Info {
     @Column(name = "RF_AT", nullable = false, insertable = false, updatable = false)
     private LocalDateTime rfAt; // 환불 날짜
     
+    @Column(name = "AP_AT", nullable = true)
+    private LocalDateTime apAt; // 환불 승인 날짜
+    
 }

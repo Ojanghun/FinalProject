@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -21,41 +20,49 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .csrf(csrf -> csrf
-        	    .ignoringRequestMatchers(
-        	        new AntPathRequestMatcher("/loadExam/**"),
-        	        new AntPathRequestMatcher("/shuffle/**"),
-        	        new AntPathRequestMatcher("/correctAnswer/**"),
-        	        new AntPathRequestMatcher("/solution/**"),
-        	        new AntPathRequestMatcher("/pay/submit"),
-        	        new AntPathRequestMatcher("/loadExam1/**"),
-        	        new AntPathRequestMatcher("/atd_check/**"),
-        	        new AntPathRequestMatcher("/loadTopic/**"),
-        	        new AntPathRequestMatcher("/submitPbsData"),
-        	        new AntPathRequestMatcher("/submitPbsData/**"),
-        	        new AntPathRequestMatcher("/adminLoginCheck") // ✅ 관리자 로그인 POST 예외 처리
-        	    )
+            // ✅ CSRF 예외 처리
+            .csrf(csrf -> csrf.ignoringRequestMatchers(
+                "/loadExam/**",
+                "/shuffle/**",
+                "/correctAnswer/**",
+                "/solution/**",
+                "/pay/submit",
+                "/loadExam1/**",
+                "/atd_check/**",
+                "/loadTopic/**",
+                "/submitPbsData/**",
+                "/adminLoginCheck",
+                "/admin/plan-usage",             // ✅ 관리자 플랜 이용 통계
+                "/admin/wrong-rate-page",        // ✅ 오답률 페이지
+                "/admin/refund-rate-page",       // ✅ 환급률 페이지
+                "/admin/pay-info",                // ✅ 결제 상세
+                "/refund-session" // ✅ 환급 요청 세션 저장 경로 예외 추가
+            ))
 
-            )
+            // ✅ 요청 경로별 권한 부여
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
-                    new AntPathRequestMatcher("/"),
-                    new AntPathRequestMatcher("/main"),
-                    new AntPathRequestMatcher("/login"),
-                    new AntPathRequestMatcher("/join"),
-                    new AntPathRequestMatcher("/adminLogin.do"), // ✅ 관리자 로그인 페이지 허용
-                    new AntPathRequestMatcher("/idCheck"),
-                    new AntPathRequestMatcher("/oauth/kakao"),
-                    new AntPathRequestMatcher("/css/**"),
-                    new AntPathRequestMatcher("/js/**"),
-                    new AntPathRequestMatcher("/images/**"),
-                    new AntPathRequestMatcher("/webjars/**"),
-                    new AntPathRequestMatcher("/plan"),
-                    new AntPathRequestMatcher("/pay/**"), // ✅ 결제 관련 페이지 접근 허용
-                    new AntPathRequestMatcher("/searchLicenses")
+                    "/adminLogin.do",
+                    "/adminLoginCheck",
+                    "/refund-session",  // ✅ 여기에 추가!
+                    "/admin/**"   // ✅ 관리자 대시보드 접근 허용
+                    
                 ).permitAll()
+
+                .requestMatchers(
+                    "/",
+                    "/main",
+                    "/login",
+                    "/join",
+                    "/css/**",
+                    "/js/**",
+                    "/images/**"
+                ).permitAll()
+
                 .anyRequest().authenticated()
             )
+
+            // ✅ 사용자 로그인 설정
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
@@ -65,8 +72,10 @@ public class SecurityConfig {
                 .failureUrl("/login?error=true")
                 .permitAll()
             )
+
+            // ✅ 로그아웃 설정
             .logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/main?logout")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
