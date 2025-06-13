@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class PayWithLicenseDTOImpl implements PayWithLicenseDTO {
 
+	private Integer payIdx;
     private Integer planIdx;
     private String liName;
     private LocalDateTime planStd;
@@ -13,9 +14,10 @@ public class PayWithLicenseDTOImpl implements PayWithLicenseDTO {
     private Integer planAct; // ✅ 추가
 
     // ✅ 모든 필드를 포함한 생성자 추가
-    public PayWithLicenseDTOImpl(Integer planIdx, String liName, LocalDateTime planStd,
+    public PayWithLicenseDTOImpl(Integer payIdx , Integer planIdx, String liName, LocalDateTime planStd,
                                  LocalDateTime planEd, Boolean planType, Integer planAct) {
-        this.planIdx = planIdx;
+    	this.payIdx = payIdx;
+    	this.planIdx = planIdx;
         this.liName = liName;
         this.planStd = planStd;
         this.planEd = planEd;
@@ -23,6 +25,7 @@ public class PayWithLicenseDTOImpl implements PayWithLicenseDTO {
         this.planAct = planAct;
     }
 
+    public Integer getPayIdx() { return payIdx; }
     public Integer getPlanIdx() { return planIdx; }
     public String getLiName() { return liName; }
     public LocalDateTime getPlanStd() { return planStd; }

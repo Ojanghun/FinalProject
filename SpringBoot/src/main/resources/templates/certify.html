@@ -1,98 +1,113 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org/" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>자격증 합격 인증</title>
+<meta charset="UTF-8">
+<title>자격증 합격 인증</title>
 
-  <!-- CSRF Meta -->
-  <meta name="_csrf" th:content="${_csrf.token}" />
-  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+<!-- CSRF Meta -->
+<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
-  <!-- CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="/css/style.css" rel="stylesheet">
+<!-- CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
 
-  <!-- JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- JS -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <!-- 🔷 헤더 -->
-  <nav class="custom-header">
-    <div class="container container-fluid d-flex justify-content-between align-items-center px-4">
-      <div class="logo d-flex align-items-center gap-2">
-        <a href="/">
-          <img src="/images/로고.png" height="40" alt="로고">
-          <span class="logo-text"> </span>
-        </a>
-      </div>
-      <div class="header-links d-flex gap-2">
-        <th:block th:if="${session.info == null}">
-          <a href="/login" class="btn btn-outline-primary">LOGIN</a>
-          <a href="/join" class="btn btn-outline-secondary">JOIN</a>
-        </th:block>
-        <th:block th:unless="${session.info == null}">
-          <a href="/mypage" class="btn btn-outline-secondary">MYPAGE</a>
-          <a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
-        </th:block>
-      </div>
-    </div>
-  </nav>
+	<!-- 🔷 헤더 -->
+	<nav class="custom-header">
+		<div
+			class="container container-fluid d-flex justify-content-between align-items-center px-4">
+			<div class="logo d-flex align-items-center gap-2">
+				<a href="/"> <img src="/images/로고.png" height="40" alt="로고">
+					<span class="logo-text"> </span>
+				</a>
+			</div>
+			<div class="header-links d-flex gap-2">
+				<th:block th:if="${session.info == null}">
+					<a href="/login" class="btn btn-outline-primary">LOGIN</a>
+					<a href="/join" class="btn btn-outline-secondary">JOIN</a>
+				</th:block>
+				<th:block th:unless="${session.info == null}">
+					<a href="/mypage" class="btn btn-outline-secondary">MYPAGE</a>
+					<a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
+				</th:block>
+			</div>
+		</div>
+	</nav>
 
-  <!-- 🔳 메인 콘텐츠 -->
-  <div class="container py-5">
-    <div class="row g-4 align-items-start">
-      <!-- 📸 영상 촬영 안내 이미지 -->
-      <div class="col-md-8 d-flex flex-column">
-        <h4 class="fw-bold mb-3"> </h4>
-        <div class="flex-grow-1 d-flex">
-          <img src="/images/certify_guide.png" alt="인증 방법 안내" class="rounded border w-100 h-100 object-fit-contain">
-        </div>
-      </div>
+	<!-- 🔳 메인 콘텐츠 -->
+	<div class="container py-5">
+		<div class="row g-4 align-items-start">
+			<!-- 📸 영상 촬영 안내 이미지 -->
+			<div class="col-md-8 d-flex flex-column">
+				<h4 class="fw-bold mb-3"></h4>
+				<div class="flex-grow-1 d-flex">
+					<img src="/images/certify_guide.png" alt="인증 방법 안내"
+						class="rounded border w-100 h-100 object-fit-contain">
+				</div>
+			</div>
 
-      <!-- 📝 인증 정보 입력 -->
-      <div class="col-md-4">
-        <h4 class="fw-bold mb-3">자격증 합격 영상 및 환불 정보 입력</h4>
-        <form id="certifyForm" enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="licenseName" class="form-label">자격증 이름</label>
-            <input type="text" class="form-control" id="licenseName" name="licenseName" required th:value="${liName}">
-          </div>
-          <div class="mb-3">
-            <label for="file" class="form-label">합격 영상</label>
-            <input type="file" class="form-control" id="fileInput" name="file" accept="video/*" required>
-          </div>
-          <div class="mb-3">
-            <label for="bank" class="form-label">예금주</label>
-            <input type="text" class="form-control" id="holder" name="holder" required th:value="${member.name}">
-          </div>
-          <div class="mb-3">
-            <label for="bank" class="form-label">은행</label>
-            <input type="text" class="form-control" id="bank" name="bank" required>
-          </div>
-          <div class="mb-3">
-            <label for="account" class="form-label">계좌번호</label>
-            <input type="text" class="form-control" id="account" name="account" required>
-          </div>
-          <button type="submit" id="uploadBtn" class="btn btn-primary w-100">환급 신청</button>
-        </form>
-        <div id="resultMsg" class="mt-3"></div>
-      </div>
-    </div>
-  </div>
+			<!-- 📝 인증 정보 입력 -->
+			<div class="col-md-4">
+				<h4 class="fw-bold mb-3">자격증 합격 영상 및 환불 정보 입력</h4>
+				<form id="certifyForm" action="/upload" method="POST" enctype="multipart/form-data">
+					<input type="hidden" name="payIdx" th:value="${payIdx}">
+					<input type="hidden" name="planIdx" th:value="${planIdx}">
+					<div class="mb-3">
+						<label for="licenseName" class="form-label">자격증 이름</label> <input
+							type="text" class="form-control" id="licenseName"
+							name="licenseName" required th:value="${liName}" readonly="true">
+					</div>
+					<div class="mb-3">
+						<label for="file" class="form-label">합격 영상</label> <input
+							type="file" class="form-control" id="fileInput" name="file"
+							accept="video/*" required>
+					</div>
+					<div class="mb-3">
+						<label for="bank" class="form-label">예금주</label> <input
+							type="text" class="form-control" id="holder" name="holder"
+							required th:value="${member.name}">
+					</div>
+					<div class="mb-3">
+						<label for="bank" class="form-label">은행</label> <input type="text"
+							class="form-control" id="bank" name="bank" required>
+					</div>
+					<div class="mb-3">
+						<label for="account" class="form-label">계좌번호</label> <input
+							type="text" class="form-control" id="account" name="account"
+							required>
+					</div>
+					<button type="submit" id="uploadBtn" class="btn btn-primary w-100">환급
+						신청</button>
+				</form>
+				<div id="resultMsg" class="mt-3"></div>
+			</div>
+		</div>
+	</div>
 
-  <!-- Footer -->
-  <footer class="footer mt-5 py-4 border-top">
-    <div class="container text-center">
-      <nav class="nav justify-content-center mb-3">
-        <a href="#" class="footer-link">Home</a>
-        <a href="#" class="footer-link">About</a>
-        <a href="#" class="footer-link">Contact</a>
-      </nav>
-      <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-    </div>
-  </footer>
+	<!-- Footer -->
+	<footer class="footer mt-5 py-4 border-top">
+		<div class="container text-center">
+			<nav class="nav justify-content-center mb-3">
+				<a href="#" class="footer-link">Home</a> <a href="#"
+					class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
+			</nav>
+			<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+		</div>
+	</footer>
+
+	<script type="text/javascript" src="js/certify.js"></script>
 
 </body>
 </html>
