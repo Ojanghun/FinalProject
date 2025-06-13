@@ -94,6 +94,11 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 		    nativeQuery = true)
 		List<Object[]> getPlanUsageByLicenseName(@Param("licenseName") String licenseName);
 
+		
+		@Modifying
+		@Transactional
+		@Query("UPDATE Pay_Info p SET p.rfCp = 1 WHERE p.payIdx = :payIdx")
+		int updateRfCpByPayIdx(@Param("payIdx") int payIdx);
 
 
 

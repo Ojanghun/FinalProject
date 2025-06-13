@@ -22,4 +22,6 @@ public class RefundRequestDTO {
     private String liName;          // 자격증 이름
     private String planType;        // 플랜 종류 (필수형 / 탐구형)
     private int planPrice;          // 플랜 가격
+    private int rfCp; // 0: 요청중, 1: 완료
+
 }

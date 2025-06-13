@@ -7,11 +7,14 @@ import com.smhrd.projection.PlanUsageDTO;
 import com.smhrd.projection.RefundRequestDTO;
 import com.smhrd.repository.*;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -254,31 +257,65 @@ public class AdminController {
     public String getAllRefundRequests(HttpSession session) {
         List<Object[]> rawData = refundInfoRepository.findAllRefundDetails();
 
-        List<RefundRequestDTO> refundInfoList = rawData.stream().map(row -> {
+        List<RefundRequestDTO> requests = new ArrayList<>();
+        List<RefundRequestDTO> completed = new ArrayList<>();
+
+        for (Object[] row : rawData) {
             int rfIdx = (int) row[0];
             String userId = (String) row[1];
             String rfVpath = (String) row[2];
             String rfName = (String) row[3];
             String rfBank = (String) row[4];
             String rfAccnum = (String) row[5];
-
-            // ✅ Timestamp → LocalDateTime 변환
-            LocalDateTime rfAt = ((java.sql.Timestamp) row[6]).toLocalDateTime();
-
+            LocalDateTime rfAt = ((Timestamp) row[6]).toLocalDateTime();
             String liName = (String) row[7];
-            String planType = (row[8] instanceof Boolean && (Boolean) row[8]) ||
-                              (row[8] instanceof Number && ((Number) row[8]).intValue() == 1)
-                              ? "필수형" : "탐구형";
+
+            String planType;
+            if (row[8] instanceof Boolean) {
+                planType = ((Boolean) row[8]) ? "필수형" : "탐구형";
+            } else {
+                planType = ((Number) row[8]).intValue() == 1 ? "필수형" : "탐구형";
+            }
+
             int planPrice = ((Number) row[9]).intValue();
+            int rfCp = ((Number) row[10]).intValue();
 
-            return new RefundRequestDTO(
+            RefundRequestDTO dto = new RefundRequestDTO(
                 rfIdx, userId, rfVpath, rfName, rfBank, rfAccnum, rfAt,
-                liName, planType, planPrice
+                liName, planType, planPrice, rfCp
             );
-        }).toList();
 
-        session.setAttribute("refundInfoList", refundInfoList);
+            if (rfCp == 1) {
+                completed.add(dto);
+            } else {
+                requests.add(dto);
+            }
+        }
+
+        session.setAttribute("refundInfoList", requests);
+        session.setAttribute("refundCompletedList", completed);
+
         return "redirect:/admin/dashboard?section=refund";
     }
+    @PostMapping("/admin/approve-refund")
+    @Transactional
+    public ResponseEntity<String> approveRefund(@RequestParam int rfIdx) {
+        // 1. Refund_Info에서 payIdx 조회
+        Refund_Info refund = refundInfoRepository.findById(rfIdx).orElse(null);
+        if (refund == null) return ResponseEntity.notFound().build();
+
+        int payIdx = refund.getPayIdx();
+
+        // 2. pay_info 테이블의 rf_cp 값을 1로 변경
+        int updated = payInfoRepository.updateRfCpByPayIdx(payIdx);
+
+        if (updated == 1) {
+            return ResponseEntity.ok("승인 완료");
+        } else {
+            return ResponseEntity.status(500).body("변경 실패");
+        }
+    }
+    
+    
 }
 
