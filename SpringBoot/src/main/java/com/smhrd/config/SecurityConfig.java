@@ -54,6 +54,9 @@ public class SecurityConfig {
                     "/main",
                     "/login",
                     "/join",
+                    "/oauth/kakao",
+                    "/webjars/**",
+                    "/idCheck",
                     "/css/**",
                     "/js/**",
                     "/images/**"
