@@ -120,24 +120,6 @@ public class ExamService {
 		}
 //		return exam.getPbAns();
 	}
-	
-
-	public List<List<String>> shuffle1(int pageNum, int pageSize) {
-		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("pbNum").ascending());
-		List<Exam> exList = repository.findAllByOrderByPbNum(pageable);
-		List<List<String>> choice = new ArrayList<>();
-		for (Exam exam : exList) {
-			List<String> options = new ArrayList<>();
-			options.add(exam.getPbChoi1());
-			options.add(exam.getPbChoi2());
-			options.add(exam.getPbChoi3());
-			options.add(exam.getPbChoi4());
-			Collections.shuffle(options);
-			choice.add(options);
-		}
-		return choice;
-	}
-
 
 
 	public void updateTopic() {	

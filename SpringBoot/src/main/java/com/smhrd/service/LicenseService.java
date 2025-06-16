@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.smhrd.entity.Atd_Log;
@@ -82,8 +83,22 @@ public class LicenseService {
 		
 		
 	}
-
 	
-	
-	
+	// 오답률
+	public List<Object[]> wrongRate(String userId){
+		
+		// 최근 3회 주제별 틀린 횟수 정리
+		List<Object[]> wrongRateList = repository.getWrongRateRecent3(userId);
+		
+		// 상위 주제 5개만 뽑아오기 위한 리스트
+		List<Object[]> top5List = new ArrayList<>();
+		
+		// 3회만 가져오기
+	    for (int i = 0; i < 5; i++) {
+	        top5List.add(wrongRateList.get(i));
+	        
+		}
+	    
+		return top5List;
+	}
 }

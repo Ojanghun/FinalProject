@@ -36,7 +36,7 @@
 </head>
 
 <body>
-
+ 
 	<!-- Header -->
 	<input type="hidden" id="id" th:if="${member != null}"
 		th:value="${member.id}" />
@@ -77,14 +77,16 @@
 						<form method="post" action="/goTest.do"
 							class="d-flex align-items-center gap-2 mb-3">
 							<div class="flex-grow-1" style="width: 300px; padding-left: 5px;">
-								<input type="hidden" th:name="${_csrf.parameterName}"
-									th:value="${_csrf.token}" /> <input type="hidden" name="liIdx"
-									th:value="${licenseList[0].liIdx}" /> <input type="hidden"
-									name="liName" th:value="${licenseList[0].liName}" /> <input
-									type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
-								<input type="hidden" name="liPbc"
-									th:value="${licenseList[0].liPbc}" /> <select name="category"
-									class="form-control rounded-pill px-4 py-2">
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+								<th:block th:each="license : ${licenseList}">
+									<th:block th:if="${license.liIdx == liIdx}">
+										<input type="hidden" name="liIdx" th:value="${license.liIdx}" />
+										<input type="hidden" name="liName" th:value="${license.liName}" />
+										<input type="hidden" name="liTime" th:value="${license.liTime}" />
+										<input type="hidden" name="liPbc" th:value="${license.liPbc}" />
+									</th:block>
+								</th:block>
+									<select name="category" class="form-control rounded-pill px-4 py-2">
 									<option value="" disabled selected hidden>회차 검색</option>
 									<option value="0">랜덤 문제</option>
 									<th:block th:each="round : ${rounds}">
@@ -161,9 +163,7 @@
 					<div class="dashboard-card p-4" style="height: 100%;">
 						<h5 class="fw-bold mb-3" th:if="${member != null}"
 							th:text="${member.name} + '님의 주제별 오답 TOP 5'">와아라랄</h5>
-						<!--           	<div th:each="pbIdxList : ${pbIdxList}">
-          		<div th:text="${pbIdxList}"></div>
-          	</div> -->
+							<div id="top5"></div>
 
 						<form action="/updateTopicNums.do" method="post"
 							style="display: inline;">
@@ -303,6 +303,7 @@
 
 					  $(document).ready(function () {
 					    loadTopic();
+					    loadTopList();
 					    syncRightCardHeight();
 					  });
 
@@ -319,12 +320,16 @@
     document.querySelectorAll('.tab-menu button').forEach(btn => btn.classList.remove('active'));
     event.currentTarget.classList.add('active');
   }
+   
+   
+ // 리스트라서.. 이렇게 가져옴
+ const topicList = /*[[${topicList}]]*/ [];
+ 
+ 
  function loadTopic() {
     
-       // 리스트라서.. 이렇게 가져옴
-       let topicList = /*[[${topicList}]]*/ [];
 
-      const Name = [];
+      let Name = [];
 
        listHtml = "";
        listHtml = "<option value='' disabled selected hidden>유형 선택</option>";
@@ -342,7 +347,33 @@
        }
        $("#topicSelect").html(listHtml);   
        
- } 
+ }
+ 
+ function loadTopList(){
+	 // top5[0]은 카운트, top5[1]은 topic_idx
+	 const top5List = /*[[${top5List}]]*/ [];
+	 let Name = [];
+	 
+	 listHtml = "";
+	 
+     for (let i = 0; i < topicList.length; i++) {
+         let parts = topicList[i].topicName.split(" - ");
+         Name.push(parts[0]);
+       }
+     
+     for(let i=0; i<top5List.length; i++){
+    	 for(let j=0; j<topicList.length; j++){
+			if( top5List[i][1] == topicList[j].topicIdx){
+				
+	         listHtml += "<div>" + "Top" + (i+1) + " " + topicList[j].topicNum + ". " + Name[j] + "</div>";
+	         
+			}
+    	 }
+      }
+	 $("#top5").html(listHtml);
+ }
+ 
+ 
   const examPeriods = /*[[${exams}]]*/ [];
   const examDates = [];
 
