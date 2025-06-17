@@ -93,8 +93,9 @@ public class LicenseService {
 		// 상위 주제 5개만 뽑아오기 위한 리스트
 		List<Object[]> top5List = new ArrayList<>();
 		
-		// 3회만 가져오기
-	    for (int i = 0; i < 5; i++) {
+		// 5회만 가져오기(5와 db에서 불러온 수를 비교해, 작은 수를 얻어오기)
+		int limit = Math.min(5, wrongRateList.size());
+	    for (int i = 0; i < limit; i++) {
 	        top5List.add(wrongRateList.get(i));
 	        
 		}
