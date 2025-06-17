@@ -1,6 +1,7 @@
 # FinalProject
-# 📎 꽃 보러 갈래?(팀명: 아름답조)
-![image](https://user-images.githubusercontent.com/25995055/178401309-2a2ffc86-ef45-439b-bfd8-6978312100bc.png)
+# 📎 자격증 합격을 위한 스마트 스터디 플랫폼(팀명: 문제?Issue!)
+![로고](https://github.com/user-attachments/assets/229114bb-727f-4f61-9e79-a5e975a2767c)
+
 
 
 ## 👀 서비스 소개
