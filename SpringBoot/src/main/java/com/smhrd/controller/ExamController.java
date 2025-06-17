@@ -74,13 +74,7 @@ public class ExamController {
 	
 
 	
-	@PostMapping("/shuffle1")
-	public List<List<String>> shuffle1(@RequestParam int page) {
-		int pageNum = page; // 요청 받은 page 파라미터 사용
-		int pageSize = 5;
-		List<List<String>> choice = service.shuffle1(pageNum, pageSize);
-	    return choice;
-	}
+	
 	
 	@PostMapping("/submitPbsData")
 	public void submitPbsData(@RequestBody List<Pbs_Log> dataList, @RequestParam String exCat) {
