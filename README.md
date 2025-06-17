@@ -130,12 +130,12 @@
     <td align="center"><strong>최유정</strong></td>
   </tr>
   <tr>
-    <td align="center"><b>Frontend</b></td>  
-    <td align="center"><b>Frontend</b></td>
-    <td align="center"><b>Frontend</b></td>
+    <td align="center"><b>Backend</b></td>  
     <td align="center"><b>Backend</b></td>
+    <td align="center"><b>PM, Data Modeling,<br>DB 설계 및 구축</b></td>
     <td align="center"><b>Backend</b></td>
-    <td align="center"><b>Deep Learning</b></td>
+    <td align="center"><b>FrontEnd</b></td>
+    <td align="center"><b>FrontEnd</b></td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/mosunghyun" target='_blank'>github</a></td>
