@@ -5,12 +5,12 @@
 
 
 ## 👀 서비스 소개
-* 서비스명:  꽃 개화 시기별 우리 지역 근처 데이트/드라이브 추천 장소 및 꽃 축제 추천 
+* 서비스명:  자격증 합격을 위한 스마트 스터디 플랫폼
 * 서비스설명: 
 <br>
 
 ## 📅 프로젝트 기간
-2022.04.22 ~ 2022.06.03 (6주)
+2025.06.02 ~ 2025.06.26 (3주)
 <br>
 
 ## ⭐ 주요 기능
@@ -40,22 +40,19 @@
         <td>라이브러리</td>
         <td>
             <img src="https://img.shields.io/badge/BootStrap-7952B3?style=for-the-badge&logo=BootStrap&logoColor=white"/>
-            <img src="https://img.shields.io/badge/KakaoMap-FFCD00?style=for-the-badge&logo=Kakao&logoColor=white"/>
         </td>
     </tr>
     <tr>
         <td>개발도구</td>
         <td>
             <img src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=Eclipse&logoColor=white"/>
-            <img src="https://img.shields.io/badge/RaskpberryPi-A22846?style=for-the-badge&logo=RaskpberryPi&logoColor=white"/>
-            <img src="https://img.shields.io/badge/Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white"/>
             <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=VisualStudioCode&logoColor=white"/>
         </td>
     </tr>
     <tr>
         <td>서버환경</td>
         <td>
-            <img src="https://img.shields.io/badge/Apache Tomcat-D22128?style=for-the-badge&logo=Apache Tomcat&logoColor=white"/>
+            <img src="https://img.shields.io/badge/Apache Tomcat-#F8DC75?style=for-the-badge&logo=Apache Tomcat&logoColor=white"/>
         </td>
     </tr>
     <tr>
