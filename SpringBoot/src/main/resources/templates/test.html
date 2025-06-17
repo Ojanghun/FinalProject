@@ -123,7 +123,7 @@
 					
 					  <!-- 버튼 -->
 					  <div style="margin-top: 10px; text-align: center;">
-					    <button onclick="location.href='/license'">확인 완료</button>
+					    <button type="button" onclick="goToLicense()">확인 완료</button>
 					  </div>
 					
 					</div>
@@ -186,6 +186,7 @@
    const token = $("meta[name='_csrf']").attr("content");
    const header = $("meta[name='_csrf_header']").attr("content");
    const circledNumbers = ["①", "②", "③", "④"]; // 문제 번호 : 선택 선지 텍스트
+   const liIdx = $("#liIdx").val();
 
    
    
@@ -301,8 +302,6 @@ function goNum(i) {
 	 
 //1. 문제 불러오기
  function loadExam() {
-
-	 const liIdx = $("#liIdx").val();
 	
 	
    $.ajax({
@@ -615,6 +614,15 @@ function lottoName() {
     }
     $("#lottoName").val(result);
    
+  }
+  
+function goToLicense() {
+    const liIdx = document.getElementById("liIdx").value;
+    if (liIdx) {
+      window.location.href = "/license?liIdx=" + liIdx;
+    } else {
+      alert("liIdx 값이 없습니다.");
+    }
   }
  
    </script>
