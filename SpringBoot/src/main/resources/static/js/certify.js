@@ -22,6 +22,8 @@ document.getElementById("certifyForm").addEventListener("submit", function(event
 				alert("동영상 파일만 업로드해주세요")
 			} else if (data == "noRefundablePlan") {
 				alert("환불 가능한 플랜이 없습니다")
+			} else if (data == "alreadyRefunded") {
+				alert("이미 환급 요청한 플랜입니다")
 			}
 		},
 		error: function() { alert("업로드 에러 발생") }

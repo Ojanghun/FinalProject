@@ -29,6 +29,12 @@ public class CertifyService {
 			String bank, String account) {
 
 		try {
+			// 0. 환급 요청 중복 체크
+			boolean exists = refundInfoRepository.existsByPayIdx(payIdx);
+			if (exists) {
+			    return "alreadyRefunded";
+			}
+			
 			// 1. 환급 가능 플랜 체크
 			Pay_Info refundablePlan = payInfoService.getRefundablePlan(memberId.getId(), planIdx);
 			if (refundablePlan == null) {

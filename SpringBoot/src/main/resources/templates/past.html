@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="css/past.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
@@ -20,10 +19,11 @@
 			<div class="panel-body">
 
 				<input type="hidden" id="category" th:value="${category}" />
+				<input type="hidden" id="liIdx" th:value="${liIdx}" />
 				<div id="examBoard"></div>
 
 			</div>
-			<div class="panel-footer">빅데이터 개발자과정 - 손종희</div>
+			<div class="panel-footer">© 2025 문제 Issue!</div>
 		</div>
 	</div>
 	
@@ -55,10 +55,11 @@
     // 문제 불러오는 함수
     function loadExam() {
         const category = $("#category").val();
+        const liIdx = $("#liIdx").val();
 
         $.when(
-            $.ajax({ url: "/loadExam/"+category, type: "post", dataType: "json"}),
-            $.ajax({ url: "/shuffle/"+category, type: "post", dataType: "json"})
+            $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
+            $.ajax({ url: "/shuffle", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }})
         ).done(function(examData, shuffleData) {
 
 	     // examData, shuffleData는 배열 형태 ([data, status, jqXHR])
@@ -126,8 +127,8 @@
 	    	    }
 
 	    	    listHtml += "<br>";
-	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
-	    	    listHtml += "<button class='btn' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
+	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
 	    	    listHtml += "<br><br>";
 	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
 	    	    listHtml += "</div><br>";
@@ -136,11 +137,11 @@
 	    	});
 
 	       // div의 id가 examBoard인 부분에 listHtml 추가
-	       $("#examBoard").html(listHtml);
-	   }).fail(function() { // 실패시
-	     alert("Error!"); // 오류시 출력문
-	   });
-	
+		       $("#examBoard").html(listHtml);
+		   }).fail(function() { // 실패시
+		     alert("Error!"); // 오류시 출력문
+		   });
+	   }
    
     // 정답 확인
     function correctAnswer(pbId, index) {
@@ -208,7 +209,6 @@
             $("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
        		 }
    		 }
-	   }
     </script>
 </body>
 </html>

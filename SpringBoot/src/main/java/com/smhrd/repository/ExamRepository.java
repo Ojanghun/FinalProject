@@ -14,14 +14,24 @@ import com.smhrd.entity.Exam;
 public interface ExamRepository extends JpaRepository<Exam, Integer> {
 
     // 년도 별 문제 불러오기
-    List<Exam> findTop100ByExIdOrderByPbNum(int exId);
+    List<Exam> findTop100ByExIdAndLiIdxOrderByPbNum(int exId,int liIdx);
 
     // 카테고리 값에 맞는 유형 불러오기
-    List<Exam> findByPbTopicOrderByPbTopicAsc(int category);
-	List<Exam> findAllByOrderByPbNum(Pageable pageable);
-	
-	@Query(value = "SELECT * FROM pb_info ORDER BY RAND() LIMIT 100", nativeQuery = true)
-	List<Exam> findRandom100(); // 이거 완전 무작위 같은데 → 챕터별로 무작위로 나오게 수정해야함
+    List<Exam> findByPbTopicAndLiIdxOrderByPbTopicAsc(int category,int liIdx);
+    
+	// 랜덤 100문제
+	@Query(value = """
+		    SELECT *
+		    FROM (
+		        SELECT *, ROW_NUMBER() OVER (PARTITION BY pb_num ORDER BY RAND()) AS rn
+		        FROM pb_info
+		        WHERE ( pb_num BETWEEN 1 AND 100 ) AND li_idx = :liIdx
+		    ) AS sub
+		    WHERE sub.rn = 1
+		    ORDER BY pb_num
+		    """, nativeQuery = true)
+	List<Exam> findRandom100(@Param("liIdx") int liIdx);
+
 
     // 유형 전체 불러오기
     List<Exam> findAllByOrderByPbTopicAsc();

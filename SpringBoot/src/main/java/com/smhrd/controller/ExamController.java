@@ -23,20 +23,20 @@ public class ExamController {
 	private ExamService service;
 	
 	// 문제 불러오기
-	@PostMapping("/loadExam/{category}")
-	public List<Exam> loadExam(@PathVariable("category") int category) {
+	@PostMapping("/loadExam")
+	public List<Exam> loadExam(@RequestParam("category") int category, @RequestParam("liIdx") int liIdx) {
 		
 		// 서비스에 문제 데이터 요청
-		List<Exam> exList =service.loadExam(category); // 여기가 문제
+		List<Exam> exList =service.loadExam(category,liIdx); // 여기가 문제
 		System.out.println("문제 데이터: "+exList);
 		return exList;
 	}
 	
 	// 선지 랜덤화
-	@PostMapping("/shuffle/{category}")
-	public List<List<String>> shuffle(@PathVariable("category") int category) {
-		List<List<String>> choice = service.shuffle(category);
-		
+	@PostMapping("/shuffle")
+	public List<List<String>> shuffle(@RequestParam("category") int category, @RequestParam("liIdx") int liIdx) {
+		List<List<String>> choice = service.shuffle(category,liIdx);
+			
 //		Ex.setPbQues("문제1. 다음 중 먹고싶은 것은?");
 //		Ex.setPbChoi1("유정씨가 내려주시는 커피");
 //		Ex.setPbChoi2("장훈씨가 사주시는 치킨");
@@ -57,38 +57,23 @@ public class ExamController {
 	}
 	
 	// 해결책
-	@PutMapping("/solution/{index}")
-	public String solution(@PathVariable("index") int pbId){
+	@PutMapping("/solution/{pbId}")
+	public String solution(@PathVariable("pbId") int pbId){
 		String PbSolu = service.solution(pbId);
 		//System.out.println(PbSolu);
 		return PbSolu;
 	}
 	
 	// 정답 텍스트
-	@PutMapping("/correctAnswer/{index}")
-	public String correctAnswer(@PathVariable("index") int pbId) {
+	@PutMapping("/correctAnswer/{pbId}")
+	public String correctAnswer(@PathVariable("pbId") int pbId) {
 		String pbans = service.correctAnswer(pbId);
 		System.out.println(pbans);
 		return pbans;
 	}
 	
-	// 문제 불러오기(페이지 나누기)
-	@PostMapping("/loadExam1")
-	public List<Exam> loadExam1(@RequestParam("page") int page, @RequestParam("category") int category) {
-	    int pageSize = 10; // 고정값이든 클라이언트에서 받아오든
-	    System.out.println("페이지"+page);
-	    System.out.println("사이즈"+pageSize);
-	    System.out.println("카테고리"+category);
-	    return service.loadExam1(page, pageSize, category);
-	}
+
 	
-	@PostMapping("/shuffle1")
-	public List<List<String>> shuffle1(@RequestParam int page) {
-		int pageNum = page; // 요청 받은 page 파라미터 사용
-		int pageSize = 5;
-		List<List<String>> choice = service.shuffle1(pageNum, pageSize);
-	    return choice;
-	}
 	
 	@PostMapping("/submitPbsData")
 	public void submitPbsData(@RequestBody List<Pbs_Log> dataList, @RequestParam String exCat) {

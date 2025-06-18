@@ -87,8 +87,9 @@ public class LicenseController {
 
 	
 	@RequestMapping("/goTopic.do")
-	public String goTopic(@RequestParam("category") int category, Model model) {
+	public String goTopic(@RequestParam("category") int category,@RequestParam("liIdx") String liIdx, Model model) {
 		model.addAttribute("category", category);
+		model.addAttribute("liIdx", liIdx);
 		System.out.println("카테고리 값: "+category);
 		return "topic";
 	}
