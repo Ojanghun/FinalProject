@@ -1,132 +1,148 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>결제 페이지</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/pricing.css">
+<meta charset="UTF-8">
+<title>결제 페이지</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/pricing.css">
 </head>
 <body>
 
-  <!-- 헤더 -->
-  <div class="container">
-    <header>
-      <div class="custom-header d-flex justify-content-between mb-4 align-items-center">
-        <div class="logo d-flex align-items-center">
-          <a href="/"><img src="/images/로고.png" alt="로고"></a>
-        </div>
-        <div class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-          <a href="/mypage" class="btn btn-outline-secondary me-2">MYPAGE</a>
-          <a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
-        </div>
-      </div>
-    </header>
-  </div>
+	<!-- 헤더 -->
+	<div class="container">
+		<header>
+			<div
+				class="custom-header d-flex justify-content-between mb-4 align-items-center">
+				<div class="logo d-flex align-items-center">
+					<a href="/"><img src="/images/로고.png" alt="로고"></a>
+				</div>
+				<div class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+					<a href="/mypage" class="btn btn-outline-secondary me-2">MYPAGE</a>
+					<form th:action="@{/logout}" method="post" class="d-inline">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
+					</form>
 
-  <!-- 본문 -->
-  <div class="container">
-    <div class="row">
-      <!-- 좌측: 플랜 정보 -->
-      <div class="col-md-6">
-        <div class="payment-box text-left">
-          <h3 th:text="${liName}">정보처리기사 필기</h3>
-          <h2>
-            <strong th:text="${plan}">플랜이름</strong>
-            <small style="color: grey" th:if="${plan == '탐구형'}">자유롭게 공부하고 싶으신가요?</small>
-            <small th:if="${plan == '필수형'}">우리가 알아서 계획 짜줄게!</small>
-          </h2>
-          <h3><strong th:text="${planPrice + '원'}">9000원</strong></h3>
-          <p style="color: green;" th:text="'현재 ' + ${activeUserCount} + '명이 이용중입니다.'">현재 00명이 이용중입니다.</p>
+				</div>
+			</div>
+		</header>
+	</div>
 
-          <div class="plan-desc mt-4">
-            <strong th:if="${plan == '탐구형'}">탐색형 제공 서비스</strong>
-            <strong th:if="${plan == '필수형'}">필수형 제공 서비스</strong>
-            <ol>
-              <li>주제별 풀이</li>
-              <li>실제 시험 환경 풀이</li>
-              <li>시험 합격시 환급</li>
-              <li>일일 할당량 제공</li>
-            </ol>
-          </div>
+	<!-- 본문 -->
+	<div class="container">
+		<div class="row">
+			<!-- 좌측: 플랜 정보 -->
+			<div class="col-md-6">
+				<div class="payment-box text-left">
+					<h3 th:text="${liName}">정보처리기사 필기</h3>
+					<h2>
+						<strong th:text="${plan}">플랜이름</strong> <small style="color: grey"
+							th:if="${plan == '탐구형'}">자유롭게 공부하고 싶으신가요?</small> <small
+							th:if="${plan == '필수형'}">우리가 알아서 계획 짜줄게!</small>
+					</h2>
+					<h3>
+						<strong th:text="${planPrice + '원'}">9000원</strong>
+					</h3>
+					<p style="color: green;"
+						th:text="'현재 ' + ${activeUserCount} + '명이 이용중입니다.'">현재 00명이
+						이용중입니다.</p>
 
-          <!-- 좌측 하단 버튼 -->
-          <div class="mt-5">
-            <a th:href="@{'/plan?liIdx=' + ${liIdx}}" class="btn btn-outline-secondary">← 플랜 선택으로 돌아가기</a>
-          </div>
-        </div>
-      </div>
+					<div class="plan-desc mt-4">
+						<strong th:if="${plan == '탐구형'}">탐색형 제공 서비스</strong> <strong
+							th:if="${plan == '필수형'}">필수형 제공 서비스</strong>
+						<ol>
+							<li>주제별 풀이</li>
+							<li>실제 시험 환경 풀이</li>
+							<li>시험 합격시 환급</li>
+							<li>일일 할당량 제공</li>
+						</ol>
+					</div>
 
-      <!-- 우측: 카드 결제 입력 -->
-      <div class="col-md-6">
-        <form method="post" action="/pay/submit" class="payment-box">
-          <h4>카드 정보 입력</h4>
+					<!-- 좌측 하단 버튼 -->
+					<div class="mt-5">
+						<a th:href="@{'/plan?liIdx=' + ${liIdx}}"
+							class="btn btn-outline-secondary">← 플랜 선택으로 돌아가기</a>
+					</div>
+				</div>
+			</div>
 
-          <div class="mb-3">
-            <label>Payment Method</label>
-            <div>
-              <img src="/images/card_logo.png" alt="카드로고" style="height: 32px;">
-            </div>
-          </div>
+			<!-- 우측: 카드 결제 입력 -->
+			<div class="col-md-6">
+				<form method="post" action="/pay/submit" class="payment-box">
+					<h4>카드 정보 입력</h4>
 
-          <div class="mb-3">
-            <label>Name on card</label>
-            <input type="text" name="cardName" class="form-control" required>
-          </div>
+					<div class="mb-3">
+						<label>Payment Method</label>
+						<div>
+							<img src="/images/card_logo.png" alt="카드로고" style="height: 32px;">
+						</div>
+					</div>
 
-          <div class="mb-3">
-            <label>Card number</label>
-            <input type="text" name="cardNumber" class="form-control" maxlength="19" required>
-          </div>
+					<div class="mb-3">
+						<label>Name on card</label> <input type="text" name="cardName"
+							class="form-control" required>
+					</div>
 
-          <div class="row">
-            <div class="col-xs-6">
-              <label>Card expiration (MM/YY)</label>
-              <div class="d-flex">
-                <select id="expMonth" name="expMonth" class="form-control" required>
-              <option disabled selected>Month</option>
-            </select>
-            <select id="expYear" name="expYear" class="form-control" required>
-              <option disabled selected>Year</option>
-            </select>
-              </div>
-            </div>
-          </div>
+					<div class="mb-3">
+						<label>Card number</label> <input type="text" name="cardNumber"
+							class="form-control" maxlength="19" required>
+					</div>
 
-          <div class="mb-3 mt-3">
-            <label>Card Security Code (CSV)</label>
-            <input type="text" name="cvc" class="form-control" maxlength="3" required>
-          </div>
-          
-          <div class="mb-3 mt-3">
-            <label>Card password</label>
-            <input type="password" name="card_pwd" class="form-control" maxlength="4" required>
-          </div>
+					<div class="row">
+						<div class="col-xs-6">
+							<label>Card expiration (MM/YY)</label>
+							<div class="d-flex">
+								<select id="expMonth" name="expMonth" class="form-control"
+									required>
+									<option disabled selected>Month</option>
+								</select> <select id="expYear" name="expYear" class="form-control"
+									required>
+									<option disabled selected>Year</option>
+								</select>
+							</div>
+						</div>
+					</div>
 
-          <!-- 필수 데이터 히든 전달 -->
-          <input type="hidden" name="planIdx" th:value="${planIdx}">
-          <input type="hidden" name="liName" th:value="${liName}">
-          <input type="hidden" name="plan" th:value="${plan}">
+					<div class="mb-3 mt-3">
+						<label>Card Security Code (CSV)</label> <input type="text"
+							name="cvc" class="form-control" maxlength="3" required>
+					</div>
 
-          <button type="submit" class="btn btn-block btn-dark mt-4" style="width: 100%;">Continue</button>
-        </form>
-      </div>
-    </div>
-  </div>
+					<div class="mb-3 mt-3">
+						<label>Card password</label> <input type="password"
+							name="card_pwd" class="form-control" maxlength="4" required>
+					</div>
 
- <!-- Footer -->
-<footer class="footer mt-5 py-4 border-top">
-  <div class="container text-center">
-    <nav class="nav justify-content-center mb-3">
-      <a href="#" class="footer-link">Home</a>
-      <a href="#" class="footer-link">About</a>
-      <a href="#" class="footer-link">Contact</a>
-    </nav>
-    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-  </div>
-</footer> 
+					<!-- 필수 데이터 히든 전달 -->
+					<input type="hidden" name="planIdx" th:value="${planIdx}">
+					<input type="hidden" name="liName" th:value="${liName}"> <input
+						type="hidden" name="plan" th:value="${plan}">
 
-<script type="text/javascript">
+					<button type="submit" class="btn btn-block btn-dark mt-4"
+						style="width: 100%;">Continue</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer class="footer mt-5 py-4 border-top">
+		<div class="container text-center">
+			<nav class="nav justify-content-center mb-3">
+				<a href="#" class="footer-link">Home</a> <a href="#"
+					class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
+			</nav>
+			<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+		</div>
+	</footer>
+
+	<script type="text/javascript">
 
    const liIdx = /*[[${liIdx}]]*/ 0;
     const plan = /*[[${plan}]]*/ "";
