@@ -12,7 +12,7 @@ import lombok.Data;
 public class Exam {
 	
 	@Id
-	@Column(name = "pb_idx", unique = true, nullable = false)
+	@Column(name = "PB_IDX", unique = true, nullable = false)
 	private int pbId; // 문제 아이디 - PK
 
 	@Column(name = "LI_IDX", nullable = false) 

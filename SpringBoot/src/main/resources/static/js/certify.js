@@ -1,10 +1,24 @@
 const token = $("meta[name='_csrf']").attr("content");
 const header = $("meta[name='_csrf_header']").attr("content");
 
-document.getElementById("certifyForm").addEventListener("submit", function(event) {
-	event.preventDefault(); // 기본 submit 막기
+document.getElementById("uploadBtn").addEventListener("click", uploadFile);
 
-	const formData = new FormData(this);
+function uploadFile() {
+	const fileInput = document.getElementById("fileInput");
+
+	// 현재 URL에서 liIdx 값 추출
+	const urlParams = new URLSearchParams(window.location.search);
+	const planIdx = urlParams.get("planIdx");
+
+	const formData = new FormData();
+	
+	if (planIdx === null || planIdx === undefined || planIdx === "") {
+		alert("선택된 플랜이 없습니다")
+		return;
+	}
+	
+	formData.append("file", fileInput.files[0]); // files -> 선택한 모든 파일을 나열하는 FileList 객체입니다.
+	formData.append("planIdx", planIdx);  // 이걸 추가해야 컨트롤러에서 @RequestParam으로 받을 수 있음
 
 	$.ajax({
 		url: "upload",
@@ -20,13 +34,14 @@ document.getElementById("certifyForm").addEventListener("submit", function(event
 				alert("업로드가 완료되었습니다")
 			} else if (data == "typeMismatch") {
 				alert("동영상 파일만 업로드해주세요")
+			} else if (data == "uploadPeriodExpired") {
+				alert("환급 기간이 아닙니다")
 			} else if (data == "noRefundablePlan") {
 				alert("환불 가능한 플랜이 없습니다")
-			} else if (data == "alreadyRefunded") {
-				alert("이미 환급 요청한 플랜입니다")
 			}
 		},
 		error: function() { alert("업로드 에러 발생") }
-	});
-});
 
+	});
+
+}

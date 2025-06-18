@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LiInfoRepository extends JpaRepository<Li_Info, Integer> {
 
-	List<Li_Info> findByLiIdx(int liIdx);
+	List<Li_Info> findByLiName(String string);
     // 필요한 경우 커스텀 쿼리 추가 가능
 }
