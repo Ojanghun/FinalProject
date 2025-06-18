@@ -7,6 +7,8 @@
 <link rel="stylesheet" type="text/css" href="/css/exam.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
@@ -50,6 +52,16 @@
 	  </div>
 	</footer>
 
+				<input type="hidden" id="category" th:value="${category}" />
+				<input type="hidden" id="liIdx" th:value="${liIdx}" />
+				<div id="examBoard"></div>
+
+			</div>
+			<div class="panel-footer">© 2025 문제 Issue!</div>
+		</div>
+	</div>
+	
+<!-- Thymeleaf에서 JS로 챕터명 전달 -->	
 <script th:inline="javascript">
     const chapterTitles = [
         /*[[${liChap1}]]*/,
@@ -94,6 +106,15 @@ function renderPage(pageIndex) {
     listHtml += "<div class='exam-section'>";
     listHtml += "<h4 class='subjectIdx'>" + chapterTitles[pageIndex] + "</h4><hr>";
     listHtml += "<div class='column-wrapper'>";
+    // 문제 불러오는 함수
+    function loadExam() {
+        const category = $("#category").val();
+        const liIdx = $("#liIdx").val();
+
+        $.when(
+            $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
+            $.ajax({ url: "/shuffle", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }})
+        ).done(function(examData, shuffleData) {
 
     for (let idx = startIdx; idx < endIdx; idx++) {
         const pb = exData[idx];
@@ -152,6 +173,49 @@ function renderPagination() {
         html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
                     <button class="page-link" onclick="renderPage(${i})">${i + 1}</button>
                  </li>`;
+	    	    listHtml += "<br>";
+	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
+	    	    listHtml += "<br><br>";
+	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
+	    	    listHtml += "</div><br>";
+	    	  });
+			  listHtml += "</div>"
+	    	});
+
+	       // div의 id가 examBoard인 부분에 listHtml 추가
+		       $("#examBoard").html(listHtml);
+		   }).fail(function() { // 실패시
+		     alert("Error!"); // 오류시 출력문
+		   });
+	   }
+   
+    // 정답 확인
+    function correctAnswer(pbId, index) {
+        $.ajax({
+            url: "/correctAnswer/"+pbId,
+            type: "put",
+            data: {},
+            dataType: "text",
+            success: function(data) {
+                if ($("#pbans"+index).text().trim() === "정답 확인") {
+                    for (let i = 1; i <= 4; i++) {
+                        let choiceText = $("#choiceText" + (index + 1) + "-" + i).text().trim();
+                        if (choiceText === data.trim()) {
+                            $("#choice" + (index + 1) + "-" + i).css("color", "red");
+                        }
+                    }
+                    if(userSelections[index+1] === data) {
+                        $("#check" + (index+1)).css("display","block");
+                        $("#check" + (index+1)).attr("src","/images/o.png");
+                    } else {
+                        $("#check" + (index+1)).css("display","block");
+                        $("#check" + (index+1)).attr("src","/images/x.png");
+                    }
+                }
+            },
+            error: function() { alert("Error!"); }
+        });
     }
 
     // >> 마지막으로
@@ -230,5 +294,10 @@ function solution(pbId, index) {
 }
 </script>
 
+            $("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
+            $("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
+       		 }
+   		 }
+    </script>
 </body>
 </html>

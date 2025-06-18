@@ -41,12 +41,15 @@ public class ExamService {
 	private UserScoreRepository userScoreRepository;
 	
 	// 년도 별 문제 불러오기
-	public List<Exam> loadExam(int category) { // 카테고리 값을 받아왔음, 2가지 값 받아오는게 가능할지도?
+	public List<Exam> loadExam(int category, int liIdx) { // 카테고리 값을 받아왔음, 2가지 값 받아오는게 가능할지도?
 		System.out.println(category);
 		if(category < 100) {
-			return repository.findTop100ByExIdOrderByPbNum(category);
-		}else { // 유형별 문제는 0~56 
-			return repository.findByPbTopicOrderByPbTopicAsc(category);
+			if(category == 0) {
+				return repository.findRandom100(liIdx);
+			}else {
+				return repository.findTop100ByExIdAndLiIdxOrderByPbNum(category,liIdx);
+			}}else { // 유형별 문제는 0~56 
+				return repository.findByPbTopicAndLiIdxOrderByPbTopicAsc(category,liIdx);
 		}
 	}
 	
@@ -56,14 +59,14 @@ public class ExamService {
 	}
 	
 	// 년도 별 선지 랜덤화
-	public List<List<String>> shuffle(int category) {
+	public List<List<String>> shuffle(int category,int liIdx) {
 		
 		List<Exam> exList = null;
 		
 		if(category < 100) { // 년도별 문제는 1~8 -> 그대로 1~8
-			exList = repository.findTop100ByExIdOrderByPbNum(category);
+			exList = repository.findTop100ByExIdAndLiIdxOrderByPbNum(category,liIdx);
 		}else { // 유형별 문제는 0~56 -> 100~156
-			exList = repository.findByPbTopicOrderByPbTopicAsc(category);
+			exList = repository.findByPbTopicAndLiIdxOrderByPbTopicAsc(category,liIdx);
 		}
 			 
 		// 섞인 선지 데이터 모든 세트를 담아줄 리스트
@@ -117,45 +120,6 @@ public class ExamService {
 		}
 //		return exam.getPbAns();
 	}
-	
-
-	public List<Exam> loadExam1(int pageNum, int pageSize, int category) {
-        // 100문제만 미리 가져오고, 그 중에서 해당 페이지 데이터 추출
-		List<Exam> allQuestions;
-		if(category == 0) {
-			allQuestions = repository.findRandom100();
-		}else {
-			allQuestions = repository.findTop100ByExIdOrderByPbNum(category);
-		}
-		
-		System.out.println("전체 데이터 : "+allQuestions);
-
-        int start = pageNum * pageSize;
-        int end = Math.min(start + pageSize, allQuestions.size());
-
-        if (start >= allQuestions.size()) {
-            return new ArrayList<>(); // 빈 리스트 반환
-        }
-
-        return allQuestions.subList(start, end);
-	}
-
-	public List<List<String>> shuffle1(int pageNum, int pageSize) {
-		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by("pbNum").ascending());
-		List<Exam> exList = repository.findAllByOrderByPbNum(pageable);
-		List<List<String>> choice = new ArrayList<>();
-		for (Exam exam : exList) {
-			List<String> options = new ArrayList<>();
-			options.add(exam.getPbChoi1());
-			options.add(exam.getPbChoi2());
-			options.add(exam.getPbChoi3());
-			options.add(exam.getPbChoi4());
-			Collections.shuffle(options);
-			choice.add(options);
-		}
-		return choice;
-	}
-
 
 
 	public void updateTopic() {	
