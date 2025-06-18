@@ -53,7 +53,9 @@
 				</a>
 			</div>
 
-
+			<!-- ✅ 로그아웃 메시지 표시 -->
+			<div th:if="${logoutMessage}" class="alert alert-success"
+				role="alert" th:text="${logoutMessage}">성공적으로 로그아웃되었습니다.</div>
 			<div class="header-links d-flex gap-2">
 				<!-- ❌ 로그인하지 않은 경우 -->
 				<th:block th:if="${session.info == null}">

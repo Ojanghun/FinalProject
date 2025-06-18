@@ -49,6 +49,10 @@
 			<!-- ✅ 로그아웃 메시지 표시 -->
 			<div th:if="${logoutMessage}" class="alert alert-success"
 				role="alert" th:text="${logoutMessage}">성공적으로 로그아웃되었습니다.</div>
+			<!-- 로그인 폼 위에 성공 메시지 -->
+			<!-- ✅ 회원가입 성공 메시지 표시 -->
+			<div th:if="${joinSuccessMessage}" class="alert alert-success"
+				th:text="${joinSuccessMessage}"></div>
 			<form method="post" action="/login">
 				<input type="hidden" th:name="${_csrf.parameterName}"
 					th:value="${_csrf.token}" />
