@@ -102,7 +102,6 @@
 ### 메인화면/로그인/회원가입/마이페이지
 ![main](https://github.com/user-attachments/assets/0fc6a4b5-843e-461b-9626-fddd79b0cf9d)메인화면 | ![login](https://github.com/user-attachments/assets/7c90c92d-7420-4179-bb75-27242457179a)로그인 | ![join](https://github.com/user-attachments/assets/8bf88181-b8eb-496f-a31f-b1bb02d3b876)회원가입 | ![mypage](https://github.com/user-attachments/assets/3cc086f9-ed20-4bd9-b5c9-96eb0b2c1d23)마이페이지
 ---|---|---|---|
-
 <br>
 
 ### 옷 정보/코디 추천(날씨, 팁, 오늘의 코디, 참고할 수 있는 코디)
