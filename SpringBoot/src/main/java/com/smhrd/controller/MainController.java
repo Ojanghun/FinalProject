@@ -4,7 +4,6 @@ import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
 import com.smhrd.entity.Pay_Info;
 import com.smhrd.projection.PayWithLicenseDTO;
-import com.smhrd.projection.PayWithLicenseDTOImpl;
 import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.repository.PayInfoRepository;
 
@@ -75,15 +74,15 @@ public class MainController {
 
         // ✅ 사용자 결제 리스트 payList 모델에 전달
         if (loginUser != null) {
-        	List<PayWithLicenseDTOImpl> payList = payInfoRepository.findDetailedPaymentsByUserId(loginUser.getId());
-        	model.addAttribute("payList", payList);
+            List<PayWithLicenseDTO> payList = payInfoRepository.findDetailedPaymentsByUserId(loginUser.getId());
+            model.addAttribute("payList", payList);
         }
 
         return "main";
     }
 
     @GetMapping("/promote")
-    public String promote() { 
+    public String promote() {
         return "promote";
     }
 }
