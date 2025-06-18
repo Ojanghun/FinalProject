@@ -2,6 +2,7 @@ package com.smhrd.controller;
 
 import com.smhrd.entity.Member;
 import com.smhrd.projection.PayWithLicenseDTO;
+import com.smhrd.projection.PayWithLicenseDTOImpl;
 import com.smhrd.repository.PayInfoRepository;
 import com.smhrd.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -32,8 +33,9 @@ public class MemberController {
         model.addAttribute("member", member);
 
         // 2. 자격증 이름(liName) 포함된 결제 DTO 조회
-        List<PayWithLicenseDTO> payList = payInfoRepository.findDetailedPaymentsByUserId(member.getId());
+        List<PayWithLicenseDTOImpl> payList = payInfoRepository.findDetailedPaymentsByUserId(member.getId());
         model.addAttribute("payList", payList);
+
 
         return "mypage";
     }
