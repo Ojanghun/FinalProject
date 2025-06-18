@@ -14,14 +14,11 @@ import com.smhrd.entity.Exam;
 public interface ExamRepository extends JpaRepository<Exam, Integer> {
 
     // 년도 별 문제 불러오기
-    List<Exam> findTop100ByExIdOrderByPbNum(int exId);
+    List<Exam> findTop100ByExIdAndLiIdxOrderByPbNum(int exId,int liIdx);
 
     // 카테고리 값에 맞는 유형 불러오기
-    List<Exam> findByPbTopicOrderByPbTopicAsc(int category);
+    List<Exam> findByPbTopicAndLiIdxOrderByPbTopicAsc(int category,int liIdx);
     
-    // 페이지 번호(폐기)
-	List<Exam> findAllByOrderByPbNum(Pageable pageable);
-	
 	// 랜덤 100문제
 	@Query(value = """
 		    SELECT *

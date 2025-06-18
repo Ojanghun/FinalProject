@@ -47,9 +47,9 @@ public class ExamService {
 			if(category == 0) {
 				return repository.findRandom100(liIdx);
 			}else {
-				return repository.findTop100ByExIdOrderByPbNum(category);
+				return repository.findTop100ByExIdAndLiIdxOrderByPbNum(category,liIdx);
 			}}else { // 유형별 문제는 0~56 
-				return repository.findByPbTopicOrderByPbTopicAsc(category);
+				return repository.findByPbTopicAndLiIdxOrderByPbTopicAsc(category,liIdx);
 		}
 	}
 	
@@ -59,14 +59,14 @@ public class ExamService {
 	}
 	
 	// 년도 별 선지 랜덤화
-	public List<List<String>> shuffle(int category) {
+	public List<List<String>> shuffle(int category,int liIdx) {
 		
 		List<Exam> exList = null;
 		
 		if(category < 100) { // 년도별 문제는 1~8 -> 그대로 1~8
-			exList = repository.findTop100ByExIdOrderByPbNum(category);
+			exList = repository.findTop100ByExIdAndLiIdxOrderByPbNum(category,liIdx);
 		}else { // 유형별 문제는 0~56 -> 100~156
-			exList = repository.findByPbTopicOrderByPbTopicAsc(category);
+			exList = repository.findByPbTopicAndLiIdxOrderByPbTopicAsc(category,liIdx);
 		}
 			 
 		// 섞인 선지 데이터 모든 세트를 담아줄 리스트
