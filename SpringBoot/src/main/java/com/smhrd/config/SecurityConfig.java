@@ -59,7 +59,8 @@ public class SecurityConfig {
                     "/idCheck",
                     "/css/**",
                     "/js/**",
-                    "/images/**"
+                    "/images/**",
+                    "/searchLicenses"
                 ).permitAll()
 
                 .anyRequest().authenticated()
