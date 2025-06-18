@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
-
+<html lang="en" data-bs-theme="auto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,12 +23,7 @@
 					style="height: 40px;"></a>
 				<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
 					<a class="btn btn-outline-secondary me-2" href="mypage">MYPAGE</a>
-					<form th:action="@{/logout}" method="post" class="d-inline">
-						<input type="hidden" th:name="${_csrf.parameterName}"
-							th:value="${_csrf.token}" />
-						<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
-					</form>
-
+					<a class="btn btn-outline-danger" href="logout">LOGOUT</a>
 				</nav>
 			</div>
 			<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
@@ -117,25 +111,29 @@
 						<tr>
 							<th class="text-start">일정 관리</th>
 							<td></td>
-							<td><svg class="bi" width="20" height="20">
-									<use xlink:href="#check" /></svg></td>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+					        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+					      </svg></td>
 						</tr>
 						<tr>
 							<th class="text-start">목표 설정</th>
 							<td></td>
-							<td><svg class="bi" width="20" height="20">
-									<use xlink:href="#check" /></svg></td>
-						</tr>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+						        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+						      </svg></td>
+							</tr>
 						<tr>
 							<th class="text-start">알림 기능</th>
 							<td></td>
-							<td><svg class="bi" width="20" height="20">
-									<use xlink:href="#check" /></svg></td>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+					        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+					      </svg></td>
 						</tr>
 						<tr>
 							<th class="text-start">자유도</th>
-							<td><svg class="bi" width="20" height="20">
-									<use xlink:href="#check" /></svg></td>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+					        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+					      </svg></td>
 							<td></td>
 						</tr>
 					</tbody>

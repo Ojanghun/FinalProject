@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
@@ -29,12 +28,11 @@ public class ProductController {
 	LicenseService licenseservice;
 	
 	@Autowired
-	private ExInfoRepository exinfoRepository;
+	private final ExInfoRepository exinfoRepository;
 
 
 	@GetMapping("/license")
-	public String License(@RequestParam("liIdx") int liIdx, HttpSession session, Model model) {
-		model.addAttribute("liIdx", liIdx);
+	public String License(HttpSession session, Model model) {
 		// session에서 info로 저장된 Member 데이터를 꺼내서 member에 저장
 		Member member = (Member) session.getAttribute("info");
 		String id = null;
@@ -45,7 +43,7 @@ public class ProductController {
 			// 로그인한 id값 저장해두기
 			id = member.getId();
 		}
-		List<Li_Info> licenseList = licenseservice.liInfo(liIdx);
+		List<Li_Info> licenseList = licenseservice.liInfo();
 		model.addAttribute("licenseList", licenseList);
 		System.out.println("li정보 : "+licenseList);
 		
@@ -57,7 +55,7 @@ public class ProductController {
 			model.addAttribute("date", date);	
 		}
 		
-		List<Topic_Info> topicList = licenseservice.topicInfo(liIdx);
+		List<Topic_Info> topicList = licenseservice.topicInfo();
 		model.addAttribute("topicList", topicList);
 		
 		LocalDateTime now = LocalDateTime.now();
@@ -75,12 +73,9 @@ public class ProductController {
         model.addAttribute("pbIdxList", pbIdxList);
         
 		// 기출 문제 - 회차 정보 불러오기
-		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds(liIdx);
+		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds();
 		model.addAttribute("rounds", rounds);
 		
-		List<Object[]> top5List = licenseservice.wrongRate(id);
-		
-		model.addAttribute("top5List", top5List);
         
 		return "license";
 	}
@@ -90,12 +85,13 @@ public class ProductController {
         this.exinfoRepository = exinfoRepository;
     }
 	
-
+    
 	@GetMapping("/topic")
 	public String subject() {
 		return "topic";
 	}
-	 
+	
+    
 
 	
 }

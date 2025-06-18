@@ -1,23 +1,18 @@
-/* 기본 스타일 */
+kk/* 기본 스타일 */
+
 body {
   font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
   background-color: #FAFAFA;
   color: #212121;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 .container {
   max-width: 1440px;
-  padding-left: 12px;
-  padding-right: 12px;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
 }
-
 
 h2 {
   color: #1E88E5;
@@ -32,27 +27,15 @@ h4 {
   font-weight: 600;
   margin-bottom: 15px;
 }
-/* 모든 container의 기본 여백 통일 */
-main.container {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
 
-/* ✅ 공통 헤더 스타일 */
+/* 헤더 */
 .custom-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  background-color: white;
   padding: 16px 24px;
-  height: 70px;
   border-bottom: 1px solid #ddd;
-}
-
-/* 헤더 아래 여백 통일 */
-.custom-header + * {
-  margin-top: 24px;
 }
 
 .logo {
@@ -65,6 +48,7 @@ main.container {
   height: 40px;
   width: auto;
   cursor: pointer;
+  
 }
 
 .logo-text {
@@ -77,12 +61,6 @@ main.container {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.header-links .btn {
-  padding: 6px 14px;
-  font-size: 14px;
-  height: auto;
 }
 
 /* 네비게이션 바 */
@@ -113,29 +91,15 @@ main.container {
   border-radius: 20px 20px 0 0;
 }
 
-
 /* 공통 카드 스타일 */
 
 .dashboard-card {
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
-  padding: 8px 12px;
-  margin-bottom: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
   border: 1px solid #ddd;
-}
-.dashboard-card h5 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
-.dashboard-card .btn {
-  padding: 10px 10px;
-  font-size: 14px;
-  height: auto;
-  border-radius: 20px;
 }
 
 .schedule-card {
@@ -227,6 +191,7 @@ main.container {
   background-color: #e3f2fd;
 }
 
+
 /* 키워드 박스 */
 .keyword-box {
   width: 240px;
@@ -254,16 +219,10 @@ main.container {
   font-size: 14px;
   margin-bottom: 6px;
 }
-/* 세 개 카드 높이를 합친 총 높이 예시 맞춤 */
-.dashboard-card.p-4.h-100 {
-  min-height: 100%;
-}
 
 /* 서비스 홍보 영역 */
 .promotion-section {
   width: 100%;
-  background-color: #e0e0e0;
-  padding: 60px 20px;
   text-align: center;
 }
 
@@ -317,24 +276,25 @@ main.container {
 
 /* 출석 동그라미 */
 .day-circle {
-  width: 36px;
+  width: 20px;
   height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: auto;
-  font-weight: bold;
   position: relative;
   overflow: visible;
 } 
 
 .attended {
-  background-color: #d0f0ff; /* 밝은 파란색 */
+	 background-color: #d0f0ff; 
   color: #0077aa;
   box-shadow: 0 0 6px rgba(0, 119, 170, 0.5);
   animation: pulse 0.4s ease;
-} 
+}
+
+
 .day-circle.exam-period-bar {
   background-color:rgba(178, 222, 255, 0.4); 
   border-radius: 0; /* 바 형식 */
@@ -344,23 +304,22 @@ main.container {
   cursor: pointer;
   position: relative;
 }
-/* 마우스를 올렸을 때 툴팁 생성 */
-.exam-period-bar::after {
-  content: attr(data-title);
-  position: absolute;
-  bottom: 120%; /* 요소 위쪽에 표시 */
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #333;
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  white-space: nowrap;
-  font-size: 12px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease-in-out;
-  z-index: 10;
+
+/* 달력 셀 색상 표시용 클래스 */
+.calendar-day.apply {
+  background-color: #E3F2FD;
+  border: 2px solid #42A5F5;
+  border-radius: 50%;
+}
+.calendar-day.exam {
+  background-color: #E8F5E9;
+  border: 2px solid #66BB6A;
+  border-radius: 50%;
+}
+.calendar-day.result {
+  background-color: #FFF3E0;
+  border: 2px solid #FFA726;
+  border-radius: 50%;
 }
 
 /* 호버 시 보이기 */
@@ -368,9 +327,8 @@ main.container {
   opacity: 1;
 }
 
-
 .day-circle.today {
-  
+	font-weight: bold;
 }
 
 /* 애니매이션 추가 */
@@ -416,35 +374,15 @@ main.container {
   display: none;
 }
 
-
-/* footer  */
-.footer {
-  border-top: 1px solid #ddd;
-}
-
-.footer .nav a {
-  color: #666;
-  margin: 0 10px;
-  font-size: 14px;
-  text-decoration: none;
-}
-
-.footer .text-muted {
-  font-size: 13px;
-}
-
-
 /* --- 탭 메뉴 (가운데 정렬, 깔끔한 디자인) --- */
 .tab-menu {
-  border-bottom: 1px solid #c3d0ff;
-  margin-top: 17px;
-  padding-bottom: 10px;
-  margin-bottom: 2.5rem;
   display: flex;
   justify-content: center;
-  gap: 28px;
-  user-select: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  gap: 24px;
+  border-bottom: 2px solid #ececec;
+  margin: 30px 0 2.5rem;
+  padding-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* 탭 버튼 기본 */
@@ -452,27 +390,50 @@ main.container {
   border: none;
   background: transparent;
   font-weight: 600;
-  font-size: 1.15rem;
-  padding-bottom: 12px;
-  color: #5a6dbc;
+  font-size: 1.3rem;
+  padding: 10px 16px;
+  color: #1E88E5;
+  border-bottom: 3px solid transparent;
   position: relative;
   cursor: pointer;
   transition: color 0.25s ease, border-bottom-color 0.3s ease;
-  outline: none;
-  border-bottom: 3px solid transparent;
   border-radius: 4px 4px 0 0;
 }
 
-/* 탭 버튼 호버 */
+/* 형광펜 효과 */
+.tab-menu button::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  width: 100%;
+  height: 14px;
+  background: #e3f2fd;
+  border-radius: 3px;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.tab-menu button:hover::before {
+  opacity: 1;
+}
+
+/* 탭 버튼 hover */
 .tab-menu button:hover:not(.active) {
-  color: #2f3f91;
+  color: #1565c0;
 }
 
 /* 탭 버튼 활성화 */
 .tab-menu button.active {
-  color: #1a237e;
   font-weight: 700;
-  border-bottom-color: #1a237e;
+  color: #1565c0;
+  border-bottom-color: #1E88E5;
+}
+
+.tab-menu button.active::before {
+  opacity: 1;
 }
 
 /* --- 자격증 항목 --- */
@@ -482,13 +443,13 @@ main.container {
   border-bottom: 1px solid #e3e9ff;
 }
 
-/* --- 자격증 제목 + 형광펜 효과 (파란 계열) --- */
+/* --- 자격증 제목 + 형광펜 효과 --- */
 .exam-title {
   font-weight: 700;
   font-size: 1.4rem;
   display: inline-block;
   position: relative;
-  color: #273469;
+  color: #1565c0;
   margin-bottom: 12px;
   padding: 6px 12px;
   user-select: none;
@@ -496,7 +457,6 @@ main.container {
   font-family: 'Poppins', sans-serif;
 }
 
-/* 형광펜 느낌 */
 .exam-title::before {
   content: "";
   position: absolute;
@@ -504,25 +464,25 @@ main.container {
   bottom: 6px;
   width: 100%;
   height: 14px;
-  background: #e5f1f8;
+  background: #e3f2fd;
   border-radius: 3px;
   z-index: -1;
   pointer-events: none;
 }
 
-/* --- 자격증 설명 --- */
+/* --- 설명 텍스트 --- */
 .exam-description {
   font-size: 1rem;
   margin-bottom: 10px;
-  color: #3e4a9e;
+  color: #1e3a8a;
   line-height: 1.5;
 }
 
 /* --- 날짜 --- */
 .exam-date {
-  color: #7a8dbf;
-  font-size:1.1rem;
-  margin-left:5px;
+  color: #004080;
+  font-size: 1.1rem;
+  margin-left: 5px;
   margin-bottom: 10px;
   user-select: none;
 }
@@ -549,3 +509,250 @@ main.container {
 .exam-buttons .btn:active {
   transform: scale(0.95);
 }
+
+
+.image-placeholder {
+  font-size: 1.2rem;
+  font-weight: 500;
+  background-color: #6c757d;
+  color: white;
+  border-radius: 1rem;
+}
+/* main - 홍보구역  */
+.promotion-section {
+  background-color: #f8f9fa;
+  padding: 3rem 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.promotion-section h2.section-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  font-size: 2rem;
+  color: #343a40;
+}
+
+.card2 {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 0.8rem;
+}
+
+.card2:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* main - 검색창 */
+.autocomplete-item {
+  cursor: pointer;
+}
+.autocomplete-item:hover {
+  background-color: #f0f0f0;
+}
+#clearBtn {
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  text-decoration: none;
+}
+#clearBtn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.feature-card {
+      background: #fff;
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+      transition: transform 0.2s;
+      height: 100%;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .icon-box {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #2a6ef7, #4b9bff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+      color: #6c757d;
+      margin-bottom: 1.25rem;
+    }
+ 
+.feature-link{
+	display: inline-flex;
+      align-items: center;
+      font-weight: 500;
+      color: #0d6efd;
+}
+    .feature-link i {
+      margin-left: 6px;
+    }
+
+    .search-input,
+    .search-select {
+      border-radius: 12px;
+      border: 1px solid #ced4da;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus,
+    .search-select:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+    }
+    
+  /* main - 홍보 */
+.promo-wrapper {
+    background-color: #f2f8ff;
+    padding: 60px 20px;
+    border-radius: 12px;
+    margin-bottom: 60px;
+  }
+
+  .promo-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #1a237e;
+  }
+
+  .promo-card {
+    background: #e3ecff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: left;
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(30, 56, 146, 0.1);
+  }
+
+  .promo-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+  }
+
+  .promo-card h5 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .promo-card p {
+    font-size: 15px;
+    color: #374785;
+  }
+
+.faq-wrapper {
+  margin-top: 80px;
+  padding: 40px 20px;
+  background-color: #f7faff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.08);
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.faq-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #0d47a1;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.faq-item {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 22px 28px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 6px solid #64b5f6;
+}
+
+.faq-item:hover {
+  background: #f1f8ff;
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.1);
+}
+
+.faq-item span {
+  font-weight: 600;
+  font-size: 16.5px;
+  color: #1a237e;
+  flex: 1;
+  line-height: 1.6;
+}
+
+.faq-item i {
+  font-size: 22px;
+  color: #2196f3;
+  margin-left: 20px;
+  transition: transform 0.2s ease;
+}
+
+.faq-item.open i {
+  transform: rotate(180deg);
+}
+
+/* 답변 영역 스타일 (선택사항) */
+.faq-answer {
+  margin-top: 12px;
+  padding-left: 6px;
+  font-size: 15px;
+  color: #37474f;
+  display: none;
+}
+
+  @media (max-width: 768px) {
+    .promo-card {
+      flex: 1 1 100%;
+    }
+  }
+  
+  
+/* footer  */
+.footer {
+  border-top: 1px solid #ddd;
+}
+
+.footer .nav a {
+  color: #666;
+  margin: 0 10px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.footer .text-muted {
+  font-size: 13px;
+}
+  

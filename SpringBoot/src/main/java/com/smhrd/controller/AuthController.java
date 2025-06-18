@@ -35,7 +35,6 @@ public class AuthController {
                 + "&response_type=code"
                 + "&scope=profile_nickname,profile_image";
 
-        System.out.println("kakaoAuthUrl 정보: "+kakaoAuthUrl);
         model.addAttribute("kakaoAuthUrlForRegister", kakaoAuthUrl);
 
         if (error != null) {
