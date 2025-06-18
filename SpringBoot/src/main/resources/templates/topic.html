@@ -19,6 +19,7 @@
          <div class="panel-body">
      
 	        <input type="hidden" id="category" th:value="${category}" />
+	        <input type="hidden" id="liIdx" th:value="${liIdx}" />
          	<div id="examTopic" style="text-align:center; color:red;"></div>
          	<div id="examBoard" style="column-count: 2; column-gap: 40px;"></div>
 
@@ -38,6 +39,7 @@
 	});
 	
 	const category = $("#category").val();
+	const liIdx = $("#liIdx").val();
    
    // 문제 불러오는 함수
    function loadExam() {
@@ -53,8 +55,8 @@
 
 	   // 문제 데이터 + 선지 랜덤 데이터 갖져오기
 	   $.when(
-	     $.ajax({ url: "/loadExam/"+category, type: "post", dataType: "json" }), // 문제 데이터
-	     $.ajax({ url: "/shuffle/"+category, type: "post", dataType: "json" }) // 선지 랜덤 데이터
+	         $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
+	         $.ajax({ url: "/shuffle", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }})
 	   ).done(function(examData, shuffleData) {
 	     // examData, shuffleData는 배열 형태 ([data, status, jqXHR])
 	     // examData, shuffleData = [실제데이터, "success", jqXHR 객체]

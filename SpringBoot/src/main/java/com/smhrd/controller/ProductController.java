@@ -29,7 +29,7 @@ public class ProductController {
 	LicenseService licenseservice;
 	
 	@Autowired
-	private final ExInfoRepository exinfoRepository;
+	private ExInfoRepository exinfoRepository;
 
 
 	@GetMapping("/license")
@@ -45,7 +45,7 @@ public class ProductController {
 			// 로그인한 id값 저장해두기
 			id = member.getId();
 		}
-		List<Li_Info> licenseList = licenseservice.liInfo();
+		List<Li_Info> licenseList = licenseservice.liInfo(liIdx);
 		model.addAttribute("licenseList", licenseList);
 		System.out.println("li정보 : "+licenseList);
 		
@@ -57,7 +57,7 @@ public class ProductController {
 			model.addAttribute("date", date);	
 		}
 		
-		List<Topic_Info> topicList = licenseservice.topicInfo();
+		List<Topic_Info> topicList = licenseservice.topicInfo(liIdx);
 		model.addAttribute("topicList", topicList);
 		
 		LocalDateTime now = LocalDateTime.now();
@@ -75,7 +75,7 @@ public class ProductController {
         model.addAttribute("pbIdxList", pbIdxList);
         
 		// 기출 문제 - 회차 정보 불러오기
-		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds();
+		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds(liIdx);
 		model.addAttribute("rounds", rounds);
 		
 		List<Object[]> top5List = licenseservice.wrongRate(id);

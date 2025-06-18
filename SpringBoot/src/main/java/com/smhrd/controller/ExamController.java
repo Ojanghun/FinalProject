@@ -23,7 +23,7 @@ public class ExamController {
 	private ExamService service;
 	
 	// 문제 불러오기
-	@PostMapping("/loadExam/")
+	@PostMapping("/loadExam")
 	public List<Exam> loadExam(@RequestParam("category") int category, @RequestParam("liIdx") int liIdx) {
 		
 		// 서비스에 문제 데이터 요청
@@ -33,10 +33,10 @@ public class ExamController {
 	}
 	
 	// 선지 랜덤화
-	@PostMapping("/shuffle/{category}")
-	public List<List<String>> shuffle(@PathVariable("category") int category) {
-		List<List<String>> choice = service.shuffle(category);
-		
+	@PostMapping("/shuffle")
+	public List<List<String>> shuffle(@RequestParam("category") int category, @RequestParam("liIdx") int liIdx) {
+		List<List<String>> choice = service.shuffle(category,liIdx);
+			
 //		Ex.setPbQues("문제1. 다음 중 먹고싶은 것은?");
 //		Ex.setPbChoi1("유정씨가 내려주시는 커피");
 //		Ex.setPbChoi2("장훈씨가 사주시는 치킨");
@@ -57,16 +57,16 @@ public class ExamController {
 	}
 	
 	// 해결책
-	@PutMapping("/solution/{index}")
-	public String solution(@PathVariable("index") int pbId){
+	@PutMapping("/solution/{pbId}")
+	public String solution(@PathVariable("pbId") int pbId){
 		String PbSolu = service.solution(pbId);
 		//System.out.println(PbSolu);
 		return PbSolu;
 	}
 	
 	// 정답 텍스트
-	@PutMapping("/correctAnswer/{index}")
-	public String correctAnswer(@PathVariable("index") int pbId) {
+	@PutMapping("/correctAnswer/{pbId}")
+	public String correctAnswer(@PathVariable("pbId") int pbId) {
 		String pbans = service.correctAnswer(pbId);
 		System.out.println(pbans);
 		return pbans;
