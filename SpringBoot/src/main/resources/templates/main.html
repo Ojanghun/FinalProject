@@ -137,115 +137,207 @@
 			<hr class="my-4">
 
 			<!-- 📢 서비스 홍보 -->
-			<section class="promotion-section">
-  <main class="container py-5">
-    <div class="row" data-masonry='{"percentPosition": true }'>
+<!-- Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-      <!-- 카드 1 -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm h-100">
-          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-            Image Placeholder
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Card title that wraps to a new line</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+<style>
+  body {
+    background-color: #ffffff;
+    font-family: 'Pretendard', sans-serif;
+    color: #1a237e;
+  }
+
+  .info-section {
+    background-color: #eaf3ff;
+    padding: 60px 20px;
+    border-radius: 16px;
+    max-width: 1200px;
+    margin: 40px auto;
+  }
+
+  .info-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #0d47a1;
+  }
+
+  .card-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .promo-card {
+    flex: 1 1 calc(25% - 20px);
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: left;
+    min-width: 250px;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+    transition: transform 0.2s;
+  }
+
+  .promo-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .promo-card i {
+    font-size: 36px;
+    color: #2196f3;
+    margin-bottom: 14px;
+  }
+
+  .promo-card h5 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0d47a1;
+  }
+
+  .promo-card p {
+    font-size: 14px;
+    color: #37474f;
+    margin: 0;
+  }
+
+  .faq-section {
+    margin-top: 60px;
+  }
+
+  .faq-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #0d47a1;
+  }
+
+  .accordion-button {
+    background-color: #ffffff;
+    color: #0d47a1;
+    font-weight: 500;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: #dbeeff;
+    color: #0d47a1;
+  }
+
+  .accordion-body {
+    background-color: #ffffff;
+    color: #37474f;
+  }
+
+  @media (max-width: 768px) {
+    .promo-card {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
+<div class="info-section">
+  <h2 class="info-title">왜 우리 플랫폼을 선택해야 할까요?</h2>
+
+  <!-- 홍보 카드 -->
+  <div class="card-box">
+    <div class="promo-card">
+      <i class="bi bi-ui-checks-grid"></i>
+      <h5>맞춤형 문제 풀이</h5>
+      <p>사용자의 오답을 분석해, 약점을 집중 공략하는 문제를 추천합니다.</p>
+    </div>
+    <div class="promo-card">
+      <i class="bi bi-chat-left-text"></i>
+      <h5>문자 알림 서비스</h5>
+      <p>매일 학습 리마인드 문자로 꾸준한 학습 습관을 도와줍니다.</p>
+    </div>
+    <div class="promo-card">
+      <i class="bi bi-calendar-week"></i>
+      <h5>학습 할당량 제공</h5>
+      <p>하루에 해결할 문제 수를 자동으로 제시해 계획적인 공부를 유도합니다.</p>
+    </div>
+    <div class="promo-card">
+      <i class="bi bi-diagram-3"></i>
+      <h5>체계적 학습 시스템</h5>
+      <p>출제 기준 기반으로 분류된 체계적 문제은행을 경험하세요.</p>
+    </div>
+  </div>
+
+  <!-- 자주 묻는 질문 -->
+  <div class="faq-section">
+    <h3 class="faq-title">자주 묻는 질문</h3>
+    <div class="accordion" id="faqAccordion">
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true" aria-controls="a1">
+            서비스는 어떻게 시작하나요?
+          </button>
+        </h2>
+        <div id="a1" class="accordion-collapse collapse show" aria-labelledby="q1" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            회원가입 후 원하는 자격증을 선택하고, 학습을 시작하면 됩니다. 간편하게 문제풀이를 시작해보세요!
           </div>
         </div>
       </div>
 
-      <!-- 카드 2 (인용문) -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm h-100 p-3">
-          <figure class="mb-0">
-            <blockquote class="blockquote">
-              <p>“A well-known quote, contained in a blockquote element.”</p>
-            </blockquote>
-            <figcaption class="blockquote-footer text-muted mb-0">
-              Someone famous in <cite title="Source Title">Source Title</cite>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- 카드 3 -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm h-100">
-          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-            Image Placeholder
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
+            AI 문제 추천은 어떤 기준으로 제공되나요?
+          </button>
+        </h2>
+        <div id="a2" class="accordion-collapse collapse" aria-labelledby="q2" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            최근 오답 로그를 분석해 사용자의 취약 주제를 파악하고, 해당 주제의 문제를 우선 추천합니다.
           </div>
         </div>
       </div>
 
-      <!-- 카드 4 (강조 인용문) -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm text-bg-primary text-center h-100 p-4">
-          <figure class="mb-0">
-            <blockquote class="blockquote">
-              <p>“A well-known quote, contained in a blockquote element.”</p>
-            </blockquote>
-            <figcaption class="blockquote-footer text-white-50 mb-0">
-              Someone famous in <cite title="Source Title">Source Title</cite>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- 카드 5 -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm text-center h-100">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This card has a regular title and short paragraph of text below it.</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
+            문자 알림은 어떤 시간에 오나요?
+          </button>
+        </h2>
+        <div id="a3" class="accordion-collapse collapse" aria-labelledby="q3" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            매일 오전 9시에 학습 리마인드 문자가 발송됩니다.
           </div>
         </div>
       </div>
 
-      <!-- 카드 6 -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm h-100">
-          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-            Image Placeholder
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Card title that wraps to a new line</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q4">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
+            자격증 종류는 어떤 걸 지원하나요?
+          </button>
+        </h2>
+        <div id="a4" class="accordion-collapse collapse" aria-labelledby="q4" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            정보처리기사, 산업안전산업기사를 지원하고 있으며, 지속적으로 확장 중입니다.
           </div>
         </div>
       </div>
 
-      <!-- 카드 7 (우측 정렬 인용문) -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm text-end h-100 p-3">
-          <figure class="mb-0">
-            <blockquote class="blockquote">
-              <p>“A well-known quote, contained in a blockquote element.”</p>
-            </blockquote>
-            <figcaption class="blockquote-footer text-muted mb-0">
-              Someone famous in <cite title="Source Title">Source Title</cite>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <!-- 카드 8 (이미지만) -->
-      <div class="col-sm-6 col-lg-4 mb-4">
-        <div class="card2 shadow-sm h-100">
-          <div class="image-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-            Image Placeholder
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q5">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a5" aria-expanded="false" aria-controls="a5">
+            환급 제도는 어떻게 이용하나요?
+          </button>
+        </h2>
+        <div id="a5" class="accordion-collapse collapse" aria-labelledby="q5" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            시험 합격 후 증빙 자료 제출 시 환급 신청이 가능합니다. 자세한 조건은 [환급 안내 페이지]를 참고해 주세요.
           </div>
         </div>
       </div>
 
     </div>
-  </main>
-</section>
+  </div>
+</div>
 
 		</div>
 
