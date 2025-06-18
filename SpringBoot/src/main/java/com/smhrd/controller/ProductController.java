@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
@@ -32,7 +33,8 @@ public class ProductController {
 
 
 	@GetMapping("/license")
-	public String License(HttpSession session, Model model) {
+	public String License(@RequestParam("liIdx") int liIdx, HttpSession session, Model model) {
+		model.addAttribute("liIdx", liIdx);
 		// session에서 info로 저장된 Member 데이터를 꺼내서 member에 저장
 		Member member = (Member) session.getAttribute("info");
 		String id = null;
@@ -76,6 +78,9 @@ public class ProductController {
 		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds();
 		model.addAttribute("rounds", rounds);
 		
+		List<Object[]> top5List = licenseservice.wrongRate(id);
+		
+		model.addAttribute("top5List", top5List);
         
 		return "license";
 	}
@@ -85,13 +90,12 @@ public class ProductController {
         this.exinfoRepository = exinfoRepository;
     }
 	
-    
+
 	@GetMapping("/topic")
 	public String subject() {
 		return "topic";
 	}
-	
-    
+	 
 
 	
 }

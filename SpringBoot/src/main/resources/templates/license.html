@@ -36,7 +36,7 @@
 </head>
 
 <body>
-
+ 
 	<!-- Header -->
 	<input type="hidden" id="id" th:if="${member != null}"
 		th:value="${member.id}" />
@@ -50,8 +50,13 @@
 				</a>
 			</div>
 			<div class="header-links d-flex gap-2">
-				<a href="mypage" class="btn btn-outline-secondary">MYPAGE</a> <a
-					href="logout" class="btn btn-outline-danger">LOGOUT</a>
+				<a href="mypage" class="btn btn-outline-secondary">MYPAGE</a>
+				<form th:action="@{/logout}" method="post" class="d-inline">
+					<input type="hidden" th:name="${_csrf.parameterName}"
+						th:value="${_csrf.token}" />
+					<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
+				</form>
+
 			</div>
 		</div>
 	</nav>
@@ -72,14 +77,16 @@
 						<form method="post" action="/goTest.do"
 							class="d-flex align-items-center gap-2 mb-3">
 							<div class="flex-grow-1" style="width: 300px; padding-left: 5px;">
-								<input type="hidden" th:name="${_csrf.parameterName}"
-									th:value="${_csrf.token}" /> <input type="hidden" name="liIdx"
-									th:value="${licenseList[0].liIdx}" /> <input type="hidden"
-									name="liName" th:value="${licenseList[0].liName}" /> <input
-									type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
-								<input type="hidden" name="liPbc"
-									th:value="${licenseList[0].liPbc}" /> <select name="category"
-									class="form-control rounded-pill px-4 py-2">
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+								<th:block th:each="license : ${licenseList}">
+									<th:block th:if="${license.liIdx == liIdx}">
+										<input type="hidden" name="liIdx" th:value="${license.liIdx}" />
+										<input type="hidden" name="liName" th:value="${license.liName}" />
+										<input type="hidden" name="liTime" th:value="${license.liTime}" />
+										<input type="hidden" name="liPbc" th:value="${license.liPbc}" />
+									</th:block>
+								</th:block>
+									<select name="category" class="form-control rounded-pill px-4 py-2">
 									<option value="" disabled selected hidden>회차 검색</option>
 									<option value="0">랜덤 문제</option>
 									<th:block th:each="round : ${rounds}">
@@ -156,9 +163,7 @@
 					<div class="dashboard-card p-4" style="height: 100%;">
 						<h5 class="fw-bold mb-3" th:if="${member != null}"
 							th:text="${member.name} + '님의 주제별 오답 TOP 5'">와아라랄</h5>
-						<!--           	<div th:each="pbIdxList : ${pbIdxList}">
-          		<div th:text="${pbIdxList}"></div>
-          	</div> -->
+							<div id="top5"></div>
 
 						<form action="/updateTopicNums.do" method="post"
 							style="display: inline;">
@@ -172,122 +177,122 @@
 		</div>
 
 		<!-- Calendar & Schedule -->
-			<div class="row">
-				<div class="col-md-8 mb-4">
-					<div class="calendar-box" style="height: 470px;">
-						
-						<h4 class="d-flex justify-content-between align-items-center mb-3">
+		<div class="row">
+			<div class="col-md-8 mb-4">
+				<div class="calendar-box" style="height: 470px;">
+
+					<h4 class="d-flex justify-content-between align-items-center mb-3">
 						<span style="margin-left: 28px;">
 							<button class="btn btn-outline-secondary btn-sm me-2"
-								onclick="changeMonth(-1)">←</button>
-							<span id="month-year" style="margin-right: 8px;"></span>
+								onclick="changeMonth(-1)">←</button> <span id="month-year"
+							style="margin-right: 8px;"></span>
 							<button class="btn btn-outline-secondary btn-sm me-2"
 								onclick="changeMonth(1)">→</button>
 						</span>
-							<button class="btn" type="button"
-								id="check-attendance" style="background-color: #5C9EFF; color: white;  margin-right: 25px">출석</button>
+						<button class="btn" type="button" id="check-attendance"
+							style="background-color: #5C9EFF; color: white; margin-right: 25px">출석</button>
 
-						</h4>
-						<table>
-							<thead>
-								<tr>
-									<th style="color: red;">일</th>
-									<th>월</th>
-									<th>화</th>
-									<th>수</th>
-									<th>목</th>
-									<th>금</th>
-									<th>토</th>
-								</tr>
-							</thead>
-							<tbody id="calendar-body"></tbody>
+					</h4>
+					<table>
+						<thead>
+							<tr>
+								<th style="color: red;">일</th>
+								<th>월</th>
+								<th>화</th>
+								<th>수</th>
+								<th>목</th>
+								<th>금</th>
+								<th>토</th>
+							</tr>
+						</thead>
+						<tbody id="calendar-body"></tbody>
 
-						</table>
-					</div>
+					</table>
 				</div>
-				<div class="col-md-4">
-					<div class="card schedule-card" style="height: 470px;">
-						<!-- 탭 메뉴 -->
-						<div>
-							<div class="tab-menu mb-3">
-								<button class="active" onclick="showTab(event, 'apply')">접수</button>
-								<button onclick="showTab(event, 'exam')">시험</button>
-								<button onclick="showTab(event, 'result')">결과발표</button>
+			</div>
+			<div class="col-md-4">
+				<div class="card schedule-card" style="height: 470px;">
+					<!-- 탭 메뉴 -->
+					<div>
+						<div class="tab-menu mb-3">
+							<button class="active" onclick="showTab(event, 'apply')">접수</button>
+							<button onclick="showTab(event, 'exam')">시험</button>
+							<button onclick="showTab(event, 'result')">결과발표</button>
+						</div>
+					</div>
+
+					<!-- 탭 콘텐츠 -->
+					<div class="card-body" style="height: 380px; overflow-y: auto;">
+
+						<!-- 접수 탭 -->
+						<div id="apply" class="tab-content">
+							<div class="exam-item" th:each="exam : ${exams}">
+								<div th:each="license : ${licenseList}">
+									<h5>
+										<span class="exam-title" th:text="${license.liName}">ADP</span>
+									</h5>
+								</div>
+								<div class="exam-date">
+									<span
+										th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd (E)')}">2025-07-07</span>
+									~ <span
+										th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd (E)')}">2025-07-11</span>
+								</div>
+
 							</div>
 						</div>
 
-						<!-- 탭 콘텐츠 -->
-						<div class="card-body" style="height: 380px; overflow-y: auto;">
-
-							<!-- 접수 탭 -->
-							<div id="apply" class="tab-content">
-								<div class="exam-item" th:each="exam : ${exams}">
-									<div th:each="license : ${licenseList}">
-										<h5>
-											<span class="exam-title" th:text="${license.liName}">ADP</span>
-										</h5>
-									</div>
-									<div class="exam-date">
-										<span
-											th:text="${#temporals.format(exam.appStd, 'yyyy-MM-dd (E)')}">2025-07-07</span>
-										~ <span
-											th:text="${#temporals.format(exam.appEd, 'yyyy-MM-dd (E)')}">2025-07-11</span>
-									</div>
-
+						<!-- 시험 탭 -->
+						<div id="exam" class="tab-content" style="display: none;">
+							<div class="exam-item" th:each="exam : ${exams}">
+								<div th:each="license : ${licenseList}">
+									<h5>
+										<span class="exam-title" th:text="${license.liName}">ADP</span>
+									</h5>
+								</div>
+								<div class="exam-date">
+									<span
+										th:text="${#temporals.format(exam.exStd, 'yyyy-MM-dd (E)')}">2025-07-07</span>
+									~ <span
+										th:text="${#temporals.format(exam.exEd, 'yyyy-MM-dd (E)')}">2025-07-11</span>
 								</div>
 							</div>
-
-							<!-- 시험 탭 -->
-							<div id="exam" class="tab-content" style="display: none;">
-								<div class="exam-item" th:each="exam : ${exams}">
-									<div th:each="license : ${licenseList}">
-										<h5>
-											<span class="exam-title" th:text="${license.liName}">ADP</span>
-										</h5>
-									</div>
-									<div class="exam-date">
-										<span
-											th:text="${#temporals.format(exam.exStd, 'yyyy-MM-dd (E)')}">2025-07-07</span>
-										~ <span
-											th:text="${#temporals.format(exam.exEd, 'yyyy-MM-dd (E)')}">2025-07-11</span>
-									</div>
-								</div>
-							</div>
-
-
-							<!-- 결과발표 탭 -->
-							<div id="result" class="tab-content" style="display: none;">
-								<div class="exam-item" th:each="exam : ${exams}">
-									<div th:each="license : ${licenseList}">
-										<h5>
-											<span class="exam-title" th:text="${license.liName}">ADP</span>
-										</h5>
-									</div>
-									<div class="exam-date">
-										<span
-											th:text="${#temporals.format(exam.exRd, 'yyyy-MM-dd (E)')}">2025-07-07</span>
-									</div>
-								</div>
-							</div>
-
 						</div>
+
+
+						<!-- 결과발표 탭 -->
+						<div id="result" class="tab-content" style="display: none;">
+							<div class="exam-item" th:each="exam : ${exams}">
+								<div th:each="license : ${licenseList}">
+									<h5>
+										<span class="exam-title" th:text="${license.liName}">ADP</span>
+									</h5>
+								</div>
+								<div class="exam-date">
+									<span
+										th:text="${#temporals.format(exam.exRd, 'yyyy-MM-dd (E)')}">2025-07-07</span>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
+			</div>
 
-				<!-- Footer -->
-				<footer class="footer mt-5 py-4 border-top">
-					<div class="container text-center">
-						<nav class="nav justify-content-center mb-3">
-							<a href="#" class="footer-link">Home</a> <a href="#"
-								class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
-						</nav>
-						<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-					</div>
-				</footer>
+			<!-- Footer -->
+			<footer class="footer mt-5 py-4 border-top">
+				<div class="container text-center">
+					<nav class="nav justify-content-center mb-3">
+						<a href="#" class="footer-link">Home</a> <a href="#"
+							class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
+					</nav>
+					<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+				</div>
+			</footer>
 
 
-				<!-- Script -->
-<script th:inline="javascript">
+			<!-- Script -->
+			<script th:inline="javascript">
 				  function syncRightCardHeight() {
 					    const leftCol = document.querySelector(".col-md-8");
 					    const rightCard = document.querySelector(".col-md-4 .dashboard-card");
@@ -298,6 +303,7 @@
 
 					  $(document).ready(function () {
 					    loadTopic();
+					    loadTopList();
 					    syncRightCardHeight();
 					  });
 
@@ -314,12 +320,16 @@
     document.querySelectorAll('.tab-menu button').forEach(btn => btn.classList.remove('active'));
     event.currentTarget.classList.add('active');
   }
+   
+   
+ // 리스트라서.. 이렇게 가져옴
+ const topicList = /*[[${topicList}]]*/ [];
+ 
+ 
  function loadTopic() {
     
-       // 리스트라서.. 이렇게 가져옴
-       let topicList = /*[[${topicList}]]*/ [];
 
-      const Name = [];
+      let Name = [];
 
        listHtml = "";
        listHtml = "<option value='' disabled selected hidden>유형 선택</option>";
@@ -337,7 +347,33 @@
        }
        $("#topicSelect").html(listHtml);   
        
- } 
+ }
+ 
+ function loadTopList(){
+	 // top5[0]은 카운트, top5[1]은 topic_idx
+	 const top5List = /*[[${top5List}]]*/ [];
+	 let Name = [];
+	 
+	 listHtml = "";
+	 
+     for (let i = 0; i < topicList.length; i++) {
+         let parts = topicList[i].topicName.split(" - ");
+         Name.push(parts[0]);
+       }
+     
+     for(let i=0; i<top5List.length; i++){
+    	 for(let j=0; j<topicList.length; j++){
+			if( top5List[i][1] == topicList[j].topicIdx){
+				
+	         listHtml += "<div>" + "Top" + (i+1) + " " + topicList[j].topicNum + ". " + Name[j] + "</div>";
+	         
+			}
+    	 }
+      }
+	 $("#top5").html(listHtml);
+ }
+ 
+ 
   const examPeriods = /*[[${exams}]]*/ [];
   const examDates = [];
 
