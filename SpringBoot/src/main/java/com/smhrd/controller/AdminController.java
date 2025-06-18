@@ -51,7 +51,8 @@ public class AdminController {
     	System.out.println("✅ Admin Dashboard 진입");
         List<Member> users = memberRepository.findAll();
         model.addAttribute("users", users);
-
+        model.addAttribute("userCount", users.size());
+        
         Map<Integer, String> licenseMap = new HashMap<>();
         licenseMap.put(1, "정보처리기사");
         licenseMap.put(2, "산업안전기사");
