@@ -1,0 +1,115 @@
+/* ✅ 기본 설정 */
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+  background-color: #FAFAFA;
+  color: #212121;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+/* ✅ 사이드바 */
+.sidebar {
+  width: 220px;
+  background-color: #F8F9FA;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  height: 100vh;
+}
+
+.menu-item {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 6px;
+  color: #1E88E5;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: #E3F2FD;
+}
+
+/* ✅ 콘텐츠 */
+.content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* ✅ 섹션 토글 */
+.section-content {
+  display: none;
+}
+
+.section-content.active {
+  display: block;
+}
+
+/* ✅ 헤더 */
+h4 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1E88E5;
+}
+
+/* ✅ 테이블 */
+.table {
+  font-size: 14px;
+}
+
+.table th {
+  background-color: #f1f1f1;
+  font-weight: 600;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+/* ✅ 버튼 */
+.btn-outline-primary {
+  color: #1E88E5;
+  border-color: #1E88E5;
+}
+
+.btn-outline-primary:hover {
+  background-color: #1E88E5;
+  color: white;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+.back-btn {
+  margin-bottom: 20px;
+}
+
+/* ✅ 섹션별 버튼 묶음 */
+#licenseButtons button,
+#wrongLicenseButtons button,
+#refundLicenseButtons button,
+#planLicenseButtons button {
+  margin-right: 6px;
+  margin-bottom: 10px;
+}
+
+/* ✅ 페이징 컨트롤 */
+.d-flex.justify-content-between.align-items-center.mt-3 button {
+  min-width: 80px;
+}
+
+/* ✅ 차트 없을 때 메시지 */
+.text-muted {
+  color: #999 !important;
+  font-style: italic;
+}
+
+/* ✅ 선택된 사용자 강조 */
+#selectedUserId {
+  font-weight: bold;
+  color: #1E88E5;
+}
