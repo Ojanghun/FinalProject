@@ -113,7 +113,7 @@
 							<ul>
 								<th:block th:each="pay : ${payList}">
 									<th:block th:if="${pay.planAct == 1}">
-										<li><a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
+										<li><a th:href="@{'/license?liIdx=' + ${(pay.planIdx + 1) / 2}}"
 											th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">
 												자격증 이름 </a></li>
 									</th:block>
