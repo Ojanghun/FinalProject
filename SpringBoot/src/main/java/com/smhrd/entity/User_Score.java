@@ -27,6 +27,9 @@ public class User_Score {
     @Column(name = "LI_IDX", nullable = false)
     private int liIdx; // 자격증 인덱스
     
+    @Column(name = "EX_CAT", nullable = false, length = 50)
+    private String exCat;
+    
     @Column(name = "SC_CHAP1", nullable = true) 
     private int scChap1; // 1과목 점수
     
@@ -45,8 +48,7 @@ public class User_Score {
     @Column(name = "SC_CHAP6", nullable = true) 
     private int scChap6; // 6과목 점수
     
-    @Column(name = "SC_AT", nullable = false, insertable = false, updatable = false)
-    private LocalDateTime scAt; // 문제 풀이 날짜 → 자동으로 입력됨
-    
+    @Column(name = "SC_AT", nullable = false)
+    private LocalDateTime scAt; // 문제 풀이 날짜 → 데이터가 입력됨
     
 }
