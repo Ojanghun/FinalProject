@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public interface RefundInfoRepository extends JpaRepository<Refund_Info, Integer> {
 
+	boolean existsByPayIdx(int payIdx);
+	
 	// 자격증별 환급률 계산 (예시)
 	@Query("""
 			    SELECT e.liIdx, COUNT(DISTINCT r.rfIdx) * 100.0 / COUNT(DISTINCT p.payIdx)
