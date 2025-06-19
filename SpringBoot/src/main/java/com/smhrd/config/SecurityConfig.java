@@ -47,7 +47,11 @@ public class SecurityConfig {
                     "/adminLoginCheck",
                     "/refund-session",  // ✅ 여기에 추가!
                     "/admin/**"   // ✅ 관리자 대시보드 접근 허용
+<<<<<<< Updated upstream
 
+=======
+                    //이거왜됨??
+>>>>>>> Stashed changes
                 ).permitAll()
 
                 .requestMatchers(
