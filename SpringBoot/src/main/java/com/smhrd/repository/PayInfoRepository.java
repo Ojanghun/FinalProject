@@ -17,17 +17,17 @@ import java.util.Map;
 @Repository
 public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 
-	// ✅ 유저 ID + 자격증 liIdx로 활성화된 결제 정보 찾기 (기존)
-	@Query("SELECT p FROM Pay_Info p WHERE p.id = :userId AND p.planAct = 1 AND p.planIdx IN (SELECT pi.planIdx FROM Plan_Info pi WHERE pi.liIdx = :liIdx)")
-	List<Pay_Info> findByUserIdAndLiIdx(@Param("userId") String userId, @Param("liIdx") int liIdx);
+   // ✅ 유저 ID + 자격증 liIdx로 활성화된 결제 정보 찾기 (기존)
+   @Query("SELECT p FROM Pay_Info p WHERE p.id = :userId AND p.planAct = 1 AND p.planIdx IN (SELECT pi.planIdx FROM Plan_Info pi WHERE pi.liIdx = :liIdx)")
+   List<Pay_Info> findByUserIdAndLiIdx(@Param("userId") String userId, @Param("liIdx") int liIdx);
 
-	// ✅ 유저 ID 기준 전체 결제 이력 조회 (최신순)
-	List<Pay_Info> findByIdOrderByPlanStdDesc(String id);
+   // ✅ 유저 ID 기준 전체 결제 이력 조회 (최신순)
+   List<Pay_Info> findByIdOrderByPlanStdDesc(String id);
 
-	// (또는 JPQL로 구현하고 싶다면 아래 방식도 가능)
-	// @Query("SELECT p FROM Pay_Info p WHERE p.id = :userId ORDER BY p.planStd
-	// DESC")
-	// List<Pay_Info> findAllByUserId(@Param("userId") String userId);
+   // (또는 JPQL로 구현하고 싶다면 아래 방식도 가능)
+   // @Query("SELECT p FROM Pay_Info p WHERE p.id = :userId ORDER BY p.planStd
+   // DESC")
+   // List<Pay_Info> findAllByUserId(@Param("userId") String userId);
 
 	// ✅ 사용자 ID 기준 결제 이력 + liName을 projection으로 가져오기
 	// ✅ PayInfoRepository.java
