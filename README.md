@@ -153,20 +153,88 @@
 개념: 문제 해결을 위해 문제의 원인을 논리적이고 체계적으로 찾는 일이며 제품이나 프로세스의 운영을 재개
 프로젝트 진행하는 동안 발생했던 이슈 중 가장 기억에 남았던 문제와 해결 프로세스 나열(2~5가지 정도)
 
-### Spring Security 관련 문제
-* 로그인 세션이 없으면 /main, /login, /join 등 접근 못하는 문제
-  * Spring Security는 로그인 세션이 없으면 특정 페이지나 기능에 접근하지 못하게 막음<br>
-    -> SecurityConfig에 예외 처리 설정
-* CSRF 토큰 인증 문제
-  * CSRF(Cross Site Request Forgery, 크로스 사이트 요청 위조)
-    * 웹 보안 취약점 중 하나로, 인증된 사용자가 자신의 의지와는 무관하게 웹 애플리케이션에 공격자가 의도한 특정 요청을 보내도록 유도하는 것을 말한다.
-  * Synchronizer Token Pattern(동기화 토큰 패턴)
-    * 사용자 세션 또는 요청 단위로 토큰을 만들어서, 서버에서 제공
-    * 클라이언트는 이 토큰을 요청에 추가해서 보내고, 서버에서 다시 토큰을 제공받기를 반복
-    * 서버는 클라이언트의 요청에서 csrf 토큰의 존재 여부를 확인하고, 유효성을 검증하고, 서버 측 사용자 세션에 저장된 토큰 값과 비교<br>
-    https://innovation123.tistory.com/243
-  * 403 forbidden error
-    * 폼 제출이나 Ajax 요청 시 CSRF 토큰 추가
- 
-* 문제2<br>
- 문제점 설명 및 해결방안
+### 🔒 Spring Security 관련 문제 정리
+
+#### ✅ 문제 1. 로그인 세션이 없으면 `/main`, `/login`, `/join` 등 접근 불가
+
+> Spring Security는 기본적으로 인증(로그인)되지 않은 사용자의 접근을 차단합니다.<br>
+따라서 **예외 경로를 명시적으로 허용**해주어야 합니다.
+
+<details>
+<summary>📌 SecurityConfig 설정 코드 예시</summary>
+
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/login", "/css/**", "/js/**").permitAll() // 누구나 접근 가능
+                .antMatchers("/admin/**").hasRole("ADMIN") // 관리자만
+                .anyRequest().authenticated() // 나머지는 로그인 필요
+            .and()
+                .formLogin()
+                .loginPage("/login") // 커스텀 로그인 페이지
+                .permitAll()
+            .and()
+                .logout()
+                .permitAll();
+    }
+}
+```
+</details>
+
+---
+
+#### ✅ 문제 2. CSRF 토큰 인증 문제 (403 Forbidden)
+
+> CSRF(Cross Site Request Forgery)는 인증된 사용자의 권한으로 **악의적 요청을 보내는 공격**입니다.<br>
+Spring Security는 이를 방지하기 위해 기본적으로 CSRF 토큰 검사를 수행합니다.
+
+* 해결 방안: 동기화 토큰 패턴(Synchronizer Token Pattern) 적용
+  * 서버가 CSRF 토큰을 생성 → 클라이언트가 요청 시 토큰을 함께 전송 → 서버에서 검증
+
+<details>
+<summary>📌 <code>&lt;form&gt;</code> 태그를 통한 폼 제출 방식</summary>
+
+```html
+<form th:action="@{/submit}" method="post">
+    <input type="text" name="name" />
+    <button type="submit">전송</button>
+</form>
+```
+* <code>th:action</code>을 쓰면 → Spring Security + Thymeleaf가 자동으로 CSRF 토큰 hidden input 필드를 삽입합니다.
+```html
+<input type="hidden" name="_csrf" value="생성된토큰값">
+```
+</details>
+
+<details>
+<summary>📌 Spring Boot Ajax CSRF 처리 예시</summary>
+
+```javascript
+// 메타 태그에서 CSRF 토큰 읽기
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
+
+// Ajax 요청에 CSRF 토큰 헤더 추가
+$.ajax({
+    url: "/submit",
+    type: "POST",
+    data: JSON.stringify(data),
+    contentType: "application/json",
+    beforeSend: function(xhr) {
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+    },
+    success: function(res) {
+        console.log("Success:", res);
+    },
+    error: function() {
+        alert("403 에러! CSRF 토큰 확인 필요");
+    }
+});
+```
+ </details>
