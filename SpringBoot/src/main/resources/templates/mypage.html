@@ -61,7 +61,7 @@
 							th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">플랜
 							이름</h4>
 						<div class="product-bottom">
-							<a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
+							<a th:href="@{'/license?liIdx=' + ${(pay.planIdx + 1) / 2}}"
 								class="btn btn-primary btn-move-link">자격증 사이트로 이동</a>
 							<div class="product-footer"
 								th:text="'서비스 기간: ' + ${#temporals.format(pay.planStd, 'yyyy-MM-dd')} + ' ~ ' + ${#temporals.format(pay.planEd, 'yyyy-MM-dd')}">
