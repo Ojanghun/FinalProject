@@ -155,7 +155,8 @@
 
 ### Spring Security 관련 문제
 * 로그인 세션이 없으면 /main, /login, /join 등 접근 못하는 문제
-  * SecurityConfig에 예외 처리 설정
+  * Spring Security는 로그인 세션이 없으면 특정 페이지나 기능에 접근하지 못하게 막음
+  * -> SecurityConfig에 예외 처리 설정
 * CSRF 토큰 인증 문제
   * CSRF(Cross Site Request Forgery, 크로스 사이트 요청 위조)
     * 웹 보안 취약점 중 하나로, 인증된 사용자가 자신의 의지와는 무관하게 웹 애플리케이션에 공격자가 의도한 특정 요청을 보내도록 유도하는 것을 말한다.
