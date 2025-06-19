@@ -5,20 +5,25 @@
 <title>문제? Issue!</title>
 
 <!-- CSS 링크 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-	rel="stylesheet">
-
-<link href="/css/style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="arrow-right-short" fill="currentColor" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M8.146 4.646a.5.5 0 0 1 .708 0L12 7.793a.5.5 0 0 1 0 .707l-3.146 3.147a.5.5 0 0 1-.708-.707L10.293 8H4.5a.5.5 0 0 1 0-1h5.793L8.146 5.354a.5.5 0 0 1 0-.708z"/>
+  </symbol>
+</svg>
+  
+	
+  <link href="/css/style.css" rel="stylesheet">
 
 <!-- JS 링크 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" crossorigin="anonymous"></script>
 <style>
 /* ✅ container 강제 통일 */
 .container {
@@ -33,13 +38,15 @@
 </style>
 </head>
 <body>
+	
+	<div class="container">
 
+		<!-- ✅ 결제 성공 메시지 표시 -->
+		<div th:if="${paymentSuccess}" class="alert alert-success mt-3"
+			role="alert">
+			<span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
+		</div>
 
-	<!-- ✅ 결제 성공 메시지 표시 -->
-	<div th:if="${paymentSuccess}" class="alert alert-success mt-3"
-		role="alert">
-		<span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
-	</div>
 
 	<!-- 🔷 커스텀 헤더 -->
 
@@ -53,7 +60,9 @@
 				</a>
 			</div>
 
-
+			<!-- ✅ 로그아웃 메시지 표시 -->
+			<div th:if="${logoutMessage}" class="alert alert-success"
+				role="alert" th:text="${logoutMessage}">성공적으로 로그아웃되었습니다.</div>
 			<div class="header-links d-flex gap-2">
 				<!-- ❌ 로그인하지 않은 경우 -->
 				<th:block th:if="${session.info == null}">
@@ -70,30 +79,49 @@
 					</form>
 				</th:block>
 			</div>
-		</div>
-	</nav>
-	<div class="container">
+		</div></nav>
 
 		<!-- 🔍 검색 및 키워드 추천 -->
 		<div class="main-content">
-			<section class="row search-section">
+			<section class="row search-section mb-5">
 				<!-- 🔍 검색창 + 버튼 묶음 -->
 				<div class="search-group">
-					<div class="search-container">
-						<div class="search-box">
-							<input id="search" type="text" placeholder="자격증 검색" />
-							<button title="Clear">✕</button>
-							<button title="Search" class="bi bi-search"></button>
-						</div>
-						<div id="suggestions" class="autocomplete"></div>
-					</div>
+					<div class="search-group">
+			  <div class="search-container position-relative">
+			    <div class="search-box d-flex align-items-center rounded-pill shadow-sm px-3 py-2 bg-white border">
+			      <input id="searchInput" type="text" class="form-control border-0 flex-grow-1"
+			             placeholder="자격증 검색" autocomplete="off" />
+			      <button id="clearBtn" title="Clear" type="button" class="btn btn-link text-dark ">✕</button>
+			      <button id="searchBtn" type="button" class="btn btn-link text-primary px-2">
+			        <i class="bi bi-search fs-5"></i>
+			      </button>
+			    </div>
+
+				    <!-- 자동완성 목록 -->
+				    <div id="suggestions" class="autocomplete bg-white shadow-sm rounded-bottom mt-1 py-2 px-3 d-none">
+				      <th:block th:each="lic : ${licenseList}">
+				        <div class="autocomplete-item py-1 text-dark"
+				             th:data-id="${lic.liIdx}"
+				             th:data-name="${lic.liName}">
+				          <span th:text="${lic.liName}"></span>
+				        </div>
+				      </th:block>
+				    </div>
+				  </div>
+				</div>
 
 					<!-- 자격증 추천 버튼 영역 -->
-					<div class="search-suggestion">
-						<th:block th:each="lic : ${licenseList}">
-							<a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
-								th:text="${lic.liName}" class="btn btn-primary btn-lg"></a>
-						</th:block>
+					<div class="search-suggestion d-flex flex-wrap gap-2">
+					  <th:block th:each="lic : ${licenseList}">
+					    <a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
+					       class="btn btn-outline-primary d-inline-flex align-items-center">
+					      <span th:text="${lic.liName}"></span>
+					      <svg class="bi ms-2" width="16" height="16" aria-hidden="true">
+					        <use xlink:href="#arrow-right-short"></use>
+					      </svg>
+					    </a>
+					  </th:block>
+					  
 					</div>
 				</div>
 
@@ -126,26 +154,272 @@
 					</div>
 				</th:block>
 			</section>
+			<hr class="my-4">
 
 			<!-- 📢 서비스 홍보 -->
-			<section class="promotion-section">
-				<h2>서비스 소개 / 홍보</h2>
-				<p>이곳에 서비스 설명이나 배너를 넣을 수 있습니다.</p>
-			</section>
+<!-- Bootstrap Icons CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  body {
+    background-color: #ffffff;
+    font-family: 'Pretendard', sans-serif;
+    color: #1a237e;
+  }
+
+  .info-section {
+    background-color: #eaf3ff;
+    padding: 60px 20px;
+    border-radius: 16px;
+    max-width: 1200px;
+    margin: 40px auto;
+  }
+
+  .info-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #0d47a1;
+  }
+
+  .card-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .promo-card {
+    flex: 1 1 calc(25% - 20px);
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: left;
+    min-width: 250px;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+    transition: transform 0.2s;
+  }
+
+  .promo-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .promo-card i {
+    font-size: 36px;
+    color: #2196f3;
+    margin-bottom: 14px;
+  }
+
+  .promo-card h5 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0d47a1;
+  }
+
+  .promo-card p {
+    font-size: 14px;
+    color: #37474f;
+    margin: 0;
+  }
+
+  .faq-section {
+    margin-top: 60px;
+  }
+
+  .faq-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #0d47a1;
+  }
+
+  .accordion-button {
+    background-color: #ffffff;
+    color: #0d47a1;
+    font-weight: 500;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: #dbeeff;
+    color: #0d47a1;
+  }
+
+  .accordion-body {
+    background-color: #ffffff;
+    color: #37474f;
+  }
+
+  @media (max-width: 768px) {
+    .promo-card {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
+<div class="info-section">
+  <h2 class="info-title">왜 우리 플랫폼을 선택해야 할까요?</h2>
+
+  <!-- 홍보 카드 -->
+  <div class="card-box">
+    <div class="promo-card">
+      <i class="bi bi-ui-checks-grid"></i>
+      <h5>맞춤형 문제 풀이</h5>
+      <p>사용자의 오답을 분석해, 약점을 집중 공략하는 문제를 추천합니다.</p>
+    </div>
+    <div class="promo-card">
+      <i class="bi bi-chat-left-text"></i>
+      <h5>문자 알림 서비스</h5>
+      <p>매일 학습 리마인드 문자로 꾸준한 학습 습관을 도와줍니다.</p>
+    </div>
+    <div class="promo-card">
+      <i class="bi bi-calendar-week"></i>
+      <h5>학습 할당량 제공</h5>
+      <p>하루에 해결할 문제 수를 자동으로 제시해 계획적인 공부를 유도합니다.</p>
+    </div>
+    <div class="promo-card">
+      <i class="bi bi-diagram-3"></i>
+      <h5>체계적 학습 시스템</h5>
+      <p>출제 기준 기반으로 분류된 체계적 문제은행을 경험하세요.</p>
+    </div>
+  </div>
+
+  <!-- 자주 묻는 질문 -->
+  <div class="faq-section">
+    <h3 class="faq-title">자주 묻는 질문</h3>
+    <div class="accordion" id="faqAccordion">
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true" aria-controls="a1">
+            서비스는 어떻게 시작하나요?
+          </button>
+        </h2>
+        <div id="a1" class="accordion-collapse collapse show" aria-labelledby="q1" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            회원가입 후 원하는 자격증을 선택하고, 학습을 시작하면 됩니다. 간편하게 문제풀이를 시작해보세요!
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
+            AI 문제 추천은 어떤 기준으로 제공되나요?
+          </button>
+        </h2>
+        <div id="a2" class="accordion-collapse collapse" aria-labelledby="q2" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            최근 오답 로그를 분석해 사용자의 취약 주제를 파악하고, 해당 주제의 문제를 우선 추천합니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
+            문자 알림은 어떤 시간에 오나요?
+          </button>
+        </h2>
+        <div id="a3" class="accordion-collapse collapse" aria-labelledby="q3" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            매일 오전 9시에 학습 리마인드 문자가 발송됩니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q4">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
+            자격증 종류는 어떤 걸 지원하나요?
+          </button>
+        </h2>
+        <div id="a4" class="accordion-collapse collapse" aria-labelledby="q4" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            정보처리기사, 산업안전산업기사를 지원하고 있으며, 지속적으로 확장 중입니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q5">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a5" aria-expanded="false" aria-controls="a5">
+            환급 제도는 어떻게 이용하나요?
+          </button>
+        </h2>
+        <div id="a5" class="accordion-collapse collapse" aria-labelledby="q5" data-bs-parent="#faqAccordion">
+          <div class="accordion-body">
+            시험 합격 후 증빙 자료 제출 시 환급 신청이 가능합니다. 자세한 조건은 [환급 안내 페이지]를 참고해 주세요.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 		</div>
 
-		<!-- Footer -->
-		<footer class="footer mt-5 py-4 border-top">
-			<div class="container text-center">
-				<nav class="nav justify-content-center mb-3">
-					<a href="#" class="footer-link">Home</a> <a href="#"
-						class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
-				</nav>
-				<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-			</div>
-		</footer>
+	<!-- Footer -->
+	<footer class="footer mt-5 py-4 border-top">
+	  <div class="container text-center">
+	    <nav class="nav justify-content-center mb-3">
+	      <a href="#" class="footer-link">Home</a>
+	      <a href="#" class="footer-link">About</a>
+	      <a href="#" class="footer-link">Contact</a>
+	    </nav>
+	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+	  </div>
+	</footer>
 
-		<!-- JS -->
-		<script type="text/javascript" src="js/search.js"></script>
+	<!-- JS -->
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	    const input = document.getElementById('searchInput');
+	    const suggestions = document.getElementById('suggestions');
+	    const clearBtn = document.getElementById('clearBtn');
+	    const searchBtn = document.getElementById('searchBtn');
+	    let selectedId = null;
+
+	    // 자동완성 클릭 → 입력창에 값 반영
+	    suggestions.addEventListener('click', function (e) {
+	      const item = e.target.closest('.autocomplete-item');
+	      if (item) {
+	        input.value = item.dataset.name;
+	        selectedId = item.dataset.id;
+	        suggestions.classList.add('d-none');
+	      }
+	    });
+
+	    // 검색 입력 시 자동완성 보이기
+	    input.addEventListener('input', function () {
+	      selectedId = null; // 직접 입력 시 초기화
+	      if (input.value.trim() === '') {
+	        suggestions.classList.add('d-none');
+	      } else {
+	        suggestions.classList.remove('d-none');
+	      }
+	    });
+
+	    // ✕ 버튼 → 입력 초기화
+	    clearBtn.addEventListener('click', function () {
+	      input.value = '';
+	      selectedId = null;
+	      suggestions.classList.add('d-none');
+	    });
+
+	    // 돋보기 클릭 → 해당 자격증으로 이동
+	    searchBtn.addEventListener('click', function () {
+	      if (selectedId) {
+	        window.location.href = `/redirectByLicense?liIdx=${selectedId}`;
+	      } else {
+	        alert('해당하는 자격증은 존재하지 않습니다.');
+	      }
+	    });
+	  });
+	</script>
+	
+
 </body>
 </html>

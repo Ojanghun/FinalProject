@@ -2,21 +2,55 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
 <head>
 <meta charset="UTF-8">
+<title>Exam Page</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/exam.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+
 
 </head>
 <body>
-	<div class="container">
-		<h2 th:text="'자격증 이름: ' + ${liName}"></h2>
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				examPage <span style="float: right;"> </span>
-			</div>
-			<div class="panel-body">
+		 <nav class="custom-header border-bottom bg-white py-2">
+		  <div class="container d-flex justify-content-between align-items-center">
+		    <div class="d-flex align-items-center gap-2">
+		      <a href="/" class="d-flex align-items-center gap-2 ">
+		        <img src="/images/로고.png" height="40" style="height: 48px; width: auto;" alt="로고">
+		        <span class="fw-bold text-dark"></span>
+		      </a>
+		    </div>
+		    <div class="d-flex gap-2">
+		      <a href="/mypage" class="btn btn-outline-secondary btn-sm">MYPAGE</a>
+		      <a href="/logout" class="btn btn-outline-danger btn-sm">LOGOUT</a>
+		    </div>
+		  </div>
+		</nav>
+        
+        <div class="panel panel-warning">
+            <div class="exam-title-bar">
+                <h2 th:text="${liName} +' 기출'"></h2> <span style="float: right;"></span>
+            </div>
+            <div class="panel-body">
+                <input type="hidden" id="category" th:value="${category}" />
+                <div class="container px-4" id="examBoard"></div>
+                <div id="pagination" class="text-center mt-4"></div>
+            </div>
+        </div>
+    	<!-- Footer -->
+	<footer class="footer mt-5 py-4 border-top">
+	  <div class="container text-center">
+	    <nav class="nav justify-content-center mb-3">
+	      <a href="#" class="footer-link">Home</a>
+	      <a href="#" class="footer-link">About</a>
+	      <a href="#" class="footer-link">Contact</a>
+	    </nav>
+	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+	  </div>
+	</footer>
 
 				<input type="hidden" id="category" th:value="${category}" />
 				<input type="hidden" id="liIdx" th:value="${liIdx}" />
@@ -37,111 +71,114 @@
         /*[[${liChap5}]]*/
     ];
 </script>
-	<script type="text/javascript">
-	$(document).ready(function(){
-		// ready() : html 코드가 준비가 되면 실행되는 메소드
-		// 게시글을 모두 가져올 수 있는 메소드!
-		loadExam();
-	});
 
+<script type="text/javascript">
+let exData = [];
+let shufData = [];
+let currentPage = 0;
+const userSelections = {};
 
-	   let exData = []; // 모든 데이터 담아주기. 그 후 여기서 쪼개자
-	   let shufData = []; // 모든 선지 데이터 담아주기. 그 후 여기서 쪼개자
-	   let subjectExam = []; // 쪼개진 데이터들(20개씩)
-	   let subjectshuf = []; // 쪼개진 데이터들(20개씩)
+$(document).ready(function(){
+    loadExam();
+});
 
+function loadExam() {
+    const category = $("#category").val();
+    const liIdx = $("#liIdx").val();
 
-
-    // 문제 불러오는 함수
-    function loadExam() {
-        const category = $("#category").val();
-        const liIdx = $("#liIdx").val();
-
-        $.when(
+    $.when(
             $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
             $.ajax({ url: "/shuffle", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }})
-        ).done(function(examData, shuffleData) {
+    ).done(function (examData, shuffleData) {
+        exData = examData[0];
+        shufData = shuffleData[0];
+        renderPage(0);
+    }).fail(function () {
+        alert("Error!");
+    });
+}
 
-	     // examData, shuffleData는 배열 형태 ([data, status, jqXHR])
-	     // examData, shuffleData = [실제데이터, "success", jqXHR 객체]
-	     // 그래서 [0]번째 데이터 추출
-	     exData = examData[0];
-	     shufData = shuffleData[0];
-		   let subjectExam = [];
-		   let subjectshuf = [];
-		   
-		   for (let i = 0; i < 5; i++) {        // 과목 5개
-			   let examSlice = [];
-			   let shufSlice = [];
+function renderPage(pageIndex) {
+    currentPage = pageIndex;
+    const startIdx = pageIndex * 20;
+    const endIdx = startIdx + 20;
+    let listHtml = "";
 
-			   for (let j = 0; j < 20; j++) {     // 각 과목당 20문제
-			     let idx = i * 20 + j; // 0~19번만 반복되지 않게 i 값 *20을 더해주기
-			     examSlice.push(exData[idx]); // 20개 데이터 push
-			     shufSlice.push(shufData[idx]); // 20개 데이터 push
-			   }
+    listHtml += "<div class='exam-section'>";
+    listHtml += "<h4 class='subjectIdx'>" + chapterTitles[pageIndex] + "</h4><hr>";
+    listHtml += "<div class='column-wrapper'>"; 
+    
 
-			   subjectExam.push(examSlice); // 20개로 묶인 데이터 push
-			   subjectshuf.push(shufSlice);
-			 }
-	     
-	     
-	     
-	     let listHtml = "";
-	     
-	     // 과목명
-	     $.each(subjectshuf, function(subjectIdx, problemList) {
-	    	  listHtml += "<h4 class='subjectIdx'>"
-	    	           + chapterTitles[subjectIdx]
-	    	           + "</h4>";
-	    	  listHtml += "<p><hr></p>"         
-			  listHtml += "<div style='column-count: 2; column-gap: 40px;'>"
-	    	  $.each(problemList, function(questionIdx, options) {
-	    	    const globalIdx = subjectIdx * 20 + questionIdx;
-	    	    const pbId = exData[globalIdx].pbId - 1;
+    for (let idx = startIdx; idx < endIdx; idx++) {
+        const pb = exData[idx];
+        const options = shufData[idx];
+        const globalIdx = idx;
+        const pbId = pb.pbId - 1;
 
-	    	    // 한 문제 div
-	    	    listHtml += "<div class='oneExam' style='break-inside: avoid;'>";
-	    	    
-	    	    // 문제 출제일
-	    	    listHtml += "<div id='examYear" + (globalIdx + 1) + "'></div>";
-				
-	    	    // 문제 지문 div
-	    	    listHtml += "<div class='question' style='position: relative; width: fit-content; max-width: 100%;'>" +
-	    	                "<img id='check" + (globalIdx + 1) + "' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
-	    	                (globalIdx + 1) + ". " + exData[globalIdx].pbQues + "</div>";
+        listHtml += "<div class='oneExam'>";
+        listHtml += "<div id='examYear" + (globalIdx + 1) + "'></div>";
+        listHtml += "<div class='question'><img id='check" + (globalIdx + 1) + "' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
+                    (globalIdx + 1) + ". " + pb.pbQues + "</div>";
 
-	    	     // 문제 디테일(사진)
-	    	    if (exData[globalIdx].pbDetail != null) {
-	    	      listHtml += "<br><div><img src='" + exData[globalIdx].pbDetail + "'></div><br>";
-	    	    }
+        if (pb.pbDetail) {
+            listHtml += "<br><div><img src='" + pb.pbDetail + "'></div><br>";
+        }
 
-	    	    // 문제 선지
-	    	    for (let k = 0; k < 4; k++) {
-	    	      listHtml += "<div class='choice' id='choice" + (globalIdx + 1) + "-" + (k + 1) + "' onclick='selectChoice(" + (globalIdx + 1) + "," + (k + 1) + ", \"" + options[k] + "\")' style='display: flex;'>";
-	    	      listHtml += "<div class='oneChoiceNum' id='choiceNum" + (globalIdx + 1) + "-" + (k + 1) + "'> " + ["①", "②", "③", "④"][k] + " &nbsp; </div>";
-	    	      if (options[k].includes("http")) {
-	    	        listHtml += "<div class='oneChoice' id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'><img src='" + options[k] + "'></div></div>";
-	    	      } else {
-	    	        listHtml += "<div class='oneChoiceText' id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'>" + options[k] + "</div></div>";
-	    	      }
-	    	    }
+        for (let k = 0; k < 4; k++) {
+            const choice = options[k];
+            listHtml += "<div class='choice' id='choice" + (globalIdx + 1) + "-" + (k + 1) + "' onclick='selectChoice(" + (globalIdx + 1) + "," + (k + 1) + ", \"" + choice + "\")'>";
+            listHtml += "<div id='choiceNum" + (globalIdx + 1) + "-" + (k + 1) + "'> " + ["①", "②", "③", "④"][k] + " &nbsp; </div>";
+            if (choice.includes("http")) {
+                listHtml += "<div id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'><img src='" + choice + "'></div>";
+            } else {
+                listHtml += "<div id='choiceText" + (globalIdx + 1) + "-" + (k + 1) + "'>" + choice + "</div>";
+            }
+            listHtml += "</div>";
+        }
 
-	    	    listHtml += "<br>";
-	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
-	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
-	    	    listHtml += "<br><br>";
-	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
-	    	    listHtml += "</div><br>";
-	    	  });
-			  listHtml += "</div>"
-	    	});
+    	    	    listHtml += "<br>";
+    	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+    	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
+    	    	    listHtml += "<br><br>";
+    	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
+    	    	    listHtml += "</div><br>";
 
-	       // div의 id가 examBoard인 부분에 listHtml 추가
-		       $("#examBoard").html(listHtml);
-		   }).fail(function() { // 실패시
-		     alert("Error!"); // 오류시 출력문
-		   });
-	   }
+    }
+
+    listHtml += "</div>"; // end column-wrapper
+    listHtml += "</div>"; // end exam-section
+
+    
+    $("#examBoard").html(listHtml);
+    renderPagination();
+}
+
+function renderPagination() {
+	
+	// ✅ 페이지 바뀔 때 맨 위로 스크롤 이동
+    window.scrollTo({ top: 0});
+	
+    let html = '<ul class="pagination justify-content-center" style="display:flex; 	flex-direction: row; gap:5px;">';
+
+    // << 처음으로
+    html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+                <button class="page-link" onclick="renderPage(0)">≪</button>
+             </li>`;
+             
+             for (let i = 0; i < 5; i++) {
+             html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                         <button class="page-link" onclick="renderPage(${i})">${i + 1}</button>
+                      </li>`;
+             }
+			    // >> 마지막으로
+			    html += `<li class="page-item ${currentPage === 4 ? 'disabled' : ''}">
+			                <button class="page-link" onclick="renderPage(4)">≫</button>
+			             </li>`;
+
+			    html += '</ul>';
+			    $("#pagination").html(html);
+	    	}
+
    
     // 정답 확인
     function correctAnswer(pbId, index) {
@@ -171,44 +208,72 @@
         });
     }
 
-    // 해설
-    function solution(pbId, index) {
-        $.ajax({
-            url: "/solution/"+pbId,
-            type: "put",
-            dataType: "text",
-            success: function(data) {
-                if ($("#solution"+index).text().trim() === "") {
-                    $("#solution"+index).text(data);
-                } else {
-                    $("#solution"+index).text("");
-                }
-            },
-            error: function() { alert("Error!"); }
-        });
+
+function selectChoice(questionNum, choiceNum, choiceText) {
+    const currentSelection = userSelections[questionNum];
+    if (currentSelection === choiceText) {
+        delete userSelections[questionNum];
+    } else {
+        userSelections[questionNum] = choiceText;
     }
 
-    // 문제 번호 : 선택 선지 텍스트
-    const userSelections = {};
+    for(let i=1; i<=4; i++) {
+        $("#choiceNum" + questionNum + "-" + i).css("font-weight", "normal");
+        $("#choiceText" + questionNum + "-" + i).css("font-weight", "normal");
+    }
 
-    function selectChoice(questionNum, choiceNum, choiceText) {
-        const currentSelection = userSelections[questionNum];
-        if (currentSelection === choiceText) {
-            delete userSelections[questionNum];
-            for(let i=1; i<=4; i++) {
-                $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
-                $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
+    if (userSelections[questionNum]) {
+        $("#choiceNum" + questionNum + "-" + choiceNum).css("font-weight", "bold");
+        $("#choiceText" + questionNum + "-" + choiceNum).css("font-weight", "bold");
+    }
+}
+
+function correctAnswer(pbId, index) {
+    $.ajax({
+        url: "/correctAnswer/" + pbId,
+        type: "put",
+        dataType: "text",
+        success: function(data) {
+            if ($("#pbans" + index).text().trim() === "정답 확인") {
+            	document.getElementById("examYear" + (index + 1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
+                for (let i = 1; i <= 4; i++) {
+                    let choiceText = $("#choiceText" + (index + 1) + "-" + i).text().trim();
+                    if (choiceText === data.trim()) {
+                        $("#choice" + (index + 1) + "-" + i).css("color", "red");
+                    }
+                }
+
+                if (userSelections[index + 1] === data) {
+                    $("#check" + (index + 1)).show().attr("src", "/images/o.png");
+                } else {
+                    $("#check" + (index + 1)).show().attr("src", "/images/x.png");
+                }
             }
-        } else {
-            userSelections[questionNum] = choiceText;
-            for(let i=1; i<=4; i++) {
-                $("[id='choiceNum" + questionNum + "-" + i + "']").css("font-weight","normal");
-                $("[id='choiceText" + questionNum + "-" + i + "']").css("font-weight", "normal");
+        },
+        error: function() {
+            alert("Error!");
+        }
+    });
+}
+
+function solution(pbId, index) {
+    $.ajax({
+        url: "/solution/" + pbId,
+        type: "put",
+        dataType: "text",
+        success: function(data) {
+            const solDiv = $("#solution" + index);
+            if (solDiv.text().trim() === "") {
+                solDiv.text(data);
+            } else {
+                solDiv.text("");
             }
-            $("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
-            $("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
-       		 }
-   		 }
+        },
+        error: function() {
+            alert("Error!");
+        }
+    });
+}
     </script>
 </body>
 </html>
