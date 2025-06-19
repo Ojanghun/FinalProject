@@ -34,7 +34,8 @@
             </div>
 	        <div class="panel-body">
          		<input type="hidden" id="category" th:value="${category}" />
-                <div class="container" id="examBoard" style="display:flex; flex-wrap:wrap; "></div>
+         		<input type="hidden" id="liIdx" th:value="${liIdx}" />
+                <div class="container" id="examBoard" ></div>
                 <div id="pagination" class="text-center mt-4"></div>
          </div>
       </div>
@@ -98,6 +99,8 @@
 
 	     let listHtml = "";
 	     
+	     listHtml += "<div class='exam-section'>"
+	     listHtml += "<div class='column-wrapper'>"
 	     
 	     // div의 id가 examBoard인 부분이 비어있다면 실행, 안그러면 클릭할 때마다 선지 랜덤이 실행되버림..
 	     if ($("#examBoard").html().trim() === "") {
@@ -105,7 +108,7 @@
 		    	 const pbId = exData[index].pbId-1;
 		    	   
 			     // 한 문제 div
-			     listHtml += "<div class='oneExam' style='break-inside: avoid; width:50%; '>"
+			     listHtml += "<div class='oneExam' style='break-inside: avoid;'>"
 			     
 			     // 문제 출제일
 			     listHtml += "<div id='examYear"+(index+1)+"'></div>";
@@ -163,6 +166,10 @@
 		         listHtml += "<br>"
 		         
 		       });
+		       
+		       listHtml += "</div>"  // column-wrapper
+		       listHtml += "</div>" // exam-section
+		       
 		       // div의 id가 print인 부분에 listHtml 추가
 		       $("#examBoard").html(listHtml);
 		     }

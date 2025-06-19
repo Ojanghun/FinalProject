@@ -84,10 +84,11 @@ $(document).ready(function(){
 
 function loadExam() {
     const category = $("#category").val();
+    const liIdx = $("#liIdx").val();
 
     $.when(
-        $.ajax({ url: "/loadExam/" + category, type: "post", dataType: "json" }),
-        $.ajax({ url: "/shuffle/" + category, type: "post", dataType: "json" })
+            $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
+            $.ajax({ url: "/shuffle", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }})
     ).done(function (examData, shuffleData) {
         exData = examData[0];
         shufData = shuffleData[0];
@@ -105,16 +106,8 @@ function renderPage(pageIndex) {
 
     listHtml += "<div class='exam-section'>";
     listHtml += "<h4 class='subjectIdx'>" + chapterTitles[pageIndex] + "</h4><hr>";
-    listHtml += "<div class='column-wrapper'>";
-    // 문제 불러오는 함수
-    function loadExam() {
-        const category = $("#category").val();
-        const liIdx = $("#liIdx").val();
-
-        $.when(
-            $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
-            $.ajax({ url: "/shuffle", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }})
-        ).done(function(examData, shuffleData) {
+    listHtml += "<div class='column-wrapper'>"; 
+    
 
     for (let idx = startIdx; idx < endIdx; idx++) {
         const pb = exData[idx];
@@ -143,16 +136,19 @@ function renderPage(pageIndex) {
             listHtml += "</div>";
         }
 
-        listHtml += "<br>";
-        listHtml += "<button class='btn btn-outline-info' id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> ";
-        listHtml += "<button class='btn btn-outline-warning' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
-        listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
-        listHtml += "</div>";
+    	    	    listHtml += "<br>";
+    	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+    	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
+    	    	    listHtml += "<br><br>";
+    	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
+    	    	    listHtml += "</div><br>";
+
     }
 
     listHtml += "</div>"; // end column-wrapper
     listHtml += "</div>"; // end exam-section
 
+    
     $("#examBoard").html(listHtml);
     renderPagination();
 }
@@ -162,33 +158,27 @@ function renderPagination() {
 	// ✅ 페이지 바뀔 때 맨 위로 스크롤 이동
     window.scrollTo({ top: 0});
 	
-    let html = '<ul class="pagination justify-content-center">';
+    let html = '<ul class="pagination justify-content-center" style="display:flex; 	flex-direction: row; gap:5px;">';
 
     // << 처음으로
     html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
                 <button class="page-link" onclick="renderPage(0)">≪</button>
              </li>`;
+             
+             for (let i = 0; i < 5; i++) {
+             html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                         <button class="page-link" onclick="renderPage(${i})">${i + 1}</button>
+                      </li>`;
+             }
+			    // >> 마지막으로
+			    html += `<li class="page-item ${currentPage === 4 ? 'disabled' : ''}">
+			                <button class="page-link" onclick="renderPage(4)">≫</button>
+			             </li>`;
 
-    for (let i = 0; i < 5; i++) {
-        html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
-                    <button class="page-link" onclick="renderPage(${i})">${i + 1}</button>
-                 </li>`;
-	    	    listHtml += "<br>";
-	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
-	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
-	    	    listHtml += "<br><br>";
-	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
-	    	    listHtml += "</div><br>";
-	    	  });
-			  listHtml += "</div>"
-	    	});
+			    html += '</ul>';
+			    $("#pagination").html(html);
+	    	}
 
-	       // div의 id가 examBoard인 부분에 listHtml 추가
-		       $("#examBoard").html(listHtml);
-		   }).fail(function() { // 실패시
-		     alert("Error!"); // 오류시 출력문
-		   });
-	   }
    
     // 정답 확인
     function correctAnswer(pbId, index) {
@@ -218,14 +208,6 @@ function renderPagination() {
         });
     }
 
-    // >> 마지막으로
-    html += `<li class="page-item ${currentPage === 4 ? 'disabled' : ''}">
-                <button class="page-link" onclick="renderPage(4)">≫</button>
-             </li>`;
-
-    html += '</ul>';
-    $("#pagination").html(html);
-}
 
 function selectChoice(questionNum, choiceNum, choiceText) {
     const currentSelection = userSelections[questionNum];
@@ -292,12 +274,6 @@ function solution(pbId, index) {
         }
     });
 }
-</script>
-
-            $("[id='choiceNum" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
-            $("[id='choiceText" + questionNum + "-" + choiceNum + "']").css("font-weight", "900");
-       		 }
-   		 }
     </script>
 </body>
 </html>
