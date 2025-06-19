@@ -47,7 +47,7 @@ public class SecurityConfig {
                     "/adminLoginCheck",
                     "/refund-session",  // ✅ 여기에 추가!
                     "/admin/**"   // ✅ 관리자 대시보드 접근 허용
-                    // 이건 또 왜돼냐고
+
                 ).permitAll()
 
                 .requestMatchers(
