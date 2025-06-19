@@ -112,7 +112,7 @@
 <br>
 
 ### 관리자 대시보드
-![회원정보](https://github.com/user-attachments/assets/dc6970fc-1dda-44a9-885e-092950e07b5e) | ![문제 수](https://github.com/user-attachments/assets/77878612-a3e6-4bee-98f6-cee551bf2c5b) | ![환급률](https://github.com/user-attachments/assets/37c7f56a-7ed3-4cca-ad1f-3703f4432ef2) | ![플랜 이용 현황](https://github.com/user-attachments/assets/8f485ff9-8549-4b73-b076-fc400ef067ce) | ![환급 요청 및 내역](https://github.com/user-attachments/assets/888fa35f-8ca7-4d3c-a8bd-1fd754295850)
+![회원정보](https://github.com/user-attachments/assets/a46f01ee-95be-4c0b-a739-aeaa6bf13259) | ![문제 수](https://github.com/user-attachments/assets/77878612-a3e6-4bee-98f6-cee551bf2c5b) | ![환급률](https://github.com/user-attachments/assets/37c7f56a-7ed3-4cca-ad1f-3703f4432ef2) | ![플랜 이용 현황](https://github.com/user-attachments/assets/8f485ff9-8549-4b73-b076-fc400ef067ce) | ![환급 요청 및 내역](https://github.com/user-attachments/assets/888fa35f-8ca7-4d3c-a8bd-1fd754295850)
 |:---:|:---:|:---:|:---:|:---:|
 |**회원정보**|**문제 수**|**환급률**|**플랜 이용 현황**|**환급 요청 및 내역**|
 <br>
