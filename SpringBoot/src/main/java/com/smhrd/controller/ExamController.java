@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.smhrd.entity.Exam;
 import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
+import com.smhrd.entity.User_Score;
 import com.smhrd.service.ExamService;
 
 @RestController
@@ -94,5 +95,16 @@ public class ExamController {
 	    // 점수 계산 및 저장
 	    service.saveUserScoreFromPbsLog(userId, pbsAt, exCat);
 	}
+	
+	@PostMapping("/chapResult/{userId}")
+	public List<User_Score> chapResult(@PathVariable("userId") String userId){
+		
+		List<User_Score> userScore = service.chapResult(userId);
+		
+		System.out.println("과목별 점수:"+userScore);
+		
+		return userScore;
+	}
+	
 	
 }
