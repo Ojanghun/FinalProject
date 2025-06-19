@@ -80,7 +80,7 @@
           
           <div class="mt-3">
             <select id="test-category" name="category" class="form-select">
-              <option value="" disabled selected hidden>회차 선택</option>
+              <option value="defult" disabled selected hidden>회차 선택</option>
               <option value="0">랜덤 문제</option>
               <th:block th:each="round : ${rounds}">
                 <option th:value="${round[2]}" th:text="${round[0] + '년 ' + round[1] + '회'}"></option>
@@ -88,7 +88,7 @@
             </select>
             <div class="mt-3">
             <button class="btn btn-outline-primary" type="submit" 
-              onclick="if(document.getElementById('test-category').value == '') { alert('유형을 선택해주세요.'); return false; }">
+              onclick="if(document.getElementById('test-category').value == 'defult') { alert('회차를 선택해주세요.'); return false; }">
               시험 보러가기<i class="bi bi-arrow-right"></i>
             </button>
           </div>
@@ -126,7 +126,7 @@
             </select>
              <div class="mt-3">
             <button class="btn btn-outline-primary" type="submit"
-              onclick="if(document.getElementById('past-category').value == 'default') { alert('유형을 선택해주세요.'); return false; }">
+              onclick="if(document.getElementById('past-category').value == 'default') { alert('회차를 선택해주세요.'); return false; }">
               기출 보기<i class="bi bi-arrow-right"></i>
             </button>
           </div>
@@ -148,12 +148,12 @@
           <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
           <div class="mt-3">
             <select id="topic-category" name="category" class="form-select">
-              <option value="" disabled selected hidden>유형 선택</option>
+              <option value="defult" disabled selected hidden>유형 선택</option>
               <div id="topicSelect"></div>
             </select>
             <div class="mt-3">
             <button class="btn btn-outline-primary" type="submit"
-              onclick="if(document.getElementById('topic-category').value == '') { alert('유형을 선택해주세요.'); return false; }">
+              onclick="if(document.getElementById('topic-category').value == 'defult') { alert('유형을 선택해주세요.'); return false; }">
               학습 시작하기<i class="bi bi-arrow-right"></i>
             </button>
           </div>
@@ -181,7 +181,7 @@
 
     <!-- 오답 리스트 --> <!-- 오답 너무 많아서 잠깐 주석처리함 ;;;; -->
     <div class="d-flex gap-3 mb-4">	
-      <div class="badge bg-light text-dark px-3 py-2 border rounded-pill" ></div>
+      <div id="top5"></div>
     </div>
 
     <!-- 차트 -->
@@ -297,6 +297,7 @@
    $(document).ready(function(){
       // ready() : html 코드가 준비가 되면 실행되는 메소드
       loadTopic();
+      loadTopList();
    });
    
    const today = new Date();
@@ -359,8 +360,8 @@
     	 for(let j=0; j<topicList.length; j++){
 			if( top5List[i][1] == topicList[j].topicIdx){
 				
-	         listHtml += "<div>" + "Top" + (i+1) + " " + topicList[j].topicNum + ". " + Name[j] + "</div>";
-	         
+	         listHtml += "<div class='badge bg-light text-dark px-3 py-2 border rounded-pill'>" + "Top" + (i+1) + " " + topicList[j].topicNum + ". " + Name[j] + "</div>";
+	         console.log("Name값: "+Name[j]);
 			}
     	 }
       }
