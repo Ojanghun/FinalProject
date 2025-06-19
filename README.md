@@ -242,4 +242,5 @@ $.ajax({
 });
 ```
  </details>
+ 
 * 참고 링크: <a href="https://innovation123.tistory.com/243">[Web] CSRF(크로스 사이트 요청 위조) 알아보기, Spring Security CSRF
