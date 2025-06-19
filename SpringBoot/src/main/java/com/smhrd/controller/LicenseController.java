@@ -26,7 +26,7 @@ public class LicenseController {
 	@Autowired
 	ExamService Exservice;
 	
-	@PostMapping("/goExam.do")
+	@PostMapping("/goPast.do")
 	public String goExam(@RequestParam("category") int category,
 			@RequestParam("liIdx") String liIdx,
 		    @RequestParam("liName") String liName,
