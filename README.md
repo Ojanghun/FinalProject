@@ -105,10 +105,10 @@
 |**메인화면**|**사이트 소개**|**로그인**|**회원가입**|**마이페이지**|**환급 페이지**|
 <br>
 
-### 자격증 사이트/캘린더/모의시험/기출문제/주제별 학습
+### 학습 페이지/캘린더/모의시험/기출문제/주제별 학습
 ![자격증 사이트](https://github.com/user-attachments/assets/2a57d825-dde1-44ef-bd6d-416fd4c9534d) | ![달력](https://github.com/user-attachments/assets/96b0f988-5ed2-48fc-bbf6-47647f8373de) | ![모의시험](https://github.com/user-attachments/assets/d8deaf6d-781a-4be8-b0dd-f5c9adc86c57) | ![기출문제](https://github.com/user-attachments/assets/90b4a5d4-c124-446d-9515-89e026efbdcf) | ![주제별 학습](https://github.com/user-attachments/assets/b8a2b174-5b32-43ba-b841-3bdc107e19b7)
 |:---:|:---:|:---:|:---:|:---:|
-|**자격증 사이트**|**캘린더**|**모의시험**|**기출문제**|**주제별 학습**|
+|**학습 페이지**|**캘린더**|**모의시험**|**기출문제**|**주제별 학습**|
 <br>
 
 ### 관리자 대시보드
