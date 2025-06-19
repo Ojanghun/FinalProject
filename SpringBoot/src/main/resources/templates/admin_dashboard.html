@@ -28,10 +28,8 @@
 		<div class="menu-item" onclick="showSection('planUsageSection')">📊
 			플랜 이용 현황</div>
 		<div class="menu-item" onclick="goToAllRefundRequests()">📁 환급
-			요청 보기</div>
-		<div class="menu-item" onclick="showSection('refundCompleteSection')">✅
-			환급 완료 보기</div>
-
+			요청 및 내역</div>
+		
 	</div>
 
 	<!-- 본문 콘텐츠 -->
@@ -175,75 +173,60 @@
 			</table>
 		</section>
 	
-		<section id="refundRequestSection" class="section-content">
-			<h4>📁 환급 요청 정보</h4>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>자격증</th>
-						<th>플랜</th>
-						<th>가격</th>
-						<th>예금주</th>
-						<th>은행</th>
-						<th>계좌</th>
-						<th>요청일</th>
-						<th>동영상</th>
-						<th>승인</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="req : ${session.refundInfoList}">
-						<td th:text="${req.liName}"></td>
-						<td th:text="${req.planType}"></td>
-						<td
-							th:text="${#numbers.formatInteger(req.planPrice, 3, 'COMMA')} + '원'"></td>
-						<td th:text="${req.rfName}"></td>
-						<td th:text="${req.rfBank}"></td>
-						<td th:text="${req.rfAccnum}"></td>
-						<td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
-						
-						<td><a th:href="@{${req.rfVpath}}" target="_blank"
-							th:if="${req.rfVpath != null}">보기</a> <span
-							th:if="${req.rfVpath == null}">없음</span></td>
-						<td>
-							<button class="btn btn-sm btn-success"
-								th:onclick="|approveRefund(${req.rfIdx})|">승인</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</section>
-		<!-- 환급 완료 보기 -->
-		<section id="refundCompleteSection" class="section-content">
-			<h4>✅ 환급 완료 내역</h4>
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>자격증</th>
-						<th>플랜</th>
-						<th>가격</th>
-						<th>예금주</th>
-						<th>은행</th>
-						<th>계좌</th>
-						<th>요청일</th>
-						<th>승인일</th> <!-- 추가 -->
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="req : ${session.refundCompletedList}">
-						<td th:text="${req.liName}"></td>
-						<td th:text="${req.planType}"></td>
-						<td
-							th:text="${#numbers.formatInteger(req.planPrice, 3, 'COMMA')} + '원'"></td>
-						<td th:text="${req.rfName}"></td>
-						<td th:text="${req.rfBank}"></td>
-						<td th:text="${req.rfAccnum}"></td>
-						<td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
-						<td th:text="${#temporals.format(req.apAt, 'yyyy-MM-dd HH:mm')}"></td> <!-- 승인일 -->
-					</tr>
-				</tbody>
-			</table>
-		</section>
+		<section id="refundSection" class="section-content">
+      <h4>📁 환급 요청 및 완료 내역</h4>
+
+      <!-- 요청 테이블 -->
+      <h5>⏳ 환급 요청 목록</h5>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>자격증</th><th>플랜</th><th>가격</th><th>예금주</th><th>은행</th><th>계좌</th><th>요청일</th><th>동영상</th><th>승인</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="req : ${session.refundInfoList}">
+            <td th:text="${req.liName}"></td>
+            <td th:text="${req.planType}"></td>
+            <td th:text="${#numbers.formatInteger(req.planPrice, 3, 'COMMA')} + '원'"></td>
+            <td th:text="${req.rfName}"></td>
+            <td th:text="${req.rfBank}"></td>
+            <td th:text="${req.rfAccnum}"></td>
+            <td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+              <a th:href="@{${req.rfVpath}}" target="_blank" th:if="${req.rfVpath != null}">보기</a>
+              <span th:if="${req.rfVpath == null}">없음</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-success" th:onclick="|approveRefund(${req.rfIdx})|">승인</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 완료 테이블 -->
+      <h5 class="mt-4">✅ 환급 완료 목록</h5>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>자격증</th><th>플랜</th><th>가격</th><th>예금주</th><th>은행</th><th>계좌</th><th>요청일</th><th>승인일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="req : ${session.refundCompletedList}">
+            <td th:text="${req.liName}"></td>
+            <td th:text="${req.planType}"></td>
+            <td th:text="${#numbers.formatInteger(req.planPrice, 3, 'COMMA')} + '원'"></td>
+            <td th:text="${req.rfName}"></td>
+            <td th:text="${req.rfBank}"></td>
+            <td th:text="${req.rfAccnum}"></td>
+            <td th:text="${#temporals.format(req.rfAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(req.apAt, 'yyyy-MM-dd HH:mm')}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
 	</div>
 	<script>
   const selectedUserId = document.getElementById("selectedUserId");
@@ -252,14 +235,14 @@
 </body>
 </html>
 <script>
-  function showUserSection() {
-	  showSection('userSection');
-	  fetchUsers();
-	}
-  function showSection(id) {
-      document.querySelectorAll(".section-content").forEach(el => el.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-    }
+function showUserSection() {
+    showSection('userSection');
+    fetchUsers();
+  }
+function showSection(id) {
+    document.querySelectorAll(".section-content").forEach(el => el.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
 
     function fetchUsers() {
       fetch("/admin/users")
@@ -388,39 +371,36 @@
     	    });
     	}
     function goToAllRefundRequests() {
-        location.href = "/admin/refund-session";  // <-- 변경
-    }
-    function approveRefund(rfIdx) {
-    	  if (!confirm("이 환급 요청을 승인하시겠습니까?")) return;
-
-    	  const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    	  const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    	  fetch(`/admin/approve-refund?rfIdx=${rfIdx}`, {
-    	    method: 'POST',
-    	    headers: {
-    	      [header]: token,
-    	      'Content-Type': 'application/x-www-form-urlencoded'
-    	    }
-    	  })
-    	  .then(res => {
-    	    if (res.ok) {
-    	      alert("환급이 승인되었습니다.");
-    	      location.reload();
-    	    } else {
-    	      alert("승인 중 오류가 발생했습니다.");
-    	    }
-    	  });
+    	  location.href = "/admin/refund-session"; // ✅ session 세팅을 위해 반드시 백엔드 경유 필요
     	}
-    // 초기 로드
-    
+    function approveRefund(rfIdx) {
+        if (!confirm("이 환급 요청을 승인하시겠습니까?")) return;
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        fetch(`/admin/approve-refund?rfIdx=${rfIdx}`, {
+          method: 'POST',
+          headers: {
+            [header]: token,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then(res => {
+          if (res.ok) {
+            alert("환급이 승인되었습니다.");
+            location.reload();
+          } else {
+            alert("승인 중 오류가 발생했습니다.");
+          }
+        });
+      }
+ // 기존 onload 수정
     window.onload = () => {
-  const params = new URLSearchParams(location.search);
-  const section = params.get("section");
-  if (section === "refund") {
-    showSection('refundRequestSection'); // ✅ 이걸 자동 실행해야 함
-  }
-};
+      const params = new URLSearchParams(location.search);
+      const section = params.get("section");
+      if (section === "refund") {
+        showSection('refundSection');
+      }
+    };
       
    
   </script>

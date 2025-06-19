@@ -172,4 +172,10 @@ public class ExamService {
 	    userScoreRepository.save(score);
 		
 	}
+	
+	// 과목별 점수 정보 불러오기
+	public List<User_Score> chapResult(String userId){
+		return userScoreRepository.chapResult(userId);
+		
+	}
 }

@@ -65,13 +65,14 @@ public class LicenseService {
 		return date;
 	}
 	
-	// 정보처리기사에 대한 정보 가져오기
+	// liIdx에 대한 정보 가져오기
 	public List<Li_Info> liInfo(int liIdx){
 		return liInforepository.findByLiIdx(liIdx);
 	}
 	
+	// 토픽 정보 가져오기
 	public List<Topic_Info> topicInfo(int liIdx){
-		return TopicInforepository.findByLiIdx(liIdx);
+		return TopicInforepository.findTopicCounts(liIdx);
 	}
 	
 	public List<Pbs_Log> PbsLog(String id){

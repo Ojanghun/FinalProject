@@ -1,6 +1,180 @@
 @charset "UTF-8";
 /* past&topic 문제 페이지 css */
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+  background-color: #FAFAFA;
+  color: #212121;
+  margin: 0;
+  padding: 0;
+}
 
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h2 {
+  color: #1E88E5;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+h4 {
+  color: #1E88E5;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* 헤더 */
+.custom-header {
+  font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo img {
+  height: 48px;
+  width: auto;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1E88E5;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+.panel-warning {
+   border: none;
+   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+   border-radius: 8px;
+   overflow: hidden;
+}
+
+.exam-title-bar {
+  background-color: #67aded;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 8px;
+  margin: 30px 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+    .subjectIdx {
+        margin-top: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .oneExam {
+        background-color: white;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        break-inside: avoid;
+        page-break-inside: avoid;
+         position: relative;  /* 정답 체크 이미지 위치 기준점 설정 */
+ 		 padding-left: 40px; 
+    }
+
+    .question {
+        font-weight: 500;
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+ .choice {
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  border: 1px solid #d0d7de;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.choice:hover {
+  background-color: #f0f8ff;
+  border-color: #64b5f6;
+  box-shadow: 0 4px 10px rgba(100, 181, 246, 0.2);
+  transform: translateY(-1px);
+}
+
+.choice.selected {
+  background-color: #e3f2fd;
+  border-color: #2196f3;
+  font-weight: 600;
+  color: #0d47a1;
+  box-shadow: 0 6px 12px rgba(33, 150, 243, 0.2);
+}
+
+
+
+    .solution {
+        background-color: #f1f3f5;
+        border-left: 4px solid #0d6efd;
+        padding: 10px;
+        margin-top: 10px;
+        display: none;
+    }
+
+    .btn {
+        margin-top: 10px;
+        margin-right: 5px;
+        border-radius: 6px;
+    }
+
+    .panel-footer {
+        text-align: center;
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .exam-section {
+        break-after: page;
+        margin-bottom: 40px;
+    }
+
+    .btn-bottom {
+        text-align: center;
+        margin: 30px 0;
+    }
+    .page-item.active .page-link {
+      background-color: #343a40;
+      border-color: #343a40;
+      color: #fff;
+    }
 
 
 /* 과목명 */
@@ -11,9 +185,15 @@
 	text-align: center;
 }
 /* 한 문제 */
- .oneExam{
- 
- }
+.column-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.oneExam {
+  width: 48%;
+}
 
 /* 지문 */
  .question {
@@ -49,6 +229,42 @@
   
   }
   
+
+/* footer  */
+.footer {
+  border-top: 1px solid #ddd;
+}
+
+.footer .nav a {
+  color: #666;
+  margin: 0 10px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.footer .text-muted {
+  font-size: 13px;
+}
+
+.page-item {
+  display: inline;
+}
+
+.page-item .page-link {
+  padding: 6px 12px;
+  margin: 0 3px;
+  background: white;
+  border: 1px solid #ddd;
+  color: #004080;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  background-color: #c6e0f9;
+  color: white;
+  border-color: #89bff1;
+}  
   
   
   
