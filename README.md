@@ -99,21 +99,22 @@
 
 ## 🖥 화면 구성
 
-### 메인화면/로그인/회원가입/마이페이지/환급 페이지
-![main](https://github.com/user-attachments/assets/0fc6a4b5-843e-461b-9626-fddd79b0cf9d) | ![login](https://github.com/user-attachments/assets/7c90c92d-7420-4179-bb75-27242457179a) | ![join](https://github.com/user-attachments/assets/8bf88181-b8eb-496f-a31f-b1bb02d3b876) | ![mypage](https://github.com/user-attachments/assets/3cc086f9-ed20-4bd9-b5c9-96eb0b2c1d23) | ![certify](https://github.com/user-attachments/assets/7d1fc01e-fad7-4a8d-ad04-5c3d21dca0d2)
-|:---:|:---:|:---:|:---:|:---:|
-|**메인화면**|**로그인**|**회원가입**|**마이페이지**|**환급 페이지**|
+### 메인화면/사이트 소개/로그인/회원가입/마이페이지/환급 페이지
+![메인화면](https://github.com/user-attachments/assets/b190b4f3-4ded-4426-b5fb-6a08cef5b388) | ![홍보](https://github.com/user-attachments/assets/f436bff1-e092-438b-8ceb-847774588525) | ![login](https://github.com/user-attachments/assets/7c90c92d-7420-4179-bb75-27242457179a) | ![join](https://github.com/user-attachments/assets/8bf88181-b8eb-496f-a31f-b1bb02d3b876) | ![mypage](https://github.com/user-attachments/assets/3cc086f9-ed20-4bd9-b5c9-96eb0b2c1d23) | ![certify](https://github.com/user-attachments/assets/7d1fc01e-fad7-4a8d-ad04-5c3d21dca0d2)
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|**메인화면**|**사이트 소개**|**로그인**|**회원가입**|**마이페이지**|**환급 페이지**|
 <br>
 
-### 자격증 사이트/모의시험/기출문제/주제별 학습
-![image](https://user-images.githubusercontent.com/25995055/178401127-287e6de2-4396-49fc-a107-59c4d5cd55c7.png)
+### 자격증 사이트/캘린더/모의시험/기출문제/주제별 학습
+![자격증 사이트](https://github.com/user-attachments/assets/2a57d825-dde1-44ef-bd6d-416fd4c9534d) | ![달력](https://github.com/user-attachments/assets/96b0f988-5ed2-48fc-bbf6-47647f8373de) | ![모의시험](https://github.com/user-attachments/assets/d8deaf6d-781a-4be8-b0dd-f5c9adc86c57) | ![기출문제](https://github.com/user-attachments/assets/90b4a5d4-c124-446d-9515-89e026efbdcf) | ![주제별 학습](https://github.com/user-attachments/assets/b8a2b174-5b32-43ba-b841-3bdc107e19b7)
+|:---:|:---:|:---:|:---:|:---:|
+|**자격증 사이트**|**캘린더**|**모의시험**|**기출문제**|**주제별 학습**|
 <br>
 
 ### 관리자 대시보드
-![관리자 대시보드](https://github.com/user-attachments/assets/5598d87a-cf42-4fc4-89c3-854161f3001d) | ![회원정보](https://github.com/user-attachments/assets/dc6970fc-1dda-44a9-885e-092950e07b5e) | ![문제 수](https://github.com/user-attachments/assets/77878612-a3e6-4bee-98f6-cee551bf2c5b) | ![환급률](https://github.com/user-attachments/assets/37c7f56a-7ed3-4cca-ad1f-3703f4432ef2) | ![플랜 이용 현황](https://github.com/user-attachments/assets/8f485ff9-8549-4b73-b076-fc400ef067ce) | ![환급 요청 및 내역](https://github.com/user-attachments/assets/888fa35f-8ca7-4d3c-a8bd-1fd754295850)
-|:---:|:---:|:---:|:---:|:---:|:---:|
-|**관리자 대시보드**|**회원정보**|**문제 수**|**환급률**|**플랜 이용 현황**|**환급 요청 및 내역**|
-
+![회원정보](https://github.com/user-attachments/assets/dc6970fc-1dda-44a9-885e-092950e07b5e) | ![문제 수](https://github.com/user-attachments/assets/77878612-a3e6-4bee-98f6-cee551bf2c5b) | ![환급률](https://github.com/user-attachments/assets/37c7f56a-7ed3-4cca-ad1f-3703f4432ef2) | ![플랜 이용 현황](https://github.com/user-attachments/assets/8f485ff9-8549-4b73-b076-fc400ef067ce) | ![환급 요청 및 내역](https://github.com/user-attachments/assets/888fa35f-8ca7-4d3c-a8bd-1fd754295850)
+|:---:|:---:|:---:|:---:|:---:|
+|**회원정보**|**문제 수**|**환급률**|**플랜 이용 현황**|**환급 요청 및 내역**|
 <br>
 
 ## 👨‍👩‍👦‍👦 팀원 역할
