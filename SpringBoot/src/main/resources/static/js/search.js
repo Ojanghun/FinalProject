@@ -13,7 +13,7 @@ $.ajax({
 });
 
 function initAutocomplete() {
-	const input = document.getElementById("search"); // 검색 바 요소
+	const input = document.getElementById("searchInput"); // 검색 바 요소
 	const suggestionBox = document.getElementById("suggestions"); // 자동완성 박스 요소
 
 	// 사용자가 검색바를 클릭했을 때 자격증 목록 보여주기
