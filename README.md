@@ -133,7 +133,30 @@
   </tr>
   <tr>
     <td align="center"><b>Backend</b></td>  
-   서 예외 처리 설정
+    <td align="center"><b>Backend</b></td>
+    <td align="center"><b>PM, Data Modeling,<br>DB 설계 및 구축</b></td>
+    <td align="center"><b>Backend</b></td>
+    <td align="center"><b>FrontEnd</b></td>
+    <td align="center"><b>FrontEnd</b></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/mosunghyun" target='_blank'>github</a></td>
+    <td align="center"><a href="https://github.com/SonJonghee" target='_blank'>github</a></td>
+    <td align="center"><a href="https://github.com/Ojanghun" target='_blank'>github</a></td>
+    <td align="center"><a href="https://github.com/plume213" target='_blank'>github</a></td>
+    <td align="center"><a href="https://github.com/JoeunL" target='_blank'>github</a></td>
+    <td align="center"><a href="https://github.com/yyyujeong" target='_blank'>github</a></td>
+  </tr>
+</table>
+
+## 🤾‍♂️ 트러블슈팅
+개념: 문제 해결을 위해 문제의 원인을 논리적이고 체계적으로 찾는 일이며 제품이나 프로세스의 운영을 재개
+프로젝트 진행하는 동안 발생했던 이슈 중 가장 기억에 남았던 문제와 해결 프로세스 나열(2~5가지 정도)
+
+### Spring Security 관련 문제
+* 로그인 세션이 없으면 /main, /login, /join 등 접근 못하는 문제
+  * Spring Security는 로그인 세션이 없으면 특정 페이지나 기능에 접근하지 못하게 막음
+  * -> SecurityConfig에 예외 처리 설정
 * CSRF 토큰 인증 문제
   * CSRF(Cross Site Request Forgery, 크로스 사이트 요청 위조)
     * 웹 보안 취약점 중 하나로, 인증된 사용자가 자신의 의지와는 무관하게 웹 애플리케이션에 공격자가 의도한 특정 요청을 보내도록 유도하는 것을 말한다.
