@@ -65,7 +65,8 @@ public class SecurityConfig {
                     "/css/**",
                     "/js/**",
                     "/images/**",
-                    "/searchLicenses"
+                    "/searchLicenses",
+                    "/main/plan-usage" // 🔹 여기에 추가!!
                 ).permitAll()
 
                 .anyRequest().authenticated()
