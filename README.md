@@ -159,9 +159,8 @@
   * Synchronizer Token Pattern(동기화 토큰 패턴)
     * 사용자 세션 또는 요청 단위로 토큰을 만들어서, 서버에서 제공
     * 클라이언트는 이 토큰을 요청에 추가해서 보내고, 서버에서 다시 토큰을 제공받기를 반복
-    * 서버는 클라이언트의 요청에서 csrf 토큰의 존재 여부를 확인하고, 유효성을 검증하고, 서버 측 사용자 세션에 저장된 토큰 값과 비교
-  * 출처 : https://innovation123.tistory.com/243
-
+    * 서버는 클라이언트의 요청에서 csrf 토큰의 존재 여부를 확인하고, 유효성을 검증하고, 서버 측 사용자 세션에 저장된 토큰 값과 비교<br>
+    https://innovation123.tistory.com/243
   * 로그인 세션이 없으면 /main, /login, /join 등 접근 못하는 문제
     * SecurityConfig에 예외 처리 설정
   * 403 forbidden error
