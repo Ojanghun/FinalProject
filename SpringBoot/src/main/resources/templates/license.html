@@ -79,6 +79,12 @@
           <input type="hidden" name="liName" th:value="${licenseList[0].liName}" />
           <input type="hidden" name="liTime" th:value="${licenseList[0].liTime}" />
           <input type="hidden" name="liPbc" th:value="${licenseList[0].liPbc}" />
+          <input type="hidden" name="liChap1" th:value="${licenseList[0].liChap1}" />
+          <input type="hidden" name="liChap2" th:value="${licenseList[0].liChap2}" />
+          <input type="hidden" name="liChap3" th:value="${licenseList[0].liChap3}" />
+          <input type="hidden" name="liChap4" th:value="${licenseList[0].liChap4}" />
+          <input type="hidden" name="liChap5" th:value="${licenseList[0].liChap5}" />
+          <input type="hidden" name="liChap6" th:value="${licenseList[0].liChap6}" />
           
           <div class="mt-3">
             <select id="test-category" name="category" class="form-select">
@@ -118,6 +124,7 @@
           <input type="hidden" name="liChap3" th:value="${licenseList[0].liChap3}" />
           <input type="hidden" name="liChap4" th:value="${licenseList[0].liChap4}" />
           <input type="hidden" name="liChap5" th:value="${licenseList[0].liChap5}" />
+          <input type="hidden" name="liChap6" th:value="${licenseList[0].liChap6}" />
           
           <div class="mt-3">
             <select id="past-category" name="category" class="form-select">
@@ -150,12 +157,11 @@
           <input type="hidden" name="liIdx" th:value="${licenseList[0].liIdx}" />
           <div class="mt-3">
             <select id="topic-category" name="category" class="form-select">
-              <option value="defult" disabled selected hidden>유형 선택</option>
-              <div id="topicSelect"></div>
+              <option value="default" disabled selected hidden>유형 선택</option>
             </select>
             <div class="mt-3">
             <button class="btn btn-outline-primary" type="submit"
-              onclick="if(document.getElementById('topic-category').value == 'defult') { alert('유형을 선택해주세요.'); return false; }">
+              onclick="if(document.getElementById('topic-category').value == 'default') { alert('유형을 선택해주세요.'); return false; }">
               학습 시작하기<i class="bi bi-arrow-right"></i>
             </button>
           </div>
@@ -166,10 +172,7 @@
     </div>
 
   </div>
-</div>
 
-    </div>
-  </div>
   
 <div class="container mb-5">
   <div class="dashboard-card p-4 w-100" style="min-height: 300px;">
@@ -190,7 +193,7 @@
 
   <!-- Calendar & Schedule -->
   <div class="container mb-6">
-    <div class="row" style="">
+    <div class="row">
       <div class="col-md-8 mb-4">
         <div class="calendar-box">
           <h4>
@@ -334,12 +337,12 @@
           }
        
        for(let i=0; i<topicList.length; i++){
-                   
-          listHtml += "<option value='" + topicList[i].topicIdx + "'>"+ topicList[i].topicNum+". " + Name[i] + "</option>";
+          // 토픽 주제         
+          listHtml += "<option id='topic"+topicList[i].topicIdx+"' value='" + topicList[i].topicIdx + "'>"+ topicList[i].topicNum+". " + Name[i] + "</option>";
 
 
        }
-       $("#topicSelect").html(listHtml);   
+       $("#topic-category").html(listHtml);   
        
  }
  
@@ -360,7 +363,8 @@
 			if( top5List[i][1] == topicList[j].topicIdx){
 				
 	         listHtml += "<div class='badge bg-light text-dark px-3 py-2 border rounded-pill'>" + "Top" + (i+1) + " " + topicList[j].topicNum + ". " + Name[j] + "</div>";
-	         console.log("Name값: "+Name[j]);
+	         $("#topic"+top5List[i][1]).val();
+	         
 			}
     	 }
       }
