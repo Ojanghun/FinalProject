@@ -35,6 +35,14 @@
 	padding-right: 12px;
 	box-sizing: border-box;
 }
+
+#plan-usage-slider {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+.fade-out {
+  opacity: 0;
+}
 </style>
 </head>
 <body>
@@ -121,7 +129,7 @@
 					      </svg>
 					    </a>
 					  </th:block>
-					  
+					  <div id="plan-usage-slider" class="text-center fw-bold fs-5 my-3"></div>
 					</div>
 				</div>
 
@@ -284,7 +292,7 @@
       <p>출제 기준 기반으로 분류된 체계적 문제은행을 경험하세요.</p>
     </div>
   </div>
-
+	
   <!-- 자주 묻는 질문 -->
   <div class="faq-section">
     <h3 class="faq-title">자주 묻는 질문</h3>
@@ -375,50 +383,72 @@
 
 	<!-- JS -->
 	<script>
-	document.addEventListener('DOMContentLoaded', function () {
-	    const input = document.getElementById('searchInput');
-	    const suggestions = document.getElementById('suggestions');
-	    const clearBtn = document.getElementById('clearBtn');
-	    const searchBtn = document.getElementById('searchBtn');
-	    let selectedId = null;
+    document.addEventListener('DOMContentLoaded', function () {
+      const input = document.getElementById('searchInput');
+      const suggestions = document.getElementById('suggestions');
+      const clearBtn = document.getElementById('clearBtn');
+      const searchBtn = document.getElementById('searchBtn');
+      let selectedId = null;
 
-	    // 자동완성 클릭 → 입력창에 값 반영
-	    suggestions.addEventListener('click', function (e) {
-	      const item = e.target.closest('.autocomplete-item');
-	      if (item) {
-	        input.value = item.dataset.name;
-	        selectedId = item.dataset.id;
-	        suggestions.classList.add('d-none');
-	      }
-	    });
+      if (input && suggestions) {
+        suggestions.addEventListener('click', function (e) {
+          const item = e.target.closest('.autocomplete-item');
+          if (item) {
+            input.value = item.dataset.name;
+            selectedId = item.dataset.id;
+            suggestions.classList.add('d-none');
+          }
+        });
 
-	    // 검색 입력 시 자동완성 보이기
-	    input.addEventListener('input', function () {
-	      selectedId = null; // 직접 입력 시 초기화
-	      if (input.value.trim() === '') {
-	        suggestions.classList.add('d-none');
-	      } else {
-	        suggestions.classList.remove('d-none');
-	      }
-	    });
+        input.addEventListener('input', function () {
+          selectedId = null;
+          suggestions.classList.toggle('d-none', input.value.trim() === '');
+        });
 
-	    // ✕ 버튼 → 입력 초기화
-	    clearBtn.addEventListener('click', function () {
-	      input.value = '';
-	      selectedId = null;
-	      suggestions.classList.add('d-none');
-	    });
+        clearBtn?.addEventListener('click', function () {
+          input.value = '';
+          selectedId = null;
+          suggestions.classList.add('d-none');
+        });
 
-	    // 돋보기 클릭 → 해당 자격증으로 이동
-	    searchBtn.addEventListener('click', function () {
-	      if (selectedId) {
-	        window.location.href = `/redirectByLicense?liIdx=${selectedId}`;
-	      } else {
-	        alert('해당하는 자격증은 존재하지 않습니다.');
-	      }
-	    });
-	  });
-	</script>
+        searchBtn?.addEventListener('click', function () {
+          if (selectedId) {
+            window.location.href = `/redirectByLicense?liIdx=${selectedId}`;
+          } else {
+            alert('해당하는 자격증은 존재하지 않습니다.');
+          }
+        });
+      }
+
+      // 📢 플랜 이용자 수 슬라이드 출력
+      const usageDiv = document.getElementById("plan-usage-slider");
+      let usageList = [];
+      let currentIndex = 0;
+
+      function showNext() {
+        usageDiv.classList.add('fade-out');
+        setTimeout(() => {
+          const item = usageList[currentIndex];
+          usageDiv.textContent = `현재 ${item.licenseName} ${item.planName} 플랜을 ${item.userCount}명이 이용 중입니다.`;
+          usageDiv.classList.remove('fade-out');
+          currentIndex = (currentIndex + 1) % usageList.length;
+        }, 500);
+      }
+
+      fetch("/main/plan-usage")
+        .then(res => res.json())
+        .then(data => {
+          usageList = data;
+          if (usageList.length > 0) {
+            showNext();
+            setInterval(showNext, 3000);
+          }
+        })
+        .catch(err => {
+          console.error("플랜 이용 정보 불러오기 실패:", err);
+        });
+    });
+  </script>
 	
 
 </body>
