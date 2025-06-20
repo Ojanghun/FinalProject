@@ -19,5 +19,5 @@ public interface UserScoreRepository extends JpaRepository<User_Score, Integer> 
 		   		""", nativeQuery = true)
 	   List<User_Score> chapResult(@Param("userId") String userId);
 
-	   User_Score findTopByUserIdOrderByScAtDesc(String id);
+	   User_Score findTopByUserIdAndLiIdxOrderByScAtDesc(String userId, int liIdx);
 }

@@ -110,8 +110,8 @@ public class LicenseService {
 	}
 	
 	// 과목별 최근 점수
-	public User_Score subjectScore(String id){
-		return USRepository.findTopByUserIdOrderByScAtDesc(id);
+	public User_Score subjectScore(String id, int liIdx){
+		return USRepository.findTopByUserIdAndLiIdxOrderByScAtDesc(id, liIdx);
 		
 	}
 }

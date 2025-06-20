@@ -89,7 +89,7 @@ public class ProductController {
 		
 		
 		// 과목별 점수
-		User_Score subjectScore = licenseservice.subjectScore(id);
+		User_Score subjectScore = licenseservice.subjectScore(id, liIdx);
 		model.addAttribute("subjectScore", subjectScore);
 		System.out.println(subjectScore);
 		
