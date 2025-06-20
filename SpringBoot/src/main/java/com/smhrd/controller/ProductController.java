@@ -16,6 +16,7 @@ import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Member;
 import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
+import com.smhrd.entity.User_Score;
 import com.smhrd.service.LicenseService;
 import com.smhrd.entity.Ex_Info;
 import com.smhrd.repository.ExInfoRepository;
@@ -45,6 +46,8 @@ public class ProductController {
 			// 로그인한 id값 저장해두기
 			id = member.getId();
 		}
+		
+		// 자격증 정보
 		List<Li_Info> licenseList = licenseservice.liInfo(liIdx);
 		model.addAttribute("licenseList", licenseList);
 		System.out.println("li정보 : "+licenseList);
@@ -57,6 +60,8 @@ public class ProductController {
 			model.addAttribute("date", date);	
 		}
 		
+		
+		// 토픽 정보
 		List<Topic_Info> topicList = licenseservice.topicInfo(liIdx);
 		model.addAttribute("topicList", topicList);
 		
@@ -78,10 +83,16 @@ public class ProductController {
 		List<Object[]> rounds = exinfoRepository.findAllYearsAndRounds(liIdx);
 		model.addAttribute("rounds", rounds);
 		
+		// 오답노트 top5
 		List<Object[]> top5List = licenseservice.wrongRate(id);
-		
 		model.addAttribute("top5List", top5List);
-        
+		
+		
+		// 과목별 점수
+		User_Score subjectScore = licenseservice.subjectScore(id, liIdx);
+		model.addAttribute("subjectScore", subjectScore);
+		System.out.println(subjectScore);
+		
 		return "license";
 	}
 

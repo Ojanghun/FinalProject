@@ -180,12 +180,11 @@
       <h5 class="fw-bold mb-0" th:if="${member != null}" th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
     </div>
 
-    <!-- 오답 리스트 --> <!-- 오답 너무 많아서 잠깐 주석처리함 ;;;; -->
     <div class="d-flex gap-3 mb-4">	
-      <div id="top5"></div>
-      <div style="display:flex; flex-wrap:wrap;">
-      	<canvas id="myChart" width="600" height="200" style="width:50%;"></canvas>
-      </div>
+		<div style="display:flex; flex-wrap:wrap;">
+      	  <canvas id="topicChart" width="600" height="200" style="width:50%;"></canvas>
+		</div>
+		  <div id="subjectScore"></div>
     </div>
 
   </div>
@@ -300,6 +299,7 @@
       // ready() : html 코드가 준비가 되면 실행되는 메소드
       loadTopic();
       loadTopList();
+      loadSubjectScore();
    });
    
    const today = new Date();
@@ -319,7 +319,7 @@
   }
    
    
- // 리스트라서.. 이렇게 가져옴
+ // 토픽 리스트
  const topicList = /*[[${topicList}]]*/ [];
  
  
@@ -370,7 +370,7 @@
       }
 	 // $("#top5").html(listHtml);
 
-     let myChart = new Chart(document.getElementById("myChart"), {
+     let topicChart = new Chart(document.getElementById("topicChart"), {
     	  type: 'bar',
     	  data: {
     	    labels: [Name[0], Name[1], Name[2], Name[3], Name[4]],
@@ -406,13 +406,51 @@
     	});
 	 
  }
+ 
+ function loadSubjectScore(){
+	 
+	 // 과목별 점수
+	 const subjectScore = /*[[${subjectScore}]]*/ {};
+	 // 과목 이름
+	 const licenseList = /*[[${licenseList[0]}]]*/ {};
+	 
+	let score = [];
+	let name = [];
+	for(let i=1; i<=6; i++){
+		if(licenseList["liChap"+i] != null){
+			name.push(licenseList["liChap"+i]);
+			console.log("과목명"+licenseList["liChap"+i]);
+			score.push(subjectScore["scChap"+i]);
+			console.log("점수:"+subjectScore["scChap"+i]);
+		}
+	}
+	
+	let listHtml = "";
+
+	// 과목명 줄
+	listHtml += "<div style='display: flex;'>";
+	for (let i = 0; i < name.length; i++) {
+	  listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + name[i] + "</div>";
+	}
+	listHtml += "</div>";
+
+	// 점수 줄
+	listHtml += "<div style='display: flex;'>";
+	for (let i = 0; i < score.length; i++) {
+	  listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px;'>" + score[i] + "</div>";
+	}
+	listHtml += "</div>";
+
+	$("#subjectScore").html(listHtml);
+ }
 	 
 
  
  
  
- 
+ // 시험 정보
   const examPeriods = /*[[${exams}]]*/ [];
+
   const examDates = [];
 
   examPeriods.forEach(exam => {
