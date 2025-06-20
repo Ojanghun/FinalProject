@@ -175,20 +175,33 @@
 
   
 <div class="container mb-5">
-  <div class="dashboard-card p-4 w-100" style="min-height: 300px;">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h5 class="fw-bold mb-0" th:if="${member != null}" th:text="${member.name} + '님의 주제별 오답 TOP 5'"></h5>
+  <!-- ✅ 1. 카드 전체를 flex로 -->
+  <div class="dashboard-card p-4 w-100 d-flex flex-wrap" style="min-height: 300px;">
+
+    <!-- ✅ 왼쪽: 차트 영역 (50%) -->
+    <div style="flex: 1 1 50%; max-width: 50%; padding-right: 1rem;">
+      <h5 class="fw-bold mb-3"
+          th:if="${member != null}"
+          th:text="${member.name} + '님의 주제별 오답 TOP 5'">
+      </h5>
+      <!-- ✅ canvas 크기 강제 제한 -->
+      <canvas id="topicChart" style="width: 100%; height: 300px; max-width: 100%;"></canvas>
     </div>
 
-    <div class="d-flex gap-3 mb-4">	
-		<div style="display:flex; flex-wrap:wrap;">
-      	  <canvas id="topicChart" width="600" height="500" style="width:50%;"></canvas>
-		</div>
-		  <div id="subjectScore"></div>
+    <!-- ✅ 오른쪽: subjectScore 영역 (50%) -->
+    <div style="flex: 1 1 50%; max-width: 50%; padding-left: 1rem;">
+      <h5 class="fw-bold mb-3"
+          th:if="${member != null}"
+          th:text="${member.name} + '님의 과목별 최근 3회차'">
+      </h5>
+      <div id="subjectScore"></div>
     </div>
 
   </div>
 </div>
+
+
+
 
   <!-- Calendar & Schedule -->
   <div class="container mb-6">
@@ -427,22 +440,22 @@
 	
 	
 	let listHtml = "";
-
+	// 과목명 줄
+	listHtml += "<div style='display: flex;'>";
+	listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>시험날짜</div>";
+	for (let j = 0; j < 6; j++) {
+		if(licenseList["liChap"+j] != null){
+	  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + licenseList["liChap"+j] + "</div>";
+		}
+	}
+	listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>총합</div>";
+	listHtml += "</div>";
 	for(let i=0; i<3; i++){
 			let total = 0;
-			listHtml += "<div>" + subjectScore[i].scAt.split("T")[0] + "</div>";
-			// 과목명 줄
-			listHtml += "<div style='display: flex;'>";
-			for (let j = 0; j < 6; j++) {
-				if(licenseList["liChap"+j] != null){
-			  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + licenseList["liChap"+j] + "</div>";
-				}
-			}
-			listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>총합</div>";
-			listHtml += "</div>";
 		
 			// 점수 줄
 			listHtml += "<div style='display: flex;'>";
+			listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + subjectScore[i].scAt.split("T")[0] + "</div>";
 			for (let j = 0; j < 6; j++) {
 				if(licenseList["liChap"+j] != null){
 			  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px;'>" + subjectScore[i]["scChap"+j] + "</div>";
@@ -451,7 +464,6 @@
 			}
 			listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + total + "</div>";
 			listHtml += "</div>";
-			listHtml +="<br>";
 		 }
 			$("#subjectScore").html(listHtml);
 }
