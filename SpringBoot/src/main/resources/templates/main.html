@@ -13,150 +13,130 @@
   </symbol>
 </svg>
   
-   
+	
   <link href="/css/style.css" rel="stylesheet">
 
 <!-- JS 링크 -->
 <script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script
-   src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script async src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" crossorigin="anonymous"></script>
-<style>
-/* ✅ container 강제 통일 */
-.container {
-   max-width: 1440px !important;
-   width: 100%;
-   margin-left: auto;
-   margin-right: auto;
-   padding-left: 12px;
-   padding-right: 12px;
-   box-sizing: border-box;
-}
-
-#plan-usage-slider {
-  transition: opacity 0.5s ease-in-out;
-  opacity: 1;
-}
-.fade-out {
-  opacity: 0;
-}
-</style>
 </head>
 <body>
-   
-   <div class="container">
+	
+	<div class="container">
 
-      <!-- ✅ 결제 성공 메시지 표시 -->
-      <div th:if="${paymentSuccess}" class="alert alert-success mt-3"
-         role="alert">
-         <span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
-      </div>
+		<!-- ✅ 결제 성공 메시지 표시 -->
+		<div th:if="${paymentSuccess}" class="alert alert-success mt-3"
+			role="alert">
+			<span th:text="${paymentSuccess}">결제가 완료되었습니다!</span>
+		</div>
 
+		<!-- 🔷 커스텀 헤더 -->
+		
+		 <nav class="custom-header">
+		    <div class="container container-fluid d-flex justify-content-between align-items-center px-4">
+		      <div class="logo d-flex align-items-center gap-2">
+		      	<a href="/">
+		        <img src="/images/로고.png" height="40" alt="로고">
+		        <span class="logo-text"></span>
+		      	</a>
+		      </div>
+	
 
-   <!-- 🔷 커스텀 헤더 -->
+			<div class="header-links d-flex gap-2">
+				<!-- ❌ 로그인하지 않은 경우 -->
+				<th:block th:if="${session.info == null}">
+					<a href="login" class="btn btn-outline-primary">LOGIN</a>
+				</th:block>
 
-   <nav class="custom-header">
-      <div
-         class="container d-flex justify-content-between align-items-center">
-         <!-- ✅ 여기만 사용 -->
-         <div class="logo d-flex align-items-center gap-2">
-            <a href="/"> <img src="/images/로고.png" height="40" alt="로고">
-               <span class="logo-text"></span>
-            </a>
-         </div>
+				<!-- ✅ 로그인한 경우 -->
+				<th:block th:unless="${session.info == null}">
+					<a href="mypage" class="btn btn-outline-secondary">MYPAGE</a>
+					<a href="logout" class="btn btn-outline-danger">LOGOUT</a>
+				</th:block>
+			</div>
+		</div></nav>
 
-         <!-- ✅ 로그아웃 메시지 표시 -->
-         <div th:if="${logoutMessage}" class="alert alert-success"
-            role="alert" th:text="${logoutMessage}">성공적으로 로그아웃되었습니다.</div>
-         <div class="header-links d-flex gap-2">
-            <!-- ❌ 로그인하지 않은 경우 -->
-            <th:block th:if="${session.info == null}">
-               <a href="login" class="btn btn-outline-primary">LOGIN</a>
-            </th:block>
+		<!-- 🔍 검색 및 키워드 추천 -->
+		<div class="main-content">
+			<section class="row search-section mb-5">
+				<!-- 🔍 검색창 + 버튼 묶음 -->
+				<div class="search-group">
+					<div class="search-group">
+			  <div class="search-container position-relative">
+			    <div class="search-box d-flex align-items-center rounded-pill shadow-sm px-3 py-2 bg-white border">
+			      <input id="searchInput" type="text" class="form-control border-0 flex-grow-1"
+			             placeholder="자격증 검색" autocomplete="off" />
+			      <button id="clearBtn" title="Clear" type="button" class="btn btn-link text-dark ">✕</button>
+			      <button id="searchBtn" type="button" class="btn btn-link text-primary px-2">
+			        <i class="bi bi-search fs-5"></i>
+			      </button>
+			    </div>
 
-            <!-- ✅ 로그인한 경우 -->
-            <th:block th:unless="${session.info == null}">
-               <a href="mypage" class="btn btn-outline-secondary">MYPAGE</a>
-               <form th:action="@{/logout}" method="post" class="d-inline">
-                  <input type="hidden" th:name="${_csrf.parameterName}"
-                     th:value="${_csrf.token}" />
-                  <button type="submit" class="btn btn-outline-danger">LOGOUT</button>
-               </form>
-            </th:block>
-         </div>
-      </div></nav>
+				    <!-- 자동완성 목록 -->
+				    <div id="suggestions" class="autocomplete bg-white shadow-sm rounded-bottom mt-1 py-2 px-3 d-none">
+				      <th:block th:each="lic : ${licenseList}">
+				        <div class="autocomplete-item py-1 text-dark"
+				             th:data-id="${lic.liIdx}"
+				             th:data-name="${lic.liName}">
+				          <span th:text="${lic.liName}"></span>
+				        </div>
+				      </th:block>
+				    </div>
+				  </div>
+				</div>
 
-      <!-- 🔍 검색 및 키워드 추천 -->
-      <div class="main-content">
-         <section class="row search-section mb-5">
-            <!-- 🔍 검색창 + 버튼 묶음 -->
-            <div class="search-group">
-               <div class="search-group">
-           <div class="search-container position-relative">
-             <div class="search-box d-flex align-items-center rounded-pill shadow-sm px-3 py-2 bg-white border">
-               <input id="searchInput" type="text" class="form-control border-0 flex-grow-1"
-                      placeholder="자격증 검색" autocomplete="off" />
-               <button id="clearBtn" title="Clear" type="button" class="btn btn-link text-dark ">✕</button>
-               <button id="searchBtn" type="button" class="btn btn-link text-primary px-2">
-                 <i class="bi bi-search fs-5"></i>
-               </button>
-             </div>
+					<!-- 자격증 추천 버튼 영역 -->
+					<div class="search-suggestion d-flex flex-wrap gap-2">
+					  <th:block th:each="lic : ${licenseList}">
+					    <a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
+					       class="btn btn-outline-primary d-inline-flex align-items-center">
+					      <span th:text="${lic.liName}"></span>
+					      <svg class="bi ms-2" width="16" height="16" aria-hidden="true">
+					        <use xlink:href="#arrow-right-short"></use>
+					      </svg>
+					    </a>
+					  </th:block>
+					  
+					</div>
+				</div>
 
-                <!-- 자동완성 목록 -->
-                <div id="suggestions" class="autocomplete bg-white shadow-sm rounded-bottom mt-1 py-2 px-3 d-none">
-                </div>
-              </div>
-            </div>
+				<!-- 🔐 MyPayment -->
+				<th:block th:if="${session.info == null}">
+					<div class="card keyword-box">
+						<h4>MyPayment</h4>
+						<p>로그인을 해주세요</p>
+					</div>
+				</th:block>
 
-               <!-- 자격증 추천 버튼 영역 -->
-               <div class="search-suggestion d-flex flex-wrap gap-2">
-                 <th:block th:each="lic : ${licenseList}">
-                   <a th:href="@{'/redirectByLicense'(liIdx=${lic.liIdx})}"
-                      class="btn btn-outline-primary d-inline-flex align-items-center">
-                     <span th:text="${lic.liName}"></span>
-                     <svg class="bi ms-2" width="16" height="16" aria-hidden="true">
-                       <use xlink:href="#arrow-right-short"></use>
-                     </svg>
-                   </a>
-                 </th:block>
-                 <div id="plan-usage-slider" class="text-center fw-bold fs-5 my-3"></div>
-               </div>
-            </div>
+				<th:block th:unless="${session.info == null}">
+					<!-- ✅ 결제한 자격증 확인 -->
+					<div class="card keyword-box">
+						<h4>결제한 자격증 확인</h4>
+						<th:block th:if="${payList != null}">
+							<ul>
+								<th:block th:each="pay : ${payList}">
+									<th:block th:if="${pay.planAct == 1}">
+										<li><a th:href="@{'/license?liIdx=' + ${pay.planIdx}}"
+											th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">
+												자격증 이름 </a></li>
+									</th:block>
+								</th:block>
+							</ul>
+						</th:block>
+						<th:block th:if="${payList == null or #lists.isEmpty(payList)}">
+							<p>결제한 자격증이 없습니다.</p>
+						</th:block>
+					</div>
+				</th:block>
+			</section>
+			<hr class="my-4">
 
-            <!-- 🔐 MyPayment -->
-            <th:block th:if="${session.info == null}">
-               <div class="card keyword-box">
-                  <h4>MyPayment</h4>
-                  <p>로그인을 해주세요</p>
-               </div>
-            </th:block>
-
-            <th:block th:unless="${session.info == null}">
-               <!-- ✅ 결제한 자격증 확인 -->
-               <div class="card keyword-box">
-                  <h4>결제한 자격증 확인</h4>
-                  <th:block th:if="${payList != null}">
-                     <ul>
-                        <th:block th:each="pay : ${payList}">
-                           <th:block th:if="${pay.planAct == 1}">
-                              <li><a th:href="@{'/license?liIdx=' + ${(pay.planIdx + 1) / 2}}"
-                                 th:text="${pay.liName + ((pay.planType != null and pay.planType) ? ' (필수형)' : ' (탐구형)')}">
-                                    자격증 이름 </a></li>
-                           </th:block>
-                        </th:block>
-                     </ul>
-                  </th:block>
-                  <th:block th:if="${payList == null or #lists.isEmpty(payList)}">
-                     <p>결제한 자격증이 없습니다.</p>
-                  </th:block>
-               </div>
-            </th:block>
-         </section>
-         <hr class="my-4">
-
-         <!-- 📢 서비스 홍보 -->
+			<!-- 📢 서비스 홍보 -->
 <!-- Bootstrap Icons CDN -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -284,7 +264,7 @@
       <p>출제 기준 기반으로 분류된 체계적 문제은행을 경험하세요.</p>
     </div>
   </div>
-   
+
   <!-- 자주 묻는 질문 -->
   <div class="faq-section">
     <h3 class="faq-title">자주 묻는 질문</h3>
@@ -359,54 +339,67 @@
   </div>
 </div>
 
-      </div>
+		</div>
 
-   <!-- Footer -->
-   <footer class="footer mt-5 py-4 border-top">
-     <div class="container text-center">
-       <nav class="nav justify-content-center mb-3">
-         <a href="#" class="footer-link">Home</a>
-         <a href="#" class="footer-link">About</a>
-         <a href="#" class="footer-link">Contact</a>
-       </nav>
-       <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-     </div>
-   </footer>
+	<!-- Footer -->
+	<footer class="footer mt-5 py-4 border-top">
+	  <div class="container text-center">
+	    <nav class="nav justify-content-center mb-3">
+	      <a href="#" class="footer-link">Home</a>
+	      <a href="#" class="footer-link">About</a>
+	      <a href="#" class="footer-link">Contact</a>
+	    </nav>
+	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+	  </div>
+	</footer>
 
-   <!-- JS -->
-   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // 📢 플랜 이용자 수 슬라이드 출력
-      const usageDiv = document.getElementById("plan-usage-slider");
-      let usageList = [];
-      let currentIndex = 0;
+	<!-- JS -->
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+	    const input = document.getElementById('searchInput');
+	    const suggestions = document.getElementById('suggestions');
+	    const clearBtn = document.getElementById('clearBtn');
+	    const searchBtn = document.getElementById('searchBtn');
+	    let selectedId = null;
 
-      function showNext() {
-        usageDiv.classList.add('fade-out');
-        setTimeout(() => {
-          const item = usageList[currentIndex];
-          usageDiv.textContent = `현재 ${item.licenseName} ${item.planName} 플랜을 ${item.userCount}명이 이용 중입니다.`;
-          usageDiv.classList.remove('fade-out');
-          currentIndex = (currentIndex + 1) % usageList.length;
-        }, 500);
-      }
+	    // 자동완성 클릭 → 입력창에 값 반영
+	    suggestions.addEventListener('click', function (e) {
+	      const item = e.target.closest('.autocomplete-item');
+	      if (item) {
+	        input.value = item.dataset.name;
+	        selectedId = item.dataset.id;
+	        suggestions.classList.add('d-none');
+	      }
+	    });
 
-      fetch("/main/plan-usage")
-        .then(res => res.json())
-        .then(data => {
-          usageList = data;
-          if (usageList.length > 0) {
-            showNext();
-            setInterval(showNext, 3000);
-          }
-        })
-        .catch(err => {
-          console.error("플랜 이용 정보 불러오기 실패:", err);
-        });
-    });
-  </script>
-  
-  <script type="text/javascript" src="js/search.js"></script>
+	    // 검색 입력 시 자동완성 보이기
+	    input.addEventListener('input', function () {
+	      selectedId = null; // 직접 입력 시 초기화
+	      if (input.value.trim() === '') {
+	        suggestions.classList.add('d-none');
+	      } else {
+	        suggestions.classList.remove('d-none');
+	      }
+	    });
+
+	    // ✕ 버튼 → 입력 초기화
+	    clearBtn.addEventListener('click', function () {
+	      input.value = '';
+	      selectedId = null;
+	      suggestions.classList.add('d-none');
+	    });
+
+	    // 돋보기 클릭 → 해당 자격증으로 이동
+	    searchBtn.addEventListener('click', function () {
+	      if (selectedId) {
+	        window.location.href = `/redirectByLicense?liIdx=${selectedId}`;
+	      } else {
+	        alert('해당하는 자격증은 존재하지 않습니다.');
+	      }
+	    });
+	  });
+	</script>
+	
 
 </body>
 </html>

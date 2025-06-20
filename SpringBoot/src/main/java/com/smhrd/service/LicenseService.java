@@ -11,12 +11,10 @@ import com.smhrd.entity.Atd_Log;
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
-import com.smhrd.entity.User_Score;
 import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.repository.LicenseRepository;
 import com.smhrd.repository.PbsLogRepository;
 import com.smhrd.repository.TopicInfoRpository;
-import com.smhrd.repository.UserScoreRepository;
 
 @Service
 public class LicenseService {
@@ -32,9 +30,6 @@ public class LicenseService {
     
     @Autowired
     PbsLogRepository PbsLogRepository;
-    
-    @Autowired
-    UserScoreRepository USRepository;
 
 	// 출석 가능 여부를 True와 False로 받아주기
 	public boolean atd_check(String id) {
@@ -69,14 +64,13 @@ public class LicenseService {
 		return date;
 	}
 	
-	// liIdx에 대한 정보 가져오기
-	public List<Li_Info> liInfo(int liIdx){
-		return liInforepository.findByLiIdx(liIdx);
+	// 정보처리기사에 대한 정보 가져오기
+	public List<Li_Info> liInfo(){
+		return liInforepository.findByLiName("정보처리기사");
 	}
 	
-	// 토픽 정보 가져오기
-	public List<Topic_Info> topicInfo(int liIdx){
-		return TopicInforepository.findTopicCounts(liIdx);
+	public List<Topic_Info> topicInfo(){
+		return TopicInforepository.findByLiIdx(1);
 	}
 	
 	public List<Pbs_Log> PbsLog(String id){
@@ -92,28 +86,4 @@ public class LicenseService {
 	
 	
 	
-	// 오답률
-	public List<Object[]> wrongRate(String userId){
-		
-		// 최근 3회 주제별 틀린 횟수 정리
-		List<Object[]> wrongRateList = repository.getWrongRateRecent3(userId);
-		
-		// 상위 주제 5개만 뽑아오기 위한 리스트
-		List<Object[]> top5List = new ArrayList<>();
-		
-		// 5회만 가져오기(5와 db에서 불러온 수를 비교해, 작은 수를 얻어오기)
-		int limit = Math.min(5, wrongRateList.size());
-	    for (int i = 0; i < limit; i++) {
-	        top5List.add(wrongRateList.get(i));
-	        
-		}
-	    
-		return top5List;
-	}
-	
-	// 과목별 최근 점수
-	public User_Score subjectScore(String id){
-		return USRepository.findTopByUserIdOrderByScAtDesc(id);
-		
-	}
 }
