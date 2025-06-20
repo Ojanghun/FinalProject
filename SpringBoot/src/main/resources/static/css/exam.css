@@ -68,7 +68,7 @@ h4 {
 }
 
 .exam-title-bar {
-  background-color: #67aded;
+  background-color: #b5d8f7;
   color: #fff;
   font-size: 20px;
   font-weight: 600;
@@ -91,13 +91,16 @@ h4 {
         border: 1px solid #dee2e6;
         border-radius: 10px;
         padding: 15px;
-        margin-bottom: 20px;
+        margin-bottom: 2rem;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         break-inside: avoid;
         page-break-inside: avoid;
          position: relative;  /* 정답 체크 이미지 위치 기준점 설정 */
  		 padding-left: 40px; 
+ 		   width: 48%;
     }
+
+    
 
     .question {
         font-weight: 500;
@@ -141,9 +144,8 @@ h4 {
         border-left: 4px solid #0d6efd;
         padding: 10px;
         margin-top: 10px;
-        display: none;
     }
-
+  /* 정답확인&해설 버튼 */
     .btn {
         margin-top: 10px;
         margin-right: 5px;
@@ -192,44 +194,13 @@ h4 {
   justify-content: space-between;
 }
 
-.oneExam {
-  width: 48%;
-}
-
 /* 지문 */
  .question {
  	position: relative;
  	width: fit-content;
   	max-width: 100%;
  }
-  /*한 문제의 선지 공간  */
-  .choice {
-  
-  }
-  
-  /* 선지 번호 */
-  .oneChoiceNum {
-  
-  }
-  
-  /* 선지 텍스트 */
-  .oneChoiceText {
-  
-  
-  }
-  
-  
-  /* 정답확인&해설 버튼 */
-  .btn {
-  	
-  }
-  
-  /* 해설 표시 공간 */
-  .solution {
-  
-  
-  }
-  
+
 
 /* footer  */
 .footer {

@@ -1,9 +1,25 @@
 kk/* 기본 스타일 */
+/* intro  */
 
+#intro-page {
+  background: linear-gradient(to bottom right, #e3f2fd, #ffffff);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+  display: none;
+}
+#intro-page.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+#main-header.hidden {
+  display: none !important;
+}
+#main-header.d-none {
+  display: none !important;
+}
 body {
   font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
-  background-color: #FAFAFA;
-  color: #212121;
+  background-color: #f9fafb;
+  color: #333;
   margin: 0;
   padding: 0;
 }
@@ -35,7 +51,15 @@ h4 {
   align-items: center;
   background-color: white;
   padding: 16px 24px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e5e7eb;
+  height: 60px;
+  top: 0;
+  left: 5rem; /* 사이드바 너비 고려 */
+  right: 0;
+   z-index: 1020;
+   align-items: center;
+   position: sticky;
+   
 }
 
 .logo {
@@ -63,12 +87,16 @@ h4 {
   gap: 10px;
 }
 
+.header-links .btn {
+  min-width: 90px;
+}
+
 /* 네비게이션 바 */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1E88E5;
+  background-color: #ffffff;
   padding: 10px 24px;
   border-radius: 20px 20px 0 0;
 }
@@ -80,7 +108,7 @@ h4 {
 }
 
 .nav-item:hover {
-  background-color: #FFC107;
+  background-color: #f1f1f1;
   color: #212121;
   border-radius: 20px 20px 0 0;
 }
@@ -113,7 +141,8 @@ h4 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
+  margin-left: 2rem;
+   padding: 80px 12px 24px 12px;
 }
 
 /* 검색 섹션 */
@@ -328,7 +357,9 @@ h4 {
 }
 
 .day-circle.today {
+	text-decoration :underline;
 	font-weight: bold;
+	color: #02517b;
 }
 
 /* 애니매이션 추가 */
@@ -534,12 +565,12 @@ h4 {
   color: #343a40;
 }
 
-.card2 {
+.card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 0.8rem;
 }
 
-.card2:hover {
+.card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
@@ -626,120 +657,95 @@ h4 {
     }
     
   /* main - 홍보 */
-.promo-wrapper {
-    background-color: #f2f8ff;
+.info-section {
+    background-color: #eaf3ff;
     padding: 60px 20px;
-    border-radius: 12px;
-    margin-bottom: 60px;
+    border-radius: 16px;
+    max-width: 1200px;
+    margin: 40px auto;
   }
 
-  .promo-title {
+  .info-title {
     font-size: 28px;
-    font-weight: bold;
+    font-weight: 700;
     text-align: center;
     margin-bottom: 40px;
-    color: #1a237e;
+    color: #0d47a1;
+  }
+
+  .card-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
   }
 
   .promo-card {
-    background: #e3ecff;
+    flex: 1 1 calc(25% - 20px);
+    background: #ffffff;
     border-radius: 12px;
     padding: 24px;
     text-align: left;
-    height: 100%;
-    box-shadow: 0 4px 12px rgba(30, 56, 146, 0.1);
+    min-width: 250px;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+    transition: transform 0.2s;
   }
 
-  .promo-card img {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 12px;
+  .promo-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .promo-card i {
+    font-size: 36px;
+    color: #2196f3;
+    margin-bottom: 14px;
   }
 
   .promo-card h5 {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0d47a1;
   }
 
   .promo-card p {
-    font-size: 15px;
-    color: #374785;
+    font-size: 14px;
+    color: #37474f;
+    margin: 0;
   }
 
-.faq-wrapper {
-  margin-top: 80px;
-  padding: 40px 20px;
-  background-color: #f7faff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.08);
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-}
+  .faq-section {
+    margin-top: 60px;
+  }
 
-.faq-title {
-  font-size: 30px;
-  font-weight: 700;
-  color: #0d47a1;
-  text-align: center;
-  margin-bottom: 36px;
-}
+  .faq-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #0d47a1;
+  }
 
-.faq-item {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 22px 28px;
-  margin-bottom: 18px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.07);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-left: 6px solid #64b5f6;
-}
+  .accordion-button {
+    background-color: #ffffff;
+    color: #0d47a1;
+    font-weight: 500;
+  }
 
-.faq-item:hover {
-  background: #f1f8ff;
-  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.1);
-}
+  .accordion-button:not(.collapsed) {
+    background-color: #dbeeff;
+    color: #0d47a1;
+  }
 
-.faq-item span {
-  font-weight: 600;
-  font-size: 16.5px;
-  color: #1a237e;
-  flex: 1;
-  line-height: 1.6;
-}
-
-.faq-item i {
-  font-size: 22px;
-  color: #2196f3;
-  margin-left: 20px;
-  transition: transform 0.2s ease;
-}
-
-.faq-item.open i {
-  transform: rotate(180deg);
-}
-
-/* 답변 영역 스타일 (선택사항) */
-.faq-answer {
-  margin-top: 12px;
-  padding-left: 6px;
-  font-size: 15px;
-  color: #37474f;
-  display: none;
-}
+  .accordion-body {
+    background-color: #ffffff;
+    color: #37474f;
+  }
 
   @media (max-width: 768px) {
     .promo-card {
       flex: 1 1 100%;
     }
   }
-  
-  
 /* footer  */
 .footer {
   border-top: 1px solid #ddd;
@@ -755,4 +761,4 @@ h4 {
 .footer .text-muted {
   font-size: 13px;
 }
-  
+
