@@ -15,6 +15,7 @@ public interface PbsLogRepository extends JpaRepository<Pbs_Log, Integer> {
 	
 	public List<Pbs_Log> findByUserIdAndPbsCheck(String id, int pbsCheck);
 	
+	Long countByUserId(String userId);
 	
 	@Query(value = """
 		    SELECT li.li_name, pb.topic_idx,

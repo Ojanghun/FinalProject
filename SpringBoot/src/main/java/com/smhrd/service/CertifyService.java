@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.smhrd.entity.MemberId;
 import com.smhrd.entity.Pay_Info;
 import com.smhrd.entity.Refund_Info;
+import com.smhrd.repository.AtdLogRepository;
+import com.smhrd.repository.PbsLogRepository;
 import com.smhrd.repository.RefundInfoRepository;
 
 @Service
@@ -25,6 +27,12 @@ public class CertifyService {
 	@Autowired
 	private RefundInfoRepository refundInfoRepository;
 
+	@Autowired
+	private AtdLogRepository atdLogRepository;
+	
+	@Autowired
+	private PbsLogRepository pbsLogRepository;
+	
 	public String handleUpload(MultipartFile file, MemberId memberId, int payIdx, int planIdx, String holder,
 			String bank, String account) {
 
@@ -91,4 +99,13 @@ public class CertifyService {
 
 		refundInfoRepository.save(refund);
 	}
+	
+	public Long countAtd(String userId) {
+		return atdLogRepository.countByUserId(userId);
+	}
+	
+	public Long countPbs(String userId) {
+		return pbsLogRepository.countByUserId(userId);
+	}
+	
 }

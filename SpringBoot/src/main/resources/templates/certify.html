@@ -40,7 +40,10 @@
 				</th:block>
 				<th:block th:unless="${session.info == null}">
 					<a href="/mypage" class="btn btn-outline-secondary">MYPAGE</a>
-					<a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
+					<form th:action="@{/logout}" method="post" class="d-inline">
+		              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		              <button type="submit" class="btn btn-outline-danger">LOGOUT</button>
+	              	</form>
 				</th:block>
 			</div>
 		</div>
@@ -61,6 +64,8 @@
 			<!-- 📝 인증 정보 입력 -->
 			<div class="col-md-4">
 				<h4 class="fw-bold mb-3">자격증 합격 영상 및 환불 정보 입력</h4>
+				<div class="mb-3" th:text="'🔥총 출석일수 : ' + ${atd}">총 출석 일수</div>
+				<div class="mb-3" th:text="'📖총 푼 문제 수 : ' + ${pbs}">총 푼 문제 수</div>
 				<form id="certifyForm" action="/upload" method="POST" enctype="multipart/form-data">
 					<input type="hidden" name="payIdx" th:value="${payIdx}">
 					<input type="hidden" name="planIdx" th:value="${planIdx}">
