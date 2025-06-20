@@ -12,10 +12,12 @@ import com.smhrd.entity.Atd_Log;
 import com.smhrd.entity.Li_Info;
 import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
+import com.smhrd.entity.User_Score;
 import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.repository.LicenseRepository;
 import com.smhrd.repository.PbsLogRepository;
 import com.smhrd.repository.TopicInfoRpository;
+import com.smhrd.repository.UserScoreRepository;
 
 @Service
 public class LicenseService {
@@ -31,6 +33,9 @@ public class LicenseService {
     
     @Autowired
     PbsLogRepository PbsLogRepository;
+    
+    @Autowired
+    UserScoreRepository USRepository;
 
 	// 출석 가능 여부를 True와 False로 받아주기
 	public boolean atd_check(String id) {
@@ -102,5 +107,11 @@ public class LicenseService {
 		}
 	    
 		return top5List;
+	}
+	
+	// 과목별 최근 점수
+	public User_Score subjectScore(String id){
+		return USRepository.findTopByUserIdOrderByScAtDesc(id);
+		
 	}
 }

@@ -18,4 +18,6 @@ public interface UserScoreRepository extends JpaRepository<User_Score, Integer> 
 					ORDER BY sc_at DESC
 		   		""", nativeQuery = true)
 	   List<User_Score> chapResult(@Param("userId") String userId);
+
+	   User_Score findTopByUserIdOrderByScAtDesc(String id);
 }
