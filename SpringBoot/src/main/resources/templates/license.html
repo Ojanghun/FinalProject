@@ -410,7 +410,7 @@
  function loadSubjectScore(){
 	 
 	 // 과목별 점수
-	 const subjectScore = /*[[${subjectScore}]]*/ {};
+	 const subjectScore = /*[[${subjectScore}]]*/ [];
 	 // 과목 이름
 	 const licenseList = /*[[${licenseList[0]}]]*/ {};
 	 
@@ -425,24 +425,32 @@
 		}
 	}
 	
+	
 	let listHtml = "";
 
-	// 과목명 줄
-	listHtml += "<div style='display: flex;'>";
-	for (let i = 0; i < name.length; i++) {
-	  listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + name[i] + "</div>";
-	}
-	listHtml += "</div>";
-
-	// 점수 줄
-	listHtml += "<div style='display: flex;'>";
-	for (let i = 0; i < score.length; i++) {
-	  listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px;'>" + score[i] + "</div>";
-	}
-	listHtml += "</div>";
-
-	$("#subjectScore").html(listHtml);
- }
+	for(let i=0; i<3; i++){
+			listHtml += "<div>" + subjectScore[i].scAt.split("T")[0] + "</div>";
+			// 과목명 줄
+			listHtml += "<div style='display: flex;'>";
+			for (let j = 0; j < 6; j++) {
+				if(licenseList["liChap"+j] != null){
+			  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + licenseList["liChap"+j] + "</div>";
+				}
+			}
+			listHtml += "</div>";
+		
+			// 점수 줄
+			listHtml += "<div style='display: flex;'>";
+			for (let j = 0; j < 6; j++) {
+				if(licenseList["liChap"+j] != null){
+			  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px;'>" + subjectScore[i]["scChap"+j] + "</div>";
+				}
+			}
+			listHtml += "</div>";
+			listHtml +="<br>";
+		 }
+			$("#subjectScore").html(listHtml);
+}
 	 
 
  
