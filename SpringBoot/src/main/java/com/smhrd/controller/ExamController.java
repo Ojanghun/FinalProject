@@ -61,7 +61,7 @@ public class ExamController {
 	@PutMapping("/solution/{pbId}")
 	public String solution(@PathVariable("pbId") int pbId){
 		String PbSolu = service.solution(pbId);
-		//System.out.println(PbSolu);
+		System.out.println("해결책 :"+PbSolu);
 		return PbSolu;
 	}
 	
