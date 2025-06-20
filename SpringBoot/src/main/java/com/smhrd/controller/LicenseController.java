@@ -59,6 +59,11 @@ public class LicenseController {
 	    @RequestParam("liName") String liName,
 	    @RequestParam("liTime") String liTime,
 	    @RequestParam("liPbc") String liPbc,
+	    @RequestParam("liChap1") String liChap1,
+	    @RequestParam("liChap2") String liChap2,
+	    @RequestParam("liChap3") String liChap3,
+	    @RequestParam("liChap4") String liChap4,
+	    @RequestParam("liChap5") String liChap5,
 	    HttpSession session,
 	    Model model) {
 		
@@ -66,7 +71,13 @@ public class LicenseController {
 		if (member != null) {
 			// member 값이 있을 때 모델에 member이라는 이름으로 저장
 			model.addAttribute("member", member);
+			
 		}
+	    model.addAttribute("liChap1", liChap1);
+	    model.addAttribute("liChap2", liChap2);
+	    model.addAttribute("liChap3", liChap3);
+	    model.addAttribute("liChap4", liChap4);
+	    model.addAttribute("liChap5", liChap5);
 		
 	    // 시간 가공 (분 → 시/분/초 포맷)
 	    int totalMinutes = Integer.parseInt(liTime); // 예: "150"

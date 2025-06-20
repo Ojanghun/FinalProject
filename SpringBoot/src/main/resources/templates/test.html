@@ -20,6 +20,19 @@
 	<input type="hidden" id="liPbc" th:value="${liPbc}" />
 	<input type="hidden" id="name" th:value="${member.name}" />
 	<input type="hidden" id="userId" th:value="${member.id}" />
+    <input type="hidden" name="liChap1" th:value="${liChap1}" />
+    <input type="hidden" name="liChap2" th:value="${liChap2}" />
+    <input type="hidden" name="liChap3" th:value="${liChap3}" />
+    <input type="hidden" name="liChap4" th:value="${lliChap4}" />
+    <input type="hidden" name="liChap5" th:value="${liChap5}" />
+    <input type="hidden" name="liChap6" th:value="${liChap6}" />
+    
+    <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+		background-color:rgba(0,0,0,0.5); z-index:9999; color:white; font-size:24px; text-align:center; padding-top:20%;">
+		결과 분석 중입니다... 잠시만 기다려주세요.
+    </div>
+    
+    
 	<div class="container">
       <div class="panel panel-warning">
          <!-- <div class="panel-heading">examPage -->
@@ -88,43 +101,64 @@
 				  <input type="hidden" id="category" th:value="${category}" />
 				  <div id="print" class='test-page-block-holder'></div>
 				  
-				<div id="scoreBox" class="scoreBox" style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
-				
-				  <!-- 상단 안내 -->
-				  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
-				    <img src="images/icon_title_megaphone.gif" style="width: 24px; height: 24px; vertical-align: middle;">
-				    <span id="comment" style="margin-left: 10px;"></span>
-				  </div>
-				
-				  <!-- 하단 참고 문구 -->
-				  <div style="margin-bottom: 20px;">
-				    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기</p>
-				  </div>
-				
-				  <!-- 점수 표 -->
-				  <div class="scoreText">
-				    <div>수험자 이름</div>
-				    <div>응시 종목</div>
-				    <div>점수</div>
-				    <div>합격 여부</div>
-				  </div>
-				  <div class="scoreValue">
-				    <div th:text="${member.name}"></div>
-				    <div th:text="${liName}"></div>
-				    <div id="score"></div>
-				    <div id="pass"></div>
-				  </div>
-				
-				  <!-- 안내 문구 -->
-				  <div style="margin-top: 20px; text-align: center;">
-				    "득점 및 합격여부를 확인하셨습니까?"
-				  </div>
-				
-				  <!-- 버튼 -->
-				  <div style="margin-top: 10px; text-align: center;">
-				    <button onclick="location.href='/license'">확인 완료</button>
-				  </div>
-				
+				 <div class="scoreBackground" >
+					<div id="scoreBox" class="scoreBox" style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+					
+					  <!-- 상단 안내 -->
+					  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
+					    <img src="images/icon_title_megaphone.gif" style="width: 24px; height: 24px; vertical-align: middle;">
+					    <span id="comment" style="margin-left: 10px;"></span>
+					  </div>
+					
+					  <!-- 하단 참고 문구 -->
+					  <div style="margin-bottom: 20px;">
+					    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기</p>
+					  </div>
+					
+					  <!-- 점수 표 -->
+					  <div class="scoreText">
+					    <div>수험자 이름</div>
+					    <div>응시 종목</div>
+					    <div>점수</div>
+					    <div>합격 여부</div>
+					  </div>
+					  <div class="scoreValue">
+					    <div th:text="${member.name}"></div>
+					    <div th:text="${liName}"></div>
+					    <div id="score"></div>
+					    <div id="pass"></div>
+					  </div>
+					  <br>
+					  
+					  <!-- 과목점수 -->
+					  <div class="scoreText">
+					  	<div th:text="${liChap1}"></div>
+					  	<div th:text="${liChap2}"></div>
+					  	<div th:text="${liChap3}"></div>
+					  	<div th:text="${liChap4}"></div>
+					  	<div th:text="${liChap5}"></div>	
+						<div th:text="${liChap6}" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>		  
+					  </div>
+					  <div class="scoreValue">
+					  	<div id="liChap1"></div>
+					  	<div id="liChap2"></div>
+					  	<div id="liChap3"></div>
+					  	<div id="liChap4"></div>
+					  	<div id="liChap5"></div>
+					  	<div id="liChap6" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>			  
+					  </div>
+					
+					  <!-- 안내 문구 -->
+					  <div style="margin-top: 20px; text-align: center;">
+					    "득점 및 합격여부를 확인하셨습니까?"
+					  </div>
+					
+					  <!-- 버튼 -->
+					  <div style="margin-top: 10px; text-align: center;">
+					    <button type="button" onclick="goToLicense()">확인 완료</button>
+					  </div>
+					
+					</div>
 				</div>
 
 			</div>
@@ -182,11 +216,9 @@
    const pbNum = []; // 문제 번호
    const token = $("meta[name='_csrf']").attr("content");
    const header = $("meta[name='_csrf_header']").attr("content");
-
-
-   
-   // 문제 번호 : 선택 선지 텍스트
-   const circledNumbers = ["①", "②", "③", "④"];
+   const circledNumbers = ["①", "②", "③", "④"]; // 문제 번호 : 선택 선지 텍스트
+   const liIdx = $("#liIdx").val(); // liIdx값
+   const userId = $("#userId").val(); // 유저 Id
    
 	$(document).ready(function(){
 		// ready() : html 코드가 준비가 되면 실행되는 메소드
@@ -458,37 +490,23 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 				    }
 				  }
 
-				  // 문제 정답 불러오기 Ajax 실행
-				  loadCorrectAnswers(category);
-				}
+			        // 채점 로직 실행 → 점수 + 전송용 데이터 생성
+			        const result = gradeExam(pbAns,pbNum);
 
-				// 문제 정답 불러오기 Ajax
-				function loadCorrectAnswers(category) {
-				  $.ajax({
-				    url: "/loadExam/" + category,
-				    type: "post",
-				    dataType: "json",
-				    success: function (data) {
-				      // 채점 로직 실행 → 점수 + 전송용 데이터 생성
-				      const result = gradeExam(data);
-
-				      // 서버에 채점 결과 전송
-				      console.log("PbsData 확인:", PbsData[0]);
-
-				      sendPbsData(result.pbsData);
-
-				      // 점수에 따라 결과 UI 업데이트
-				      updateResultUI(result.score);
-				    },
-				    error: function () {
-				      alert("문제 정답 불러오기 실패");
-				    }
-				  });
+			     	// 로딩창 띄우기
+			        showLoading();
+			     
+			        // 서버에 채점 결과 전송
+			        sendPbsData(result.pbsData).done(function () {
+			     		// 5초(=5000밀리초) 후에 결과 UI 업데이트 실행
+			            setTimeout(function () {
+			              updateResultUI(result.score);
+			            }, 5000);
+			          });
 				}
 
 				// 채점 함수: 정답과 비교해 점수 계산 및 전송할 데이터 준비
 				function gradeExam(correctData) {
-				  const userId = $("#userId").val();     // 사용자 ID 가져오기
 				  const pbsCheck = [];                  // 문제별 정오 배열
 				  const pbIdx = [];				  
 				  let score = 0;
@@ -534,7 +552,7 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 					const exCat = $("#category").val(); // 회차 정보
 					console.log("회차 인덱스: ", exCat);
 					
-				  $.ajax({
+				  return $.ajax({
 				    url: `/submitPbsData?exCat=${encodeURIComponent(exCat)}`,
 				    type: "post",
 				    contentType: "application/json",
@@ -553,17 +571,53 @@ function selectChoice(questionNum, choiceNum, choiceText) {
 
 				// 점수에 따라 UI 표시 변경
 				function updateResultUI(score) {
-				  $("#scoreBox").css("display", "flex");  // 점수 박스 표시
-				  $("#score").text(score);                // 점수 출력
+					
+					$.ajax({
+						url: "/chapResult/"+userId,
+						type: "post",
+						dataType: "json",
+					    beforeSend: function(xhr) {
+					    	   xhr.setRequestHeader(header, token);  // ⬅️ CSRF 토큰 꼭 붙여줘야 함
+					    	 },
+					     success: function (data) {
+								const scoreBox = $("#scoreBox").clone(true); // 💡 원래 이벤트 등 유지하며 복사
+								$("body").empty();                           // 🔥 body 전체 비우고
+								$("body").append(scoreBox);                  // ✅ #scoreBox만 다시 추가
+								scoreBox.css("display", "flex");             // flex 설정
+								
+								const liChap = data[0];
+								
+							    $("#liChap1").text(liChap.scChap1);
+							    $("#liChap2").text(liChap.scChap2);
+							    $("#liChap3").text(liChap.scChap3);
+							    $("#liChap4").text(liChap.scChap4);
+							    $("#liChap5").text(liChap.scChap5);
 
-				  if (score > 60) {
-				    $("#comment").text("합격을 축하드립니다.");
-				    $("#pass").text("합격");
-				  } else {
-				    $("#comment").text("다음 기회에 꼭 합격하시길 기원합니다.");
-				    $("#pass").text("불합격");
-				  }
+
+							   $("#score").text(score);                // 점수 출력
+
+							   if (score > 60) {
+							     $("#comment").text("합격을 축하드립니다.");
+							     $("#pass").text("합격");
+							   } else {
+							     $("#comment").text("다음 기회에 꼭 합격하시길 기원합니다.");
+							     $("#pass").text("불합격");
+							   }
+					    	 
+					     },
+					     error: function(){alert("에러났음!");}
+				
+					});
+
 				}
+				
+				function showLoading() {
+					  $("#loadingOverlay").fadeIn();
+					}
+
+					function hideLoading() {
+					  $("#loadingOverlay").fadeOut();
+					}
 
 		  
 
@@ -589,15 +643,23 @@ function lotto(){
     $("#lotto").val(number);
 }
 function lottoName() {
-    const startCode = 0xAC00; // '가'
-    const endCode = 0xD7A3;   // '힣'
-    let result = "";
-    for (let i = 0; i < 3; i++) {
-      const code = Math.floor(Math.random() * (endCode - startCode + 1)) + startCode;
-      result += String.fromCharCode(code);
+	  const words = ["모성현","손종희","이영동","이조은","오장훈","최유정"];
+	  let result = "";
+
+
+	    const randIndex = Math.floor(Math.random() * words.length);
+	    result += words[randIndex];
+
+	  $("#lottoName").val(result);
+	}
+
+  
+function goToLicense() {
+    if (liIdx) {
+      window.location.href = "/license?liIdx=" + liIdx;
+    } else {
+      alert("liIdx 값이 없습니다.");
     }
-    $("#lottoName").val(result);
-   
   }
  
    </script>

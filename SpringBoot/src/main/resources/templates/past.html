@@ -7,6 +7,8 @@
 <link rel="stylesheet" type="text/css" href="/css/exam.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
@@ -50,6 +52,16 @@
 	  </div>
 	</footer>
 
+				<input type="hidden" id="category" th:value="${category}" />
+				<input type="hidden" id="liIdx" th:value="${liIdx}" />
+				<div id="examBoard"></div>
+
+			</div>
+			<div class="panel-footer">© 2025 문제 Issue!</div>
+		</div>
+	</div>
+	
+<!-- Thymeleaf에서 JS로 챕터명 전달 -->	
 <script th:inline="javascript">
     const chapterTitles = [
         /*[[${liChap1}]]*/,
@@ -72,10 +84,11 @@ $(document).ready(function(){
 
 function loadExam() {
     const category = $("#category").val();
+    const liIdx = $("#liIdx").val();
 
     $.when(
-        $.ajax({ url: "/loadExam/" + category, type: "post", dataType: "json" }),
-        $.ajax({ url: "/shuffle/" + category, type: "post", dataType: "json" })
+            $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
+            $.ajax({ url: "/shuffle", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }})
     ).done(function (examData, shuffleData) {
         exData = examData[0];
         shufData = shuffleData[0];
@@ -93,7 +106,8 @@ function renderPage(pageIndex) {
 
     listHtml += "<div class='exam-section'>";
     listHtml += "<h4 class='subjectIdx'>" + chapterTitles[pageIndex] + "</h4><hr>";
-    listHtml += "<div class='column-wrapper'>";
+    listHtml += "<div class='column-wrapper'>"; 
+    
 
     for (let idx = startIdx; idx < endIdx; idx++) {
         const pb = exData[idx];
@@ -122,16 +136,19 @@ function renderPage(pageIndex) {
             listHtml += "</div>";
         }
 
-        listHtml += "<br>";
-        listHtml += "<button class='btn btn-outline-info' id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> ";
-        listHtml += "<button class='btn btn-outline-warning' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
-        listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
-        listHtml += "</div>";
+    	    	    listHtml += "<br>";
+    	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+    	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
+    	    	    listHtml += "<br><br>";
+    	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
+    	    	    listHtml += "</div><br>";
+
     }
 
     listHtml += "</div>"; // end column-wrapper
     listHtml += "</div>"; // end exam-section
 
+    
     $("#examBoard").html(listHtml);
     renderPagination();
 }
@@ -141,27 +158,56 @@ function renderPagination() {
 	// ✅ 페이지 바뀔 때 맨 위로 스크롤 이동
     window.scrollTo({ top: 0});
 	
-    let html = '<ul class="pagination justify-content-center">';
+    let html = '<ul class="pagination justify-content-center" style="display:flex; 	flex-direction: row; gap:5px;">';
 
     // << 처음으로
     html += `<li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
                 <button class="page-link" onclick="renderPage(0)">≪</button>
              </li>`;
+             
+             for (let i = 0; i < 5; i++) {
+             html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                         <button class="page-link" onclick="renderPage(${i})">${i + 1}</button>
+                      </li>`;
+             }
+			    // >> 마지막으로
+			    html += `<li class="page-item ${currentPage === 4 ? 'disabled' : ''}">
+			                <button class="page-link" onclick="renderPage(4)">≫</button>
+			             </li>`;
 
-    for (let i = 0; i < 5; i++) {
-        html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
-                    <button class="page-link" onclick="renderPage(${i})">${i + 1}</button>
-                 </li>`;
+			    html += '</ul>';
+			    $("#pagination").html(html);
+	    	}
+
+   
+    // 정답 확인
+    function correctAnswer(pbId, index) {
+        $.ajax({
+            url: "/correctAnswer/"+pbId,
+            type: "put",
+            data: {},
+            dataType: "text",
+            success: function(data) {
+                if ($("#pbans"+index).text().trim() === "정답 확인") {
+                    for (let i = 1; i <= 4; i++) {
+                        let choiceText = $("#choiceText" + (index + 1) + "-" + i).text().trim();
+                        if (choiceText === data.trim()) {
+                            $("#choice" + (index + 1) + "-" + i).css("color", "red");
+                        }
+                    }
+                    if(userSelections[index+1] === data) {
+                        $("#check" + (index+1)).css("display","block");
+                        $("#check" + (index+1)).attr("src","/images/o.png");
+                    } else {
+                        $("#check" + (index+1)).css("display","block");
+                        $("#check" + (index+1)).attr("src","/images/x.png");
+                    }
+                }
+            },
+            error: function() { alert("Error!"); }
+        });
     }
 
-    // >> 마지막으로
-    html += `<li class="page-item ${currentPage === 4 ? 'disabled' : ''}">
-                <button class="page-link" onclick="renderPage(4)">≫</button>
-             </li>`;
-
-    html += '</ul>';
-    $("#pagination").html(html);
-}
 
 function selectChoice(questionNum, choiceNum, choiceText) {
     const currentSelection = userSelections[questionNum];
@@ -228,7 +274,6 @@ function solution(pbId, index) {
         }
     });
 }
-</script>
-
+    </script>
 </body>
 </html>
