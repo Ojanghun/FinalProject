@@ -19,10 +19,8 @@ function initAutocomplete() {
 	// 사용자가 검색바를 클릭했을 때 자격증 목록 보여주기
 	input.addEventListener("click", () => {
 		suggestionBox.classList.remove('d-none');
-		// 클릭했을 때 검색바랑 suggestionBox가 비어있어야 실행되어야 함
-		if (input.value == "" && suggestionBox.innerHTML == "") {
-			renderSuggestions(suggestions, suggestionBox);
-		}
+		suggestionBox.innerHTML = "";
+		renderSuggestions(suggestions, suggestionBox);
 	})
 
 	// 사용자가 검색어를 입력했을 때
@@ -68,7 +66,5 @@ const clearBtn = document.getElementById('clearBtn');
 clearBtn.addEventListener("click", function() {
 	input.value = '';
 	suggestionBox.innerHTML = "";
-	if (input.value == "" && suggestionBox.innerHTML == "") {
-		renderSuggestions(suggestions, suggestionBox);
-	}
+	renderSuggestions(suggestions, suggestionBox);
 });

@@ -106,13 +106,6 @@
 
                 <!-- 자동완성 목록 -->
                 <div id="suggestions" class="autocomplete bg-white shadow-sm rounded-bottom mt-1 py-2 px-3 d-none">
-                  <th:block th:each="lic : ${licenseList}">
-                    <div class="autocomplete-item py-1 text-dark"
-                         th:data-id="${lic.liIdx}"
-                         th:data-name="${lic.liName}">
-                      <span th:text="${lic.liName}"></span>
-                    </div>
-                  </th:block>
                 </div>
               </div>
             </div>
