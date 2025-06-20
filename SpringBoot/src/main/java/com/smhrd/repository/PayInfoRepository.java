@@ -83,23 +83,25 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 	Pay_Info findRefundableByUserIdAndLiIdx(@Param("userId") String userId, @Param("planIdx") int planIdx);
 
 	@Query(value =
-		    "SELECT pi.plan_type AS planType, " +
-		    "COUNT(DISTINCT p.USER_ID) AS userCount, " +
-		    "SUM(CASE WHEN p.RF_ACT = 1 THEN 1 ELSE 0 END) AS refundCount " +
+		    "SELECT pi.plan_idx, pi.plan_type, " +
+		    "COUNT(DISTINCT p.USER_ID), " +
+		    "SUM(CASE WHEN p.RF_ACT = 1 THEN 1 ELSE 0 END) " +
 		    "FROM pay_info p " +
 		    "JOIN plan_info pi ON p.PLAN_IDX = pi.PLAN_IDX " +
 		    "JOIN li_info li ON pi.LI_IDX = li.LI_IDX " +
 		    "WHERE li.LI_NAME = :licenseName " +
-		    "GROUP BY pi.plan_type",
+		    "GROUP BY pi.plan_idx, pi.plan_type",
 		    nativeQuery = true)
 		List<Object[]> getPlanUsageByLicenseName(@Param("licenseName") String licenseName);
+
 
 		
 		@Modifying
 		@Transactional
 		@Query("UPDATE Pay_Info p SET p.rfCp = 1 WHERE p.payIdx = :payIdx")
 		int updateRfCpByPayIdx(@Param("payIdx") int payIdx);
-
-
+		
+		List<Pay_Info> findByPlanIdx(int planIdx);
+		
 
 }

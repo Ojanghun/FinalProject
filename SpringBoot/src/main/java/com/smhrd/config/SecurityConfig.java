@@ -36,6 +36,7 @@ public class SecurityConfig {
                 "/admin/wrong-rate-page",        // ✅ 오답률 페이지
                 "/admin/refund-rate-page",       // ✅ 환급률 페이지
                 "/admin/pay-info",                // ✅ 결제 상세
+                "/admin/plan-users",  // ✅ 추가!
                 "/refund-session", // ✅ 환급 요청 세션 저장 경로 예외 추가
                 "/chapResult/**"
             ))
@@ -46,6 +47,7 @@ public class SecurityConfig {
                     "/adminLogin.do",
                     "/adminLoginCheck",
                     "/refund-session",  // ✅ 여기에 추가!
+                    "/admin/plan-users",  // ✅ 추가!
                     "/admin/**"   // ✅ 관리자 대시보드 접근 허용
 
                 ).permitAll()

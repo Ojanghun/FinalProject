@@ -225,30 +225,49 @@ public class AdminController {
     
 
 
+    @GetMapping("/admin/plan-users")
+    @ResponseBody
+    public List<Map<String, Object>> getUsersByPlan(@RequestParam("planIdx") int planIdx) {
+        // planIdx에 해당하는 결제 내역에서 userId 추출
+        List<Pay_Info> payList = payInfoRepository.findByPlanIdx(planIdx);
+        Set<String> userIds = payList.stream()
+                .map(Pay_Info::getId)
+                .collect(Collectors.toSet());
+
+        // userId로 회원 정보 조회
+        List<Member> users = memberRepository.findAllById(userIds);
+
+        // 사용자 정보 반환
+        return users.stream().map(user -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", user.getId());
+            map.put("userName", user.getName());
+            map.put("userPhone", user.getPhone());
+            map.put("userJoinDate", user.getJoinedat());
+            return map;
+        }).collect(Collectors.toList());
+    }
+
+
     @GetMapping("/admin/plan-usage")
     @ResponseBody
-    public List<PlanUsageDTO> getPlanUsage(@RequestParam String licenseName) {
-        List<Object[]> rawData = payInfoRepository.getPlanUsageByLicenseName(licenseName);
+    public List<Map<String, Object>> getPlanUsage(@RequestParam("licenseName") String licenseName) {
+        List<Object[]> rows = payInfoRepository.getPlanUsageByLicenseName(licenseName);
+        return rows.stream().map(row -> {
+            Map<String, Object> map = new HashMap<>();
+            int planIdx = ((Number) row[0]).intValue();  // ✅ 추가
+            boolean planType = (boolean) row[1];         // 필수형 여부
+            long userCount = ((Number) row[2]).longValue();
+            long refundCount = ((Number) row[3]).longValue();
+            int refundRate = userCount > 0 ? (int) Math.round((double) refundCount / userCount * 100) : 0;
 
-        long totalUserCount = rawData.stream()
-                .mapToLong(row -> ((Number) row[1]).longValue())
-                .sum();
+            map.put("planType", planType ? "필수형" : "탐구형");
+            map.put("userCount", userCount);
+            map.put("refundRate", refundRate);
+            map.put("planIdx", planIdx); // ✅ 실제 값으로 세팅
 
-        return rawData.stream().map(row -> {
-            boolean planType = Boolean.TRUE.equals(row[0]); // ⬅️ 여기가 중요!
-            long userCount = ((Number) row[1]).longValue();
-            long refundCount = ((Number) row[2]).longValue();
-
-            double ratio = totalUserCount > 0 ? Math.round(userCount * 1000.0 / totalUserCount) / 10.0 : 0.0;
-            double refundRate = userCount > 0 ? Math.round(refundCount * 1000.0 / userCount) / 10.0 : 0.0;
-
-            return new PlanUsageDTO(
-                    planType ? "필수형" : "탐구형",
-                    userCount,
-                    ratio,
-                    refundRate
-            );
-        }).collect(Collectors.toList());
+            return map;
+        }).toList();
     }
 
 
