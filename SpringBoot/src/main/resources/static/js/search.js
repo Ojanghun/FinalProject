@@ -1,6 +1,9 @@
 // 자동완성 키워드가 들어갈 배열
 let suggestions = []
 
+const input = document.getElementById("searchInput"); // 검색 바 요소
+const suggestionBox = document.getElementById("suggestions"); // 자동완성 박스 요소
+
 $.ajax({
 	url: "searchLicenses",
 	type: "GET",
@@ -13,14 +16,11 @@ $.ajax({
 });
 
 function initAutocomplete() {
-	const input = document.getElementById("searchInput"); // 검색 바 요소
-	const suggestionBox = document.getElementById("suggestions"); // 자동완성 박스 요소
-
 	// 사용자가 검색바를 클릭했을 때 자격증 목록 보여주기
 	input.addEventListener("click", () => {
-		suggestionBox.style.visibility ='visible'
+		suggestionBox.classList.remove('d-none');
 		// 클릭했을 때 검색바랑 suggestionBox가 비어있어야 실행되어야 함
-		if (input.value == "" && suggestionBox.innerHTML == "") { 
+		if (input.value == "" && suggestionBox.innerHTML == "") {
 			renderSuggestions(suggestions, suggestionBox);
 		}
 	})
@@ -31,6 +31,7 @@ function initAutocomplete() {
 		suggestionBox.innerHTML = ""; // 자동완성 박스에 추가할 자격증 목록
 
 		if (query.length === 0) {
+			suggestionBox.classList.remove('d-none');
 			renderSuggestions(suggestions, suggestionBox);
 			return; // 아무것도 입력하지 않으면 함수 종료
 		}
@@ -46,7 +47,7 @@ function initAutocomplete() {
 
 	// 외부 클릭시 suggestionBox html 요소를 없애는게 아니라 숨겨야...
 	document.addEventListener("click", (e) => {
-		if (e.target !== input) suggestionBox.style.visibility ='hidden';
+		if (e.target !== input) suggestionBox.classList.add('d-none');;
 	});
 }
 
@@ -61,3 +62,13 @@ function renderSuggestions(items, suggestionBox) {
 		suggestionBox.appendChild(div);
 	});
 }
+
+// 검색바 ✕ 버튼
+const clearBtn = document.getElementById('clearBtn');
+clearBtn.addEventListener("click", function() {
+	input.value = '';
+	suggestionBox.innerHTML = "";
+	if (input.value == "" && suggestionBox.innerHTML == "") {
+		renderSuggestions(suggestions, suggestionBox);
+	}
+});
