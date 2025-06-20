@@ -253,18 +253,27 @@ public class AdminController {
     @ResponseBody
     public List<Map<String, Object>> getPlanUsage(@RequestParam("licenseName") String licenseName) {
         List<Object[]> rows = payInfoRepository.getPlanUsageByLicenseName(licenseName);
+
+        // 전체 사용자 수 계산 (비율용)
+        long totalUsers = rows.stream()
+            .mapToLong(row -> ((Number) row[2]).longValue())
+            .sum();
+
         return rows.stream().map(row -> {
             Map<String, Object> map = new HashMap<>();
-            int planIdx = ((Number) row[0]).intValue();  // ✅ 추가
+            int planIdx = ((Number) row[0]).intValue();  // ✅ planIdx
             boolean planType = (boolean) row[1];         // 필수형 여부
             long userCount = ((Number) row[2]).longValue();
             long refundCount = ((Number) row[3]).longValue();
+
             int refundRate = userCount > 0 ? (int) Math.round((double) refundCount / userCount * 100) : 0;
+            int ratio = totalUsers > 0 ? (int) Math.round((double) userCount / totalUsers * 100) : 0;
 
             map.put("planType", planType ? "필수형" : "탐구형");
             map.put("userCount", userCount);
             map.put("refundRate", refundRate);
-            map.put("planIdx", planIdx); // ✅ 실제 값으로 세팅
+            map.put("ratio", ratio); // ✅ 비율 추가
+            map.put("planIdx", planIdx);
 
             return map;
         }).toList();

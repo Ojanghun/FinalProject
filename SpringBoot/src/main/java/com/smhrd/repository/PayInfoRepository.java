@@ -85,7 +85,7 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 	@Query(value =
 		    "SELECT pi.plan_idx, pi.plan_type, " +
 		    "COUNT(DISTINCT p.USER_ID), " +
-		    "SUM(CASE WHEN p.RF_ACT = 1 THEN 1 ELSE 0 END) " +
+		    "COUNT(DISTINCT CASE WHEN p.RF_CP = 1 THEN p.USER_ID END) " +
 		    "FROM pay_info p " +
 		    "JOIN plan_info pi ON p.PLAN_IDX = pi.PLAN_IDX " +
 		    "JOIN li_info li ON pi.LI_IDX = li.LI_IDX " +

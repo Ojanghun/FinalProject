@@ -42,11 +42,11 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>아이디</th>
-						<th>이름</th>
-						<th>전화번호</th>
-						<th>포인트</th>
-						<th>가입일</th>
+						<th onclick="sortTable(this)">아이디</th>
+						<th onclick="sortTable(this)">이름</th>
+						<th onclick="sortTable(this)">전화번호</th>
+						<th onclick="sortTable(this)">포인트</th>
+						<th onclick="sortTable(this)">가입일</th>
 					</tr>
 				</thead>
 				<tbody id="userTableBody">
@@ -72,11 +72,11 @@
 			<table class="table table-striped" id="questionTable">
 				<thead>
 					<tr>
-						<th>자격증</th>
-						<th>주제 이름</th>
-						<th>주제 ID</th>
-						<th>문제 수</th>
-						<th>오답률</th>
+						<th onclick="sortTable(this)">자격증</th>
+						<th onclick="sortTable(this)">주제 이름</th>
+						<th onclick="sortTable(this)">주제 ID</th>
+						<th onclick="sortTable(this)">문제 수</th>
+						<th onclick="sortTable(this)">오답률</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -141,9 +141,9 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>플랜 이름</th>
-						<th>결제일</th>
-						<th>금액</th>
+						<th onclick="sortTable(this)">플랜 이름</th>
+						<th onclick="sortTable(this)">결제일</th>
+						<th onclick="sortTable(this)">금액</th>
 					</tr>
 				</thead>
 				<tbody id="payInfoBody">
@@ -165,10 +165,10 @@
 			<table class="table table-bordered" id="planUsageTable">
 				<thead>
 					<tr>
-						<th>플랜 종류</th>
-						<th>이용자 수</th>
-						<th>비율 (%)</th>
-						<th>환급률 (%)</th>
+						<th onclick="sortTable(this)">플랜 종류</th>
+						<th onclick="sortTable(this)">이용자 수</th>
+						<th onclick="sortTable(this)">비율 (%)</th>
+						<th onclick="sortTable(this)">환급률 (%)</th>
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -182,10 +182,10 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>아이디</th>
-						<th>이름</th>
-						<th>전화번호</th>
-						<th>가입일</th>
+						<th onclick="sortTable(this)">아이디</th>
+						<th onclick="sortTable(this)">이름</th>
+						<th onclick="sortTable(this)">전화번호</th>
+						<th onclick="sortTable(this)">가입일</th>
 					</tr>
 				</thead>
 				<tbody id="planUserTableBody">
@@ -203,15 +203,15 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>자격증</th>
-						<th>플랜</th>
-						<th>가격</th>
-						<th>예금주</th>
-						<th>은행</th>
-						<th>계좌</th>
-						<th>요청일</th>
-						<th>동영상</th>
-						<th>승인</th>
+						<th onclick="sortTable(this)">자격증</th>
+						<th onclick="sortTable(this)">플랜</th>
+						<th onclick="sortTable(this)">가격</th>
+						<th onclick="sortTable(this)">예금주</th>
+						<th onclick="sortTable(this)">은행</th>
+						<th onclick="sortTable(this)">계좌</th>
+						<th onclick="sortTable(this)">요청일</th>
+						<th onclick="sortTable(this)">동영상</th>
+						<th onclick="sortTable(this)">승인</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -240,14 +240,14 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>자격증</th>
-						<th>플랜</th>
-						<th>가격</th>
-						<th>예금주</th>
-						<th>은행</th>
-						<th>계좌</th>
-						<th>요청일</th>
-						<th>승인일</th>
+						<th onclick="sortTable(this)">자격증</th>
+						<th onclick="sortTable(this)">플랜</th>
+						<th onclick="sortTable(this)">가격</th>
+						<th onclick="sortTable(this)">예금주</th>
+						<th onclick="sortTable(this)">은행</th>
+						<th onclick="sortTable(this)">계좌</th>
+						<th onclick="sortTable(this)">요청일</th>
+						<th onclick="sortTable(this)">승인일</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -422,6 +422,14 @@ function showSection(id) {
     	    .then(r => r.json())
     	    .then(data => {
     	      const tbody = document.querySelector("#planUsageTable tbody");
+
+    	      // ✅ null 체크
+    	      if (!tbody) {
+    	        console.error("🚫 tbody is null - #planUsageTable이 존재하는지 확인하세요.");
+    	        return;
+    	      }
+
+    	      // ✅ 총 사용자 수 기반 비율 계산은 이미 서버에서 처리됨
     	      tbody.innerHTML = data.length ? data.map(row => `
     	        <tr>
     	          <td>${row.planType}</td>
@@ -463,7 +471,43 @@ function showSection(id) {
       }
     };
       
-   
+    function sortTable(header) {
+    	  const table = header.closest("table");
+    	  const tbody = table.querySelector("tbody");
+    	  const index = Array.from(header.parentNode.children).indexOf(header);
+    	  const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    	  // 현재 정렬 상태 가져오기
+    	  const isAsc = header.getAttribute("data-sort") !== "asc";
+
+    	  // 모든 th에서 정렬 상태 및 아이콘 초기화
+    	  header.parentNode.querySelectorAll("th").forEach(th => {
+    	    const text = th.textContent.replace(/[\u25B2\u25BC]/g, '').trim(); // ▲ ▼ 제거
+    	    th.textContent = text;
+    	    th.removeAttribute("data-sort");
+    	  });
+
+    	  // 현재 th에 정렬 아이콘 추가 및 상태 설정
+    	  header.setAttribute("data-sort", isAsc ? "asc" : "desc");
+    	  header.textContent += isAsc ? " ▲" : " ▼";
+
+    	  // 정렬 로직
+    	  rows.sort((a, b) => {
+    	    const aText = a.children[index].textContent.trim();
+    	    const bText = b.children[index].textContent.trim();
+
+    	    const aVal = isNaN(Date.parse(aText)) ? (isNaN(aText) ? aText : parseFloat(aText)) : new Date(aText);
+    	    const bVal = isNaN(Date.parse(bText)) ? (isNaN(bText) ? bText : parseFloat(bText)) : new Date(bText);
+
+    	    if (aVal < bVal) return isAsc ? -1 : 1;
+    	    if (aVal > bVal) return isAsc ? 1 : -1;
+    	    return 0;
+    	  });
+
+    	  // 테이블 갱신
+    	  tbody.innerHTML = "";
+    	  rows.forEach(row => tbody.appendChild(row));
+    	}
   </script>
 </body>
 </html>
