@@ -182,7 +182,7 @@
 
     <div class="d-flex gap-3 mb-4">	
 		<div style="display:flex; flex-wrap:wrap;">
-      	  <canvas id="topicChart" width="600" height="200" style="width:50%;"></canvas>
+      	  <canvas id="topicChart" width="600" height="500" style="width:50%;"></canvas>
 		</div>
 		  <div id="subjectScore"></div>
     </div>
@@ -385,7 +385,7 @@
     		        y: {
     		          beginAtZero: true,
     		          min: 0,
-    		          max: 10,
+    		          max: 20,
     		          ticks: {
     		            stepSize: 2,
     		            precision: 0
@@ -429,6 +429,7 @@
 	let listHtml = "";
 
 	for(let i=0; i<3; i++){
+			let total = 0;
 			listHtml += "<div>" + subjectScore[i].scAt.split("T")[0] + "</div>";
 			// 과목명 줄
 			listHtml += "<div style='display: flex;'>";
@@ -437,6 +438,7 @@
 			  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + licenseList["liChap"+j] + "</div>";
 				}
 			}
+			listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>총합</div>";
 			listHtml += "</div>";
 		
 			// 점수 줄
@@ -444,8 +446,10 @@
 			for (let j = 0; j < 6; j++) {
 				if(licenseList["liChap"+j] != null){
 			  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px;'>" + subjectScore[i]["scChap"+j] + "</div>";
+			  		total +=  subjectScore[i]["scChap"+j];
 				}
 			}
+			listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + total + "</div>";
 			listHtml += "</div>";
 			listHtml +="<br>";
 		 }
