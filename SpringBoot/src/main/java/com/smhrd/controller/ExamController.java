@@ -74,8 +74,6 @@ public class ExamController {
 	}
 	
 
-	
-	
 	@PostMapping("/submitPbsData")
 	public void submitPbsData(@RequestBody List<Pbs_Log> dataList, @RequestParam String exCat) {
 	    dataList.forEach(log -> {
