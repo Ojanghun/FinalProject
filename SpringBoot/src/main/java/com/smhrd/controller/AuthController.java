@@ -2,6 +2,8 @@ package com.smhrd.controller;
 
 import com.smhrd.entity.Member;
 import com.smhrd.service.MemberService;
+import com.smhrd.service.SmsService;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,9 @@ public class AuthController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private SmsService smsService;
+    
     @Value("${kakao.client-id}")
     private String kakaoClientId;
 
@@ -97,6 +102,8 @@ public class AuthController {
 
         try {
             memberService.join(member);
+            String cleanedPhone = member.getPhone().replaceAll("-", "");
+            smsService.sendJoinSuccessMessage(cleanedPhone); // 회원가입 성공 시 문자 발송
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("joinError", e.getMessage());
             redirectAttributes.addFlashAttribute("member", member);
