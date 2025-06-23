@@ -28,6 +28,9 @@
 		</nav>
 		
       <div class="panel panel-warning">
+             <div>
+		    	<button type="button" onclick="goToLicense()">뒤로가기</button>
+		    </div>
      		<div class="exam-title-bar">
                 <input type="hidden" id="category" th:value="${category}" />
                 <h3 id="examTopic" style="text-align:center; color:white;"></h3>
@@ -400,6 +403,14 @@
         // console.log("문제 " + questionNum + " 선택 변경", userSelections);
       }
     }
+	
+    function goToLicense() {
+        if (liIdx) {
+          window.location.href = "/license?liIdx=" + liIdx;
+        } else {
+          alert("liIdx 값이 없습니다.");
+        }
+      }
  
    </script>
    

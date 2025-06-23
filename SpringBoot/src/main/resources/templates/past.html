@@ -31,6 +31,9 @@
 		</nav>
         
         <div class="panel panel-warning">
+        	<div>
+		    	<button type="button" onclick="goToLicense()">뒤로가기</button>
+		    </div>
             <div class="exam-title-bar">
                 <h2 th:text="${liName} +' 기출'"></h2> <span style="float: right;"></span>
             </div>
@@ -77,6 +80,7 @@ let exData = [];
 let shufData = [];
 let currentPage = 0;
 const userSelections = {};
+const liIdx = $("#liIdx").val();
 
 $(document).ready(function(){
     loadExam();
@@ -84,7 +88,6 @@ $(document).ready(function(){
 
 function loadExam() {
     const category = $("#category").val();
-    const liIdx = $("#liIdx").val();
 
     $.when(
             $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),
@@ -275,6 +278,16 @@ function solution(pbId, index) {
         }
     });
 }
+
+function goToLicense() {
+    if (liIdx) {
+      window.location.href = "/license?liIdx=" + liIdx;
+    } else {
+      alert("liIdx 값이 없습니다.");
+    }
+  }
+
+
     </script>
 </body>
 </html>
