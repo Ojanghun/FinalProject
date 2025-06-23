@@ -76,7 +76,7 @@ public class LicenseService {
 	}
 	
 	// 토픽 문제 많은 순 정렬
-	public List<Topic_Info> topicRank(int liIdx){
+	public List<Object> topicRank(int liIdx){
 		return TopicInforepository.findTopicCounts(liIdx);
 	}
 	

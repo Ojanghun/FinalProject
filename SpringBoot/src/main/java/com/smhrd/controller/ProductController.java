@@ -65,7 +65,7 @@ public class ProductController {
 		model.addAttribute("topicList", topicList);
 		
 		// 토픽 문제 많은 순 정렬
-		List<Topic_Info> topicRank = licenseservice.topicRank(liIdx);
+		List<Object> topicRank = licenseservice.topicRank(liIdx);
 		model.addAttribute("topicRank", topicRank);
 				
 		

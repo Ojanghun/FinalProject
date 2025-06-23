@@ -39,7 +39,7 @@ public interface TopicInfoRpository extends JpaRepository<Topic_Info, Integer> {
 		    WHERE li_idx = :liIdx
 		    ORDER BY topic_count DESC
 		""", nativeQuery = true)
-	List<Topic_Info> findTopicCounts(@Param("liIdx") int liIdx);
+	List<Object> findTopicCounts(@Param("liIdx") int liIdx);
 
 	
 }
