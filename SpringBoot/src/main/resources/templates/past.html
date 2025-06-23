@@ -1,71 +1,83 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:inline="javascript">
 <head>
 <meta charset="UTF-8">
 <title>Exam Page</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/exam.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
 
 </head>
 <body>
-		 <nav class="custom-header border-bottom bg-white py-2">
-		  <div class="container d-flex justify-content-between align-items-center">
-		    <div class="d-flex align-items-center gap-2">
-		      <a href="/" class="d-flex align-items-center gap-2 ">
-		        <img src="/images/로고.png" height="40" style="height: 48px; width: auto;" alt="로고">
-		        <span class="fw-bold text-dark"></span>
-		      </a>
-		    </div>
-		    <div class="d-flex gap-2">
-		      <a href="/mypage" class="btn btn-outline-secondary btn-sm">MYPAGE</a>
-		      <a href="/logout" class="btn btn-outline-danger btn-sm">LOGOUT</a>
-		    </div>
-		  </div>
-		</nav>
-        
-        <div class="panel panel-warning">
-        	<div>
-		    	<button type="button" onclick="goToLicense()">뒤로가기</button>
-		    </div>
-            <div class="exam-title-bar">
-                <h2 th:text="${liName} +' 기출'"></h2> <span style="float: right;"></span>
-            </div>
-            <div class="panel-body">
-                <input type="hidden" id="category" th:value="${category}" />
-                <div class="container px-4" id="examBoard"></div>
-                <div id="pagination" class="text-center mt-4"></div>
-            </div>
-        </div>
-    	<!-- Footer -->
-	<footer class="footer mt-5 py-4 border-top">
-	  <div class="container text-center">
-	    <nav class="nav justify-content-center mb-3">
-	      <a href="#" class="footer-link">Home</a>
-	      <a href="#" class="footer-link">About</a>
-	      <a href="#" class="footer-link">Contact</a>
-	    </nav>
-	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
-	  </div>
-	</footer>
+	<nav class="custom-header border-bottom bg-white py-2">
+		<div class="container">
+			<div class="d-flex justify-content-between align-items-start w-100">
 
-				<input type="hidden" id="category" th:value="${category}" />
-				<input type="hidden" id="liIdx" th:value="${liIdx}" />
-				<div id="examBoard"></div>
+				<!-- 좌측: 로고 -->
+				<a href="/" class="d-flex align-items-start"> <img
+					src="/images/로고.png" alt="로고" style="height: 48px; width: auto;">
+				</a>
+
+				<!-- 우측: 뒤로가기 + 마이페이지 + 로그아웃 -->
+				<div class="d-flex align-items-start gap-2">
+					<button type="button" class="btn btn-outline-warning"
+						onclick="goToLicense()">뒤로가기</button>
+					<a href="/mypage" class="btn btn-outline-secondary">MYPAGE</a>
+					<a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
+				</div>
 
 			</div>
-			<div class="panel-footer">© 2025 문제 Issue!</div>
+		</div>
+	</nav>
+
+
+	<div class="panel panel-warning">
+		
+		<div class="exam-title-bar">
+			<h2 th:text="${liName} +' 기출'"></h2>
+			<span style="float: right;"></span>
+		</div>
+		<div class="panel-body">
+			<input type="hidden" id="category" th:value="${category}" />
+			<div class="container px-4" id="examBoard"></div>
+			<div id="pagination" class="text-center mt-4"></div>
 		</div>
 	</div>
-	
-<!-- Thymeleaf에서 JS로 챕터명 전달 -->	
-<script th:inline="javascript">
+	<!-- Footer -->
+	<footer class="footer mt-5 py-4 border-top">
+		<div class="container text-center">
+			<nav class="nav justify-content-center mb-3">
+				<a href="#" class="footer-link">Home</a> <a href="#"
+					class="footer-link">About</a> <a href="#" class="footer-link">Contact</a>
+			</nav>
+			<p class="text-muted small mb-0">© 2025 문제 Issue!</p>
+		</div>
+	</footer>
+
+	<input type="hidden" id="category" th:value="${category}" />
+	<input type="hidden" id="liIdx" th:value="${liIdx}" />
+	<div id="examBoard"></div>
+
+	</div>
+	<div class="panel-footer">© 2025 문제 Issue!</div>
+	</div>
+	</div>
+
+	<!-- Thymeleaf에서 JS로 챕터명 전달 -->
+	<script th:inline="javascript">
     const chapterTitles = [
         /*[[${liChap1}]]*/,
         /*[[${liChap2}]]*/,
@@ -75,7 +87,7 @@
     ];
 </script>
 
-<script type="text/javascript">
+	<script type="text/javascript">
 let exData = [];
 let shufData = [];
 let currentPage = 0;
