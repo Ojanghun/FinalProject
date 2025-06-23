@@ -38,6 +38,9 @@ public class SecurityConfig {
                 "/admin/pay-info",                // ✅ 결제 상세
                 "/admin/plan-users",  // ✅ 추가!
                 "/refund-session", // ✅ 환급 요청 세션 저장 경로 예외 추가
+                "/admin/cancel-refund",
+                "/admin/reject-refund", // ✅ 거절 처리 경로 추가
+                "/admin/cancel-reject", // ✅ 거절취소 경로 추가
                 "/chapResult/**"
             ))
 
@@ -48,6 +51,8 @@ public class SecurityConfig {
                     "/adminLoginCheck",
                     "/refund-session",  // ✅ 여기에 추가!
                     "/admin/plan-users",  // ✅ 추가!
+                    "/admin/reject-refund", // ✅ 추가
+                    "/admin/cancel-reject", // ✅ 거절취소 경로 추가
                     "/admin/**"   // ✅ 관리자 대시보드 접근 허용
 
                 ).permitAll()

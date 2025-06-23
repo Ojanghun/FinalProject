@@ -39,6 +39,9 @@ public class Pay_Info {
     @Column(name = "RF_CP", nullable = false)
     private int rfCp; // 환불 여부(0: 환불 안됨, 1: 환불 됨)
     
+    @Column(name = "RJ_AT", nullable = true)
+    private LocalDateTime rjAt; // 환불 거부 일자
+    
     // 🔗 플랜 이름을 불러오기 위한 연관관계 매핑
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PLAN_IDX", insertable = false, updatable = false)

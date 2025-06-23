@@ -29,7 +29,7 @@ public interface RefundInfoRepository extends JpaRepository<Refund_Info, Integer
 
 	@Query(value = """
 		    SELECT r.RF_IDX, r.USER_ID, r.RF_VPATH, r.RF_NAME, r.RF_BANK, r.RF_ACCNUM, r.RF_AT,
-		           l.LI_NAME, p.PLAN_TYPE, p.PLAN_PRICE, pi.RF_CP, r.AP_AT
+		           l.LI_NAME, p.PLAN_TYPE, p.PLAN_PRICE, pi.RF_CP, r.AP_AT, r.PAY_IDX, pi.RJ_AT  -- ✅ 마지막에 RJ_AT 추가
 		    FROM refund_info r
 		    JOIN pay_info pi ON r.PAY_IDX = pi.PAY_IDX
 		    JOIN plan_info p ON pi.PLAN_IDX = p.PLAN_IDX
