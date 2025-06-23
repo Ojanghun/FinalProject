@@ -21,19 +21,19 @@
 		      </a>
 		    </div>
 		    <div class="d-flex gap-2">
-		      <a href="/mypage" class="btn btn-outline-secondary btn-sm">MYPAGE</a>
-		      <a href="/logout" class="btn btn-outline-danger btn-sm">LOGOUT</a>
+		      <button type="button" class="btn btn-outline-warning" onclick="goToLicense()">뒤로가기</button>
+		      <a href="/mypage" class="btn btn-outline-secondary">MYPAGE</a>
+		      <a href="/logout" class="btn btn-outline-danger">LOGOUT</a>
 		    </div>
 		  </div>
 		</nav>
 		
       <div class="panel panel-warning">
              <div>
-		    	<button type="button" onclick="goToLicense()">뒤로가기</button>
 		    </div>
      		<div class="exam-title-bar">
                 <input type="hidden" id="category" th:value="${category}" />
-                <h3 id="examTopic" style="text-align:center; color:white;"></h3>
+                <h3 id="examTopic" style="text-align:center; font-weight: 550; color:white;"></h3>
             </div>
 	        <div class="panel-body">
          		<input type="hidden" id="category" th:value="${category}" />
