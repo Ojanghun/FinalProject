@@ -311,6 +311,7 @@
    $(document).ready(function(){
       // ready() : html 코드가 준비가 되면 실행되는 메소드
       loadTopic();
+      topicRank();
       loadTopList();
       loadSubjectScore();
    });
@@ -357,6 +358,31 @@
        }
        $("#topic-category").html(listHtml);   
        
+ }
+ 
+ function topicRank(){
+	 
+	 // 토픽 컬러 60가지 색상
+	 const steps = 60;
+	 const colors = [];
+
+	 for (let i = 0; i < steps; i++) {
+	   const ratio = i / (steps - 1); // 0 ~ 1
+	   const gb = Math.round(255 * ratio); // G와 B를 점점 255까지 올림
+	   const gbHex = gb.toString(16).padStart(2, '0'); // 16진수 변환
+	   const color = `#ff${gbHex}${gbHex}`; // 빨간색 고정, G=B
+	   colors.push(color);
+	 }
+
+
+	 
+	 const topicRank = /*[[${topicRank}]]*/ [];
+	 
+	 for(let i=0; i<topicRank.length; i++){
+		 
+		 $("#topic"+topicRank[i].topicIdx).css("color",colors[i]);
+	 }
+	 
  }
  
  function loadTopList(){

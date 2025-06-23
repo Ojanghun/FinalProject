@@ -137,8 +137,8 @@ function renderPage(pageIndex) {
         }
 
     	    	    listHtml += "<br>";
-    	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
-    	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
+    	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
+    	    	    listHtml += "<button class='btn' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
     	    	    listHtml += "<br><br>";
     	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
     	    	    listHtml += "</div><br>";
@@ -264,6 +264,7 @@ function solution(pbId, index) {
         success: function(data) {
             const solDiv = $("#solution" + index);
             if (solDiv.text().trim() === "") {
+            	console.log("해결책: "+data);
                 solDiv.text(data);
             } else {
                 solDiv.text("");
