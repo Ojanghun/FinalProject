@@ -622,6 +622,12 @@ function selectChoice(questionNum, choiceNum) {
 								scoreBox.css("display", "flex");             // flex 설정
 								
 								const liChap = data[0];
+								let subject = 1;
+								for(let i=0; i<5; i++){
+									if(liChap["liChap"+(i+1)] < 20){
+										subject = 0;
+									}
+								}
 								
 							    $("#liChap1").text(liChap.scChap1);
 							    $("#liChap2").text(liChap.scChap2);
@@ -632,7 +638,7 @@ function selectChoice(questionNum, choiceNum) {
 
 							   $("#score").text(score);                // 점수 출력
 
-							   if (score > 60) {
+							   if (score > 60 && subject == 1) {
 							     $("#comment").text("합격을 축하드립니다.");
 							     $("#pass").text("합격");
 							   } else {
