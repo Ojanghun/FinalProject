@@ -83,10 +83,10 @@
  }
 
  .scoreBox {
-	display: none;
+ 	display: none;
 	position: absolute;
 	top: 15%;
-	left: 30%;
+	left: 18%;
   	flex-direction: column;
   	z-index: 9999;
  }

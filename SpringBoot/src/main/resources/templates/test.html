@@ -29,7 +29,7 @@
     
     <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
 		background-color:rgba(0,0,0,0.5); z-index:9999; color:white; font-size:24px; text-align:center; padding-top:20%;">
-		결과 분석 중입니다... 잠시만 기다려주세요.
+		채점 중입니다... 잠시만 기다려주세요.
     </div>
     
     
@@ -102,7 +102,7 @@
 				  <div id="print" class='test-page-block-holder'></div>
 				  
 				 <div class="scoreBackground" >
-					<div id="scoreBox" class="scoreBox" style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+					<div id="scoreBox" class="scoreBox" style="width: 1000px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
 					
 					  <!-- 상단 안내 -->
 					  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
@@ -529,10 +529,10 @@ function selectChoice(questionNum, choiceNum) {
 			     
 			        // 서버에 채점 결과 전송
 			        sendPbsData(result.pbsData).done(function () {
-			     		// 5초(=5000밀리초) 후에 결과 UI 업데이트 실행
+			     		// 1.5초(=1500밀리초) 후에 결과 UI 업데이트 실행
 			            setTimeout(function () {
 			              updateResultUI(result.score);
-			            }, 5000);
+			            }, 1500);
 			          });
 				}
 
