@@ -29,7 +29,7 @@ public class ExamController {
 		
 		// 서비스에 문제 데이터 요청
 		List<Exam> exList =service.loadExam(category,liIdx); // 여기가 문제
-		System.out.println("문제 데이터: "+exList);
+//		System.out.println("문제 데이터: "+exList);
 		return exList;
 	}
 	
@@ -44,7 +44,7 @@ public class ExamController {
 //		Ex.setPbChoi3("성현씨가 쏘는 피자");
 //		Ex.setPbChoi4("조은씨가 만들어주시는 돈까스");
 
-		System.out.println("선지 데이터: "+choice);
+//		System.out.println("선지 데이터: "+choice);
 	    return choice;
 	}
 	
@@ -52,8 +52,8 @@ public class ExamController {
 	@PostMapping("/loadTopic/{category}")
 	public List<Topic_Info> loadTopic(@PathVariable("category") int category){
 		List<Topic_Info> topicInfo = service.loadTopic(category);
-		System.out.println("토픽: "+topicInfo);
-		System.out.println(category);
+//		System.out.println("토픽: "+topicInfo);
+//		System.out.println(category);
 		return topicInfo;
 	}
 	
@@ -61,7 +61,7 @@ public class ExamController {
 	@PutMapping("/solution/{pbId}")
 	public String solution(@PathVariable("pbId") int pbId){
 		String PbSolu = service.solution(pbId);
-		System.out.println("해결책 :"+PbSolu);
+//		System.out.println("해결책 :"+PbSolu);
 		return PbSolu;
 	}
 	
