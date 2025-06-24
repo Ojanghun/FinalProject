@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
+<html lang="en" data-bs-theme="auto" xmlns:th="http://www.thymeleaf.org"
+	th:inline="javascript">
 
 <head>
 <meta charset="utf-8">
@@ -53,6 +54,17 @@
 								th:text="${freePlan.planPrice + '원'}">9000원</h1>
 							<h2 class="card-title pricing-card-title"
 								th:if="${freePlan == null}">가격 정보 없음</h2>
+							<div class="mb-3" style="font-size: 14px;">
+								<div>
+									<strong>서비스 기간:</strong> <span th:text="${servicePeriod}">2025.06.24
+										~ 2025.12.24</span>
+								</div>
+								<div>
+									<strong>환급 가능 기간:</strong> <span th:text="${refundPeriod}">2025.12.25
+										~ 2025.12.31</span>
+								</div>
+							</div>
+
 							<!-- 탐구형 이용자 수 -->
 							<div id="freeUserCount" class="highlight text-success"
 								th:text="'현재 ' + ${freeUserCount} + '명이 이용중입니다.'">현재 0명이
@@ -83,10 +95,23 @@
 								th:text="${strictPlan.planPrice + '원'}">9900원</h1>
 							<h2 class="plan-price" th:if="${strictPlan == null}">가격 정보
 								없음</h2>
+
+							<div class="mb-3" style="font-size: 14px;">
+								<div>
+									<strong>서비스 기간:</strong> <span th:text="${servicePeriod}">2025.06.24
+										~ 2025.12.24</span>
+								</div>
+								<div>
+									<strong>환급 가능 기간:</strong> <span th:text="${refundPeriod}">2025.12.25
+										~ 2025.12.31</span>
+								</div>
+							</div>
 							<!-- 필수형 이용자 수 -->
 							<div id="strictUserCount" class="highlight text-success"
 								th:text="'현재 ' + ${strictUserCount} + '명이 이용중입니다.'">현재 0명이
 								이용중입니다.</div>
+
+
 							<ul class="list-unstyled mt-3 mb-4">
 								<strong>필수형 제공 서비스</strong>
 								<li>탐색형 서비스</li>
@@ -117,28 +142,36 @@
 						<tr>
 							<th class="text-start">일정 관리</th>
 							<td></td>
-							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
-					        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20"
+									height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+					        <path
+										d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z" />
 					      </svg></td>
 						</tr>
 						<tr>
 							<th class="text-start">목표 설정</th>
 							<td></td>
-							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
-						        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20"
+									height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+						        <path
+										d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z" />
 						      </svg></td>
-							</tr>
+						</tr>
 						<tr>
 							<th class="text-start">알림 기능</th>
 							<td></td>
-							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
-					        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20"
+									height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+					        <path
+										d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z" />
 					      </svg></td>
 						</tr>
 						<tr>
 							<th class="text-start">자유도</th>
-							<td><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
-					        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z"/>
+							<td><svg xmlns="http://www.w3.org/2000/svg" width="20"
+									height="20" fill="grey" class="bi bi-check" viewBox="0 0 16 16">
+					        <path
+										d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-4.58 5.25a.75.75 0 0 1-1.08 0L4.324 8.384a.75.75 0 0 1 1.06-1.06L7.5 9.44l3.47-4.47z" />
 					      </svg></td>
 							<td></td>
 						</tr>

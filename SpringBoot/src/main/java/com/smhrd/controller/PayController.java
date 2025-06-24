@@ -58,6 +58,18 @@ public class PayController {
         if (selectedPlan != null) {
             model.addAttribute("planPrice", selectedPlan.getPlanPrice());
             model.addAttribute("planIdx", selectedPlan.getPlanIdx());
+
+            // ✅ 지금 기준으로 서비스 및 환급 기간 계산
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime end = now.plusMonths(6);
+            LocalDateTime refundEnd = end.plusDays(7);
+
+            // 문자열로 포맷 (yyyy-MM-dd)
+            String servicePeriod = now.toLocalDate().toString() + " ~ " + end.toLocalDate().toString();
+            String refundPeriod = end.toLocalDate().toString() + " ~ " + refundEnd.toLocalDate().toString();
+
+            model.addAttribute("servicePeriod", servicePeriod);
+            model.addAttribute("refundPeriod", refundPeriod);
         }
 
         model.addAttribute("activeUserCount", activeUserCount);
