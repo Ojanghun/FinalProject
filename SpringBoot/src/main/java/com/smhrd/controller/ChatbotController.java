@@ -22,7 +22,7 @@ public class ChatbotController {
 	public Map<String, String> askChatbot(@RequestBody ChatRequestDTO request) {
 	    String prompt = String.format(
 	        "[문제]\n%s\n\n선택지:\n① %s\n② %s\n③ %s\n④ %s\n\n사용자 질문: %s"
-	        + "\n질문에 대한 답변을 HTML 태그(`<ul>`, `<li>`, `<strong>`, `<hr>` 등)를 사용해 구조적으로 작성해주세요.",
+	        + "\n질문에 대한 답변을 HTML 태그(`<ul>`, `<li>`, `<strong>` 등)를 사용해 간단하게 작성해주세요.",
 	        request.getPbQues(),
 	        request.getChoices().get(0),
 	        request.getChoices().get(1),
