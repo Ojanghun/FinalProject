@@ -399,14 +399,15 @@ function goNum(i) {
 	     // 문제 선지
 	     for (let k = 1; k <=4; k++) {
 	       let choiceText = problem["pbChoi" + k];
+	       const isSelected = userSelections[qNum] === k;
+	       const choiceSymbol = isSelected ? "●" : circledNumbers[k - 1];
 
 	       // 문제 선지 묶음 div
 	       listHtml += "<div class='choice' id='choice" + qNum + "-" + k +
 	                   "' onclick='selectChoice(" + qNum + "," + k + ", \"" + choiceText + "\")' style='display: flex; cursor:pointer;'>";
 
 	       // 문제 번호
-	       listHtml += "<div class='oneChoiceNum' id='choiceNum" + qNum + "-" + k + "' style='font-family: monospace;'>" +
-	                   ["①", "②", "③", "④"][k-1] + " &nbsp; </div>";
+		   listHtml += "<div class='oneChoiceNum' id='choiceNum" + qNum + "-" + k + "' style='font-family: monospace;'>" + choiceSymbol + " &nbsp; </div>";
 
 	       // 이미지가 있는지 판단
 	       if (choiceText.includes("http")) {
@@ -417,6 +418,15 @@ function goNum(i) {
 	     }
 
 	     listHtml += "<br></div>"; // 한 문제 끝
+	     
+	  // ✅ 답안표기란 이미지 복원
+	     for (let i = 1; i <= 100; i++) {
+	         const selected = userSelections[i];
+	         if (selected) {
+	             $(`#number${i}-${selected}`).attr("src", "/images/marking.jpg");
+	         }
+	     }
+
 	 }
 
    // 버튼 보이기 조건 처리

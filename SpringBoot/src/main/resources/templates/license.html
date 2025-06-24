@@ -180,6 +180,7 @@
       </h5>
       <!-- ✅ canvas 크기 강제 제한 -->
       <div id="topicChartDiv" style="display:none;"><canvas id="topicChart" style="width: 100%; height: 300px; max-width: 100%;"></canvas></div>
+      <div id="topicChartMessage"></div>
     </div>
 
     <!-- ✅ 오른쪽: subjectScore 영역 (50%) -->
@@ -191,10 +192,6 @@
       <div id="subjectScore"></div>
     </div>
   </div>
-	<div id="topicChartMessage"
-	       class="position-absolute text-center text-muted"
-	       style="top: 68%; left: 50%; transform: translate(-50%, -50%); display: none; font-size: 1rem;">
-</div>
 
 
 
@@ -467,7 +464,8 @@
 	
 	// 한번도 안풀었다면 null값이므로
 	if(subjectScore[0] == null){
-		
+		listHtml += "<img src='images/problem.png' style='width:50%; height:50%;'></img>"
+
 	}else{		
 		for(let i=0; i<subjectScore.length; i++){
 			if(subjectScore[i] != null && i < 3){
