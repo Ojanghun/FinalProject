@@ -314,3 +314,21 @@ h4 {
   border-top: 1px dashed #ccc;
   margin: 1rem 0;
 }
+
+.loading-spinner::after {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #1E88E5;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
