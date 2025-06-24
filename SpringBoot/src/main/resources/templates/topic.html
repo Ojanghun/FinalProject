@@ -136,7 +136,7 @@
 	        const options = shufData[idx];
 	        const pbId = pb.pbId - 1;
 
-	        listHtml += "<div id='oneExam" + pbId + "_" + idx + "' class='oneExam'>";
+	        listHtml += "<div class='oneExam'>";
 	        listHtml += "<div id='examYear" + (idx + 1) + "'></div>";
 	        listHtml += "<div class='question'><img id='check" + (idx + 1) + "' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
 	                    (idx + 1) + ". " + pb.pbQues + "</div>";
@@ -159,8 +159,7 @@
 
 	        listHtml += "<br>";
 	        listHtml += "<button class='btn btn-outline-info' id='pbans" + idx + "' onclick='correctAnswer(" + pbId + ", " + idx + ")'>정답 확인</button> ";
-	        listHtml += "<button class='btn btn-outline-warning' onclick='solution(" + pbId + ", " + idx + ")'>해설</button>&nbsp;";
-	        listHtml += "<button onclick='moveRandom(" + pbId + ", " + idx + ")' class='btn btn-outline-danger'>순간이동!</button>"
+	        listHtml += "<button class='btn btn-outline-warning' onclick='solution(" + pbId + ", " + idx + ")'>해설</button>";
 	        listHtml += "<div class='solution' id='solution" + idx + "'></div>";
 	        listHtml += "</div>";
 	    }
@@ -336,26 +335,6 @@
           alert("liIdx 값이 없습니다.");
         }
       }
-    
-    function moveRandom(pbId, Idx) {
-    	  const divId = "oneExam" + pbId + "_" + Idx; // 예: oneExam5_2
-    	  const div = document.getElementById(divId);
-    	  if (!div) {
-    	    console.warn("Element not found:", divId);
-    	    return;
-    	  }
-
-    	  const maxX = window.innerWidth - div.offsetWidth;
-    	  const maxY = window.innerHeight - div.offsetHeight;
-
-    	  const randomX = Math.floor(Math.random() * maxX);
-    	  const randomY = Math.floor(Math.random() * maxY);
-
-    	  div.style.position = "absolute"; // 위치 이동하려면 필요
-    	  div.style.left = randomX + "px";
-    	  div.style.top = randomY + "px";
-    	}
-
  
    </script>
    
