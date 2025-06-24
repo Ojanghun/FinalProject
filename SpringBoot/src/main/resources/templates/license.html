@@ -179,7 +179,8 @@
           th:text="${member.name} + '님의 주제별 오답 TOP 5'">
       </h5>
       <!-- ✅ canvas 크기 강제 제한 -->
-      <canvas id="topicChart" style="width: 100%; height: 300px; max-width: 100%;"></canvas>
+      <div id="topicChartDiv" style="display:none;"><canvas id="topicChart" style="width: 100%; height: 300px; max-width: 100%;"></canvas></div>
+      <div id="topicChartMessage"></div>
     </div>
 
     <!-- ✅ 오른쪽: subjectScore 영역 (60%) -->
@@ -190,9 +191,7 @@
       </h5>
       <div id="subjectScore"></div>
     </div>
-
   </div>
-</div>
 
 
 
@@ -516,6 +515,115 @@
 	}
 
 	 
+	if(top5List[0] == null ){
+		listHtml = "";
+		
+		listHtml += "<img src='images/problem.png' style='width:50%; height:50%;'></img>"
+		
+		$("#topicChartMessage").html(listHtml);
+		$("#topicChartMessage").css("display","block");
+	}else{
+		$("#topicChartDiv").css("display","block");
+	     let topicChart = new Chart(document.getElementById("topicChart"), {
+	    	  type: 'bar',
+	    	  data: {
+	    	    labels: [Name[0], Name[1], Name[2], Name[3], Name[4]],
+	    	    datasets: [{
+	    	      label: '오답률(%)',
+	    	      data: [top5List[0][0], top5List[1][0], top5List[2][0], top5List[3][0], top5List[4][0]],
+	    	      backgroundColor: '#7abdf8'
+	    	    }]
+	    	  },
+	    	  options: {
+	    		    scales: {
+	    		        y: {
+	    		          beginAtZero: true,
+	    		          min: 0,
+	    		          max: 20,
+	    		          ticks: {
+	    		            stepSize: 2,
+	    		            precision: 0
+	    		          },
+	    		          grid: {
+	    		            display: false,        // ✅ Y축 그리드 제거
+	    		            drawBorder: false      // ✅ 축 라인 제거
+	    		          }
+	    		        },
+	    		        x: {
+	    		          grid: {
+	    		            display: false,        // ✅ X축 그리드 제거
+	    		            drawBorder: false
+	    		          }
+	    	      }
+	    	    }
+	    	  }
+	    	});
+		 
+	 }
+}
+	
+ 
+ function loadSubjectScore(){
+	 
+	 // 과목별 점수
+	 const subjectScore = /*[[${subjectScore}]]*/ [];
+	 // 과목 이름
+	 const licenseList = /*[[${licenseList[0]}]]*/ {};
+	 
+	let listHtml = "";
+	
+	// 회차 확인을 위함.
+	let Round = 0;
+	
+	// 한번도 안풀었다면 null값이므로
+	if(subjectScore[0] == null){
+		listHtml += "<img src='images/problem.png' style='width:50%; height:50%;'></img>"
+
+	}else{		
+		for(let i=0; i<subjectScore.length; i++){
+			if(subjectScore[i] != null && i < 3){
+				Round += 1;
+			}
+		}
+		
+		console.log("문제 푼 횟수: "+Round);
+		
+		// 과목명 줄
+		listHtml += "<div style='display: flex;'>";
+		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>시험날짜</div>";
+		for (let j = 0; j < 6; j++) {
+			if(licenseList["liChap"+j] != null){
+		  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + licenseList["liChap"+j] + "</div>";
+			}
+		}
+		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>총합</div>";
+		listHtml += "</div>";
+		
+		//  3회차
+		for(let i=0; i<Round; i++){
+				// 0으로 초기화
+				let total = 0;
+			
+				// 점수 줄
+				listHtml += "<div style='display: flex;'>";
+				// 날짜/ split("T")는 2025-06-24T~ 이렇게 T 뒤에 시간이 나와서 짜르기 위함.
+				listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + subjectScore[i].scAt.split("T")[0] + "</div>";
+				// 최대 6과목
+				for (let j = 0; j < 6; j++) {
+					if(licenseList["liChap"+j] != null){
+				  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px;'>" + subjectScore[i]["scChap"+j] + "</div>";
+				  		total +=  subjectScore[i]["scChap"+j];
+					}
+				}
+				listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + total + "</div>";
+				listHtml += "</div>";
+			 }
+	}	 
+	$("#subjectScore").html(listHtml);
+ }
+ 
+ 
+ 
  // 시험 정보
   const examPeriods = /*[[${exams}]]*/ [];
 

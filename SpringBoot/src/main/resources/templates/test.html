@@ -29,7 +29,7 @@
     
     <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
 		background-color:rgba(0,0,0,0.5); z-index:9999; color:white; font-size:24px; text-align:center; padding-top:20%;">
-		결과 분석 중입니다... 잠시만 기다려주세요.
+		채점 중입니다... 잠시만 기다려주세요.
     </div>
     
     
@@ -41,7 +41,7 @@
          			<!-- 자격증 인덱스, 자격증 이름 -->
          		    <label id="sheetNum" class="sheetNum" th:text="${liIdx}"></label>
          			<label class="test-info-testNm" th:text="${liName}"></label>
-         			
+         			<div style="margin-left:200px; margin-top:10px;"><button onclick="RandomClick()">모든 문제 풀기</button></div>
          			<label style="position: absolute; right: 70px; bottom: 23px;"><button onclick="lotto()">수험번호 뽑기</button></label>
          			<label style="position: absolute; right: 70px; bottom: -5px;"><button onclick="lottoName()">수험이름 뽑기</button></label>
          		</div>
@@ -102,7 +102,7 @@
 				  <div id="print" class='test-page-block-holder'></div>
 				  
 				 <div class="scoreBackground" >
-					<div id="scoreBox" class="scoreBox" style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+					<div id="scoreBox" class="scoreBox">
 					
 					  <!-- 상단 안내 -->
 					  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
@@ -112,7 +112,7 @@
 					
 					  <!-- 하단 참고 문구 -->
 					  <div style="margin-bottom: 20px;">
-					    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기</p>
+					    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기 바랍니다.</p>
 					  </div>
 					
 					  <!-- 점수 표 -->
@@ -140,11 +140,11 @@
 						<div th:text="${liChap6}" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>		  
 					  </div>
 					  <div class="scoreValue">
-					  	<div id="liChap1"></div>
-					  	<div id="liChap2"></div>
-					  	<div id="liChap3"></div>
-					  	<div id="liChap4"></div>
-					  	<div id="liChap5"></div>
+					  	<div id="liChap1"></div><span id="fail1"></span>
+					  	<div id="liChap2"></div><span id="fail2"></span>
+					  	<div id="liChap3"></div><span id="fail3"></span>
+					  	<div id="liChap4"></div><span id="fail4"></span>
+					  	<div id="liChap5"></div><span id="fail5"></span>
 					  	<div id="liChap6" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>			  
 					  </div>
 					
@@ -350,6 +350,7 @@ function goNum(i) {
        		// 10개씩 쪼개기
        		for(let i = 0; i<100; i++){
        	  		 pbIdx[i] = allExData[i].pbId;
+			     pbNum[i] = allExData[i].pbNum; // 문제 번호 가지고 오기 → 과목별 점수 계산 할 때 사용
      }
 		   for (let i = 0; i < allExData.length / 10; i++) {   // 페이지 수
 			   let examSlice = [];
@@ -358,6 +359,7 @@ function goNum(i) {
 			     let idx = i * 10 + j; // 0~9번만 반복되지 않게 i 값 *10을 더해주기
 			     examSlice.push(allExData[idx]); // 10개 데이터 push
 			     pbAns[idx] = allExData[idx].pbAns;
+			     
 			   }
 
 			   PageExam.push(examSlice); // 10개로 묶인 데이터 push
@@ -384,7 +386,6 @@ function goNum(i) {
    for (let j = 0; j < exam.length; j++) {
 	     let problem = exam[j];
 	   	 const qNum = startIdx + j + 1; // 문제 번호
-	     pbNum[j] = problem.pbNum; // 문제 번호 가지고 오기 → 과목별 점수 계산 할 때 사용
 	     
 	     // 한 문제 div
 	     listHtml += "<div class='oneExam' id='" + qNum + "' style='width: 50%;'>";
@@ -399,14 +400,15 @@ function goNum(i) {
 	     // 문제 선지
 	     for (let k = 1; k <=4; k++) {
 	       let choiceText = problem["pbChoi" + k];
+	       const isSelected = userSelections[qNum] === k;
+	       const choiceSymbol = isSelected ? "●" : circledNumbers[k - 1];
 
 	       // 문제 선지 묶음 div
 	       listHtml += "<div class='choice' id='choice" + qNum + "-" + k +
 	                   "' onclick='selectChoice(" + qNum + "," + k + ", \"" + choiceText + "\")' style='display: flex; cursor:pointer;'>";
 
 	       // 문제 번호
-	       listHtml += "<div class='oneChoiceNum' id='choiceNum" + qNum + "-" + k + "' style='font-family: monospace;'>" +
-	                   ["①", "②", "③", "④"][k-1] + " &nbsp; </div>";
+		   listHtml += "<div class='oneChoiceNum' id='choiceNum" + qNum + "-" + k + "' style='font-family: monospace;'>" + choiceSymbol + " &nbsp; </div>";
 
 	       // 이미지가 있는지 판단
 	       if (choiceText.includes("http")) {
@@ -417,6 +419,15 @@ function goNum(i) {
 	     }
 
 	     listHtml += "<br></div>"; // 한 문제 끝
+	     
+	  // ✅ 답안표기란 이미지 복원
+	     for (let i = 1; i <= 100; i++) {
+	         const selected = userSelections[i];
+	         if (selected) {
+	             $(`#number${i}-${selected}`).attr("src", "/images/marking.jpg");
+	         }
+	     }
+
 	 }
 
    // 버튼 보이기 조건 처리
@@ -436,8 +447,6 @@ function goNum(i) {
 function selectChoice(questionNum, choiceNum) {
  
 	  let current = parseInt($("#solCount").text(), 10); // 안 푼 문제 수 체크하기 위해 현재 숫자 읽기
-	  $("#solCount").text(current -1);  // 풀었을 경우 1 빼기
-	
  // 선택한 선지내용
  const currentSelection = userSelections[questionNum];
  console.log("콘솔: "+currentSelection);
@@ -460,6 +469,9 @@ function selectChoice(questionNum, choiceNum) {
     userSelections[questionNum] = choiceNum;
     solvedStatus[questionNum] = choiceNum; // 1로 상태 저장
 
+    if (isFirstSelection) {
+        $("#solCount").text(current - 1);  // 처음 선택일 때만 -1
+    }
 
     // 모든 이미지를 체크 없는 이미지로 변경 후 클릭한 이미지를 다시 체크한 이미지로 변경
     for (let i = 1; i <= 4; i++) {
@@ -467,6 +479,7 @@ function selectChoice(questionNum, choiceNum) {
         $(`#number${questionNum}-${i}`).attr("src", `/images/n${i}.jpg`);
       }
       $(`#choiceNum${questionNum}-${choiceNum}`).text("●");
+      
       
       $(`#number${questionNum}-${choiceNum}`).attr("src", "/images/marking.jpg");
     }
@@ -529,10 +542,10 @@ function selectChoice(questionNum, choiceNum) {
 			     
 			        // 서버에 채점 결과 전송
 			        sendPbsData(result.pbsData).done(function () {
-			     		// 5초(=5000밀리초) 후에 결과 UI 업데이트 실행
+			     		// 1.5초(=1500밀리초) 후에 결과 UI 업데이트 실행
 			            setTimeout(function () {
 			              updateResultUI(result.score);
-			            }, 5000);
+			            }, 1500);
 			          });
 				}
 
@@ -612,16 +625,22 @@ function selectChoice(questionNum, choiceNum) {
 								
 								const liChap = data[0];
 								
-							    $("#liChap1").text(liChap.scChap1);
-							    $("#liChap2").text(liChap.scChap2);
-							    $("#liChap3").text(liChap.scChap3);
-							    $("#liChap4").text(liChap.scChap4);
-							    $("#liChap5").text(liChap.scChap5);
+								let subject = 1;
+								for(let i = 0; i < 5; i++) {
+								    const score = liChap["scChap" + (i + 1)];
+								    if (score != null && score < 8) {
+								        subject = 0;
+								        $("#liChap" + (i + 1)).text(liChap["scChap"+(i+1)]+"(과락)");
+								    }else{
+								        $("#liChap" + (i + 1)).text(liChap["scChap"+(i+1)]);
+								    }
+								}
+								
 
 
 							   $("#score").text(score);                // 점수 출력
 
-							   if (score > 60) {
+							   if (score > 60 && subject == 1) {
 							     $("#comment").text("합격을 축하드립니다.");
 							     $("#pass").text("합격");
 							   } else {
@@ -687,6 +706,15 @@ function goToLicense() {
       alert("liIdx 값이 없습니다.");
     }
   }
+  
+function RandomClick() {
+    const x = [1, 2, 3, 4];
+    for (let i = 1; i <= 100; i++) {
+        const randomIndex = Math.floor(Math.random() * x.length); // 0~3 중 하나
+        const choice = x[randomIndex]; // 랜덤으로 1~4 중 선택
+        selectChoice(i, choice); // i번째 문제에 랜덤 선지 선택
+    }
+}
  
    </script>
    
