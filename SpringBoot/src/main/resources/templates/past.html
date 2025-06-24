@@ -13,7 +13,9 @@
 	rel="stylesheet">
 
 <title>Insert title here</title>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
 
@@ -276,8 +278,8 @@ function correctAnswer(pbId, index) {
     });
 }
 
-function solution(pbId, index) {
-    const target = $("#solution" + index);
+function solution(pbId, index){
+	  const target = $("#solution" + index);
 
 	  // 이미 열려 있으면 닫기
 	  if (target.is(":visible")) {
@@ -304,6 +306,8 @@ function solution(pbId, index) {
         }
     });
 }
+
+
 
 function goToLicense() {
     if (liIdx) {
