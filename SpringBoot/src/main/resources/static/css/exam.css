@@ -191,6 +191,7 @@ h4 {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .oneExam {
@@ -259,3 +260,57 @@ h4 {
 }
 
  
+.page-item.active .page-link {
+  background-color: #c6e0f9;
+  color: white;
+  border-color: #89bff1;
+}  
+  
+/* ✅ 전체 답변 박스 스타일 */
+.chat-answer-box {
+  background-color: #f9fafb;
+  border-left: 4px solid #1E88E5;
+  padding: 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.65;  /* 🔹 과도한 줄 간격 줄이기 */
+  color: #212121;
+  margin-top: 12px;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+  white-space: normal; /* 🔹 pre-wrap 제거로 자동 줄바꿈 */
+}
+
+/* ✅ 강조 텍스트 */
+.chat-answer-box strong {
+  color: #0d47a1;
+  font-weight: 600;
+}
+
+/* ✅ 목록 스타일 정리 */
+.chat-answer-box ul,
+.chat-answer-box ol {
+  padding-left: 1.2rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.6rem;
+}
+
+.chat-answer-box li {
+  margin-bottom: 0.3rem;  /* 🔹 리스트 항목 간 여백 최소화 */
+}
+
+/* ✅ 코드 스타일 (선택적) */
+.chat-answer-box code {
+  background-color: #eef2f5;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.95em;
+}
+
+/* ✅ 구분선 (필요할 경우) */
+.chat-answer-box hr {
+  border: none;
+  border-top: 1px dashed #ccc;
+  margin: 1rem 0;
+}
