@@ -140,11 +140,11 @@
 						<div th:text="${liChap6}" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>		  
 					  </div>
 					  <div class="scoreValue">
-					  	<div id="liChap1"></div>
-					  	<div id="liChap2"></div>
-					  	<div id="liChap3"></div>
-					  	<div id="liChap4"></div>
-					  	<div id="liChap5"></div>
+					  	<div id="liChap1"></div><span id="fail1"></span>
+					  	<div id="liChap2"></div><span id="fail2"></span>
+					  	<div id="liChap3"></div><span id="fail3"></span>
+					  	<div id="liChap4"></div><span id="fail4"></span>
+					  	<div id="liChap5"></div><span id="fail5"></span>
 					  	<div id="liChap6" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>			  
 					  </div>
 					
@@ -447,8 +447,6 @@ function goNum(i) {
 function selectChoice(questionNum, choiceNum) {
  
 	  let current = parseInt($("#solCount").text(), 10); // 안 푼 문제 수 체크하기 위해 현재 숫자 읽기
-	  $("#solCount").text(current -1);  // 풀었을 경우 1 빼기
-	
  // 선택한 선지내용
  const currentSelection = userSelections[questionNum];
  console.log("콘솔: "+currentSelection);
@@ -471,6 +469,9 @@ function selectChoice(questionNum, choiceNum) {
     userSelections[questionNum] = choiceNum;
     solvedStatus[questionNum] = choiceNum; // 1로 상태 저장
 
+    if (isFirstSelection) {
+        $("#solCount").text(current - 1);  // 처음 선택일 때만 -1
+    }
 
     // 모든 이미지를 체크 없는 이미지로 변경 후 클릭한 이미지를 다시 체크한 이미지로 변경
     for (let i = 1; i <= 4; i++) {
@@ -478,6 +479,7 @@ function selectChoice(questionNum, choiceNum) {
         $(`#number${questionNum}-${i}`).attr("src", `/images/n${i}.jpg`);
       }
       $(`#choiceNum${questionNum}-${choiceNum}`).text("●");
+      
       
       $(`#number${questionNum}-${choiceNum}`).attr("src", "/images/marking.jpg");
     }
@@ -622,18 +624,18 @@ function selectChoice(questionNum, choiceNum) {
 								scoreBox.css("display", "flex");             // flex 설정
 								
 								const liChap = data[0];
+								
 								let subject = 1;
-								for(let i=0; i<5; i++){
-									if(liChap["liChap"+(i+1)] < 8){
-										subject = 0;
-									}
+								for(let i = 0; i < 5; i++) {
+								    const score = liChap["scChap" + (i + 1)];
+								    if (score != null && score < 8) {
+								        subject = 0;
+								        $("#liChap" + (i + 1)).text(liChap["scChap"+1]+"(과락)");
+								    }else{
+								        $("#liChap" + (i + 1)).text(liChap["scChap"+1]);
+								    }
 								}
 								
-							    $("#liChap1").text(liChap.scChap1);
-							    $("#liChap2").text(liChap.scChap2);
-							    $("#liChap3").text(liChap.scChap3);
-							    $("#liChap4").text(liChap.scChap4);
-							    $("#liChap5").text(liChap.scChap5);
 
 
 							   $("#score").text(score);                // 점수 출력
