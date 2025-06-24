@@ -87,6 +87,7 @@ h4 {
     }
 
     .oneExam {
+    	width: 48%;
         background-color: white;
         border: 1px solid #dee2e6;
         border-radius: 10px;
@@ -95,8 +96,8 @@ h4 {
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         break-inside: avoid;
         page-break-inside: avoid;
-         position: relative;  /* 정답 체크 이미지 위치 기준점 설정 */
- 		 padding-left: 40px; 
+        position: relative;  /* 정답 체크 이미지 위치 기준점 설정 */
+ 		padding-left: 40px; 
     }
 
     .question {
@@ -192,12 +193,10 @@ h4 {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 0; /* 필요 시 제거 */
+  padding: 0;
 }
 
-/* 한 문제 */
-.oneExam {
-  width: 48%;
-}
 
 /* 지문 */
  .question {
