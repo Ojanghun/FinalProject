@@ -23,6 +23,27 @@
 
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
+<style>
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.loading-spinner .spinner-icon {
+    animation: spin 1s linear infinite;
+    font-size: 1.2rem;
+}
+
+/* 회전 애니메이션 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
 
 </head>
 <body>
@@ -323,24 +344,25 @@ function showChatBox(pbId, index) {
     const existingBox = document.getElementById(chatBoxId);
 
     if (existingBox) {
-        // ✅ 토글 방식으로 display만 바꿈 (내용은 유지)
-        if (existingBox.style.display === "none") {
-            existingBox.style.display = "block";
-        } else {
-            existingBox.style.display = "none";
-        }
+        existingBox.style.display = existingBox.style.display === "none" ? "block" : "none";
         return;
     }
 
     const boxHtml = `
-        <div id="${chatBoxId}" class="mt-2">
-            <textarea class="form-control mb-2" id="chatInput${index}" rows="3" placeholder="궁금한 내용을 입력하세요"></textarea>
-            <button class="btn btn-primary btn-sm" onclick="sendToChatbot(${pbId}, ${index})">전송</button>
-            <div class="mt-2" id="chatAnswer${index}" style="white-space: pre-wrap;"></div>
+        <div id="${chatBoxId}" class="chatbox-container mt-3 p-3 rounded shadow-sm border">
+            <label for="chatInput${index}" class="form-label fw-bold">❓ 궁금한 점을 입력해보세요</label>
+            <textarea class="form-control mb-2" id="chatInput${index}" rows="3" placeholder="예: 이 문제의 핵심 개념은 무엇인가요?"></textarea>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-primary" onclick="sendToChatbot(${pbId}, ${index})">
+                    <i class="bi bi-send-fill"></i> 전송
+                </button>
+            </div>
+            <div id="chatAnswer${index}" class="chat-answer mt-3" style="display: none;"></div>
         </div>
     `;
     $("#solution" + index).after(boxHtml);
 }
+
 function sendToChatbot(pbId, index) {
     const question = $("#chatInput" + index).val().trim();
     if (!question) {
@@ -364,13 +386,17 @@ function sendToChatbot(pbId, index) {
         data: JSON.stringify(payload),
         beforeSend: function(xhr) {
             xhr.setRequestHeader(header, token);
-            $("#chatAnswer" + index).html(`<div style='color:gray;' class="loading-spinner">답변 생성 중...</div>`);
+            $("#chatAnswer" + index).html(`
+                <div class="loading-spinner">
+                    <span>답변을 생성 중입니다...</span>
+                </div>
+            `).show();
         },
         success: function(response) {
-        	$("#chatAnswer" + index).html(`<div class="chat-answer-box">${response.answer}</div>`);
+            $("#chatAnswer" + index).html(`<i class="bi bi-chat-dots-fill text-primary me-2"></i>${response.answer}`).show();
         },
         error: function() {
-            $("#chatAnswer" + index).text("오류가 발생했습니다. 다시 시도해주세요.");
+            $("#chatAnswer" + index).html(`<span class="text-danger">오류가 발생했습니다. 다시 시도해주세요.</span>`).show();
         }
     });
 }

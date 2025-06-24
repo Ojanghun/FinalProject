@@ -74,9 +74,9 @@
 					<tr>
 						<th style="width: 160px; white-space: nowrap;" onclick="sortTable(this)">자격증</th>
 						<th onclick="sortTable(this)">주제 이름</th>
-						<th onclick="sortTable(this)">주제 ID</th>
-						<th onclick="sortTable(this)">문제 수</th>
-						<th onclick="sortTable(this)">오답률</th>
+						<th style="width: 80px; white-space: nowrap;" onclick="sortTable(this)">주제 ID</th>
+						<th style="width: 80px; white-space: nowrap;" onclick="sortTable(this)">문제 수</th>
+						<th style="width: 80px; white-space: nowrap;" onclick="sortTable(this)">오답률</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -84,8 +84,8 @@
 						<td th:text="${count.liName}"></td>
 						<td th:text="${count.topicName}"></td>
 						<td th:text="${count.topicIdx}"></td>
-						<td th:text="${count.count}"></td>
-						<td th:text="${count.wrongRate + '%'}"></td>
+						<td th:attr="data-value=${count.count}" th:text="${count.count}"></td>
+						<td th:attr="data-value=${count.wrongRate}" th:text="${count.wrongRate + '%'}"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -202,7 +202,8 @@
 			<h5>⏳ 환급 요청 목록</h5>
 			<table class="table table-bordered">
 				<thead>
-					<tr>
+					<tr>	
+						<th onclick="sortTable(this)">아이디</th> <!-- ✅ 추가 -->
 						<th onclick="sortTable(this)">자격증</th>
 						<th onclick="sortTable(this)">플랜</th>
 						<th onclick="sortTable(this)">가격</th>
@@ -217,6 +218,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="req : ${session.refundInfoList}">
+						<td th:text="${req.userId}"></td> <!-- ✅ 추가 -->
 						<td th:text="${req.liName}"></td>
 						<td th:text="${req.planType}"></td>
 						<td
@@ -243,6 +245,7 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
+						<th onclick="sortTable(this)">아이디</th> <!-- ✅ 추가 -->
 						<th onclick="sortTable(this)">자격증</th>
 						<th onclick="sortTable(this)">플랜</th>
 						<th onclick="sortTable(this)">가격</th>
@@ -257,6 +260,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="req : ${session.refundCompletedList}">
+						<td th:text="${req.userId}"></td> <!-- ✅ 추가 -->
 						<td th:text="${req.liName}"></td>
 						<td th:text="${req.planType}"></td>
 						<td
@@ -278,6 +282,7 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
+						<th onclick="sortTable(this)">아이디</th> <!-- ✅ 추가 -->
 						<th onclick="sortTable(this)">자격증</th>
 						<th onclick="sortTable(this)">플랜</th>
 						<th onclick="sortTable(this)">가격</th>
@@ -291,6 +296,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="req : ${session.refundRejectedList}">
+						<td th:text="${req.userId}"></td> <!-- ✅ 추가 -->
 						<td th:text="${req.liName}"></td>
 						<td th:text="${req.planType}"></td>
 						<td
@@ -516,42 +522,42 @@ function showSection(id) {
     };
       
     function sortTable(header) {
-    	  const table = header.closest("table");
-    	  const tbody = table.querySelector("tbody");
+    	  const thead = header.closest("thead");
+    	  const table = thead.closest("table");
+    	  const tbody = table.querySelector("tbody"); // ✅ 정확한 tbody 지정
     	  const index = Array.from(header.parentNode.children).indexOf(header);
     	  const rows = Array.from(tbody.querySelectorAll("tr"));
 
-    	  // 현재 정렬 상태 가져오기
     	  const isAsc = header.getAttribute("data-sort") !== "asc";
 
-    	  // 모든 th에서 정렬 상태 및 아이콘 초기화
+    	  // 정렬 상태 초기화
     	  header.parentNode.querySelectorAll("th").forEach(th => {
-    	    const text = th.textContent.replace(/[\u25B2\u25BC]/g, '').trim(); // ▲ ▼ 제거
+    	    const text = th.textContent.replace(/[\u25B2\u25BC]/g, '').trim();
     	    th.textContent = text;
     	    th.removeAttribute("data-sort");
     	  });
 
-    	  // 현재 th에 정렬 아이콘 추가 및 상태 설정
     	  header.setAttribute("data-sort", isAsc ? "asc" : "desc");
     	  header.textContent += isAsc ? " ▲" : " ▼";
 
-    	  // 정렬 로직
     	  rows.sort((a, b) => {
-    	    const aText = a.children[index].textContent.trim();
-    	    const bText = b.children[index].textContent.trim();
+    	    const aCell = a.children[index];
+    	    const bCell = b.children[index];
+    	    const aText = aCell.getAttribute("data-value") || aCell.textContent.trim();
+    	    const bText = bCell.getAttribute("data-value") || bCell.textContent.trim();
 
-    	    const aVal = isNaN(Date.parse(aText)) ? (isNaN(aText) ? aText : parseFloat(aText)) : new Date(aText);
-    	    const bVal = isNaN(Date.parse(bText)) ? (isNaN(bText) ? bText : parseFloat(bText)) : new Date(bText);
+    	    const aVal = !isNaN(aText) ? parseFloat(aText) : aText;
+    	    const bVal = !isNaN(bText) ? parseFloat(bText) : bText;
 
     	    if (aVal < bVal) return isAsc ? -1 : 1;
     	    if (aVal > bVal) return isAsc ? 1 : -1;
     	    return 0;
     	  });
 
-    	  // 테이블 갱신
     	  tbody.innerHTML = "";
     	  rows.forEach(row => tbody.appendChild(row));
     	}
+
     
     function cancelRefund(payIdx) {
     	  if (!confirm("정말로 승인 취소하시겠습니까?")) return;
