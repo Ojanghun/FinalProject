@@ -23,6 +23,10 @@ public interface TopicInfoRpository extends JpaRepository<Topic_Info, Integer> {
 	@Query("UPDATE Topic_Info t SET t.topicNum = t.topicNum + 100 WHERE t.topicNum < 100")
 	void updateTopicNumPlus100IfLessThan100();
 
+	// liIdx가 같은 토픽 모든 정보 불러오기
+	List<Topic_Info> findAllByLiIdx(int liIdx);
+	
+	// LiIdx가 같은 토픽 중에서 문제 수가 많은 토픽 정보를 기준으로 불러오기
 	@Query(value = """
 		    SELECT ti.*, COALESCE(cnt.topic_count, 0) AS topic_count
 		    FROM topic_info ti
@@ -35,7 +39,7 @@ public interface TopicInfoRpository extends JpaRepository<Topic_Info, Integer> {
 		    WHERE li_idx = :liIdx
 		    ORDER BY topic_count DESC
 		""", nativeQuery = true)
-	List<Topic_Info> findTopicCounts(@Param("liIdx") int liIdx);
+	List<Object> findTopicCounts(@Param("liIdx") int liIdx);
 
 	
 }

@@ -29,4 +29,30 @@ document.getElementById("certifyForm").addEventListener("submit", function(event
 		error: function() { alert("업로드 에러 발생") }
 	});
 });
+// 🔽 슬라이더 이미지 경로
+const images = [
+  "/images/certify_guide1.png",
+  "/images/certify_guide2.png",
+  "/images/certify_guide3.png",
+  "/images/certify_guide4.png"
+];
+
+let currentIndex = 0;
+
+function showImage(index) {
+  const imgElement = document.getElementById("sliderImage");
+  if (imgElement) {
+    imgElement.src = images[index];
+  }
+}
+
+function prevImage() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  showImage(currentIndex);
+}
+
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  showImage(currentIndex);
+}
 

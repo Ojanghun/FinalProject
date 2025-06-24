@@ -288,6 +288,7 @@ public class AdminController {
 
         List<RefundRequestDTO> requests = new ArrayList<>();
         List<RefundRequestDTO> completed = new ArrayList<>();
+        List<RefundRequestDTO> rejected = new ArrayList<>(); // ✅ 추가
 
         for (Object[] row : rawData) {
             int rfIdx = (int) row[0];
@@ -309,14 +310,17 @@ public class AdminController {
             int planPrice = ((Number) row[9]).intValue();
             int rfCp = ((Number) row[10]).intValue();
             LocalDateTime apAt = row[11] != null ? ((Timestamp) row[11]).toLocalDateTime() : null;
-
+            int payIdx = ((Number) row[12]).intValue();
+            LocalDateTime rjAt = row.length > 13 && row[13] != null ? ((Timestamp) row[13]).toLocalDateTime() : null; // ✅ 추가
             RefundRequestDTO dto = new RefundRequestDTO(
-                rfIdx, userId, rfVpath, rfName, rfBank, rfAccnum,
-                rfAt, liName, planType, planPrice, rfCp, apAt
-            );
+            	    rfIdx, userId, rfVpath, rfName, rfBank, rfAccnum,
+            	    rfAt, liName, planType, planPrice, rfCp, apAt, payIdx, rjAt  // ✅ rjAt도 생성자에 포함
+            	);
 
             if (rfCp == 1) {
                 completed.add(dto);
+            } else if (rfCp == -1) {
+                rejected.add(dto);
             } else {
                 requests.add(dto);
             }
@@ -324,6 +328,7 @@ public class AdminController {
 
         session.setAttribute("refundInfoList", requests);
         session.setAttribute("refundCompletedList", completed);
+        session.setAttribute("refundRejectedList", rejected); // ✅ 세션에 등록
 
         return "redirect:/admin/dashboard?section=refund";
     }
@@ -350,7 +355,27 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/admin/cancel-refund")
+    @Transactional // ✅ 반드시 추가
+    @ResponseBody
+    public ResponseEntity<String> cancelRefund(@RequestParam("payIdx") int payIdx) {
+        int updated = payInfoRepository.updateRefundCancel(payIdx);
+        return updated > 0 ? ResponseEntity.ok("success") : ResponseEntity.status(404).body("not found");
+    }
     
-    
+    @PostMapping("/admin/reject-refund")
+    @ResponseBody
+    public ResponseEntity<String> rejectRefund(@RequestParam("payIdx") int payIdx) {
+        LocalDateTime now = LocalDateTime.now();
+        payInfoRepository.updateRefundStatus(payIdx, -1, now); // rf_cp = -1, rj_at = now()
+        return ResponseEntity.ok("환급 거절 처리 완료");
+    }
+
+    @PostMapping("/admin/cancel-reject")
+    @ResponseBody
+    public ResponseEntity<String> cancelReject(@RequestParam("payIdx") int payIdx) {
+        payInfoRepository.updateRefundStatus(payIdx, 0, null); // rf_cp = 0, rj_at = null
+        return ResponseEntity.ok("거절 취소 완료");
+    }
 }
 
