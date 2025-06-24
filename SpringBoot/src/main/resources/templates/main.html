@@ -184,7 +184,7 @@
     <div class="card-icon"><i class="bi bi-robot"></i></div>
     <h5 class="card-title">AI 챗봇 지원</h5>
     <p class="highlight">사이트 내에서 바로 질문 가능</p>
-     <img src="../images/chat.png" alt="AI 챗봇 예시" class="example-img">
+     <img src="../images/chat.png" alt="AI 챗봇 예시" class="example-img" onclick="showImagePopup(this.src)">
 	    <p class="desc">
 	  문제를 풀다가 헷갈리는 개념이나 해설이 있을 땐 AI 챗봇에게 바로 질문하세요.<br>
 	  GPT 기반 AI가 실시간으로 설명을 제공해주며, 검색하러 나갈 필요 없이<br>
@@ -212,7 +212,7 @@
     <div class="card-icon"><i class="bi bi-x-circle"></i></div>
     <h5 class="card-title">광고 제거</h5>
     <p class="highlight">광고 없이 집중력 향상</p>
-    <img src="../images/adx.png" alt="광고 제거 예시" class="example-img">
+    <img src="../images/adx.png" alt="광고 제거 예시" class="example-img" >
     <p class="desc">
 	  사이트 내 모든 페이지에서 광고를 완전히 제거했습니다.<br>
 	  불필요한 배너나 팝업 없이 오직 학습에만 집중할 수 있도록 구성했습니다.<br>
@@ -328,11 +328,11 @@
      </div>
    </footer>
    
- <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl"> <!-- ✅ modal-lg → modal-xl -->
     <div class="modal-content">
       <div class="modal-body p-0">
-        <img id="popupImgLarge" src="" class="img-fluid w-150 rounded" alt="확대 이미지">
+        <img id="popupImgLarge" src="" class="img-fluid w-100 rounded" alt="확대 이미지"> <!-- ✅ w-150 → w-100 -->
       </div>
     </div>
   </div>

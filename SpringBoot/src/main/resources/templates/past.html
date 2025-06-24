@@ -279,34 +279,30 @@ function correctAnswer(pbId, index) {
 }
 
 function solution(pbId, index){
-	  const target = $("#solution" + index);
+    const target = $("#solution" + index);
 
-	  // 이미 열려 있으면 닫기
-	  if (target.is(":visible")) {
-	    target.slideUp();
-	    return;
-	  }
+    if (target.is(":visible")) {
+        target.slideUp();
+        return;
+    }
+
     $.ajax({
         url: "/solution/" + pbId,
         type: "put",
         dataType: "text",
         success: function(data) {
-            const solDiv = $("#solution" + index);
-            target.html(data);  // 텍스트 그대로 넣되, pre-wrap이 줄바꿈 처리
-	        target.slideDown();
-            if (solDiv.text().trim() === "") {
-            	console.log("해결책: "+data);
-                solDiv.text(data);
+            if (data && data.trim() !== "") {
+                target.html(data.replace(/\n/g, "<br>")); // 줄바꿈 처리
+                target.slideDown();
             } else {
-                solDiv.text("");
+                target.html("<em>해설이 존재하지 않습니다.</em>").slideDown();
             }
         },
         error: function() {
-            alert("Error!");
+            alert("해설을 불러오는 데 실패했습니다.");
         }
     });
 }
-
 
 
 function goToLicense() {
