@@ -60,10 +60,14 @@ public class ProductController {
 			model.addAttribute("date", date);	
 		}
 		
-		
 		// 토픽 정보
 		List<Topic_Info> topicList = licenseservice.topicInfo(liIdx);
 		model.addAttribute("topicList", topicList);
+		
+		// 토픽 문제 많은 순 정렬
+		List<Object> topicRank = licenseservice.topicRank(liIdx);
+		model.addAttribute("topicRank", topicRank);
+				
 		
 		LocalDateTime now = LocalDateTime.now();
         List<Ex_Info> exams = exinfoRepository.findByExStdAfterOrderByExStdAsc(now);

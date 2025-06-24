@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -103,5 +104,24 @@ public interface PayInfoRepository extends JpaRepository<Pay_Info, Integer> {
 		
 		List<Pay_Info> findByPlanIdx(int planIdx);
 		
+		@Modifying
+		@Transactional
+		@Query(value = "UPDATE pay_info SET rf_cp = 0 WHERE pay_idx = :payIdx", nativeQuery = true)
+		int updateRefundCancel(@Param("payIdx") int payIdx);
+		
+		@Modifying
+		@Transactional
+		@Query(value = "UPDATE pay_info SET rf_cp = -1 WHERE pay_idx = :payIdx", nativeQuery = true)
+		int rejectRefund(@Param("payIdx") int payIdx);
+		
+		@Modifying
+		@Transactional
+		@Query("UPDATE Pay_Info p SET p.rfCp = :status, p.rjAt = :rjAt WHERE p.payIdx = :payIdx")
+		void updateRefundStatus(@Param("payIdx") int payIdx, @Param("status") int status, @Param("rjAt") LocalDateTime rjAt);
+
+		@Modifying
+		@Transactional
+		@Query("UPDATE Pay_Info p SET p.rfCp = 0, p.rjAt = NULL WHERE p.payIdx = :payIdx")
+		void cancelReject(@Param("payIdx") int payIdx);
 
 }
