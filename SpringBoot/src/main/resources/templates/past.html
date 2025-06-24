@@ -72,12 +72,12 @@
 	<div class="panel panel-warning">
 		
 		<div class="exam-title-bar">
-			<h2 th:text="${liName} +' 기출'"></h2>
+			<h3 style='font-weight: 550;' th:text="${liName} +' 기출'"></h3>
 			<span style="float: right;"></span>
 		</div>
 		<div class="panel-body">
 			<input type="hidden" id="category" th:value="${category}" />
-			<div class="container px-4" id="examBoard"></div>
+			<div class="container" id="examBoard"></div>
 			<div id="pagination" class="text-center mt-4"></div>
 		</div>
 	</div>
@@ -95,10 +95,6 @@
 	<input type="hidden" id="category" th:value="${category}" />
 	<input type="hidden" id="liIdx" th:value="${liIdx}" />
 	<div id="examBoard"></div>
-
-
-	<div class="panel-footer">© 2025 문제 Issue!</div>
-
 
 
 	<!-- Thymeleaf에서 JS로 챕터명 전달 -->

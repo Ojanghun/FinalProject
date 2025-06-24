@@ -186,7 +186,7 @@ h4 {
 	font-weight: bold;
 	text-align: center;
 }
-/* 한 문제 */
+
 .column-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -194,6 +194,7 @@ h4 {
   align-items: flex-start;
 }
 
+/* 한 문제 */
 .oneExam {
   width: 48%;
 }
