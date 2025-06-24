@@ -155,7 +155,7 @@ function renderPage(pageIndex) {
         const globalIdx = idx;
         const pbId = pb.pbId - 1;
 
-        listHtml += "<div class='oneExam'>";
+        listHtml += "<div id='oneExam" + pbId + "_" + idx + "' class='oneExam'>";
         listHtml += "<div id='examYear" + (globalIdx + 1) + "'></div>";
         listHtml += "<div class='question'><img id='check" + (globalIdx + 1) + "' style='position:absolute; top: -25px; left: -30px; width: 100px; height: 100px; display: none;' alt=''>" +
                     (globalIdx + 1) + ". " + pb.pbQues + "</div>";
@@ -181,6 +181,7 @@ function renderPage(pageIndex) {
     	    	    listHtml += "<button class='btn' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
     	    	    listHtml += "<button class='btn' onclick='showChatBox(" + pbId + ", " + globalIdx + ")'>챗봇에게 묻기</button>";
     	    	    listHtml += "<br><br>";
+    	    	    listHtml += "<button onclick='moveRandom(" + pbId + ", " + idx + ")' class='btn'>순간이동!</button>"
     	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
     	    	    listHtml += "</div><br>";
 
@@ -400,6 +401,25 @@ function sendToChatbot(pbId, index) {
         }
     });
 }
+
+function moveRandom(pbId, Idx) {
+	  const divId = "oneExam" + pbId + "_" + Idx; // 예: oneExam5_2
+	  const div = document.getElementById(divId);
+	  if (!div) {
+	    console.warn("Element not found:", divId);
+	    return;
+	  }
+
+	  const maxX = window.innerWidth - div.offsetWidth;
+	  const maxY = window.innerHeight - div.offsetHeight;
+
+	  const randomX = Math.floor(Math.random() * maxX);
+	  const randomY = Math.floor(Math.random() * maxY);
+
+	  div.style.position = "absolute"; // 위치 이동하려면 필요
+	  div.style.left = randomX + "px";
+	  div.style.top = randomY + "px";
+	}
 
     </script>
 </body>
