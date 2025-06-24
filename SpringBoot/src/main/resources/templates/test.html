@@ -41,7 +41,7 @@
          			<!-- 자격증 인덱스, 자격증 이름 -->
          		    <label id="sheetNum" class="sheetNum" th:text="${liIdx}"></label>
          			<label class="test-info-testNm" th:text="${liName}"></label>
-         			
+         			<div style="margin-left:200px; margin-top:10px;"><button onclick="RandomClick()">모든 문제 풀기</button></div>
          			<label style="position: absolute; right: 70px; bottom: 23px;"><button onclick="lotto()">수험번호 뽑기</button></label>
          			<label style="position: absolute; right: 70px; bottom: -5px;"><button onclick="lottoName()">수험이름 뽑기</button></label>
          		</div>
@@ -630,9 +630,9 @@ function selectChoice(questionNum, choiceNum) {
 								    const score = liChap["scChap" + (i + 1)];
 								    if (score != null && score < 8) {
 								        subject = 0;
-								        $("#liChap" + (i + 1)).text(liChap["scChap"+1]+"(과락)");
+								        $("#liChap" + (i + 1)).text(liChap["scChap"+(i+1)]+"(과락)");
 								    }else{
-								        $("#liChap" + (i + 1)).text(liChap["scChap"+1]);
+								        $("#liChap" + (i + 1)).text(liChap["scChap"+(i+1)]);
 								    }
 								}
 								
@@ -706,6 +706,15 @@ function goToLicense() {
       alert("liIdx 값이 없습니다.");
     }
   }
+  
+function RandomClick() {
+    const x = [1, 2, 3, 4];
+    for (let i = 1; i <= 100; i++) {
+        const randomIndex = Math.floor(Math.random() * x.length); // 0~3 중 하나
+        const choice = x[randomIndex]; // 랜덤으로 1~4 중 선택
+        selectChoice(i, choice); // i번째 문제에 랜덤 선지 선택
+    }
+}
  
    </script>
    
