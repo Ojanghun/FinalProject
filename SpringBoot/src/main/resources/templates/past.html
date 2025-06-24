@@ -364,6 +364,7 @@ function sendToChatbot(pbId, index) {
         data: JSON.stringify(payload),
         beforeSend: function(xhr) {
             xhr.setRequestHeader(header, token);
+            $("#chatAnswer" + index).html(`<div style='color:gray;' class="loading-spinner">답변 생성 중...</div>`);
         },
         success: function(response) {
         	$("#chatAnswer" + index).html(`<div class="chat-answer-box">${response.answer}</div>`);
