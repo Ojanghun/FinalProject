@@ -176,6 +176,7 @@ function renderPage(pageIndex) {
             listHtml += "</div>";
         }
 
+
     	    	    listHtml += "<br>";
     	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
     	    	    listHtml += "<button class='btn' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
@@ -304,29 +305,33 @@ function correctAnswer(pbId, index) {
         }
     });
 }
+
 function solution(pbId, index){
-	  const target = $("#solution" + index);
+    const target = $("#solution" + index);
 
-	  // 이미 열려 있으면 닫기
-	  if (target.is(":visible")) {
-	    target.slideUp();
-	    return;
-	  }
+    if (target.is(":visible")) {
+        target.slideUp();
+        return;
+    }
 
-	  // 열려있지 않으면 서버 요청 후 열기
-	  $.ajax({
-	    url: "/solution/" + pbId,
-	    type: "put",
-	    dataType: "text",
-	    success: function(data){
-	      target.html(data);  // 텍스트 그대로 넣되, pre-wrap이 줄바꿈 처리
-	      target.slideDown(); // 애니메이션으로 열기
-	    },
-	    error: function(){
-	      alert("해설 불러오기 실패");
-	    }
-	  });
-	}
+    $.ajax({
+        url: "/solution/" + pbId,
+        type: "put",
+        dataType: "text",
+        success: function(data) {
+            if (data && data.trim() !== "") {
+                target.html(data.replace(/\n/g, "<br>")); // 줄바꿈 처리
+                target.slideDown();
+            } else {
+                target.html("<em>해설이 존재하지 않습니다.</em>").slideDown();
+            }
+        },
+        error: function() {
+            alert("해설을 불러오는 데 실패했습니다.");
+        }
+    });
+}
+
 
 function goToLicense() {
     if (liIdx) {
