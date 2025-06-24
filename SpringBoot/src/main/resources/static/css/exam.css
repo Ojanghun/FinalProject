@@ -101,7 +101,8 @@ h4 {
 
     .question {
         font-weight: 500;
-        margin-bottom: 10px;
+        margin-top: 15px;
+        margin-bottom: 20px;
         position: relative;
     }
 
@@ -117,6 +118,8 @@ h4 {
   align-items: center;
   gap: 12px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  z-index: 1;
+  position: relative;
 }
 
 .choice:hover {
@@ -134,16 +137,21 @@ h4 {
   box-shadow: 0 6px 12px rgba(33, 150, 243, 0.2);
 }
 
-
-
-    .solution {
-        background-color: #f1f3f5;
-        border-left: 4px solid #0d6efd;
-        padding: 10px;
-        margin-top: 10px;
-        display: none;
-    }
-
+.solution {
+  background-color: #f1f8ff;
+  border-left: 4px solid #1E88E5;
+  padding: 12px 16px;
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  border-radius: 6px;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  white-space: pre-wrap;
+  display: none;
+  min-height: 0 !important;
+  overflow: hidden;
+}
     .btn {
         margin-top: 10px;
         margin-right: 5px;
@@ -170,12 +178,6 @@ h4 {
         text-align: center;
         margin: 30px 0;
     }
-    .page-item.active .page-link {
-      background-color: #343a40;
-      border-color: #343a40;
-      color: #fff;
-    }
-
 
 /* 과목명 */
  .subjectIdx{
@@ -200,35 +202,8 @@ h4 {
  	position: relative;
  	width: fit-content;
   	max-width: 100%;
+  	z-index: 5;
  }
-  /*한 문제의 선지 공간  */
-  .choice {
-  
-  }
-  
-  /* 선지 번호 */
-  .oneChoiceNum {
-  
-  }
-  
-  /* 선지 텍스트 */
-  .oneChoiceText {
-  
-  
-  }
-  
-  
-  /* 정답확인&해설 버튼 */
-  .btn {
-  	
-  }
-  
-  /* 해설 표시 공간 */
-  .solution {
-  
-  
-  }
-  
 
 /* footer  */
 .footer {
@@ -260,12 +235,27 @@ h4 {
   cursor: pointer;
 }
 
-.page-item.active .page-link {
-  background-color: #c6e0f9;
-  color: white;
-  border-color: #89bff1;
-}  
-  
-  
-  
+/* ✅ 문제 번호 원 강조 스타일 */
+.circle-highlight {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  z-index: 10;
+  padding-left: 8px;
+  font-size: 1.1rem;
+}
+
+.circle-highlight::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -15px;
+  width: 38px;
+  height: 38px;
+  border: 3px solid red;
+  border-radius: 50%;
+  z-index: -1;  /* ✅ 텍스트는 위, 원은 뒤 */
+  background-color: white;
+}
+
  

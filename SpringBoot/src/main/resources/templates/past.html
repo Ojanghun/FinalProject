@@ -8,7 +8,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
@@ -48,18 +47,14 @@
 	      <a href="#" class="footer-link">About</a>
 	      <a href="#" class="footer-link">Contact</a>
 	    </nav>
+		<input type="hidden" id="category" th:value="${category}" />
+		<input type="hidden" id="liIdx" th:value="${liIdx}" />
+		<div id="examBoard"></div>
 	    <p class="text-muted small mb-0">© 2025 문제 Issue!</p>
 	  </div>
 	</footer>
 
-				<input type="hidden" id="category" th:value="${category}" />
-				<input type="hidden" id="liIdx" th:value="${liIdx}" />
-				<div id="examBoard"></div>
 
-			</div>
-			<div class="panel-footer">© 2025 문제 Issue!</div>
-		</div>
-	</div>
 	
 <!-- Thymeleaf에서 JS로 챕터명 전달 -->	
 <script th:inline="javascript">
@@ -136,12 +131,12 @@ function renderPage(pageIndex) {
             listHtml += "</div>";
         }
 
-    	    	    listHtml += "<br>";
-    	    	    listHtml += "<button class='btn' id='pbans" + globalIdx + "' onclick='correctAnswer(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>정답 확인</button> &nbsp;";
-    	    	    listHtml += "<button class='btn' onclick='solution(" + exData[globalIdx].pbId + ", " + globalIdx + ")'>해설</button>";
-    	    	    listHtml += "<br><br>";
-    	    	    listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
-    	    	    listHtml += "</div><br>";
+        listHtml += "<br>";
+        listHtml += "<button class='btn btn-outline-info' id='pbans" + globalIdx + "' onclick='correctAnswer(" + pbId + ", " + globalIdx + ")'>정답 확인</button> ";
+        listHtml += "<button class='btn btn-outline-warning' onclick='solution(" + pbId + ", " + globalIdx + ")'>해설</button>";
+        listHtml += "<br><br>";
+        listHtml += "<div class='solution' id='solution" + globalIdx + "'></div>";
+        listHtml += "</div><br>";
 
     }
 
@@ -182,32 +177,40 @@ function renderPagination() {
    
     // 정답 확인
     function correctAnswer(pbId, index) {
-        $.ajax({
-            url: "/correctAnswer/"+pbId,
-            type: "put",
-            data: {},
-            dataType: "text",
-            success: function(data) {
-                if ($("#pbans"+index).text().trim() === "정답 확인") {
-                    for (let i = 1; i <= 4; i++) {
-                        let choiceText = $("#choiceText" + (index + 1) + "-" + i).text().trim();
-                        if (choiceText === data.trim()) {
-                            $("#choice" + (index + 1) + "-" + i).css("color", "red");
-                        }
-                    }
-                    if(userSelections[index+1] === data) {
-                        $("#check" + (index+1)).css("display","block");
-                        $("#check" + (index+1)).attr("src","/images/o.png");
-                    } else {
-                        $("#check" + (index+1)).css("display","block");
-                        $("#check" + (index+1)).attr("src","/images/x.png");
+    $.ajax({
+        url: "/correctAnswer/" + pbId,
+        type: "put",
+        data: {},
+        dataType: "text",
+        success: function (data) {
+            if ($("#pbans" + index).text().trim() === "정답 확인") {
+
+                // 🔴 붉은 원 강조 추가 (문제 번호 영역에 삽입)
+                $("#examYear" + (index + 1)).html(`
+				  <span class="circle-highlight">${index + 1}.</span>
+				`);
+
+                // 🔍 정답 색상 표시
+                for (let i = 1; i <= 4; i++) {
+                    let choiceText = $("#choiceText" + questionNum + "-" + i).text().trim();
+                    if (choiceText === data.trim()) {
+                        $("#choice" + questionNum + "-" + i).css("color", "red");
                     }
                 }
-            },
-            error: function() { alert("Error!"); }
-        });
-    }
 
+                // ✅ O/X 이미지
+                if (userSelections[questionNum] === data) {
+                    $("#check" + questionNum).show().attr("src", "/images/o.png");
+                } else {
+                    $("#check" + questionNum).show().attr("src", "/images/x.png");
+                }
+            }
+        },
+        error: function () {
+            alert("Error!");
+        }
+    });
+}
 
 function selectChoice(questionNum, choiceNum, choiceText) {
     const currentSelection = userSelections[questionNum];
@@ -256,24 +259,29 @@ function correctAnswer(pbId, index) {
     });
 }
 
-function solution(pbId, index) {
-    $.ajax({
-        url: "/solution/" + pbId,
-        type: "put",
-        dataType: "text",
-        success: function(data) {
-            const solDiv = $("#solution" + index);
-            if (solDiv.text().trim() === "") {
-                solDiv.text(data);
-            } else {
-                solDiv.text("");
-            }
-        },
-        error: function() {
-            alert("Error!");
-        }
-    });
-}
+function solution(pbId, index){
+	  const target = $("#solution" + index);
+
+	  // 이미 열려 있으면 닫기
+	  if (target.is(":visible")) {
+	    target.slideUp();
+	    return;
+	  }
+
+	  // 열려있지 않으면 서버 요청 후 열기
+	  $.ajax({
+	    url: "/solution/" + pbId,
+	    type: "put",
+	    dataType: "text",
+	    success: function(data){
+	      target.html(data);  // 텍스트 그대로 넣되, pre-wrap이 줄바꿈 처리
+	      target.slideDown(); // 애니메이션으로 열기
+	    },
+	    error: function(){
+	      alert("해설 불러오기 실패");
+	    }
+	  });
+	}
     </script>
 </body>
 </html>
