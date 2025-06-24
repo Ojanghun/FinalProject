@@ -87,14 +87,23 @@
  	background: white;
  }
  
- .scoreBox {
- 	display: none;
-	position: absolute;
-	top: 15%;
-	left: 18%;
-  	flex-direction: column;
-  	z-index: 9999;
- }
+.scoreBox {
+  display: none;                      /* JS로 표시할 때 사용 */
+  position: absolute;                /* 중앙 정렬 기준 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+
+  width: 90%;                        /* 반응형 지원 */
+  max-width: 1000px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+}
+
  
  .scoreComment {
  	display: flex;
