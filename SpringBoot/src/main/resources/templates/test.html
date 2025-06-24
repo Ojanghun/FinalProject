@@ -112,7 +112,7 @@
 					
 					  <!-- 하단 참고 문구 -->
 					  <div style="margin-bottom: 20px;">
-					    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기</p>
+					    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기 바랍니다.</p>
 					  </div>
 					
 					  <!-- 점수 표 -->
@@ -350,6 +350,7 @@ function goNum(i) {
        		// 10개씩 쪼개기
        		for(let i = 0; i<100; i++){
        	  		 pbIdx[i] = allExData[i].pbId;
+			     pbNum[i] = allExData[i].pbNum; // 문제 번호 가지고 오기 → 과목별 점수 계산 할 때 사용
      }
 		   for (let i = 0; i < allExData.length / 10; i++) {   // 페이지 수
 			   let examSlice = [];
@@ -358,6 +359,7 @@ function goNum(i) {
 			     let idx = i * 10 + j; // 0~9번만 반복되지 않게 i 값 *10을 더해주기
 			     examSlice.push(allExData[idx]); // 10개 데이터 push
 			     pbAns[idx] = allExData[idx].pbAns;
+			     
 			   }
 
 			   PageExam.push(examSlice); // 10개로 묶인 데이터 push
@@ -384,7 +386,6 @@ function goNum(i) {
    for (let j = 0; j < exam.length; j++) {
 	     let problem = exam[j];
 	   	 const qNum = startIdx + j + 1; // 문제 번호
-	     pbNum[j] = problem.pbNum; // 문제 번호 가지고 오기 → 과목별 점수 계산 할 때 사용
 	     
 	     // 한 문제 div
 	     listHtml += "<div class='oneExam' id='" + qNum + "' style='width: 50%;'>";
