@@ -1,14 +1,4 @@
-/* 기본 스타일 */
-html, body {
-  overflow: auto;
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE 10+ */
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari */
-}
+kk/* 기본 스타일 */
 
 body {
   font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;

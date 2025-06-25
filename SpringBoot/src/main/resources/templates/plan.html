@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+<html lang="en" data-bs-theme="auto" xmlns:th="http://www.thymeleaf.org"
 	th:inline="javascript">
 
 <head>
@@ -17,38 +17,32 @@
 <!-- jQuery 추가 -->
 </head>
 <body>
-
-	<nav class="custom-header">
-		<div
-			class="container d-flex justify-content-between align-items-center" style="padding-left:12px; padding-right:12px;">
-			<div class="logo d-flex align-items-center gap-2">
-				<a href="/"> <img src="/images/로고.png" height="40" alt="로고">
-					<span class="logo-text"></span>
-				</a>
-			</div>
-			<div class="header-links d-flex gap-2">
-				<a href="mypage" class="btn btn-outline-secondary">MYPAGE</a>
-				<form th:action="@{/logout}" method="post" class="d-inline">
-					<input type="hidden" th:name="${_csrf.parameterName}"
-						th:value="${_csrf.token}" />
-					<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
-				</form>
-
-			</div>
-		</div>
-	</nav>
-	
+	<div class="container py-3">
 		<header>
-			<div class="pricing-header py-3 mx-auto text-center">
+			<div
+				class="custom-header d-flex justify-content-between mb-4 align-items-center">
+				<a href="/"> <img src="/images/로고.png" alt="로고"
+					style="height: 40px;"></a>
+				<nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+					<a class="btn btn-outline-secondary me-2" href="mypage">MYPAGE</a>
+					<form th:action="@{/logout}" method="post" class="d-inline">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
+					</form>
+
+				</nav>
+			</div>
+			<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
 				<h3 class="display-5 fw-normal" th:text="${liName}">자격증 이름</h3>
 				<p class="fs-5 text-muted">간략한 소개</p>
 			</div>
 		</header>
 
 		<main>
-				<div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
+			<div class="row row-cols-1 row-cols-md-2 mb-3 text-center">
 				<!-- 탐구형 -->
-				  <div class="col-md-6 col-12 px-3" style="width: 45%; margin-left:80px;">
+				<div class="col">
 					<div class="card mb-4 rounded-3 shadow-sm">
 						<div class="card-header py-3">
 							<h4 class="my-0 fw-normal">탐구형</h4>
@@ -88,8 +82,8 @@
 				</div>
 
 				<!-- 필수형 -->
-				<div class="col-md-6 col-12 px-3" style="width: 45%;">
-					<div class="card mb-3 rounded-3 shadow-sm" >
+				<div class="col">
+					<div class="card mb-3 rounded-3 shadow-sm">
 						<div class="card-header py-3 text-bg-primary border-primary">
 							<h4 class="my-0 fw-normal" style="color: white;">필수형</h4>
 						</div>
@@ -183,7 +177,7 @@
 				</table>
 			</div>
 		</div>
-
+	</div>
 
 	<footer class="footer mt-5 py-4 border-top">
 		<div class="container text-center">

@@ -20,7 +20,6 @@ import com.smhrd.entity.Exam;
 import com.smhrd.entity.Pbs_Log;
 import com.smhrd.entity.Topic_Info;
 import com.smhrd.entity.User_Score;
-import com.smhrd.repository.ExInfoRepository;
 import com.smhrd.repository.ExamRepository;
 import com.smhrd.repository.PbsLogRepository;
 import com.smhrd.repository.TopicInfoRpository;
@@ -40,9 +39,6 @@ public class ExamService {
 	
 	@Autowired
 	private UserScoreRepository userScoreRepository;
-	
-	@Autowired
-	private ExInfoRepository exInfoRepository;
 	
 	// 년도 별 문제 불러오기
 	public List<Exam> loadExam(int category, int liIdx) { // 카테고리 값을 받아왔음, 2가지 값 받아오는게 가능할지도?
@@ -182,9 +178,4 @@ public class ExamService {
 		return userScoreRepository.chapResult(userId);
 		
 	}
-	
-	public Object[] loadYearInfo(int exId) {
-		return exInfoRepository.findYearsAndRoundsByExIds(exId);
-	}
-	
 }

@@ -14,31 +14,25 @@
 <body>
 
 	<!-- 헤더 -->
+	<div class="container">
+		<header>
+			<div
+				class="custom-header d-flex justify-content-between mb-4 align-items-center">
+				<div class="logo d-flex align-items-center">
+					<a href="/"><img src="/images/로고.png" alt="로고"></a>
+				</div>
+				<div class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+					<a href="/mypage" class="btn btn-outline-secondary me-2">MYPAGE</a>
+					<form th:action="@{/logout}" method="post" class="d-inline">
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
+					</form>
 
-	<header>
-	<nav class="custom-header">
-		<div
-			class="container d-flex justify-content-between align-items-center" style="padding-left:12px; padding-right:12px;">
-			<div class="logo d-flex align-items-center gap-2">
-				<a href="/"> <img src="/images/로고.png" height="40" alt="로고">
-					<span class="logo-text"></span>
-				</a>
+				</div>
 			</div>
-			<div class="header-links d-flex gap-2">
-				<a href="mypage" class="btn btn-outline-secondary">MYPAGE</a>
-				<form th:action="@{/logout}" method="post" class="d-inline">
-					<input type="hidden" th:name="${_csrf.parameterName}"
-						th:value="${_csrf.token}" />
-					<button type="submit" class="btn btn-outline-danger">LOGOUT</button>
-				</form>
-
-			</div>
-		</div>
-	</nav>
 		</header>
-		<br>
-		<br>
-
+	</div>
 
 	<!-- 본문 -->
 	<div class="container">
