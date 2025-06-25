@@ -350,7 +350,7 @@ function showChatBox(pbId, index) {
     const boxHtml = `
         <div id="${chatBoxId}" class="chatbox-container mt-3 p-3 rounded shadow-sm border">
             <label for="chatInput${index}" class="form-label fw-bold">❓ 궁금한 점을 입력해보세요</label>
-            <textarea class="form-control mb-2" id="chatInput${index}" rows="3" placeholder="예: 이 문제의 핵심 개념은 무엇인가요?"></textarea>
+            <textarea class="form-control mb-2" id="chatInput${index}" rows="3" placeholder="예: 이 문제의 핵심 개념은 무엇인가요?" onkeydown="submitChatOnEnter(event, ${pbId}, ${index})"></textarea>
             <div class="d-flex justify-content-end">
                 <button class="btn btn-sm btn-primary" onclick="sendToChatbot(${pbId}, ${index})">
                     <i class="bi bi-send-fill"></i> 전송
@@ -398,6 +398,13 @@ function sendToChatbot(pbId, index) {
             $("#chatAnswer" + index).html(`<span class="text-danger">오류가 발생했습니다. 다시 시도해주세요.</span>`).show();
         }
     });
+}
+
+function submitChatOnEnter(event, pbId, index) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendToChatbot(pbId, index);
+    }
 }
 
     </script>
