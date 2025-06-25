@@ -49,6 +49,12 @@
 					<h3>
 						<strong th:text="${planPrice + '원'}">9000원</strong>
 					</h3>
+
+					<!-- ✅ 서비스 및 환급 기간 안내 -->
+					<p class="mt-2">
+						<strong>서비스 기간:</strong> <span th:text="${servicePeriod}"></span><br>
+						<strong>환급 가능 기간:</strong> <span th:text="${refundPeriod}"></span>
+					</p>
 					<p style="color: green;"
 						th:text="'현재 ' + ${activeUserCount} + '명이 이용중입니다.'">현재 00명이
 						이용중입니다.</p>

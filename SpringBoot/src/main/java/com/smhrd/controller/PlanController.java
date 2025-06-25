@@ -8,6 +8,8 @@ import com.smhrd.repository.PlanInfoRepository;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +60,15 @@ public class PlanController {
 
             model.addAttribute("freeUserCount", freeUserCount);
             model.addAttribute("strictUserCount", strictUserCount);
+
+            // ✅ 서비스 및 환급 기간 계산
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime end = now.plusMonths(6);
+            LocalDateTime refundEnd = end.plusDays(7);
+
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            model.addAttribute("servicePeriod", fmt.format(now) + " ~ " + fmt.format(end));
+            model.addAttribute("refundPeriod", fmt.format(end) + " ~ " + fmt.format(refundEnd));
         }
 
         return "plan";
@@ -68,4 +79,6 @@ public class PlanController {
     public List<Map<String, Object>> getPlanUsageCount() {
         return planInfoRepository.findAllPlanUsageWithLicense();
     }
+    
+    
 }

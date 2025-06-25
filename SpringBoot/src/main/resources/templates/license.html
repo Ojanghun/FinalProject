@@ -192,7 +192,7 @@
       <div id="subjectScore"></div>
     </div>
   </div>
-
+</div>
 
 
 
@@ -285,6 +285,7 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- Footer -->
 <footer class="footer mt-5 py-4 border-top">
@@ -300,7 +301,7 @@
 
 
   <!-- Script -->
-  <script th:inline="javascript">
+ <script th:inline="javascript">
    $(document).ready(function(){
       // ready() : html 코드가 준비가 되면 실행되는 메소드
       loadTopic();
@@ -308,7 +309,6 @@
       loadTopList();
       loadSubjectScore();
    });
-   
    const today = new Date();
    const formattedToday = `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, '0')}월 ${String(today.getDate()).padStart(2, '0')}일`;
 
@@ -355,20 +355,6 @@
  
  function topicRank(){
 	 
-	 // 토픽 컬러 60가지 색상
-	 const steps = 60;
-	 const colors = [];
-
-	 for (let i = 0; i < steps; i++) {
-	   const ratio = i / (steps - 1); // 0 ~ 1
-	   const gb = Math.round(255 * ratio); // G와 B를 점점 255까지 올림
-	   const gbHex = gb.toString(16).padStart(2, '0'); // 16진수 변환
-	   const color = `#ff${gbHex}${gbHex}`; // 빨간색 고정, G=B
-	   colors.push(color);
-	 }
-
-
-	 
 	 const topicRank = /*[[${topicRank}]]*/ [];
 	 
 	 for(let i=0; i<topicRank.length; i++){
@@ -401,6 +387,7 @@
 			}
     	 }
       }
+     
 	 // $("#top5").html(listHtml);
 
      let topicChart = new Chart(document.getElementById("topicChart"), {
@@ -518,9 +505,9 @@
 	if(top5List[0] == null ){
 		listHtml = "";
 		
-		listHtml += "<img src='images/problem.png' style='width:50%; height:50%;'></img>"
+		listHtml += "<img src='images/problem.png' style='width:50%; height:50%;' />"
 		
-		$("#topicChartMessage").html(listHtml);
+		$("#topicChartMessage").html(listHtml);	
 		$("#topicChartMessage").css("display","block");
 	}else{
 		$("#topicChartDiv").css("display","block");
@@ -529,99 +516,131 @@
 	    	  data: {
 	    	    labels: [Name[0], Name[1], Name[2], Name[3], Name[4]],
 	    	    datasets: [{
-	    	      label: '오답률(%)',
+	    	      label: '오답률 (%)',
 	    	      data: [top5List[0][0], top5List[1][0], top5List[2][0], top5List[3][0], top5List[4][0]],
-	    	      backgroundColor: '#7abdf8'
+	    	      backgroundColor: [
+	    	        '#1E88E5', '#42A5F5', '#64B5F6', '#90CAF9', '#BBDEFB'
+	    	      ],
+	    	      borderRadius: 8,
+	    	      barThickness: 36
 	    	    }]
 	    	  },
 	    	  options: {
-	    		    scales: {
-	    		        y: {
-	    		          beginAtZero: true,
-	    		          min: 0,
-	    		          max: 20,
-	    		          ticks: {
-	    		            stepSize: 2,
-	    		            precision: 0
-	    		          },
-	    		          grid: {
-	    		            display: false,        // ✅ Y축 그리드 제거
-	    		            drawBorder: false      // ✅ 축 라인 제거
-	    		          }
-	    		        },
-	    		        x: {
-	    		          grid: {
-	    		            display: false,        // ✅ X축 그리드 제거
-	    		            drawBorder: false
-	    		          }
+	    	    responsive: true,
+	    	    plugins: {
+	    	      legend: {
+	    	        display: true,
+	    	        position: 'top',
+	    	        labels: {
+	    	          color: '#333',
+	    	          font: { size: 15, weight: 'bold' }
+	    	        }
+	    	      },
+	    	      tooltip: {
+	    	        callbacks: {
+	    	          label: function(ctx) {
+	    	            return `오답률: ${ctx.parsed.y}%`;
+	    	          }
+	    	        }
+	    	      }
+	    	    },
+	    	    scales: {
+	    	      x: {
+	    	        ticks: { color: '#333', font: { size: 13 } },
+	    	        grid: { display: false }
+	    	      },
+	    	      y: {
+	    	        beginAtZero: true,
+	    	        max: 20,
+	    	        ticks: {
+	    	          stepSize: 2,
+	    	          color: '#333',
+	    	          font: { size: 14 }
+	    	        },
+	    	        grid: {
+	    	          color: '#e0e0e0',
+	    	          drawBorder: false
+	    	        }
 	    	      }
 	    	    }
 	    	  }
 	    	});
-		 
-	 }
-}
-	
- 
- function loadSubjectScore(){
 	 
-	 // 과목별 점수
-	 const subjectScore = /*[[${subjectScore}]]*/ [];
-	 // 과목 이름
-	 const licenseList = /*[[${licenseList[0]}]]*/ {};
-	 
-	let listHtml = "";
-	
-	// 회차 확인을 위함.
-	let Round = 0;
-	
-	// 한번도 안풀었다면 null값이므로
-	if(subjectScore[0] == null){
-		listHtml += "<img src='images/problem.png' style='width:50%; height:50%;'></img>"
-
-	}else{		
-		for(let i=0; i<subjectScore.length; i++){
-			if(subjectScore[i] != null && i < 3){
-				Round += 1;
-			}
-		}
-		
-		console.log("문제 푼 횟수: "+Round);
-		
-		// 과목명 줄
-		listHtml += "<div style='display: flex;'>";
-		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>시험날짜</div>";
-		for (let j = 0; j < 6; j++) {
-			if(licenseList["liChap"+j] != null){
-		  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + licenseList["liChap"+j] + "</div>";
-			}
-		}
-		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>총합</div>";
-		listHtml += "</div>";
-		
-		//  3회차
-		for(let i=0; i<Round; i++){
-				// 0으로 초기화
-				let total = 0;
-			
-				// 점수 줄
-				listHtml += "<div style='display: flex;'>";
-				// 날짜/ split("T")는 2025-06-24T~ 이렇게 T 뒤에 시간이 나와서 짜르기 위함.
-				listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + subjectScore[i].scAt.split("T")[0] + "</div>";
-				// 최대 6과목
-				for (let j = 0; j < 6; j++) {
-					if(licenseList["liChap"+j] != null){
-				  		listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px;'>" + subjectScore[i]["scChap"+j] + "</div>";
-				  		total +=  subjectScore[i]["scChap"+j];
-					}
-				}
-				listHtml += "<div style='flex: 1; text-align: center; border: 1px solid #ccc; padding: 8px; background-color: #f9f9f9;'>" + total + "</div>";
-				listHtml += "</div>";
-			 }
-	}	 
-	$("#subjectScore").html(listHtml);
+ 	}
  }
- 
+ function loadSubjectScore() {
+ 	    const subjectScore = /*[[${subjectScore}]]*/ [];
+ 	    const licenseList = /*[[${licenseList[0]}]]*/ {};
+ 	    
+ 	    let name = [];
+ 	    for (let i = 1; i <= 6; i++) {
+ 	        if (licenseList["liChap" + i] != null) {
+ 	            name.push(licenseList["liChap" + i]);
+ 	        }
+ 	    }
+
+ 	    // 회차 확인을 위함.
+ 	    let Round = 0;
+
+ 	    let listHtml = "";	// ✅ 반드시 let으로 선언
+
+ 	    // 한번도 안풀었다면 null값이므로
+ 	    if(subjectScore[0] == null){
+ 	        listHtml += "<img src='images/problem.png' style='width:50%; height:50%;' />"
+ 	    } else {		
+ 	        for(let i = 0; i < subjectScore.length; i++){
+ 	            if(subjectScore[i] != null && i < 3){
+ 	                Round += 1;
+ 	            }
+ 	        }
+
+ 	        listHtml += `
+ 	            <div style="overflow-x: auto;">
+ 	              <table style="
+ 	                width: 100%;
+ 	                border-collapse: separate;
+ 	                border-spacing: 0;
+ 	                margin-top: 20px;
+ 	                font-size: 15px;
+ 	                border-radius: 12px;
+ 	                overflow: hidden;
+ 	                table-layout: fixed;
+ 	                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+ 	              ">
+ 	                <thead>
+ 	                  <tr style="background-color: #f0f4f9; color: #1e1e1e;">
+ 	                    <th style="width: 130px; padding: 14px; text-align: center; white-space: nowrap; font-weight: 600; border-bottom: 2px solid #e0e0e0;">시험날짜</th>`;
+
+ 	        // ✅ 과목명은 name 배열을 사용해야 오류 없음
+ 	        for (let i = 0; i < name.length; i++) {
+ 	            listHtml += `<th style="padding: 14px; text-align: center; font-weight: 600; border-bottom: 2px solid #e0e0e0;">${name[i]}</th>`;
+ 	        }
+
+ 	        listHtml += `<th style="padding: 14px; text-align: center; font-weight: 600; border-bottom: 2px solid #e0e0e0; white-space: nowrap;">총합</th>`;
+ 	        listHtml += `</tr></thead><tbody>`;
+
+ 	        for (let i = 0; i < subjectScore.length && i < 3; i++) {
+ 	            let total = 0;
+ 	            listHtml += `<tr style="background-color: ${i % 2 === 0 ? '#ffffff' : '#f5faff'};">`;
+ 	            listHtml += `<td style="padding: 14px; text-align: center; color: #333;">${subjectScore[i].scAt.split("T")[0]}</td>`;
+
+ 	            for (let j = 1; j <= name.length; j++) {
+ 	                // ✅ 과목 점수 누적
+ 	                const val = subjectScore[i]["scChap" + j] || 0;
+ 	                total += val;
+ 	                listHtml += `<td style="padding: 14px; text-align: center; color: #333;">${val}</td>`;
+ 	            }
+
+ 	            listHtml += `<td style="padding: 14px; text-align: center; font-weight: bold; color: #1E88E5; background-color: #e3f2fd;">${total}</td>`;
+ 	            listHtml += `</tr>`;
+ 	        }
+
+ 	        listHtml += `</tbody></table></div>`;
+ 	    }
+
+ 	    $("#subjectScore").html(listHtml);
+ 	}
+
  
  
  // 시험 정보
@@ -764,14 +783,9 @@
        }
      });
    });
-   
-
-
   renderCalendar(currentDate);
-
+ 
+ 
 </script>
-
-
 </body>
-
 </html>
