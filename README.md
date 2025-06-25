@@ -161,8 +161,8 @@
 
 #### ✅ 문제 1. 로그인 세션이 없으면 `/main`, `/login`, `/join` 등 접근 불가
 
-> Spring Security는 기본적으로 인증(로그인)되지 않은 사용자의 접근을 차단합니다.<br>
-따라서 **예외 경로를 명시적으로 허용**해주어야 합니다.
+> **Spring Security**는 기본적으로 **모든 요청을 보호**하고, 로그인하지 않은 사용자는 인증이 필요한 경로에 접근할 수 없습니다.<br>
+따라서 <code>/login</code>, <code>/join</code>, <code>/main</code> 등의 페이지는 로그인 없이 접근할 수 있게 예외 처리 필요합니다.
 
 <details>
 <summary>📌 SecurityConfig 설정 코드 예시</summary>
@@ -195,7 +195,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 #### ✅ 문제 2. CSRF 토큰 인증 문제 (403 Forbidden)
 
-> CSRF(Cross Site Request Forgery)는 인증된 사용자의 권한으로 **악의적 요청을 보내는 공격**입니다.<br>
+> **CSRF(Cross Site Request Forgery)** 는 인증된 사용자의 권한으로 **악의적 요청을 보내는 공격**입니다.<br>
 Spring Security는 이를 방지하기 위해 기본적으로 CSRF 토큰 검사를 수행합니다.
 
 * 해결 방안: 동기화 토큰 패턴(Synchronizer Token Pattern) 적용
