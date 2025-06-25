@@ -79,7 +79,7 @@ public class SmsService {
 		Message message = new Message();
 		message.setFrom("01040135280");
 		message.setTo(userPhone);
-		message.setText("[문제? Issue!]\n" + liName + " " + plan + " 플랜에 가입되셨습니다.\n서비스를 이용해주셔서 감사합니다!");
+		message.setText("[문제? Issue!]\n" + liName + " " + plan + " 플랜에 가입되셨습니다. 감사합니다!");
 		
 		try {
 			// send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
