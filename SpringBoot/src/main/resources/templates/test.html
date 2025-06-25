@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:inline="javascript">
 <head>
 <meta charset="UTF-8">
 <meta name="_csrf" th:content="${_csrf.token}" />
 <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-<title>Insert title here</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/test.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+<title>CBT Test</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/test.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 
 </head>
 <body>
@@ -20,45 +27,52 @@
 	<input type="hidden" id="liPbc" th:value="${liPbc}" />
 	<input type="hidden" id="name" th:value="${member.name}" />
 	<input type="hidden" id="userId" th:value="${member.id}" />
-    <input type="hidden" name="liChap1" th:value="${liChap1}" />
-    <input type="hidden" name="liChap2" th:value="${liChap2}" />
-    <input type="hidden" name="liChap3" th:value="${liChap3}" />
-    <input type="hidden" name="liChap4" th:value="${lliChap4}" />
-    <input type="hidden" name="liChap5" th:value="${liChap5}" />
-    <input type="hidden" name="liChap6" th:value="${liChap6}" />
-    
-    <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-		background-color:rgba(0,0,0,0.5); z-index:9999; color:white; font-size:24px; text-align:center; padding-top:20%;">
-		채점 중입니다... 잠시만 기다려주세요.
-    </div>
-    
-    
+	<input type="hidden" name="liChap1" th:value="${liChap1}" />
+	<input type="hidden" name="liChap2" th:value="${liChap2}" />
+	<input type="hidden" name="liChap3" th:value="${liChap3}" />
+	<input type="hidden" name="liChap4" th:value="${lliChap4}" />
+	<input type="hidden" name="liChap5" th:value="${liChap5}" />
+	<input type="hidden" name="liChap6" th:value="${liChap6}" />
+
+	<div id="loadingOverlay"
+		style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; color: white; font-size: 24px; text-align: center; padding-top: 20%;">
+		채점 중입니다... 잠시만 기다려주세요.</div>
+
+
 	<div class="container">
-      <div class="panel panel-warning">
-         <!-- <div class="panel-heading">examPage -->
-         <div class='header-block'>
-         		<div class='test-nm-block'>
-         			<!-- 자격증 인덱스, 자격증 이름 -->
-         		    <label id="sheetNum" class="sheetNum" th:text="${liIdx}"></label>
-         			<label class="test-info-testNm" th:text="${liName}"></label>
-         			<div style="margin-left:200px; margin-top:10px;"><button onclick="RandomClick()">모든 문제 풀기</button></div>
-         			<label style="position: absolute; right: 70px; bottom: 23px;"><button onclick="lotto()">수험번호 뽑기</button></label>
-         			<label style="position: absolute; right: 70px; bottom: -5px;"><button onclick="lottoName()">수험이름 뽑기</button></label>
-         		</div>
-         		<div class='user-info-block'>
-         			<div class="user-id-block">
-         				<span class="user-info-userId-label">수험번호 : </span>
-         				<input id='lotto' class="user-info-userId" readonly="true" onfocus="this.blur()" style="cursor:default;" value="7777">
-         			</div>
-         			<div class="user-nm-block">
-         				<span class="user-info-userNm-label">수험자명 : </span>
-         				<input id='lottoName' class="user-info-userNm" readonly="true" onfocus="this.blur()" style="cursor:default;" th:value="${member.name}">
-         			</div>
-         		</div>
-				<div id ='timerImage' class='test-timer-block' style="background-image:url(&quot;https://www.q-net.or.kr/cbt/viewer/images/clock_icon.gif&quot;) !important">
+		<div class="panel panel-warning">
+			<!-- <div class="panel-heading">examPage -->
+			<div class='header-block'>
+				<div class='test-nm-block'>
+					<!-- 자격증 인덱스, 자격증 이름 -->
+					<label id="sheetNum" class="sheetNum" th:text="${liIdx}"></label> <label
+						class="test-info-testNm" th:text="${liName}"></label>
+					<div style="margin-left: 200px; margin-top: 10px;">
+						<button onclick="RandomClick()">모든 문제 풀기</button>
+					</div>
+					<label style="position: absolute; right: 70px; bottom: 23px;"><button
+							onclick="lotto()">수험번호 뽑기</button></label> <label
+						style="position: absolute; right: 70px; bottom: -5px;"><button
+							onclick="lottoName()">수험이름 뽑기</button></label>
+				</div>
+				<div class='user-info-block'>
+					<div class="user-id-block">
+						<span class="user-info-userId-label">수험번호 : </span> <input
+							id='lotto' class="user-info-userId" readonly="true"
+							onfocus="this.blur()" style="cursor: default;" value="7777">
+					</div>
+					<div class="user-nm-block">
+						<span class="user-info-userNm-label">수험자명 : </span> <input
+							id='lottoName' class="user-info-userNm" readonly="true"
+							onfocus="this.blur()" style="cursor: default;"
+							th:value="${member.name}">
+					</div>
+				</div>
+				<div id='timerImage' class='test-timer-block'
+					style="background-image: url(&amp;quot;https://www.q-net.or.kr/cbt/viewer/images/clock_icon.gif&amp;quot;) !important">
 					<div class='max-time-block'>
-						<label class='label-max-time'>제한 시간 : 
-							<label class='test-max-time-control' th:text="${liTime}"></label>
+						<label class='label-max-time'>제한 시간 : <label
+							class='test-max-time-control' th:text="${liTime}"></label>
 						</label>
 					</div>
 					<div class='left-time-block'>
@@ -101,7 +115,6 @@
 				  <input type="hidden" id="category" th:value="${category}" />
 				  <div id="print" class='test-page-block-holder'></div>
 				  
-<<<<<<< HEAD
 				  <div class="submitMessage" id="submitMessage">
 				  		<div class="submitMessage-text">
 				  		<div class="alert-box"> 주의</div>
@@ -115,8 +128,6 @@
 				  	   </div>
 				  </div>
 				  
-=======
->>>>>>> parent of 7942505 (please)
 				 <div class="scoreBackground" >
 					<div id="scoreBox" class="scoreBox">
 					
@@ -195,17 +206,10 @@
          		   	<button id="next-page" class="next-page" onclick="nextPage()">다음 ▶</button>
          		 </div>
          		 <div class="footer-right-block">
-<<<<<<< HEAD
          		 	<button class="btnUnsolved" id="btnUnsolved" onclick="unsolved()">
          		 		<img src="/images/unsolved_icon.gif" class="unsolved_icon">
          		 		<span class="unsolved_label">안 푼 문제</span></button>
          		 	<button class="btnLabel" id="btnLabel" type="button" onclick="submitMessage()">
-=======
-         		 	<button id="btnUnsolved" onclick="unsolved()">
-         		 		<img src="/images/unsolved_icon.gif" class="unsolved_icon">
-         		 		<span class="unsolved_label">안 푼 문제</span></button>
-         		 	<button id="btnLabel" type="button" onclick="examSubmit()">
->>>>>>> parent of 7942505 (please)
          		 		<img src="/images/submit_icon.gif" class="submit_icon">
          		 		<span class="submit_label">답안 제출</span></button>
          		  </div>
@@ -217,16 +221,152 @@
 <div id="unsolvedPopup" style="display:none; position:fixed; top:100px; left:50%; transform:translateX(-50%);
      background: white no-repeat 2px 4px; border:3px solid #3664b1; border-radius:4px; z-index:9999; width:400px; box-shadow:0 0 10px rgba(0,0,0,0.3);">
 
-  <div style="background: #eefbfa; padding:8px; display:flex; justify-content:space-between; align-items:center;">
-    <span style="color:#2a68af; font-weight:bold;"><img src= "/images/ico_what.gif"> 안 푼 문제 번호 보기: <span style="font-weight:bold;">번호 클릭시 해당 문제로 이동합니다.</span></span>
-    <button onclick="hideUnsolvedPopup()" style="border:none; background:none; font-size:16px;">✕</button>
-  </div>
+						<div class='progress-info-block'>
+							<div class="total-count-block">
+								전체 문제 수&nbsp;&nbsp;: <span class="count-info-total"
+									th:text="${liPbc}"></span>
+							</div>
+							<div class="unsolved-count-block">
+								안 푼 문제 수 : <span id="solCount" class="count-info-unsolved"
+									th:text="${liPbc}"></span>
+							</div>
+						</div>
 
-  <div id="unsolvedList" style="padding:12px; display:flex; flex-wrap:wrap; gap:6px;"></div>
-</div>
+					</div>
+					<!-- 문제 출력 영역 -->
+					<input type="hidden" id="category" th:value="${category}" />
+					<div id="print" class='test-page-block-holder'></div>
 
-   
-   <script type="text/javascript">
+					<div class="scoreBackground">
+						<div id="scoreBox" class="scoreBox">
+
+							<!-- 상단 안내 -->
+							<div class="scoreComment"
+								style="display: flex; align-items: center; margin-top: 50px;">
+								<img src="images/icon_title_megaphone.gif"
+									style="width: 24px; height: 24px; vertical-align: middle;">
+								<span id="comment" style="margin-left: 10px;"></span>
+							</div>
+
+							<!-- 하단 참고 문구 -->
+							<div style="margin-bottom: 20px;">
+								<p style="margin: 0;">※ 지역별, 종목별로 상이하므로
+									큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기 바랍니다.</p>
+							</div>
+
+							<!-- 점수 표 -->
+							<div class="scoreText">
+								<div>수험자 이름</div>
+								<div>응시 종목</div>
+								<div>점수</div>
+								<div>합격 여부</div>
+							</div>
+							<div class="scoreValue">
+								<div th:text="${member.name}"></div>
+								<div th:text="${liName}"></div>
+								<div id="score"></div>
+								<div id="pass"></div>
+							</div>
+							<br>
+
+							<!-- 과목점수 -->
+							<!-- 상단 제목 줄 -->
+							<div class="scoreText">
+								<div th:if="${liChap1 != null}" th:text="${liChap1}"></div>
+								<div th:if="${liChap2 != null}" th:text="${liChap2}"></div>
+								<div th:if="${liChap3 != null}" th:text="${liChap3}"></div>
+								<div th:if="${liChap4 != null}" th:text="${liChap4}"></div>
+								<div th:if="${liChap5 != null}" th:text="${liChap5}"></div>
+								<div th:if="${liChap6 != null}" th:text="${liChap6}"></div>
+							</div>
+
+							<!-- 하단 점수 줄 -->
+							<div class="scoreValue">
+								<div th:if="${liChap1 != null}">
+									<span id="liChap1"></span><span id="fail1"></span>
+								</div>
+								<div th:if="${liChap2 != null}">
+									<span id="liChap2"></span><span id="fail2"></span>
+								</div>
+								<div th:if="${liChap3 != null}">
+									<span id="liChap3"></span><span id="fail3"></span>
+								</div>
+								<div th:if="${liChap4 != null}">
+									<span id="liChap4"></span><span id="fail4"></span>
+								</div>
+								<div th:if="${liChap5 != null}">
+									<span id="liChap5"></span><span id="fail5"></span>
+								</div>
+								<div th:if="${liChap6 != null}">
+									<span id="liChap6"></span><span id="fail6"></span>
+								</div>
+							</div>
+
+							<!-- 안내 문구 -->
+							<div style="margin-top: 20px; text-align: center;">"득점 및
+								합격여부를 확인하셨습니까?"</div>
+
+							<!-- 버튼 -->
+							<div style="margin-top: 10px; text-align: center;">
+								<button type="button" onclick="goToLicense()" class="btn btn-primary">확인 완료</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- 답안 표기란 -->
+				<div id="number" class="number-box"></div>
+			</div>
+			<div class="footer-block">
+				<div class="footer-left-block">
+					<button id="btnCaculator">
+						<img src="/images/cal.gif" class="calculator_icon"> <span
+							class="calculator_label">계산기</span>
+					</button>
+					<div id="volumeIcon" class="button_volume_on"
+						style="display: none;"></div>
+					<div id="volumeSlider"></div>
+				</div>
+				<div class="footer-center-block">
+					<button id="prev-page" class="prev-page" onclick="prevPage()">◀
+						이전</button>
+					<label id="pageIndex" class="page-position-label">1/3</label>
+					<button id="next-page" class="next-page" onclick="nextPage()">다음
+						▶</button>
+				</div>
+				<div class="footer-right-block">
+					<button id="btnUnsolved" onclick="unsolved()">
+						<img src="/images/unsolved_icon.gif" class="unsolved_icon">
+						<span class="unsolved_label">안 푼 문제</span>
+					</button>
+					<button id="btnLabel" type="button" onclick="examSubmit()">
+						<img src="/images/submit_icon.gif" class="submit_icon"> <span
+							class="submit_label">답안 제출</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 레이어 팝업 -->
+	<div id="unsolvedPopup"
+		style="display: none; position: fixed; top: 100px; left: 50%; transform: translateX(-50%); background: white no-repeat 2px 4px; border: 3px solid #3664b1; border-radius: 4px; z-index: 9999; width: 400px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);">
+
+		<div
+			style="background: #eefbfa; padding: 8px; display: flex; justify-content: space-between; align-items: center;">
+			<span style="color: #2a68af; font-weight: bold;"><img
+				src="/images/ico_what.gif"> 안 푼 문제 번호 보기: <span
+				style="font-weight: bold;">번호 클릭시 해당 문제로 이동합니다.</span></span>
+			<button onclick="hideUnsolvedPopup()"
+				style="border: none; background: none; font-size: 16px;">✕</button>
+		</div>
+
+		<div id="unsolvedList"
+			style="padding: 12px; display: flex; flex-wrap: wrap; gap: 6px;"></div>
+	</div>
+
+
+	<script type="text/javascript">
    let currentPage = 0;    // 현재 페이지 (0부터 시작)
    let score = 0; // 점수
    const PageExam = []; // 한 페이지당 10개씩 담긴 문제리스트
@@ -749,7 +889,7 @@ function RandomClick() {
 }
  
    </script>
-   
-   
+
+
 </body>
 </html>

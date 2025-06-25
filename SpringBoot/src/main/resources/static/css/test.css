@@ -149,7 +149,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
-
   width: 90%;                        /* 반응형 지원 */
   max-width: 1000px;
   padding: 20px;
@@ -168,50 +167,89 @@
  }
 
  .scoreBoard {
- 	background: #f2f2f2;
- 	padding: 3px;
- 	border-radius: 8px;
- 	position: absolute;
-	text-align: center;
-	margin: auto;
-    width: 800px;
-    height: 300px;
-    overflow: hidden;
-  
+ 	  background: #f2f2f2;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto;
+  height: auto; /* 기존 height: 300px 제거 */
+  position: relative; /* absolute 제거 */
+  overflow: visible;  /* overflow: hidden 제거 */
+  text-align: center;
 }
 
  .scoreContainer {
 	 border-radius: 10px;
-	 border: 3px solid #3664B1;
- }
- 
-  .scoreText {
-	background: #f1faff;
-	vertical-align: middle;
-    text-align: center;
-  	display: flex;
-  	height: 40px;
-  }
-  .scoreValue {
-  	vertical-align: middle;
-    text-align: center;
-  	display: flex;
-  	height: 50px;
+  border: 3px solid #3664B1;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 0 10px;
   }
  
- .scoreText div {
- 	background: #f1faff;
-    width: 25%; /* 4칸이므로 100% / 4 */
-    padding: 10px;
-    border: 1px solid #ccc;
-    font-weight: bold;
- }
- .scoreValue div {
-    width: 25%; /* 4칸이므로 100% / 4 */
-    padding: 10px;
-    border: 1px solid #ccc;
- }
- 
+ .scoreText, .scoreValue {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #dce8f4;
+  overflow: hidden; /* ✅ border 깨짐 방지 */
+  width: 100%;
+}
+ /* 점수표 제목 줄 */
+.scoreText {
+  background-color: #e9f4ff;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* 점수표 값 줄 */
+.scoreValue {
+   background-color: #fff;
+  border-top: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  font-size: 15px;
+}
+
+/* 각 셀 공통 */
+.scoreText div,
+.scoreValue div {
+  flex: 1 1 0;
+  min-width: 120px; /* 최소 너비 보장 */
+  padding: 12px;
+  text-align: center;
+  border-right: 1px solid #eee;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 마지막 셀은 오른쪽 테두리 제거 */
+.scoreText div:last-child,
+.scoreValue div:last-child {
+  border-right: none;
+}
+
+/* 과락 텍스트 강조 */
+.scoreValue span[id^="fail"] {
+  color: red;
+  font-weight: bold;
+  margin-left: 6px;
+}
+
+@media (max-width: 768px) {
+  .scoreText, .scoreValue {
+    flex-wrap: wrap;
+  }
+
+  .scoreText div, .scoreValue div {
+    flex: 1 1 50%; /* 2열씩 표시 */
+  }
+}
  .test-timer-block {
     position: absolute;
     width: 250px;
