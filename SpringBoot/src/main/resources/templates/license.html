@@ -197,47 +197,67 @@
 
 
   <!-- Calendar & Schedule -->
-  <div class="container mb-6">
-    <div class="row">
-      <div class="col-md-8 mb-4">
-        <div class="calendar-box">
-          <h4>
-            <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeMonth(-1)">←</button>
-            <span id="month-year"></span>
-            <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeMonth(1)">→</button>
-            <button class="btn btn-primary rounded-pill px-3" type="button" 
-            id="check-attendance" style="margin-left:520px;">출석</button>
-            
-          </h4>
-          <table>
-            <thead>
-              <tr>
-                <th style="color: red;">일</th>
-                <th>월</th>
-                <th>화</th>
-                <th>수</th>
-                <th>목</th>
-                <th>금</th>
-                <th>토</th>
-              </tr>
-            </thead>
-            <tbody id="calendar-body"></tbody>
-            
-          </table>
-        </div>
+<div class="container mb-6">
+  <div class="row">
+    <div class="col-md-8 mb-4">
+      <div class="calendar-box">
+        <h4 class="d-flex flex-wrap align-items-center mb-3">
+          <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeMonth(-1)">←</button>
+          <span id="month-year" class="fw-bold me-3"></span>
+          <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeMonth(1)">→</button>
+
+          <!-- ✅ 범례 삽입 -->
+          <div class="calendar-legend d-flex justify-content-center align-items-center gap-3 flex-wrap ms-3 me-auto">
+            <div class="legend-item d-flex align-items-center gap-1">
+              <div class="legend-color apply"></div>
+              <span class="small">접수</span>
+            </div>
+            <div class="legend-item d-flex align-items-center gap-1">
+              <div class="legend-color exam"></div>
+              <span class="small">시험</span>
+            </div>
+            <div class="legend-item d-flex align-items-center gap-1">
+              <div class="legend-color result"></div>
+              <span class="small">결과</span>
+            </div>
+          </div>
+
+          <!-- ✅ 출석 버튼 오른쪽 정렬 -->
+          <button class="btn btn-primary rounded-pill px-3 ms-auto" style="margin-right: 40px;" type="button" id="check-attendance">출석</button>
+        </h4>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="color: red;">일</th>
+              <th>월</th>
+              <th>화</th>
+              <th>수</th>
+              <th>목</th>
+              <th>금</th>
+              <th>토</th>
+            </tr>
+          </thead>
+          <tbody id="calendar-body"></tbody>
+        </table>
       </div>
-   <div class="col-md-4">
-  <div class="card schedule-card">
+    </div>
+
+    <div class="col-md-4">
+      <div class="card schedule-card">
+        <!-- 우측 영역 내용 -->
+
   
-  
+  <!-- 📌 가운데 정렬 범례 -->
+
     <!-- 탭 메뉴 -->
       <div class="tab-menu mb-3">
       <div th:each="license : ${licenseList}">
             <!-- <h5><span class="exam-title" th:text="${license.liName}" >ADP</span></h5> -->
           </div>
         <button class="active" onclick="showTab(event, 'apply')">접수</button>
-        <button onclick="showTab(event, 'exam')">시험</button>
-        <button onclick="showTab(event, 'result')">결과발표</button>
+        <button class="exam" onclick="showTab(event, 'exam')">시험</button>
+        <button class="result" onclick="showTab(event, 'result')">결과발표</button>
       </div>
 
 
@@ -482,7 +502,7 @@
  	        }
 
  	        listHtml += `
- 	            <div style="overflow-x: auto;">
+ 	            <div style="overflow-x: auto; margin-top:25px;">
  	              <table style="
  	                width: 100%;
  	                border-collapse: separate;
@@ -533,18 +553,38 @@
  // 시험 정보
   const examPeriods = /*[[${exams}]]*/ [];
 
-  const examDates = [];
+  const examDates = [];  // 기존과 동일
 
   examPeriods.forEach(exam => {
-    const start = new Date(exam.appStd);
-    const end = new Date(exam.appEd);
-    let d = new Date(start);
-    while (d <= end) {
-    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-      examDates.push({ date: dateStr, title: exam.title });
-      d.setDate(d.getDate() + 1);
+    // ✅ 접수 기간: appStd ~ appEd
+    if (exam.appStd && exam.appEd) {
+      let d = new Date(exam.appStd);
+      const end = new Date(exam.appEd);
+      while (d <= end) {
+        examDates.push({ date: dateToString(d), type: "apply" });
+        d.setDate(d.getDate() + 1);
+      }
+    }
+
+    // ✅ 시험 기간: exStd ~ exEd
+    if (exam.exStd && exam.exEd) {
+      let d = new Date(exam.exStd);
+      const end = new Date(exam.exEd);
+      while (d <= end) {
+        examDates.push({ date: dateToString(d), type: "exam" });
+        d.setDate(d.getDate() + 1);
+      }
+    }
+
+    // ✅ 결과 발표일
+    if (exam.exRd) {
+      examDates.push({ date: dateToString(new Date(exam.exRd)), type: "result" });
     }
   });
+
+  function dateToString(d) {
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
 
   // calendarBody: 달력 테이블(<tbody>)을 넣을 위치
   const calendarBody = document.getElementById("calendar-body");
@@ -615,6 +655,7 @@
           const exam = examDates.find(e => e.date === dateStr);
          if (exam ) {
            dayCircle.classList.add("exam-period-bar");
+           dayCircle.classList.add(`exam-period-${exam.type}`); // 추가된 타입별 클래스
          }
          
 

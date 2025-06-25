@@ -350,9 +350,9 @@ function showChatBox(pbId, index) {
     const boxHtml = `
         <div id="${chatBoxId}" class="chatbox-container mt-3 p-3 rounded shadow-sm border">
             <label for="chatInput${index}" class="form-label fw-bold">❓ 궁금한 점을 입력해보세요</label>
-            <textarea class="form-control mb-2" id="chatInput${index}" rows="3" placeholder="예: 이 문제의 핵심 개념은 무엇인가요?"></textarea>
+            <textarea class="form-control mb-2" id="chatInput${index}" rows="3" placeholder="예: 이 문제의 핵심 개념은 무엇인가요?" onkeydown="submitChatOnEnter(event, ${pbId}, ${index})"></textarea>
             <div class="d-flex justify-content-end">
-                <button class="btn btn-sm btn-primary" onclick="sendToChatbot(${pbId}, ${index})">
+                <button class="btn btn-sm btn-primary" onclick="sendToChatbot(${pbId}, ${index})" id="chatSendBtn${index}">
                     <i class="bi bi-send-fill"></i> 전송
                 </button>
             </div>
@@ -390,14 +390,24 @@ function sendToChatbot(pbId, index) {
                     <span>답변을 생성 중입니다...</span>
                 </div>
             `).show();
+            $("#chatSendBtn" + index).hide(); // 🔒 전송 버튼 숨김
         },
         success: function(response) {
             $("#chatAnswer" + index).html(`<i class="bi bi-chat-dots-fill text-primary me-2"></i>${response.answer}`).show();
+            $("#chatSendBtn" + index).show(); // 🔓 전송 버튼 다시 표시
         },
         error: function() {
             $("#chatAnswer" + index).html(`<span class="text-danger">오류가 발생했습니다. 다시 시도해주세요.</span>`).show();
+            $("#chatSendBtn" + index).show(); // 🔓 전송 버튼 다시 표시
         }
     });
+}
+
+function submitChatOnEnter(event, pbId, index) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendToChatbot(pbId, index);
+    }
 }
 
     </script>

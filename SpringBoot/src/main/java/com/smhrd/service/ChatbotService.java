@@ -10,7 +10,7 @@ import java.util.Map;
 @Service
 public class ChatbotService {
 
-    private static final String API_KEY = "AIzaSyAP3OnjriyLnDqNID3_7kcI45g4zsIuq84"; // 🔑 여기만 바꾸세요
+    private static final String API_KEY = "AIzaSyB5c-5dDK6Hr5AznM6XUqrVI4S-enAe8X0"; // 🔑 여기만 바꾸세요
 
     private final WebClient webClient = WebClient.builder()
             .baseUrl("https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent")
