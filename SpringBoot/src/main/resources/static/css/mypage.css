@@ -1,35 +1,53 @@
 /* 기본 스타일 */
+
+
+html, body {
+  overflow: auto;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE 10+ */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari */
+}
+
 body {
-	font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
-	background-color: #FAFAFA;
 	color: #212121;
-	margin: 0;
-	padding: 0;
+  background-color: white;
+	
 }
 
 button {
 	cursor: pointer;
 }
 
+.content-box{
+  display: flex; /* Flexbox로 레이아웃 설정 */
+  justify-content: center; /* 수평 중앙 정렬 */
+background-color: #FAFAFA;
+  border-top: 1px solid #ddd;
+}
+
 .container {
-	max-width: 1440px;
-	margin: 0 auto;
-	padding: 24px;
+	font-family: 'Pretendard', 'Noto Sans KR', 'Inter', sans-serif;
+	max-width: 1440px; 
+	
 }
 
 /* 헤더 */
 .custom-header {
-	background-color: white;
-	border-bottom: 1px solid #ddd;
-	padding: 0; /* ✅ 내부 여백 제거하고 container에 위임 */
-}
+  max-width: 1440px;
+  margin: 0 auto;             /* ✅ 가운데 정렬 */
+  display: flex;
+  justify-content: center;
+  }
 
 .custom-header .container {
-	max-width: 1440px;
-	display: flex; /* ✅ 여기서 flex 적용 */
-	justify-content: space-between;
-	align-items: center;
-	padding: 16px 24px; /* ✅ 여백은 container에서 적용 */
+  max-width: 1440px;
+  margin-top: 0;     /* ← 가운데 정렬 */
+  margin-right: 0; 
+  padding: 16px 12px; /* ← 내부 여백 */
 }
 
 .logo {
@@ -45,28 +63,8 @@ button {
 }
 
 .header-links {
-	display: flex;
-	gap: 10px;
-}
-
-.btn-outline-secondary {
-	color: #1E88E5;
-	border-color: #1E88E5;
-}
-
-.btn-outline-secondary:hover {
-	background-color: #e3f2fd;
-	color: #1E88E5;
-}
-
-.btn-outline-danger {
-	border-color: #f44336;
-	color: #f44336;
-}
-
-.btn-outline-danger:hover {
-	background-color: #fddede;
-	color: #f44336;
+	display: flex; 
+	font-size: 1rem;
 }
 
 /* 프로필 영역 */

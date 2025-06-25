@@ -76,39 +76,150 @@
 						</label>
 					</div>
 					<div class='left-time-block'>
-						<label class='label-left-time'>남은 시간: </label> <input
-							class='test-left-time-control saningong_timer panel_saningong_timer'
-							readonly='true' onfocus='this.blur()' style='cursor: default;'
-							ctrl='saningong_timer'> <input class='left-time-hidden'
-							style='display: none;'>
+						<label class='label-left-time'>남은 시간: </label>
+						<input class='test-left-time-control saningong_timer panel_saningong_timer' readonly='true'  onfocus='this.blur()' style='cursor:default;' ctrl='saningong_timer' >
+						<input class='left-time-hidden' style='display:none;'>
+					</div>
+	         </div>
+         </div>
+         <div class="panel-body">
+            <div class='text-box'>
+            	<div class='section-tool-block'>
+		            <div class='screen-tool'>
+		         		<!-- 100% 150% 200% 배치 ㅡ : 한줄로 보기 ㅣ : 두줄로 보기 ㅁ : 한문제 보기 -->
+		         		<div class='zoom-tool'>
+		         			<span class='zoom-tool-title'>글자크기</span>
+			         		<button id="zoom14" class='zoomBtn' onclick="magnification(14)" style='background: url(/images/100.gif) no-repeat;'></button>
+			         		<button id="zoom20" class='zoomBtn' onclick="magnification(20)" style='background: url(/images/150.gif) no-repeat;'></button>
+			         		<button id="zoom25" class='zoomBtn' onclick="magnification(25)" style='background: url(/images/200.gif) no-repeat;'></button>
+			         	</div>
+			         	<div class='layout-tool'>
+			         		<span class='layout-tool-title'>화면배치</span>
+							<button id="oneLine" onclick="arrangement('oneLine')" class='layoutBtn' style='background: url(/images/one.gif) no-repeat;'></button>
+							<button id="twoLine" onclick="arrangement('twoLine')" class='layoutBtn' style='background: url(/images/two.gif) no-repeat;'></button>
+			         	</div>
+		         	</div>
+		         	<div class='section-name-block'></div>
+		         	
+		         	<div class='progress-info-block'>
+		         		<div class="total-count-block">전체 문제 수&nbsp;&nbsp;: 
+			         		<span class="count-info-total"  th:text="${liPbc}" ></span>
+		         		</div>
+		         		<div class="unsolved-count-block">안 푼 문제 수 : 
+			         		<span id="solCount" class="count-info-unsolved"  th:text="${liPbc}"></span>
+		         		</div>
+		         	</div>
+		         	
+         		</div>
+				  <!-- 문제 출력 영역 -->
+				  <input type="hidden" id="category" th:value="${category}" />
+				  <div id="print" class='test-page-block-holder'></div>
+				  
+				  <div class="submitMessage" id="submitMessage">
+				  		<div class="submitMessage-text">
+				  		<div class="alert-box"> 주의</div>
+				  		<div>정말로 제출 하시겠습니까?</div>
+				  		<div style="color:red;">[답안 제출 이후에는 문제풀이가 불가합니다.]</div>
+				  		</div>
+				  		<br>
+				  		<div class="submitMessage-btn">
+				  			<button class="btnUnsolved" onclick="examSubmit()">예</button>
+				  			<button class="btnLabel" onclick="noSubmit()">아니오</button>
+				  	   </div>
+				  </div>
+				  
+				 <div class="scoreBackground" >
+					<div id="scoreBox" class="scoreBox">
+					
+					  <!-- 상단 안내 -->
+					  <div class="scoreComment" style="display: flex; align-items: center; margin-top: 50px;">
+					    <img src="images/icon_title_megaphone.gif" style="width: 24px; height: 24px; vertical-align: middle;">
+					    <span id="comment" style="margin-left: 10px;"></span>
+					  </div>
+					
+					  <!-- 하단 참고 문구 -->
+					  <div style="margin-bottom: 20px;">
+					    <p style="margin: 0;">※ 지역별, 종목별로 상이하므로 큐넷(http://www.q-net.or.kr) 시험일정 안내를 참고하시기 바랍니다.</p>
+					  </div>
+					
+					  <!-- 점수 표 -->
+					  <div class="scoreText">
+					    <div>수험자 이름</div>
+					    <div>응시 종목</div>
+					    <div>점수</div>
+					    <div>합격 여부</div>
+					  </div>
+					  <div class="scoreValue">
+					    <div th:text="${member.name}"></div>
+					    <div th:text="${liName}"></div>
+					    <div id="score"></div>
+					    <div id="pass"></div>
+					  </div>
+					  <br>
+					  
+					  <!-- 과목점수 -->
+					  <div class="scoreText">
+					  	<div th:text="${liChap1}"></div>
+					  	<div th:text="${liChap2}"></div>
+					  	<div th:text="${liChap3}"></div>
+					  	<div th:text="${liChap4}"></div>
+					  	<div th:text="${liChap5}"></div>	
+						<div th:text="${liChap6}" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>		  
+					  </div>
+					  <div class="scoreValue">
+					  	<div id="liChap1"></div><span id="fail1"></span>
+					  	<div id="liChap2"></div><span id="fail2"></span>
+					  	<div id="liChap3"></div><span id="fail3"></span>
+					  	<div id="liChap4"></div><span id="fail4"></span>
+					  	<div id="liChap5"></div><span id="fail5"></span>
+					  	<div id="liChap6" th:attr="style=${liChap6 == null} ? 'display:none;' : ''"></div>			  
+					  </div>
+					
+					  <!-- 안내 문구 -->
+					  <div style="margin-top: 20px; text-align: center;">
+					    "득점 및 합격여부를 확인하셨습니까?"
+					  </div>
+					
+					  <!-- 버튼 -->
+					  <div style="margin-top: 10px; text-align: center;">
+					    <button type="button" onclick="goToLicense()">확인 완료</button>
+					  </div>
+					
 					</div>
 				</div>
 			</div>
-			<div class="panel-body">
-				<div class='text-box'>
-					<div class='section-tool-block'>
-						<div class='screen-tool'>
-							<!-- 100% 150% 200% 배치 ㅡ : 한줄로 보기 ㅣ : 두줄로 보기 ㅁ : 한문제 보기 -->
-							<div class='zoom-tool'>
-								<span class='zoom-tool-title'>글자크기</span>
-								<button id="zoom14" class='zoomBtn' onclick="magnification(14)"
-									style='background: url(/images/100.gif) no-repeat;'></button>
-								<button id="zoom20" class='zoomBtn' onclick="magnification(20)"
-									style='background: url(/images/150.gif) no-repeat;'></button>
-								<button id="zoom25" class='zoomBtn' onclick="magnification(25)"
-									style='background: url(/images/200.gif) no-repeat;'></button>
-							</div>
-							<div class='layout-tool'>
-								<span class='layout-tool-title'>화면배치</span>
-								<button id="oneLine" onclick="arrangement('oneLine')"
-									class='layoutBtn'
-									style='background: url(/images/one.gif) no-repeat;'></button>
-								<button id="twoLine" onclick="arrangement('twoLine')"
-									class='layoutBtn'
-									style='background: url(/images/two.gif) no-repeat;'></button>
-							</div>
-						</div>
-						<div class='section-name-block'></div>
+				  <!-- 답안 표기란 -->
+				  <div id="number" class="number-box"></div>
+         </div>
+         <div class="footer-block">
+         		<div class="footer-left-block">					
+         			<button id="btnCaculator" >
+	         			 <img src="/images/cal.gif" class="calculator_icon">
+	         			 <span class="calculator_label">계산기</span>
+         			 </button>
+         			 <div id="volumeIcon" class="button_volume_on" style="display:none;"></div>
+         			<div id="volumeSlider"></div>
+         		</div>
+         		<div class="footer-center-block">
+         		    <button id="prev-page" class="prev-page" onclick="prevPage()">◀ 이전</button>
+         		   	<label id="pageIndex" class="page-position-label">1/3</label>
+         		   	<button id="next-page" class="next-page" onclick="nextPage()">다음 ▶</button>
+         		 </div>
+         		 <div class="footer-right-block">
+         		 	<button class="btnUnsolved" id="btnUnsolved" onclick="unsolved()">
+         		 		<img src="/images/unsolved_icon.gif" class="unsolved_icon">
+         		 		<span class="unsolved_label">안 푼 문제</span></button>
+         		 	<button class="btnLabel" id="btnLabel" type="button" onclick="submitMessage()">
+         		 		<img src="/images/submit_icon.gif" class="submit_icon">
+         		 		<span class="submit_label">답안 제출</span></button>
+         		  </div>
+         	</div>
+      </div>
+   </div>
+   
+   <!-- 레이어 팝업 -->
+<div id="unsolvedPopup" style="display:none; position:fixed; top:100px; left:50%; transform:translateX(-50%);
+     background: white no-repeat 2px 4px; border:3px solid #3664b1; border-radius:4px; z-index:9999; width:400px; box-shadow:0 0 10px rgba(0,0,0,0.3);">
 
 						<div class='progress-info-block'>
 							<div class="total-count-block">
@@ -570,15 +681,24 @@ function selectChoice(questionNum, choiceNum) {
 
 				  }
 
-				  document.getElementById("unsolvedPopup").style.display = "block";
+					$("#unsolvedPopup").css("display","block");
 				}
 
 				function hideUnsolvedPopup() {
-				  document.getElementById("unsolvedPopup").style.display = "none";
+					$("#unsolvedPopup").css("display","none");
+				}
+				
+				function submitMessage(){
+					$("#submitMessage").css("display","flex");
+				}
+				
+				function noSubmit(){
+					$("#submitMessage").css("display","none");
 				}
 				
 				// 시험 제출 함수 (시작점)
 				function examSubmit() {
+					$("#submitMessage").css("display","none");
 				  // 안 푼 문제는 0으로 초기화
 				  for (let i = 1; i <= 100; i++) {
 				    if (solvedStatus[i] === undefined) {

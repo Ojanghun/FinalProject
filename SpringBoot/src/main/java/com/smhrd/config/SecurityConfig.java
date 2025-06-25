@@ -41,7 +41,8 @@ public class SecurityConfig {
                 "/admin/cancel-refund",
                 "/admin/reject-refund", // ✅ 거절 처리 경로 추가
                 "/admin/cancel-reject", // ✅ 거절취소 경로 추가
-                "/chapResult/**"
+                "/chapResult/**",
+                "/loadYearInfo"
             ))
 
             // ✅ 요청 경로별 권한 부여

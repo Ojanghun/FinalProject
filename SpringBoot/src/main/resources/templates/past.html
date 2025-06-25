@@ -70,7 +70,7 @@
 	<div class="panel panel-warning">
 		
 		<div class="exam-title-bar">
-			<h3 style='font-weight: 550;' th:text="${liName} +' 기출'"></h3>
+			<div id="loadYearInfo"></div>
 			<span style="float: right;"></span>
 		</div>
 		<div class="panel-body">
@@ -92,6 +92,7 @@
 
 	<input type="hidden" id="category" th:value="${category}" />
 	<input type="hidden" id="liIdx" th:value="${liIdx}" />
+	<input type="hidden" id="liName" th:value="${liName}" />
 	<div id="examBoard"></div>
 
 
@@ -106,19 +107,38 @@
     ];
 </script>
 
-	<script type="text/javascript">
-let exData = [];
-let shufData = [];
-let currentPage = 0;
-const userSelections = {};
-const liIdx = $("#liIdx").val();
+<script type="text/javascript">
+	let exData = [];
+	let shufData = [];
+	let currentPage = 0;
+	const userSelections = {};
+	const liIdx = $("#liIdx").val();
+	const category = $("#category").val();
+	const liName = $("#liName").val();
 
 $(document).ready(function(){
     loadExam();
+    loadYearInfo();
 });
 
+function loadYearInfo(){
+	const exId = category;
+	$.ajax({ 
+		url: "/loadYearInfo",
+		data : {"exId": exId},
+		type: "post",
+		dataType: "json",
+		success: function(data) {
+			listHtml = "";
+			listHtml += "<h3 style='font-weight: 550;'>" + liName + " " + data[0][0] + "년 " + data[0][1] + "회</h3>";
+
+			$("#loadYearInfo").html(listHtml);
+		},
+        error: function () {alert("Error!");}
+	});
+}
+
 function loadExam() {
-    const category = $("#category").val();
 
     $.when(
             $.ajax({ url: "/loadExam", type: "post", dataType: "json", data:{ "category":category, "liIdx":liIdx }}),

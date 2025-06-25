@@ -80,6 +80,61 @@
     overflow: hidden;
     background: #3664B1;
  }
+ 
+ .submitMessage {
+  display: none;
+  position: fixed;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white no-repeat 2px 4px;
+  border-radius: 6px;
+  z-index: 9999;
+  width: 600px;
+  height: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitMessage-text {
+  font-size: 20pt;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color:#6588C1;
+}
+ 
+ .alert-box {
+  width: 600px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ed145b;
+  color: white;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+ .submitMessage-btn {
+  position: absolute;
+  width: 600px;
+  height: 50px;
+  bottom: 0;
+  display: flex;               /* ✅ flex 선언 필수 */
+  justify-content: center;     /* 수평 가운데 정렬 */
+  align-items: center;         /* 수직 가운데 정렬 (높이 필요 시) */
+  gap: 12px;                   /* 버튼 간격 여유 */
+  background: #CFD2D8;
+}
+ 
+ 
 
  .scoreBackground {
  	width:100%;
@@ -535,7 +590,7 @@
     bottom: 5px;
     
 }
- #btnUnsolved {
+ .btnUnsolved {
 	color: #3664b1 !important;
     width: 131px !important;
     height: 36px !important;
@@ -564,7 +619,7 @@
 
 }
 
- #btnLabel {
+ .btnLabel {
     border: solid 1px #eee;
     background: #3bb2f2;
     color: #fff;
