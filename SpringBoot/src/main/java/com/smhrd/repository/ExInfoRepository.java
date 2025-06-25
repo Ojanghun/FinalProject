@@ -17,7 +17,13 @@ public interface ExInfoRepository extends JpaRepository<Ex_Info, Integer> {
 	@Query("SELECT DISTINCT YEAR(e.exStd) AS year, e.exRound AS round, e.exId " +
 		       "FROM Ex_Info e WHERE e.exPbexist = 1 AND e.liIdx = :liIdx ORDER BY YEAR(e.exStd), e.exRound")
 		List<Object[]> findAllYearsAndRounds(@Param("liIdx") int liIdx);
+		
+		@Query("SELECT DISTINCT YEAR(e.exStd), e.exRound FROM Ex_Info e WHERE e.exId = :exId")
+		Object[] findYearsAndRoundsByExIds(@Param("exId") int exId);
 
+
+
+		
 
 
 }

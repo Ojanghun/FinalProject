@@ -104,5 +104,12 @@ public class ExamController {
 		return userScore;
 	}
 	
+	@PostMapping("/loadYearInfo")
+	public Object[] loadYearInfo(@RequestParam("exId") int exId) {
+		Object[] YearInfo = service.loadYearInfo(exId);
+		System.out.println("회차정보: "+YearInfo[0]);
+		return YearInfo;
+	}
+	
 	
 }
