@@ -26,6 +26,18 @@
 
 
 <style>
+/* 스크롤바 사라졌을 때 헤더 위치 고정 */
+html, body {
+  overflow: auto;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE 10+ */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari */
+}
+
 /* ✅ container 강제 통일 */
 .container {
    max-width: 1440px !important;

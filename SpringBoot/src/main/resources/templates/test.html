@@ -101,6 +101,19 @@
 				  <input type="hidden" id="category" th:value="${category}" />
 				  <div id="print" class='test-page-block-holder'></div>
 				  
+				  <div class="submitMessage" id="submitMessage">
+				  		<div class="submitMessage-text">
+				  		<div class="alert-box"> 주의</div>
+				  		<div>정말로 제출 하시겠습니까?</div>
+				  		<div style="color:red;">[답안 제출 이후에는 문제풀이가 불가합니다.]</div>
+				  		</div>
+				  		<br>
+				  		<div class="submitMessage-btn">
+				  			<button class="btnUnsolved" onclick="examSubmit()">예</button>
+				  			<button class="btnLabel" onclick="noSubmit()">아니오</button>
+				  	   </div>
+				  </div>
+				  
 				 <div class="scoreBackground" >
 					<div id="scoreBox" class="scoreBox">
 					
@@ -179,10 +192,10 @@
          		   	<button id="next-page" class="next-page" onclick="nextPage()">다음 ▶</button>
          		 </div>
          		 <div class="footer-right-block">
-         		 	<button id="btnUnsolved" onclick="unsolved()">
+         		 	<button class="btnUnsolved" id="btnUnsolved" onclick="unsolved()">
          		 		<img src="/images/unsolved_icon.gif" class="unsolved_icon">
          		 		<span class="unsolved_label">안 푼 문제</span></button>
-         		 	<button id="btnLabel" type="button" onclick="examSubmit()">
+         		 	<button class="btnLabel" id="btnLabel" type="button" onclick="submitMessage()">
          		 		<img src="/images/submit_icon.gif" class="submit_icon">
          		 		<span class="submit_label">답안 제출</span></button>
          		  </div>
@@ -518,15 +531,24 @@ function selectChoice(questionNum, choiceNum) {
 
 				  }
 
-				  document.getElementById("unsolvedPopup").style.display = "block";
+					$("#unsolvedPopup").css("display","block");
 				}
 
 				function hideUnsolvedPopup() {
-				  document.getElementById("unsolvedPopup").style.display = "none";
+					$("#unsolvedPopup").css("display","none");
+				}
+				
+				function submitMessage(){
+					$("#submitMessage").css("display","flex");
+				}
+				
+				function noSubmit(){
+					$("#submitMessage").css("display","none");
 				}
 				
 				// 시험 제출 함수 (시작점)
 				function examSubmit() {
+					$("#submitMessage").css("display","none");
 				  // 안 푼 문제는 0으로 초기화
 				  for (let i = 1; i <= 100; i++) {
 				    if (solvedStatus[i] === undefined) {
