@@ -29,5 +29,7 @@ public class Topic_Info {
     
     @Column(name = "TOPIC_NAME", nullable = false, length = 255)
     private String topicName; // 주제 이름
-    
+ 
+    @Column(name = "TOPIC_CHAP", nullable = false) 
+    private int topicChap; // 주제 과목
 }
