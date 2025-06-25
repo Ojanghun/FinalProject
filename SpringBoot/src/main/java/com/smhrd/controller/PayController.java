@@ -7,6 +7,8 @@ import com.smhrd.entity.Plan_Info;
 import com.smhrd.repository.LiInfoRepository;
 import com.smhrd.repository.PayInfoRepository;
 import com.smhrd.repository.PlanInfoRepository;
+import com.smhrd.service.SmsService;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,9 @@ public class PayController {
     @Autowired
     private PayInfoRepository payInfoRepository;
 
+    @Autowired
+    private SmsService smsService;
+    
     @GetMapping("/pay")
     public String payPage(@RequestParam("liIdx") int liIdx,
                           @RequestParam("plan") String plan,
@@ -108,7 +113,8 @@ public class PayController {
 
         // ✅ 세션에 성공 메시지 저장 → main 페이지에서 보여줌
         session.setAttribute("paymentSuccess", "✅ 결제가 완료되었습니다!");
-
+        smsService.sendPaySuccessMessage(userId, liName, plan);
+        
         return "redirect:/main";
     }
 }
