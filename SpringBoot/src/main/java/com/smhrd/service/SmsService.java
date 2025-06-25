@@ -39,8 +39,8 @@ public class SmsService {
 		// Message 패키지가 중복될 경우 net.nurigo.sdk.message.model.Message로 치환하여 주세요
 		Message message = new Message();
 		message.setFrom("01040135280");
-		message.setTo(userList.get(0).getUserPhone());
-		message.setText(userList.get(0).getUserName() + "님, 오늘 할당량이 남으셨어요~ 20/80 공부합시다\n지금 바로 클릭 https://...");
+		message.setTo(userList.get(7).getUserPhone());
+		message.setText(userList.get(7).getUserName() + "님, 오늘 할당량이 남으셨어요~ 20/80 공부합시다\n지금 바로 클릭 https://...");
 		
 		try {
 			// send 메소드로 ArrayList<Message> 객체를 넣어도 동작합니다!
