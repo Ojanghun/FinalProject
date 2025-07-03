@@ -86,11 +86,11 @@
 <br>
 
 ## 📌 SW유스케이스
-![Image](https://github.com/user-attachments/assets/b580fe9f-bbfc-4066-b31c-8c543c01502a)
+![Image](https://github.com/user-attachments/assets/6d7f946f-60a9-4699-9bff-1c49f36dbf52)
 <br>
 
 ## 📌 서비스 흐름도
-![image](https://user-images.githubusercontent.com/25995055/178401048-d6484bda-a2d7-40e1-998b-2bd195cd9f89.png)
+![Image](https://github.com/user-attachments/assets/b580fe9f-bbfc-4066-b31c-8c543c01502a)
 <br>
 
 ## 📌 ER다이어그램
